@@ -1,3 +1,5 @@
+// TODO: add MUI? https://blog.logrocket.com/using-material-ui-with-react-hook-form/
+
 import React from 'react';
 import { FormInformation } from '../../types';
 import { UseFormRegisterReturn } from 'react-hook-form';
@@ -41,7 +43,7 @@ const FormField = ({
     return (
       <div className={className}>
         <label htmlFor={id}>{label}</label>
-        <input type={type} id={id} min={min} max={max} step={step} {...register} />
+        <input {...register} type={type} id={id} min={min} max={max} step={step} />
       </div>
     );
   }

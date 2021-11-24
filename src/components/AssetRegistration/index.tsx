@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import Authorship from './Authorship';
-import Details from './Details';
-import Pricing from './Pricing';
 import { useForm } from 'react-hook-form';
 
 import defaultStyles from './index.module.scss';
@@ -29,9 +26,10 @@ export default function AssetRegistration({
   styles = defaultStyles
 }: AssetRegistrationProps) {
   const { register, watch, handleSubmit } = useForm<MetaDataFormDTO>({
+    // TODO: use MetaData type with this approach: https://gist.github.com/pjchender/e021d3b96fda374bace89c5713c0598d
     defaultValues: {
       name: '',
-      price: 0,
+      price: '0',
       description: ''
     }
   });
@@ -52,7 +50,8 @@ export default function AssetRegistration({
           register={register}
           fields={[
             { value: 'name', label: 'Asset Name', type: 'text' },
-            { value: 'description', label: 'Asset Description:', type: 'textarea' }
+            { value: 'description', label: 'Asset Description:', type: 'textarea' },
+            { value: 'test', label: 'Testing:', type: 'textarea' }
           ]}
         />
       )}

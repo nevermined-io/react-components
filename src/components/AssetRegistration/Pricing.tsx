@@ -1,24 +1,11 @@
 import React from 'react';
-import { useForm, UseFormRegister } from 'react-hook-form';
+import { UseFormRegister } from 'react-hook-form';
 
 import { FormInformation } from '../../types';
 import FormField from './FormField';
 import defaultStyles from './scss/Pricing.module.scss';
-type MData = {
-  name: string;
-  type: 'dataset' | 'algorithm' | 'compute' | 'workflow' | 'compute';
-  dateCreated: string;
-  datePublished?: string;
-  author: string;
-  license: string;
-  price: string;
-  files?: File[];
-  encryptedService?: any;
-  workflow?: any;
-  algorithm?: any;
-  service?: any;
-};
-
+import { MetaDataFormDTO } from '../../utils/mapFormDataToMetaData';
+ 
 interface PricingProps {
   register: UseFormRegister<any>;
   styles?: {
@@ -50,15 +37,19 @@ const Pricing = ({
   fields = Object.keys(data).map((d: string) => ({
     label: d.toUpperCase(),
     value: d,
-    type: d === 'description' ? 'textarea' : 'text'
+    type: d === 'price' ? 'number' : 'text',
+    min: 0,
+    max: 100000,
+    step: 1
   })),
   register
 }: PricingProps) => {
+  console.log(fields);
   return (
     <div>
       <h2>Pricing</h2>
       <form className={styles.form}>
-        {fields.map(({ value: key, label, type, rows, cols }: FormInformation) => {
+        {fields.map(({ value: key, label, type, rows, cols, min, max, step }: FormInformation) => {
           return (
             <FormField
               label={label}
@@ -66,10 +57,17 @@ const Pricing = ({
               cols={cols}
               key={key}
               id={key}
+              min={min}
+              max={max}
+              step={step}
               type={type}
               className={styles.formElement}
               value={key}
-              register={register(key as keyof MData)}
+              register={register(key as keyof MetaDataFormDTO, {
+                min,
+                max,
+                valueAsNumber: type === 'number'
+              })}
             />
           );
         })}

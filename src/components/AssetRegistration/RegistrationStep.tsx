@@ -64,8 +64,8 @@ const RegistrationStep = ({
               value={key}
               register={register(key as keyof MetaDataFormDTO, {
                 min,
-                max,
-                valueAsNumber: type === 'number'
+                max
+                // valueAsNumber: type === 'number'
               })}
             />
           );

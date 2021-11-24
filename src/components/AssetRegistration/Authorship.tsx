@@ -30,7 +30,7 @@ const main: any = {
   //   files: []
 };
 
-const Authorship = ({
+const Authorship = function ({
   styles = defaultStyles,
   onSubmit = (data: any) => console.log('Should submit to API', data),
   onSubmitError = (error: any) => console.log('Error', error),
@@ -38,29 +38,27 @@ const Authorship = ({
   fields = Object.keys(data).map((d: string) => ({
     label: d.toUpperCase(),
     value: d,
-    type: d === 'description' ? 'textarea' : 'text'
+    type: d === 'description' ? 'textarea' : 'checkbox'
   })),
   register
-}: AuthorshipProps) => {
+}: AuthorshipProps) {
   return (
     <div>
       <h2>Authorship</h2>
       <form className={styles.form}>
-        {fields.map(({ value: key, label, type, rows, cols }: FormInformation) => {
-          return (
-            <FormField
-              label={label}
-              rows={rows}
-              cols={cols}
-              key={key}
-              id={key}
-              type={type}
-              className={styles.formElement}
-              value={key}
-              register={register(key as keyof MetaDataFormDTO)}
-            />
-          );
-        })}
+        {fields.map(({ value: key, label, type, rows, cols }: FormInformation) => (
+          <FormField
+            label={label}
+            rows={rows}
+            cols={cols}
+            key={key}
+            id={key}
+            type={type}
+            className={styles.formElement}
+            value={key}
+            register={register(key as keyof MetaDataFormDTO)}
+          />
+        ))}
       </form>
     </div>
   );

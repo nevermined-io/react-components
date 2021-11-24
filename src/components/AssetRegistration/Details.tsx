@@ -1,25 +1,9 @@
-import React, { useState } from 'react';
-import { FieldValues, useForm, UseFormRegister } from 'react-hook-form';
-import { FileUpload } from '../Utilities';
+import React from 'react';
+import { UseFormRegister } from 'react-hook-form';
 import defaultStyles from './scss/Details.module.scss';
 import { FormInformation } from '../../types';
 import { MetaDataFormDTO } from '../../utils/mapFormDataToMetaData';
 import FormField from './FormField';
-
-type MData = {
-  name: string;
-  type: 'dataset' | 'algorithm' | 'compute' | 'workflow' | 'compute';
-  dateCreated: string;
-  datePublished?: string;
-  author: string;
-  license: string;
-  price: string;
-  files?: File[];
-  encryptedService?: any;
-  workflow?: any;
-  algorithm?: any;
-  service?: any;
-};
 
 interface DetailsProps {
   register: UseFormRegister<any>;
