@@ -41,7 +41,7 @@ const FormField = ({
     return (
       <div className={className}>
         <label htmlFor={id}>{label}</label>
-        <input {...register} type={type} id={id} min={min} max={max} step={step} value={0} />
+        <input type={type} id={id} min={min} max={max} step={step} {...register} />
       </div>
     );
   }

@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import defaultStyles from './index.module.scss';
 import { FormInformation } from '../../types';
 import RegistrationStep from './RegistrationStep';
+import { MetaDataFormDTO } from '../../utils/mapFormDataToMetaData';
 
 interface AssetRegistrationProps {
   styles?: {
@@ -27,7 +28,13 @@ export default function AssetRegistration({
   onSubmitError = (error: any) => console.log('Error', error),
   styles = defaultStyles
 }: AssetRegistrationProps) {
-  const { register, watch, handleSubmit } = useForm<FormData>();
+  const { register, watch, handleSubmit } = useForm<MetaDataFormDTO>({
+    defaultValues: {
+      name: '',
+      price: 0,
+      description: ''
+    }
+  });
   const [currentStep, setCurrentStep] = useState(0);
 
   if (debug) console.log(watch());
@@ -39,9 +46,39 @@ export default function AssetRegistration({
     <div className={styles.root}>
       <h1>Asset Registration, Current Step: {currentStep}</h1>
 
-      {currentStep === 0 && <RegistrationStep title={<h2>Details</h2>} register={register} />}
-      {currentStep === 1 && <RegistrationStep title={<h2>Authorship</h2>} register={register} />}
-      {currentStep === 2 && <RegistrationStep title={<h2>Pricing</h2>} register={register} />}
+      {currentStep === 0 && (
+        <RegistrationStep
+          title={<h2>Details</h2>}
+          register={register}
+          fields={[
+            { value: 'name', label: 'Asset Name', type: 'text' },
+            { value: 'description', label: 'Asset Description:', type: 'textarea' }
+          ]}
+        />
+      )}
+      {currentStep === 1 && (
+        <RegistrationStep
+          title={<h2>Authorship</h2>}
+          register={register}
+          fields={[{ value: 'author', label: 'Asset Author', type: 'text' }]}
+        />
+      )}
+      {currentStep === 2 && (
+        <RegistrationStep
+          title={<h2>Pricing</h2>}
+          register={register}
+          fields={[
+            {
+              value: 'price',
+              label: 'Asset Price',
+              type: 'number',
+              min: 0,
+              max: 200,
+              step: 1
+            }
+          ]}
+        />
+      )}
 
       <div className={styles.navigationButtonContainer}>
         {currentStep !== 0 && (
