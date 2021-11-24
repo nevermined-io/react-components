@@ -1,14 +1,12 @@
-import { MetaDataMain, MetaData } from '@nevermined-io/nevermined-sdk-js';
-
 import React, { useState } from 'react';
 import Authorship from './Authorship';
 import Details from './Details';
 import Pricing from './Pricing';
 import { useForm } from 'react-hook-form';
-import { FileUpload } from '../Utilities';
 
 import defaultStyles from './index.module.scss';
 import { FormInformation } from '../../types';
+import RegistrationStep from './RegistrationStep';
 
 interface AssetRegistrationProps {
   styles?: {
@@ -41,9 +39,9 @@ export default function AssetRegistration({
     <div className={styles.root}>
       <h1>Asset Registration, Current Step: {currentStep}</h1>
 
-      {currentStep === 0 && <Details register={register} />}
-      {currentStep === 1 && <Authorship register={register} />}
-      {currentStep === 2 && <Pricing register={register} />}
+      {currentStep === 0 && <RegistrationStep title={<h2>Details</h2>} register={register} />}
+      {currentStep === 1 && <RegistrationStep title={<h2>Authorship</h2>} register={register} />}
+      {currentStep === 2 && <RegistrationStep title={<h2>Pricing</h2>} register={register} />}
 
       <div className={styles.navigationButtonContainer}>
         {currentStep !== 0 && (

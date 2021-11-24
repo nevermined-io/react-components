@@ -46,9 +46,9 @@ const RegistrationStep = ({
 }: RegistrationStepProps) => {
   return (
     <div>
-      <h2>{title}</h2>
+      {title}
       <form className={styles.form}>
-        {fields.map(({ value: key, label, type, rows, cols }: FormInformation) => {
+        {fields.map(({ value: key, label, type, rows, cols, min, max, step }: FormInformation) => {
           return (
             <FormField
               label={label}
@@ -56,10 +56,17 @@ const RegistrationStep = ({
               cols={cols}
               key={key}
               id={key}
+              min={min}
+              max={max}
+              step={step}
               type={type}
               className={styles.formElement}
               value={key}
-              register={register(key as keyof MetaDataFormDTO)}
+              register={register(key as keyof MetaDataFormDTO, {
+                min,
+                max,
+                valueAsNumber: type === 'number'
+              })}
             />
           );
         })}

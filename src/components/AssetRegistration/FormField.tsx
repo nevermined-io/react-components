@@ -8,7 +8,18 @@ export interface FormFieldProps extends FormInformation {
   className?: string;
 }
 
-const FormField = ({ label, type, rows, cols, className, register, id }: FormFieldProps) => {
+const FormField = ({
+  label,
+  type,
+  rows,
+  cols,
+  className,
+  register,
+  id,
+  min,
+  max,
+  step
+}: FormFieldProps) => {
   if (type === 'textarea')
     return (
       <div className={className}>
@@ -27,6 +38,24 @@ const FormField = ({ label, type, rows, cols, className, register, id }: FormFie
   }
 
   if (type === 'number') {
+    return (
+      <div className={className}>
+        <label htmlFor={id}>{label}</label>
+        <input {...register} type={type} id={id} min={min} max={max} step={step} value={0} />
+      </div>
+    );
+  }
+
+  if (type === 'checkbox') {
+    return (
+      <div className={className}>
+        <label htmlFor={id}>{label}</label>
+        <input {...register} type={type} id={id} />
+      </div>
+    );
+  }
+
+  if (type === 'radio') {
     return (
       <div className={className}>
         <label htmlFor={id}>{label}</label>
