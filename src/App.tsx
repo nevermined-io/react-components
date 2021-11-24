@@ -1,24 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './scss/style.scss';
+import AssetRegistration from './components/AssetRegistration';
+import mapFormDataToMetaData, { MetaDataFormDTO } from './utils/mapFormDataToMetaData';
 
 function App() {
+  const onSubmit = (data: MetaDataFormDTO) => {
+    console.log('onSubmityes', data);
+    const dataToSend = mapFormDataToMetaData('customData', data);
+    console.log('mappedData', dataToSend);
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AssetRegistration onSubmit={onSubmit} />
     </div>
   );
 }

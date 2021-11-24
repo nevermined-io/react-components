@@ -1,0 +1,7 @@
+{
+  "syntax": "scss",
+  "rules": {
+      "no-descending-specificity": null
+  },
+  "ignoreFiles": ["**/*.js", "**/*.ts"]
+}
