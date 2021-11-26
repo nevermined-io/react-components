@@ -3,8 +3,7 @@ import './scss/style.scss';
 import AssetRegistration from './components/AssetRegistration';
 import mapFormDataToMetaData, { MetaDataFormDTO } from './utils/mapFormDataToMetaData';
 import { postMetaData, getMetaData } from './hooks/publishMetaData';
-import { DDO, DID, MetaData } from '@nevermined-io/nevermined-sdk-js';
-import Previews from './components/Utilities/TestDropzone';
+import { DDO } from '@nevermined-io/nevermined-sdk-js';
 
 function App() {
   const onSubmit = async (data: MetaDataFormDTO) => {
@@ -32,8 +31,7 @@ function App() {
         detailFields={[
           { id: 'name', label: 'Asset Name', type: 'text' },
           { id: 'description', label: 'Asset Description:', type: 'textarea' },
-          { id: 'huso', label: 'wers ein huso:', type: 'textarea' }
-          //   { id: 'lifeLost', label: 'so viel geld?', type: 'file', min: 4, max: 20, step: 2 }
+          { id: 'testing', label: 'wers ein test:', type: 'textarea' }
         ]}
       />
     </div>

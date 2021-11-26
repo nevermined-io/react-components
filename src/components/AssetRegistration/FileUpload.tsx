@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useFormContext } from 'react-hook-form';
-import cx from 'classnames';
-import { MetaDataFormDTO } from '../../utils/mapFormDataToMetaData';
+
 import { FormFieldProps } from './FormField';
 
 interface FileUploadProps extends FormFieldProps {
@@ -12,6 +11,7 @@ interface FileUploadProps extends FormFieldProps {
 interface FileWithPreview extends File {
   preview: string;
 }
+
 const FileUpload = (props: FileUploadProps) => {
   const { id, className, type, label, mimeType } = props;
   const { register, setValue, getValues } = useFormContext();

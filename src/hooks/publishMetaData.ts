@@ -55,11 +55,7 @@ const postMetaData = async (data: MetaData): Promise<any> => {
         console.log(account)
         const sdk = await Nevermined.getInstance(config)
         // const metadata = nevermined.metadata // eslint-disable-line prefer-destructuring
-        const did: DID = DID.generate()
-        const ddo: DDO = new DDO({
-            id: did.getId(),
-            // attributes: {}
-        })
+
 
         let erc20TokenAddress = undefined;
 
