@@ -1,32 +1,26 @@
 // TODO: add MUI? https://blog.logrocket.com/using-material-ui-with-react-hook-form/
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormInformation } from '../../types';
-import { UseFormRegisterReturn } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
+
+import FileUpload from './FileUpload';
+import { MetaDataFormDTO } from '../../utils/mapFormDataToMetaData';
 
 export interface FormFieldProps extends FormInformation {
-  id: string;
-  register: UseFormRegisterReturn;
+  id: string | keyof MetaDataFormDTO;
   className?: string;
 }
 
-const FormField = ({
-  label,
-  type,
-  rows,
-  cols,
-  className,
-  register,
-  id,
-  min,
-  max,
-  step
-}: FormFieldProps) => {
+const FormField = ({ label, type, rows, cols, className, id, min, max, step }: FormFieldProps) => {
+  const { register } = useFormContext();
+
+  useEffect(() => {});
   if (type === 'textarea')
     return (
       <div className={className}>
         <label htmlFor={id}>{label}</label>
-        <textarea {...register} id={id} rows={rows || 4} cols={cols || 4} />
+        <textarea {...register(id)} id={id} rows={rows || 4} cols={cols || 4} />
       </div>
     );
 
@@ -34,7 +28,7 @@ const FormField = ({
     return (
       <div className={className}>
         <label htmlFor={id}>{label}</label>
-        <input {...register} type={type} id={id} />
+        <input {...register(id)} type={type} id={id} />
       </div>
     );
   }
@@ -43,7 +37,17 @@ const FormField = ({
     return (
       <div className={className}>
         <label htmlFor={id}>{label}</label>
-        <input {...register} type={type} id={id} min={min} max={max} step={step} />
+        <input
+          {...register(id, {
+            min,
+            max
+          })}
+          type={type}
+          id={id}
+          min={min}
+          max={max}
+          step={step}
+        />
       </div>
     );
   }
@@ -52,7 +56,7 @@ const FormField = ({
     return (
       <div className={className}>
         <label htmlFor={id}>{label}</label>
-        <input {...register} type={type} id={id} />
+        <input {...register(id)} type={type} id={id} />
       </div>
     );
   }
@@ -66,6 +70,9 @@ const FormField = ({
     );
   }
 
+  if (type === 'file') {
+    return <FileUpload className={className} id={id} label={label} type={type} />;
+  }
   return <div />;
 };
 

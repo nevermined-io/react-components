@@ -1,6 +1,7 @@
-import { Config, Nevermined, DID, DDO, Account } from '@nevermined-io/nevermined-sdk-js';
-import MetaMaskProvider from '../providers/MetaMaskProvider';
+import { Config, Nevermined, DID, DDO, Account, MetaData } from '@nevermined-io/nevermined-sdk-js';
+import MetaMaskProvider from '../contexts/MetaMaskProvider';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards'
+import { ERRORS, BadGatewayAddressError } from '../errors/index';
 
 const config = {
     metadataUri: 'http://localhost:5000',
@@ -9,6 +10,7 @@ const config = {
     nodeUri: `http://localhost:${process.env.ETH_PORT || 8545}`,
     parityUri: 'http://localhost:9545',
     secretStoreUri: 'http://localhost:12001',
+    gatewayAddress: '0x068ed00cf0441e4829d9784fcbe7b9e26d4bd8d0',
     verbose: true
 } as Config
 
@@ -36,7 +38,17 @@ const initialize = async (): Promise<Account> => {
     // setMessage('Successfully connected to Autonomies!')
 }
 
-const postMetaData = async (data: any) => {
+export const getMetaData = async (did: string) => {
+    // const id = did.getId();
+    const account = await initialize();
+    console.log(account)
+    const sdk = await Nevermined.getInstance(config)
+    const res = await sdk.metadata.retrieveDDO(did);
+    console.log("getMetaData", res);
+    return res;
+}
+
+const postMetaData = async (data: MetaData): Promise<any> => {
 
     try {
         const account = await initialize();
@@ -53,18 +65,25 @@ const postMetaData = async (data: any) => {
 
         // const result: DDO = await sdk.assets.create(data, acc);
         const assetRewards = new AssetRewards(new Map([[account.getId(), Number(2)]]))
-        const asset = await sdk.nfts.create(
+        const asset = await sdk.assets.create(
             data,
             account,
-            1,
-            0,
-            assetRewards,
-            1,
-            erc20TokenAddress
+            // 1,
+            // 0,
+            // assetRewards,
+            // 1,
+            // erc20TokenAddress
         )
         console.log(asset)
-    } catch (e) {
-        console.error(e);
+        return asset;
+    } catch (e: any) {
+        if (e.code === 4001) {
+            throw new ERRORS[4001](e.message);
+        }
+        if (e.message.startsWith("invalid address")) {
+            throw new BadGatewayAddressError();
+        }
+
     }
 }
 export { postMetaData }
