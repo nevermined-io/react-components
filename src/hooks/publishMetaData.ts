@@ -1,4 +1,4 @@
-import { Config, Nevermined, DID, DDO, Account, MetaData } from '@nevermined-io/nevermined-sdk-js';
+import { Config, Nevermined, Account, MetaData } from '@nevermined-io/nevermined-sdk-js';
 import MetaMaskProvider from '../contexts/MetaMaskProvider';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards'
 import { ERRORS, BadGatewayAddressError } from '../errors/index';
@@ -30,6 +30,20 @@ const loginMetamask = async () => {
     // setWeb3((metamaskProvider as any).web3)
     return new Account(accounts[0]);
 }
+
+// const loginMetaMask = (sdk, state) => {
+//     const res = sdk.logIn();
+//     state.push(res);
+
+// }
+
+// MetaMaskPRovider {
+//     constructor(sdk, state) {
+//         this.sdk = sdk;
+//         this. state = state;
+//         this.login = () => loginMetamask(this.sdk, this.state);
+//     }
+// }
 
 const initialize = async (): Promise<Account> => {
     const acc = await loginMetamask()

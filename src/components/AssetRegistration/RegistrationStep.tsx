@@ -10,6 +10,7 @@ interface RegistrationStepProps {
     root?: any;
     form?: any;
     formElement?: any;
+    registrationStep?: any;
   };
   fields: Array<FormInformation>;
 }
@@ -26,7 +27,7 @@ const RegistrationStep = ({
   ]
 }: RegistrationStepProps) => {
   return (
-    <section className={styles.root}>
+    <section className={styles.registrationStep}>
       {typeof title === 'string' ? <h2>{title}</h2> : title}
       <form className={styles.form}>
         {fields.map(({ id, label, type, rows, cols, min, max, step }: FormInformation) => {

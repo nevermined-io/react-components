@@ -11,6 +11,7 @@ interface AssetRegistrationProps {
   styles?: {
     root?: string;
     navigationButtonContainer?: string;
+    registrationStep?: string;
   };
   debug?: boolean;
   onSubmit?: (data: any) => void;
@@ -29,6 +30,7 @@ export default function AssetRegistration({
   pricingFields = [],
   authorshipFields = []
 }: AssetRegistrationProps) {
+    
   const formContextProps = useForm<MetaDataFormDTO>({
     mode: 'onBlur',
     // TODO: use MetaData type with this approach: https://gist.github.com/pjchender/e021d3b96fda374bace89c5713c0598d
@@ -69,6 +71,7 @@ export default function AssetRegistration({
         )}
         {currentStep === 1 && (
           <RegistrationStep
+            // styles={styles.registrationStep}
             title={<h2>Authorship</h2>}
             fields={uniqBy(
               [{ id: 'author', label: 'Asset Author', type: 'text' }, ...authorshipFields],

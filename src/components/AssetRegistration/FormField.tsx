@@ -2,10 +2,10 @@
 
 import React, { useEffect } from 'react';
 import { FormInformation } from '../../types';
-import { useFormContext } from 'react-hook-form';
 
 import FileUpload from './FileUpload';
 import { MetaDataFormDTO } from '../../utils/mapFormDataToMetaData';
+import { useFormContext } from '../../contexts/form/MetaDataFormProvider';
 
 export interface FormFieldProps extends FormInformation {
   id: string | keyof MetaDataFormDTO;
@@ -15,7 +15,6 @@ export interface FormFieldProps extends FormInformation {
 const FormField = ({ label, type, rows, cols, className, id, min, max, step }: FormFieldProps) => {
   const { register } = useFormContext();
 
-  useEffect(() => {});
   if (type === 'textarea')
     return (
       <div className={className}>

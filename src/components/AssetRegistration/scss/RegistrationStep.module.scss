@@ -1,9 +1,9 @@
 .root {
-  background-color: mediumaquamarine;
+  background-color: aqua;
 }
 
 .form {
-  background: chocolate;
+  background: mediumseagreen;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,9 +15,16 @@
   margin: 0.5em;
   width: 50%;
   justify-content: space-between;
-  border: 2px solid maroon;
+  border: 2px solid mediumseagreen;
   //   flex: 0 0 50%;
   textarea {
     width: 50%;
+  }
+  label {
+    border: 2px dashed aqua;
+  }
+
+  input {
+    border: 2px dashed aqua;
   }
 }

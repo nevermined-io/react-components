@@ -1,21 +1,5 @@
 import { File as AssetFile, MetaData } from "@nevermined-io/nevermined-sdk-js";
 
-// export interface FormData {
-//     name: string;
-//     type: 'dataset' | 'algorithm' | 'compute' | 'workflow' | 'compute';
-//     dateCreated: string;
-//     datePublished?: string;
-//     author: string;
-//     license: string;
-//     price: string;
-//     files?: File[];
-//     encryptedService?: any;
-//     workflow?: any;
-//     algorithm?: any;
-//     service?: any;
-//     description?: string;
-//     copyrightHolder?: string;
-// }
 
 export interface MetaDataFormDTO {
     name?: string;
@@ -44,6 +28,11 @@ const mapFilesToMetaDataFiles = (files: File[] | undefined): AssetFile[] => {
             contentType: "type"
         }));
 }
+
+// TODO: fixed CSS names, Cloud providers: Amazon S3, Google Clould, Azure, IPFS, Filecoin, Arweave, HTTP
+// TODO: quick and dirty version that works for defi-marketplace
+// TODO: integration test to post stuff to MetaData with BurnerWallet (1 time wallet) & cypress
+
 /**
  *
  * @param customDataName
@@ -82,9 +71,10 @@ const mapFormDataToMetaData = (customDataName = "customData", formData: MetaData
             links: [],
             tags: [],
             updateFrequency: undefined,
-            structuredMarkup: []
+            structuredMarkup: [],
+            [customDataName]: rest,
+
         },
-        [customDataName]: rest
     }
 }
 

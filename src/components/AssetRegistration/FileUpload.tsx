@@ -48,7 +48,7 @@ const FileUpload = (props: FileUploadProps) => {
 
           {!!files?.length && (
             <div className=" ">
-              {files.map((file: any) => {
+              {files.map((file: FileWithPreview) => {
                 return (
                   <div key={file.name}>
                     <img
