@@ -1,22 +1,8 @@
 import { File as AssetFile, MetaData } from "@nevermined-io/nevermined-sdk-js";
+import { MetaDataFormDTO } from '../contexts/form/MetaDataFormProvider';
 
 
-export interface MetaDataFormDTO {
-    name?: string;
-    type?: 'dataset' | 'algorithm' | 'compute' | 'workflow' | 'compute';
-    dateCreated?: string;
-    datePublished?: string;
-    author?: string;
-    license?: string;
-    price?: string;
-    files?: File[];
-    encryptedService?: any;
-    workflow?: any;
-    algorithm?: any;
-    service?: any;
-    description?: string;
-    copyrightHolder?: string;
-}
+
 
 const mapFilesToMetaDataFiles = (files: File[] | undefined): AssetFile[] => {
     if (!files) return [];

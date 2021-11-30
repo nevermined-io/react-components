@@ -1,9 +1,25 @@
 import React from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
-import { MetaDataFormDTO } from '../../utils/mapFormDataToMetaData';
 
 interface MetaDataFormProviderProps {
   children?: React.ReactNode;
+}
+
+export interface MetaDataFormDTO {
+  name?: string;
+  type?: 'dataset' | 'algorithm' | 'compute' | 'workflow' | 'compute';
+  dateCreated?: string;
+  datePublished?: string;
+  author?: string;
+  license?: string;
+  price?: string;
+  files?: File[];
+  encryptedService?: any;
+  workflow?: any;
+  algorithm?: any;
+  service?: any;
+  description?: string;
+  copyrightHolder?: string;
 }
 
 const MetaDataFormProvider = ({ children }: MetaDataFormProviderProps) => {
@@ -17,7 +33,6 @@ const MetaDataFormProvider = ({ children }: MetaDataFormProviderProps) => {
       files: []
     }
   });
-  const { watch, handleSubmit } = formContextProps;
 
   return <FormProvider {...formContextProps}>{children}</FormProvider>;
 };

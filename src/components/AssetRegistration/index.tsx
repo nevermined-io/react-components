@@ -4,8 +4,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 import defaultStyles from './scss/index.module.scss';
 import { FormInformation } from '../../types';
 import RegistrationStep from './RegistrationStep';
-import { MetaDataFormDTO } from '../../utils/mapFormDataToMetaData';
+
 import uniqBy from 'lodash.uniqby';
+import MetaDataFormProvider, { MetaDataFormDTO } from '../../contexts/form/MetaDataFormProvider';
 
 interface AssetRegistrationProps {
   styles?: {
@@ -30,7 +31,6 @@ export default function AssetRegistration({
   pricingFields = [],
   authorshipFields = []
 }: AssetRegistrationProps) {
-    
   const formContextProps = useForm<MetaDataFormDTO>({
     mode: 'onBlur',
     // TODO: use MetaData type with this approach: https://gist.github.com/pjchender/e021d3b96fda374bace89c5713c0598d
@@ -51,7 +51,7 @@ export default function AssetRegistration({
   const onPreviousClick = () => setCurrentStep(currentStep - 1);
 
   return (
-    <FormProvider {...formContextProps}>
+    <MetaDataFormProvider>
       <section className={styles.root}>
         <h1>Asset Registration, Current Step: {currentStep}</h1>
 
@@ -116,6 +116,6 @@ export default function AssetRegistration({
           )}
         </section>
       </section>
-    </FormProvider>
+    </MetaDataFormProvider>
   );
 }

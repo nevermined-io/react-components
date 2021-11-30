@@ -33,6 +33,8 @@
   },
   "dependencies": {
     "@nevermined-io/nevermined-sdk-js": "^0.14.3",
+    "@truffle/hdwallet-provider": "^1.7.0",
+    "bip39": "^3.0.4",
     "classnames": "^2.3.1",
     "lodash.uniqby": "^4.7.0",
     "react": "^17.0.2",

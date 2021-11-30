@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './scss/style.scss';
-import mapFormDataToMetaData, { MetaDataFormDTO } from './utils/mapFormDataToMetaData';
+import mapFormDataToMetaData from './utils/mapFormDataToMetaData';
 import { postMetaData, getMetaData } from './hooks/publishMetaData';
 import { DDO } from '@nevermined-io/nevermined-sdk-js';
 import FormField, { FormFieldProps } from './components/AssetRegistration/FormField';
-import { useFormContext } from './contexts/form/MetaDataFormProvider';
+import { useFormContext, MetaDataFormDTO } from './contexts/form/MetaDataFormProvider';
+import { useNevermined } from './contexts/NeverminedProvider';
 
 function Example() {
   const onSubmit = async (data: MetaDataFormDTO) => {
@@ -27,6 +28,15 @@ function Example() {
   const { handleSubmit, watch } = useFormContext();
 
   console.log(watch());
+
+  const result = useNevermined();
+  useEffect(() => {
+    const login = async () => {
+      const res = await result.loginMetamask();
+      console.log('login result ye', res);
+    };
+    login();
+  }, []);
 
   const fields: FormFieldProps[] = [
     { id: 'name', label: 'Asset Name', type: 'text' },

@@ -1,4 +1,5 @@
-import { MetaDataFormDTO } from "../utils/mapFormDataToMetaData";
+import { MetaDataFormDTO } from '../contexts/form/MetaDataFormProvider';
+
 
 type FormInformation = {
     label: string;

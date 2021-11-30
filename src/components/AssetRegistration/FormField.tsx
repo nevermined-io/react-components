@@ -4,8 +4,9 @@ import React, { useEffect } from 'react';
 import { FormInformation } from '../../types';
 
 import FileUpload from './FileUpload';
-import { MetaDataFormDTO } from '../../utils/mapFormDataToMetaData';
+
 import { useFormContext } from '../../contexts/form/MetaDataFormProvider';
+import { MetaDataFormDTO } from '../../contexts/form/MetaDataFormProvider';
 
 export interface FormFieldProps extends FormInformation {
   id: string | keyof MetaDataFormDTO;
