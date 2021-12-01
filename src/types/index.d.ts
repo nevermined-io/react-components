@@ -1,4 +1,4 @@
-import { MetaDataFormDTO } from '../contexts/form/MetaDataFormProvider';
+import { MetaDataFormDTO } from '../contexts/forms/MetaDataFormProvider';
 
 
 type FormInformation = {

@@ -5,7 +5,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage --watchAll=false --silent --env=./test/custom-env.js",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -34,6 +34,8 @@
   "dependencies": {
     "@nevermined-io/nevermined-sdk-js": "^0.14.3",
     "@truffle/hdwallet-provider": "^1.7.0",
+    "axios": "^0.24.0",
+    "bem-helpers": "^1.1.0",
     "bip39": "^3.0.4",
     "classnames": "^2.3.1",
     "lodash.uniqby": "^4.7.0",
@@ -46,14 +48,17 @@
     "web3": "^1.6.1"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
+    "@react-mock/state": "^0.1.8",
+    "@testing-library/jest-dom": "^5.15.1",
+    "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
+    "@types/jest": "^27.0.3",
     "@types/lodash.uniqby": "^4.7.6",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "jest-environment-jsdom": "^27.4.3",
+    "jest-mock-axios": "^4.4.1",
     "prettier": "^2.4.1",
     "prettier-eslint": "^13.0.0",
     "prettier-stylelint": "^0.4.2",
