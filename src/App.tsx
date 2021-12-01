@@ -1,16 +1,19 @@
 import React from 'react';
 import './scss/style.scss';
-import MetaDataFormProvider from './contexts/form/MetaDataFormProvider';
+import MetaDataFormProvider from './contexts/forms/MetaDataFormProvider';
 import Example from './Example';
 import NeverminedProvider from './contexts/NeverminedProvider';
+import AssetRegistrationProvider from './contexts/AssetRegistrationProvider';
 
 function App() {
   return (
     <div className="App">
       <NeverminedProvider>
-        <MetaDataFormProvider>
-          <Example />
-        </MetaDataFormProvider>
+        <AssetRegistrationProvider>
+          <MetaDataFormProvider>
+            <Example />
+          </MetaDataFormProvider>
+        </AssetRegistrationProvider>
       </NeverminedProvider>
     </div>
   );

@@ -4,18 +4,21 @@ import mapFormDataToMetaData from './utils/mapFormDataToMetaData';
 import { postMetaData, getMetaData } from './hooks/publishMetaData';
 import { DDO } from '@nevermined-io/nevermined-sdk-js';
 import FormField, { FormFieldProps } from './components/AssetRegistration/FormField';
-import { useFormContext, MetaDataFormDTO } from './contexts/form/MetaDataFormProvider';
+import { useFormContext, MetaDataFormDTO } from './contexts/forms/MetaDataFormProvider';
 import { useNevermined } from './contexts/NeverminedProvider';
 import AssetRegistration from './components/AssetRegistration';
+import { useAssetRegistration } from './contexts/AssetRegistrationProvider';
 
 function Example() {
+  const { registerAsset } = useAssetRegistration();
+
   const onSubmit = async (data: MetaDataFormDTO) => {
     console.log('onSubmityes', data);
     const dataToSend = mapFormDataToMetaData('jochenname', data);
     console.log('mappedData', dataToSend);
 
     try {
-      const res: DDO = await postMetaData(dataToSend);
+      const res: DDO = await registerAsset(mapFormDataToMetaData('jochenname', data));
       console.log(res);
       const res2 = await getMetaData(res.id);
       console.log('res2', res2);
@@ -26,14 +29,10 @@ function Example() {
 
   const onSubmitError = (data: any) => console.log('onSubmitError', data);
 
-  // const { handleSubmit, watch } = useFormContext();
-  // const { isLoggedIn } = useNevermined();
-  // console.log(watch());
-  const formClassName = 'metadata-form';
   const result = useNevermined();
   useEffect(() => {
     const login = async () => {
-      const res = await result.loginMetamask();
+      await result.loginMetamask();
       console.log('login result ye', result);
     };
     login();

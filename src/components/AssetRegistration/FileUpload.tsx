@@ -6,6 +6,10 @@ import { FormFieldProps } from './FormField';
 
 interface FileUploadProps extends FormFieldProps {
   mimeType?: string;
+  className?: string;
+  labelClassName?: string;
+  elementClassName?: string;
+  previewClassName?: string;
 }
 
 interface FileWithPreview extends File {
@@ -13,7 +17,16 @@ interface FileWithPreview extends File {
 }
 
 const FileUpload = (props: FileUploadProps) => {
-  const { id, className, type, label, mimeType } = props;
+  const {
+    id,
+    className,
+    labelClassName,
+    elementClassName,
+    previewClassName,
+    type,
+    label,
+    mimeType
+  } = props;
   const { register, setValue, getValues } = useFormContext();
   const [files, setFiles] = useState([]);
 
@@ -31,41 +44,40 @@ const FileUpload = (props: FileUploadProps) => {
       setFiles(getValues(id));
     }
   });
+  // const inputClass = cx({ elementClassName, 'drag-active': isDragActive });
 
   return (
-    <>
-      <div className={className} {...getRootProps()} role="button" aria-label="File Upload">
-        <label htmlFor={id}>{label}</label>
-        <input {...register(id)} {...getInputProps()} type={type} id={id} />
-        <div className={' ' + (isDragActive ? ' ' : ' ')}>
-          {isDragActive ? (
-            <p style={{ backgroundColor: 'white' }}>Drop the files here ...</p>
-          ) : (
-            <p style={{ backgroundColor: 'white' }}>
-              Drag 'n' drop some files here, or click to select files
-            </p>
-          )}
+    <li className={className} {...getRootProps()} role="button" aria-label="File Upload">
+      <label className={labelClassName} htmlFor={id}>
+        {label}
+      </label>
+      <div className={elementClassName}>
+        <input
+          {...register(id)}
+          {...getInputProps()}
+          type={type}
+          id={id}
+          className={elementClassName}
+        />
+        {isDragActive ? (
+          <p>Drop the files here ...</p>
+        ) : (
+          <p>Drag 'n' drop some files here, or click to select files</p>
+        )}
 
-          {!!files?.length && (
-            <div className=" ">
-              {files.map((file: FileWithPreview) => {
-                return (
-                  <div key={file.name}>
-                    <img
-                      src={file.preview}
-                      alt={file.name}
-                      style={{
-                        height: '200px'
-                      }}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
+        {!!files?.length && (
+          <div className={previewClassName}>
+            {files.map((file: FileWithPreview) => {
+              return (
+                <div key={file.name}>
+                  <img src={file.preview} alt={file.name} />
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
-    </>
+    </li>
   );
 };
 

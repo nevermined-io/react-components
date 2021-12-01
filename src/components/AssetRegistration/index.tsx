@@ -6,6 +6,7 @@ import { FormInformation } from '../../types';
 import RegistrationStep from './RegistrationStep';
 
 import uniqBy from 'lodash.uniqby';
+import { BEM } from '../../utils/bemHelpers';
 // import MetaDataFormProvider, { MetaDataFormDTO } from '../../contexts/form/MetaDataFormProvider';
 
 interface AssetRegistrationProps {
@@ -14,6 +15,7 @@ interface AssetRegistrationProps {
     navigationButtonContainer?: string;
     registrationStep?: string;
   };
+  className?: string;
   debug?: boolean;
   onSubmit?: (data: any) => void;
   onSubmitError?: (error: any) => void;
@@ -21,12 +23,14 @@ interface AssetRegistrationProps {
   authorshipFields?: Array<FormInformation>;
   pricingFields?: Array<FormInformation>;
 }
+const b = BEM('asset-registration');
 
 export default function AssetRegistration({
-  debug = true,
+  debug = false,
   onSubmit = (data: any) => console.log('Should submit to API', data),
   onSubmitError = (error: any) => console.log('Error', error),
   styles = defaultStyles,
+  className = 'asset-registration',
   detailFields = [],
   pricingFields = [],
   authorshipFields = []
@@ -36,18 +40,22 @@ export default function AssetRegistration({
 
   // if (debug) console.log(watch());
   useEffect(() => {
-    const subscription = watch((value, { name, type }) => console.log(value, name, type));
+    const subscription = watch((value, { name, type }) => {
+      if (debug) console.log(value, name);
+    });
+
     return () => subscription.unsubscribe();
   }, [watch]);
   const onNextClick = () => setCurrentStep(currentStep + 1);
   const onPreviousClick = () => setCurrentStep(currentStep - 1);
 
   return (
-    <section className={styles.root}>
+    <section className={className}>
       <h1>Asset Registration, Current Step: {currentStep}</h1>
 
       {currentStep === 0 && (
         <RegistrationStep
+          className={'registration-step'}
           title={<h2>Details</h2>}
           fields={uniqBy(
             [
@@ -62,6 +70,7 @@ export default function AssetRegistration({
       )}
       {currentStep === 1 && (
         <RegistrationStep
+          className={'registration-step'}
           // styles={styles.registrationStep}
           title={<h2>Authorship</h2>}
           fields={uniqBy(
@@ -72,6 +81,7 @@ export default function AssetRegistration({
       )}
       {currentStep === 2 && (
         <RegistrationStep
+          className={'registration-step'}
           title={<h2>Pricing</h2>}
           fields={uniqBy(
             [

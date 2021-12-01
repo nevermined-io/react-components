@@ -5,39 +5,66 @@ import { FormInformation } from '../../types';
 
 import FileUpload from './FileUpload';
 
-import { useFormContext } from '../../contexts/form/MetaDataFormProvider';
-import { MetaDataFormDTO } from '../../contexts/form/MetaDataFormProvider';
+import { useFormContext } from '../../contexts/forms/MetaDataFormProvider';
+import { MetaDataFormDTO } from '../../contexts/forms/MetaDataFormProvider';
+import cx from 'classnames';
+import { BEM } from '../../utils/bemHelpers';
 
 export interface FormFieldProps extends FormInformation {
   id: string | keyof MetaDataFormDTO;
   className?: string;
 }
 
-const FormField = ({ label, type, rows, cols, className, id, min, max, step }: FormFieldProps) => {
+const FormField = ({
+  label,
+  type,
+  rows,
+  cols,
+  className = type,
+  id,
+  min,
+  max,
+  step
+}: FormFieldProps) => {
   const { register } = useFormContext();
 
+  const labelClassName = `${className}-label`; // b('label');
+  const elementClassName = `${className}-${type}`;
   if (type === 'textarea')
     return (
-      <div className={className}>
-        <label htmlFor={id}>{label}</label>
-        <textarea {...register(id)} id={id} rows={rows || 4} cols={cols || 4} />
-      </div>
+      <li className={className}>
+        <label className={labelClassName} htmlFor={id}>
+          {label}
+        </label>
+        <textarea
+          className={elementClassName}
+          {...register(id)}
+          id={id}
+          rows={rows || 4}
+          cols={cols || 4}
+        />
+      </li>
     );
 
   if (type === 'text') {
     return (
-      <div className={className}>
-        <label htmlFor={id}>{label}</label>
-        <input {...register(id)} type={type} id={id} />
-      </div>
+      <li className={className}>
+        <label className={labelClassName} htmlFor={id}>
+          {label}
+        </label>
+        <input className={elementClassName} {...register(id)} type={type} id={id} />
+      </li>
     );
   }
 
   if (type === 'number') {
     return (
-      <div className={className}>
-        <label htmlFor={id}>{label}</label>
+      <li className={className}>
+        <label className={labelClassName} htmlFor={id}>
+          {label}
+        </label>
         <input
+          className={elementClassName}
           {...register(id, {
             min,
             max
@@ -48,30 +75,44 @@ const FormField = ({ label, type, rows, cols, className, id, min, max, step }: F
           max={max}
           step={step}
         />
-      </div>
+      </li>
     );
   }
 
   if (type === 'checkbox') {
     return (
-      <div className={className}>
-        <label htmlFor={id}>{label}</label>
-        <input {...register(id)} type={type} id={id} />
-      </div>
+      <li className={className}>
+        <label className={labelClassName} htmlFor={id}>
+          {label}
+        </label>
+        <input className={elementClassName} {...register(id)} type={type} id={id} />
+      </li>
     );
   }
 
   if (type === 'radio') {
     return (
-      <div className={className}>
-        <label htmlFor={id}>{label}</label>
-        <input {...register} type={type} id={id} />
-      </div>
+      <li className={className}>
+        <label className={labelClassName} htmlFor={id}>
+          {label}
+        </label>
+        <input className={elementClassName} {...register} type={type} id={id} />
+      </li>
     );
   }
 
   if (type === 'file') {
-    return <FileUpload className={className} id={id} label={label} type={type} />;
+    return (
+      <FileUpload
+        className={className}
+        labelClassName={labelClassName}
+        elementClassName={elementClassName}
+        previewClassName={`${elementClassName}preview`}
+        id={id}
+        label={label}
+        type={type}
+      />
+    );
   }
   return <div />;
 };
