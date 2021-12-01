@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, createContext, useContext } from 'react';
 
 import Web3 from 'web3';
-import { Config, Nevermined, Account, MetaData } from '@nevermined-io/nevermined-sdk-js';
+import { Nevermined, Account } from '@nevermined-io/nevermined-sdk-js';
 import MetaMaskProvider from './wallets/MetaMaskProvider';
 
 import generalConfig from '../config';
@@ -23,6 +23,7 @@ interface NeverminedProviderValue {
   // requestFromFaucet?(account: string): Promise<FaucetResponse>
   loginMetamask(): Promise<any>;
   logoutMetamask(): void;
+
   // message: string;
   // tokenSymbol: string;
 }
@@ -105,7 +106,6 @@ const NeverminedProvider = ({ children }: { children: React.ReactNode }): React.
   }, [fetchAccounts]);
 
   useEffect(() => {
-    console.log('should load nevermined');
     loadNevermined();
   }, [web3, loadNevermined]);
 
@@ -137,8 +137,8 @@ const NeverminedProvider = ({ children }: { children: React.ReactNode }): React.
 
   useEffect(() => {
     initialize();
-    /* eslint-disable-next-line */
-  }, []);
+  });
+
   return (
     <NeverminedContext.Provider
       value={

@@ -6,6 +6,7 @@ import { DDO } from '@nevermined-io/nevermined-sdk-js';
 import FormField, { FormFieldProps } from './components/AssetRegistration/FormField';
 import { useFormContext, MetaDataFormDTO } from './contexts/form/MetaDataFormProvider';
 import { useNevermined } from './contexts/NeverminedProvider';
+import AssetRegistration from './components/AssetRegistration';
 
 function Example() {
   const onSubmit = async (data: MetaDataFormDTO) => {
@@ -25,15 +26,15 @@ function Example() {
 
   const onSubmitError = (data: any) => console.log('onSubmitError', data);
 
-  const { handleSubmit, watch } = useFormContext();
-
-  console.log(watch());
-
+  // const { handleSubmit, watch } = useFormContext();
+  // const { isLoggedIn } = useNevermined();
+  // console.log(watch());
+  const formClassName = 'metadata-form';
   const result = useNevermined();
   useEffect(() => {
     const login = async () => {
       const res = await result.loginMetamask();
-      console.log('login result ye', res);
+      console.log('login result ye', result);
     };
     login();
   }, []);
@@ -47,15 +48,34 @@ function Example() {
 
   return (
     <>
-      <div>
-        {fields.map((field: FormFieldProps) => (
-          <FormField key={field.id} {...field} />
-        ))}
-      </div>
+      {/* {isLoggedIn && (
+        <form className={formClassName}>
+          {fields.map((field: FormFieldProps) => (
+            <FormField className={formClassName + ' ' + field.type} key={field.id} {...field} />
+          ))}
+        </form>
+      )}
+      */}
 
-      <button onClick={handleSubmit(onSubmit, onSubmitError)} type="button">
+      <AssetRegistration
+        onSubmit={onSubmit}
+        onSubmitError={onSubmitError}
+        detailFields={[
+          { id: 'name', label: 'Asset Name', type: 'text' },
+          { id: 'description', label: 'Asset Description:', type: 'textarea' },
+          { id: 'testing', label: 'One thing:', type: 'textarea' },
+          { id: 'something', label: 'Something:', type: 'textarea' }
+        ]}
+        authorshipFields={[
+          { id: 'onething', label: 'One thing:', type: 'textarea' },
+          { id: 'someimage', label: 'Some image:', type: 'file', mimeType: 'image/*' }
+        ]}
+        pricingFields={[{ id: 'anotherthing', label: 'Another thing:', type: 'textarea' }]}
+      />
+      {/* {!isLoggedIn && <div>not logged in</div>} */}
+      {/* <button onClick={handleSubmit(onSubmit, onSubmitError)} type="button">
         Submit
-      </button>
+      </button> */}
     </>
   );
 }

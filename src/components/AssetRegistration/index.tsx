@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import defaultStyles from './scss/index.module.scss';
 import { FormInformation } from '../../types';
 import RegistrationStep from './RegistrationStep';
 
 import uniqBy from 'lodash.uniqby';
-import MetaDataFormProvider, { MetaDataFormDTO } from '../../contexts/form/MetaDataFormProvider';
+// import MetaDataFormProvider, { MetaDataFormDTO } from '../../contexts/form/MetaDataFormProvider';
 
 interface AssetRegistrationProps {
   styles?: {
@@ -31,91 +31,81 @@ export default function AssetRegistration({
   pricingFields = [],
   authorshipFields = []
 }: AssetRegistrationProps) {
-  const formContextProps = useForm<MetaDataFormDTO>({
-    mode: 'onBlur',
-    // TODO: use MetaData type with this approach: https://gist.github.com/pjchender/e021d3b96fda374bace89c5713c0598d
-    defaultValues: {
-      author: '',
-      name: '',
-      price: '0',
-      description: '',
-      files: []
-    }
-  });
-  const { watch, handleSubmit } = formContextProps;
+  const { watch, handleSubmit } = useFormContext();
   const [currentStep, setCurrentStep] = useState(0);
 
-  if (debug) console.log(watch());
-
+  // if (debug) console.log(watch());
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => console.log(value, name, type));
+    return () => subscription.unsubscribe();
+  }, [watch]);
   const onNextClick = () => setCurrentStep(currentStep + 1);
   const onPreviousClick = () => setCurrentStep(currentStep - 1);
 
   return (
-    <MetaDataFormProvider>
-      <section className={styles.root}>
-        <h1>Asset Registration, Current Step: {currentStep}</h1>
+    <section className={styles.root}>
+      <h1>Asset Registration, Current Step: {currentStep}</h1>
 
-        {currentStep === 0 && (
-          <RegistrationStep
-            title={<h2>Details</h2>}
-            fields={uniqBy(
-              [
-                { id: 'name', label: 'Asset Name', type: 'text' },
-                { id: 'description', label: 'Asset Description:', type: 'textarea' },
-                { id: 'files', label: 'Asset Files:', type: 'file' },
-                ...detailFields
-              ],
-              'id'
-            )}
-          />
+      {currentStep === 0 && (
+        <RegistrationStep
+          title={<h2>Details</h2>}
+          fields={uniqBy(
+            [
+              { id: 'name', label: 'Asset Name', type: 'text' },
+              { id: 'description', label: 'Asset Description:', type: 'textarea' },
+              { id: 'files', label: 'Asset Files:', type: 'file' },
+              ...detailFields
+            ],
+            'id'
+          )}
+        />
+      )}
+      {currentStep === 1 && (
+        <RegistrationStep
+          // styles={styles.registrationStep}
+          title={<h2>Authorship</h2>}
+          fields={uniqBy(
+            [{ id: 'author', label: 'Asset Author', type: 'text' }, ...authorshipFields],
+            'id'
+          )}
+        />
+      )}
+      {currentStep === 2 && (
+        <RegistrationStep
+          title={<h2>Pricing</h2>}
+          fields={uniqBy(
+            [
+              {
+                id: 'price',
+                label: 'Asset Price',
+                type: 'number',
+                min: 0,
+                step: 1
+              },
+              ...pricingFields
+            ],
+            'id'
+          )}
+        />
+      )}
+
+      <section className={styles.navigationButtonContainer}>
+        {currentStep !== 0 && (
+          <button disabled={currentStep === 0} onClick={onPreviousClick} type="button">
+            Previous
+          </button>
         )}
-        {currentStep === 1 && (
-          <RegistrationStep
-            // styles={styles.registrationStep}
-            title={<h2>Authorship</h2>}
-            fields={uniqBy(
-              [{ id: 'author', label: 'Asset Author', type: 'text' }, ...authorshipFields],
-              'id'
-            )}
-          />
+        {currentStep < 2 && (
+          <button disabled={currentStep === 2} onClick={onNextClick} type="button">
+            Next
+          </button>
         )}
         {currentStep === 2 && (
-          <RegistrationStep
-            title={<h2>Pricing</h2>}
-            fields={uniqBy(
-              [
-                {
-                  id: 'price',
-                  label: 'Asset Price',
-                  type: 'number',
-                  min: 0,
-                  step: 1
-                },
-                ...pricingFields
-              ],
-              'id'
-            )}
-          />
+          <button onClick={handleSubmit(onSubmit, onSubmitError)} type="button">
+            Submit
+          </button>
         )}
-
-        <section className={styles.navigationButtonContainer}>
-          {currentStep !== 0 && (
-            <button disabled={currentStep === 0} onClick={onPreviousClick} type="button">
-              Previous
-            </button>
-          )}
-          {currentStep < 2 && (
-            <button disabled={currentStep === 2} onClick={onNextClick} type="button">
-              Next
-            </button>
-          )}
-          {currentStep === 2 && (
-            <button onClick={handleSubmit(onSubmit, onSubmitError)} type="button">
-              Submit
-            </button>
-          )}
-        </section>
       </section>
-    </MetaDataFormProvider>
+    </section>
   );
 }
