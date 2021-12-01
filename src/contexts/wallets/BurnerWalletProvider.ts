@@ -1,7 +1,7 @@
 import Web3 from 'web3'
 import HDWalletProvider from '@truffle/hdwallet-provider'
 import config from '../../config';
-import { requestFromFaucet } from '../../utils/faucet';
+import { requestFromFaucet } from '../../utils/requestFromFaucet';
 const { nodeUri } = config.neverminedConfig;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

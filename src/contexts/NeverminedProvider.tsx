@@ -6,6 +6,8 @@ import MetaMaskProvider from './wallets/MetaMaskProvider';
 
 import generalConfig from '../config';
 import BurnerWalletProvider from './wallets/BurnerWalletProvider';
+import { FaucetResponse, requestFromFaucet } from '../utils/requestFromFaucet';
+
 const config = generalConfig.neverminedConfig;
 const isBurnerWalletEnabled = generalConfig.isBurnerWalletEnabled;
 
@@ -20,23 +22,13 @@ interface NeverminedProviderValue {
   // network: string
   web3: Web3;
   sdk: Nevermined;
-  // requestFromFaucet?(account: string): Promise<FaucetResponse>
+  requestFromFaucet?(account: string): Promise<FaucetResponse>;
   loginMetamask(): Promise<any>;
   logoutMetamask(): void;
 
   // message: string;
   // tokenSymbol: string;
 }
-
-const createWeb3Instance = () => {
-  if (window.ethereum) {
-    return new Web3(window.ethereum);
-  } else if (window.web3) {
-    return new Web3(window.web3.currentProvider);
-  } else {
-    return null;
-  }
-};
 
 const NeverminedProvider = ({ children }: { children: React.ReactNode }): React.ReactElement => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -150,9 +142,9 @@ const NeverminedProvider = ({ children }: { children: React.ReactNode }): React.
           web3,
           sdk,
           loginMetamask,
-          logoutMetamask
+          logoutMetamask,
           // network,
-          // requestFromFaucet,
+          requestFromFaucet
           // message,
           // tokenSymbol
         } as NeverminedProviderValue
