@@ -50,4 +50,5 @@ export default class BurnerWalletProvider {
   }
 
   onAccountChange(cb: any) {}
+  onNetworkChange(cb: any) {}
 }

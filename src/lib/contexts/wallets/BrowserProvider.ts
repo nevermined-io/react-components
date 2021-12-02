@@ -47,6 +47,10 @@ class BrowserProvider {
   onAccountChange(cb: (account: string) => void) {
     window.ethereum?.on('accountsChanged', (([account]: string[]) => cb(account)) as any);
   }
+
+  onNetworkChange(cb: (chainId: string) => void) {
+    window.ethereum?.on('chainChanged', ((chainId: string) => cb(chainId)) as any);
+  }
 }
 
 export default new BrowserProvider();

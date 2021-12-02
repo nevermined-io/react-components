@@ -16,10 +16,11 @@ export type NeverminedProviderContext = Web3ServiceContext & NeverminedServiceCo
 interface NeverminedProviderProps {
   children: React.ReactNode
   config: Config
+  reloadOnNetworkChange?: boolean
 }
 
-const NeverminedProvider = ({ children, config }: NeverminedProviderProps): React.ReactElement => {
-  const web3Context = useWeb3Service(config)
+const NeverminedProvider = ({ children, config, reloadOnNetworkChange }: NeverminedProviderProps): React.ReactElement => {
+  const web3Context = useWeb3Service(config, reloadOnNetworkChange)
   const neverminedContext = useNeverminedService(config, web3Context)
 
   return (
