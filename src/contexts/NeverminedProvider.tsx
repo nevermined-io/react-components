@@ -157,6 +157,7 @@ const NeverminedProvider = ({ children }: { children: React.ReactNode }): React.
 
 const NeverminedContext = createContext({} as NeverminedProviderValue);
 // Helper hook to access the provider values
+
 const useNevermined = (): NeverminedProviderValue => useContext(NeverminedContext);
 
 export { useNevermined, NeverminedContext };
