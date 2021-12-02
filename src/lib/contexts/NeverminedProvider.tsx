@@ -97,7 +97,7 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps): Reac
     let metamaskProvider;
     if (false) {
       console.warn('Using Burner Wallet. Only for testing purposes.');
-      metamaskProvider = new BurnerWalletProvider();
+      metamaskProvider = new BurnerWalletProvider(config.nodeUri!);
     } else {
       metamaskProvider = MetaMaskProvider;
     }

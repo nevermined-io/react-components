@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useFormContext } from 'react-hook-form';
 
-import { FormFieldProps } from './FormField';
+import { FormFieldData } from './types';
 
-interface FileUploadProps extends FormFieldProps {
+interface FileUploadProps extends FormFieldData {
   mimeType?: string;
   className?: string;
   labelClassName?: string;

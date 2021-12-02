@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import defaultStyles from './scss/index.module.scss';
-import { FormInformation } from '../../types';
 import RegistrationStep from './RegistrationStep';
+import { FormFieldData } from './types';
 
 import uniqBy from 'lodash.uniqby';
 import { BEM } from '../../utils/bemHelpers';
@@ -19,12 +19,12 @@ interface AssetRegistrationProps {
   debug?: boolean;
   onSubmit?: (data: any) => void;
   onSubmitError?: (error: any) => void;
-  detailFields?: Array<FormInformation>;
-  authorshipFields?: Array<FormInformation>;
-  pricingFields?: Array<FormInformation>;
+  detailFields?: Array<FormFieldData>;
+  authorshipFields?: Array<FormFieldData>;
+  pricingFields?: Array<FormFieldData>;
 }
-const b = BEM('asset-registration');
 
+const b = BEM('asset-registration');
 export default function AssetRegistration({
   debug = false,
   onSubmit = (data: any) => console.log('Should submit to API', data),

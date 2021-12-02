@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import './scss/style.scss';
-import mapFormDataToMetaData from './utils/mapFormDataToMetaData';
-import { postMetaData, getMetaData } from './hooks/publishMetaData';
+import mapFormDataToMetaData from 'lib/utils/mapFormDataToMetaData';
+import { postMetaData, getMetaData } from 'lib/hooks/publishMetaData';
 import { DDO } from '@nevermined-io/nevermined-sdk-js';
-import FormField, { FormFieldProps } from './components/AssetRegistration/FormField';
-import { useFormContext, MetaDataFormDTO } from './contexts/forms/MetaDataFormProvider';
-import { useNevermined } from './contexts/NeverminedProvider';
-import AssetRegistration from './components/AssetRegistration';
-import { useAssetRegistration } from './contexts/AssetRegistrationProvider';
+import { useFormContext, MetaDataFormDTO } from 'lib/contexts/forms/MetaDataFormProvider';
+import { useNevermined } from 'lib/contexts/NeverminedProvider';
+import { AssetRegistration, FormField, FormFieldData} from 'lib/components/AssetRegistration';
+import { useAssetRegistration } from 'lib/contexts/AssetRegistrationProvider';
 
 function Example() {
   const { registerAsset } = useAssetRegistration();
@@ -38,7 +37,7 @@ function Example() {
     login();
   }, []);
 
-  const fields: FormFieldProps[] = [
+  const fields: FormFieldData[] = [
     { id: 'name', label: 'Asset Name', type: 'text' },
     { id: 'description', label: 'Asset Description:', type: 'textarea' },
     { id: 'testing', label: 'One thing:', type: 'textarea' },
@@ -49,7 +48,7 @@ function Example() {
     <>
       {/* {isLoggedIn && (
         <form className={formClassName}>
-          {fields.map((field: FormFieldProps) => (
+          {fields.map((field: FormFieldData) => (
             <FormField className={formClassName + ' ' + field.type} key={field.id} {...field} />
           ))}
         </form>

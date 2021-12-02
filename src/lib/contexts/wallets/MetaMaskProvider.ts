@@ -1,4 +1,5 @@
 import Web3 from 'web3'
+import { provider } from 'web3-core'
 
 // eslint-disable-next-line import/prefer-default-export
 class MetamaskProvider {
@@ -9,12 +10,8 @@ class MetamaskProvider {
     this.web3 = null as any
     // Modern dapp browsers
     if (window.ethereum) {
-      this.web3 = new Web3(window.ethereum)
+      this.web3 = new Web3(window.ethereum as provider)
       console.log(this.web3)
-    }
-    // Legacy dapp browsers
-    else if (window.web3) {
-      this.web3 = new Web3(window.web3.currentProvider)
     }
   }
 
@@ -30,21 +27,18 @@ class MetamaskProvider {
     return false
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  public async startLogin(): Promise<string[]> {
+  public async startLogin() {
     try {
-      const response = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      const response = await window.ethereum?.request({ method: 'eth_requestAccounts' })
       if (response) {
         localStorage.setItem('logType', 'Metamask')
       }
-      return response
     } catch (error) {
       return await Promise.reject(error)
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  public async logout(): Promise<void> {
+  public async logout() {
     localStorage.removeItem('logType')
   }
 
