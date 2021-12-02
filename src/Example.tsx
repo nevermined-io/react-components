@@ -32,8 +32,8 @@ function Example() {
   const result = useNevermined();
   useEffect(() => {
     const login = async () => {
-      await result.loginMetamask();
-      console.log('login result ye', result);
+      await result.connect();
+      console.log('login result ye', result, result.balance);
     };
     login();
   }, []);

@@ -23,8 +23,8 @@ interface NeverminedProviderValue {
   web3: Web3;
   sdk: Nevermined;
   requestFromFaucet?(account: string): Promise<FaucetResponse>;
-  loginMetamask(): Promise<any>;
-  logoutMetamask(): void;
+  connect(): Promise<any>;
+  disconnect(): void;
 
   // message: string;
   // tokenSymbol: string;
@@ -101,7 +101,7 @@ const NeverminedProvider = ({ children }: { children: React.ReactNode }): React.
     loadNevermined();
   }, [web3, loadNevermined]);
 
-  const loginMetamask = async () => {
+  const connect = async () => {
     let metamaskProvider;
     if (isBurnerWalletEnabled === 'true') {
       // changed to false from true
@@ -117,14 +117,14 @@ const NeverminedProvider = ({ children }: { children: React.ReactNode }): React.
     setAccount(new Account(accounts[0]));
   };
 
-  const logoutMetamask = () => {
+  const disconnect = () => {
     const metamaskProvider = MetaMaskProvider;
     setIsLoggedIn(false);
     metamaskProvider.logout();
   };
 
   const initialize = async (): Promise<void> => {
-    await loginMetamask();
+    await connect();
   };
 
   useEffect(() => {
@@ -141,8 +141,8 @@ const NeverminedProvider = ({ children }: { children: React.ReactNode }): React.
           balance,
           web3,
           sdk,
-          loginMetamask,
-          logoutMetamask,
+          connect,
+          disconnect,
           // network,
           requestFromFaucet
           // message,

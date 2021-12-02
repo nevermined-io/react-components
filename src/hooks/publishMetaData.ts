@@ -15,7 +15,7 @@ const config = {
 } as Config
 
 
-const loginMetamask = async () => {
+const connect = async () => {
     let metamaskProvider
     // if (isBurnerEnabled === 'true') {
     //     console.log(isBurnerEnabled)
@@ -31,7 +31,7 @@ const loginMetamask = async () => {
     return new Account(accounts[0]);
 }
 
-// const loginMetaMask = (sdk, state) => {
+// const connect = (sdk, state) => {
 //     const res = sdk.logIn();
 //     state.push(res);
 
@@ -41,12 +41,12 @@ const loginMetamask = async () => {
 //     constructor(sdk, state) {
 //         this.sdk = sdk;
 //         this. state = state;
-//         this.login = () => loginMetamask(this.sdk, this.state);
+//         this.login = () => connect(this.sdk, this.state);
 //     }
 // }
 
 const initialize = async (): Promise<Account> => {
-    const acc = await loginMetamask()
+    const acc = await connect()
     console.log("Connected!")
     return acc;
     // setMessage('Successfully connected to Autonomies!')
