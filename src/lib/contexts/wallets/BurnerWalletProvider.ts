@@ -8,20 +8,20 @@ const bip39 = require('bip39')
 export default class BurnerWalletProvider {
   private web3: Web3
 
-  public constructor(private nodeUri: string) {
+  constructor(private nodeUri: string) {
     // Default
     this.web3 = null as any
   }
 
   // eslint-disable-next-line class-methods-use-this
-  public async isLoggedIn(): Promise<boolean> {
+  async isLoggedIn(): Promise<boolean> {
     if (localStorage.getItem('seedphrase') !== null) {
       return true
     }
     return false
   }
 
-  public async startLogin(): Promise<void> {
+  async startLogin(): Promise<void> {
     if (!await this.isLoggedIn()) {
       console.error('BurnerWallet needs "seedphrase" on localStorage. Use this only for testing purposes.')
       return
@@ -40,12 +40,14 @@ export default class BurnerWalletProvider {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  public async logout(): Promise<void> {
+  async logout(): Promise<void> {
     // localStorage.removeItem('seedphrase')
     localStorage.removeItem('logType')
   }
 
-  public getProvider(): any {
+  getProvider(): any {
     return this.web3
   }
+
+  onAccountChange(cb: any) {}
 }

@@ -14,8 +14,8 @@ export function useWeb3Service(config: Config) {
   // TODO: It's necessary to watch the account change
   // TODO: It's necessary to watch the network change
 
-  const connect = async () => {
-    let browserProvider;
+  const connect = useCallback(async () => {
+    let browserProvider: typeof BrowserProvider | BurnerWalletProvider;
     if (false) {
       console.warn('Using Burner Wallet. Only for testing purposes.');
       browserProvider = new BurnerWalletProvider(config.nodeUri!);
@@ -27,7 +27,8 @@ export function useWeb3Service(config: Config) {
     setIsConnected(true);
     setWeb3((browserProvider as any).web3);
     setAddress(accounts[0]);
-  };
+    return browserProvider
+  }, []);
 
   const disconnect = () => {
     setIsConnected(false);
@@ -36,7 +37,8 @@ export function useWeb3Service(config: Config) {
   };
 
   const initialize = async () => {
-    await connect();
+    const provider = await connect();
+    provider.onAccountChange(address => setAddress(address))
   };
 
   useEffect(() => {

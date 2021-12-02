@@ -32,7 +32,7 @@ export function useNeverminedService(config: Config, {web3, address}: Web3Servic
         if (account) {
           const accountFetched = sdkAccount.getId();
 
-          if (account && accountFetched === account.getId()) {
+          if (account && accountFetched.toLowerCase() !== account.getId().toLowerCase()) {
             setAccount(sdkAccount);
           }
           return updateBalance(sdkAccount);

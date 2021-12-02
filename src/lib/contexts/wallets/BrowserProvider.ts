@@ -5,7 +5,7 @@ import { provider } from 'web3-core'
 class BrowserProvider {
   private web3: Web3
 
-  public constructor() {
+  constructor() {
     // Default
     this.web3 = null as any
     // Modern dapp browsers
@@ -15,11 +15,11 @@ class BrowserProvider {
     }
   }
 
-  public async isAvailable(): Promise<boolean> {
+  async isAvailable(): Promise<boolean> {
     return this.web3 !== null
   }
 
-  public async isLogged(): Promise<boolean> {
+  async isLogged(): Promise<boolean> {
     if (this.web3 === null) {
       return false
     }
@@ -29,7 +29,7 @@ class BrowserProvider {
     return false
   }
 
-  public async startLogin() {
+  async startLogin() {
     try {
       await window.ethereum?.request({ method: 'eth_requestAccounts' })
     } catch (error) {
@@ -37,11 +37,15 @@ class BrowserProvider {
     }
   }
 
-  public async logout() {
+  async logout() {
   }
 
-  public getProvider(): any {
+  getProvider(): any {
     return this.web3
+  }
+
+  onAccountChange(cb: (account: string) => void) {
+    window.ethereum?.on('accountsChanged', (([account]: string[]) => cb(account)) as any);
   }
 }
 
