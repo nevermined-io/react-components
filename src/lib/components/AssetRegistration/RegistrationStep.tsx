@@ -1,9 +1,8 @@
 import React from 'react';
 import { FormFieldData } from './types';
-import cx from 'classnames';
 import defaultStyles from './scss/RegistrationStep.module.scss';
 import FormField from './FormField';
-import { BEM, extendClassName } from '../../utils/bemHelpers';
+import { BEM } from '../../utils/bemHelpers';
 
 interface RegistrationStepProps {
   title: string | React.ReactNode;

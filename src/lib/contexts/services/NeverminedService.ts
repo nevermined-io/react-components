@@ -1,14 +1,13 @@
-import React, { useState, useCallback, useEffect, createContext, useContext } from 'react';
-import Web3 from 'web3';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Nevermined, Config, Account } from '@nevermined-io/nevermined-sdk-js';
 
 import { Web3ServiceContext } from './Web3Service'
 
-export function useNeverminedService(config: Config, {web3, address, network: {chainId}}: Web3ServiceContext) {
+export function useNeverminedService(config: Config, { web3, address, network: { chainId } }: Web3ServiceContext) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [sdk, setSdk] = useState({} as Nevermined);
   const [account, setAccount] = useState<Account>(new Account(''));
-  const [balance, setBalance] = useState<{eth?: number, nevermined?: number}>({});
+  const [balance, setBalance] = useState<{ eth?: number, nevermined?: number }>({});
   const [networkName, setNetworkName] = useState('');
 
   // Update balance function
