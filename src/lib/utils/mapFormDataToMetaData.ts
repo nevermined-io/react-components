@@ -4,15 +4,14 @@ import { MetaDataFormDTO } from '../contexts/forms/MetaDataFormProvider';
 
 
 
-const mapFilesToMetaDataFiles = (files: File[] | undefined): AssetFile[] => {
-  if (!files) return [];
-
-  return files.map((file) => (
+export const mapFileToMetaDataFile = (file: File, index: number): AssetFile => {
+  return (
     {
       name: file.name,
-      url: "url",
-      contentType: "type"
-    }));
+      index,
+      url: "www.disney.com/file.jpg",
+      contentType: file.type
+    });
 }
 
 // TODO: fixed CSS names, Cloud providers: Amazon S3, Google Clould, Azure, IPFS, Filecoin, Arweave, HTTP
@@ -27,17 +26,6 @@ const mapFilesToMetaDataFiles = (files: File[] | undefined): AssetFile[] => {
  */
 const mapFormDataToMetaData = (customDataName = "customData", formData: MetaDataFormDTO): MetaData => {
   const { type, name, author, license, price, files, description, copyrightHolder, ...rest } = formData;
-  let mappedFiles;
-
-  if (files) {
-    mappedFiles = files.map((file) => (
-      {
-        name: file.name,
-        url: "url",
-        contentType: "type"
-      }));
-    // mapFilesToMetaDataFiles(files);
-  }
 
   return {
     main: {
@@ -48,7 +36,7 @@ const mapFormDataToMetaData = (customDataName = "customData", formData: MetaData
       author: author || "",
       license: license || "",
       price: price || "0",
-      files: mappedFiles || [],
+      files: files?.map(mapFileToMetaDataFile) || [],
     },
     additionalInformation: {
       description: description || "",

@@ -1,7 +1,6 @@
 import Web3 from 'web3'
 import { provider } from 'web3-core'
 
-// eslint-disable-next-line import/prefer-default-export
 class BrowserProvider {
   private web3: Web3
 

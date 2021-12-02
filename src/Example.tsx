@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import './scss/style.scss';
 import mapFormDataToMetaData from 'lib/utils/mapFormDataToMetaData';
-import { postMetaData, getMetaData } from 'lib/hooks/publishMetaData';
+
 import { DDO } from '@nevermined-io/nevermined-sdk-js';
-import { useFormContext, MetaDataFormDTO } from 'lib/contexts/forms/MetaDataFormProvider';
+import { MetaDataFormDTO } from 'lib/contexts/forms/MetaDataFormProvider';
 import { useNevermined } from 'lib/contexts/NeverminedProvider';
-import { AssetRegistration, FormField, FormFieldData} from 'lib/components/AssetRegistration';
+import { AssetRegistration, FormFieldData } from 'lib/components/AssetRegistration';
 import { useAssetRegistration } from 'lib/contexts/AssetRegistrationProvider';
 
 function Example() {
-  const { registerAsset } = useAssetRegistration();
+  const { registerAsset, retrieveAssetDDO } = useAssetRegistration();
 
   const onSubmit = async (data: MetaDataFormDTO) => {
     console.log('onSubmityes', data);
@@ -19,7 +19,7 @@ function Example() {
     try {
       const res: DDO = await registerAsset(mapFormDataToMetaData('jochenname', data));
       console.log(res);
-      const res2 = await getMetaData(res.id);
+      const res2: DDO = await retrieveAssetDDO(res.id);
       console.log('res2', res2);
     } catch (e) {
       console.error('appsubmiterr', e);
@@ -35,7 +35,7 @@ function Example() {
       console.log('login nvmContext ye', nvmContext, nvmContext.user.balance);
     };
     login();
-  }, []);
+  }, [nvmContext]);
 
   const fields: FormFieldData[] = [
     { id: 'name', label: 'Asset Name', type: 'text' },
@@ -54,7 +54,7 @@ function Example() {
         </form>
       )}
       */}
-
+      {/* <div className="loader" /> */}
       <AssetRegistration
         onSubmit={onSubmit}
         onSubmitError={onSubmitError}

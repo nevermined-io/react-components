@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 import HDWalletProvider from '@truffle/hdwallet-provider'
-import { requestFromFaucet } from '../../utils/requestFromFaucet';
+// import { requestFromFaucet } from '../../utils/requestFromFaucet';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bip39 = require('bip39')
@@ -49,6 +49,6 @@ export default class BurnerWalletProvider {
     return this.web3
   }
 
-  onAccountChange(cb: any) {}
-  onNetworkChange(cb: any) {}
+  onAccountChange(cb: any) { }
+  onNetworkChange(cb: any) { }
 }
