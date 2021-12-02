@@ -5,7 +5,7 @@ import { MetaDataFormDTO } from './forms/MetaDataFormProvider';
 interface AssetRegistrationProviderValue {
   registerAsset(data: MetaData): Promise<DDO>;
   registerMintableAsset(): Promise<DDO>;
-  retrieveAssetMetaData(did: DID | string): Promise<DDO>;
+  retrieveAssetDDO(did: DID | string): Promise<DDO>;
 }
 
 const AssetRegistrationContext = createContext({} as AssetRegistrationProviderValue);
@@ -42,7 +42,7 @@ const AssetRegistrationProvider = ({
     return asset;
   };
 
-  const retrieveAssetMetaData = async (did: DID | string): Promise<DDO> => {
+  const retrieveAssetDDO = async (did: DID | string): Promise<DDO> => {
     const res = await sdk.metadata.retrieveDDO(did);
     return res;
   };
@@ -53,7 +53,7 @@ const AssetRegistrationProvider = ({
         {
           registerAsset,
           registerMintableAsset,
-          retrieveAssetMetaData
+          retrieveAssetDDO
         } as AssetRegistrationProviderValue
       }
     >
