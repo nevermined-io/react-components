@@ -4,11 +4,12 @@ import { Nevermined, Config, Account } from '@nevermined-io/nevermined-sdk-js';
 
 import { Web3ServiceContext } from './Web3Service'
 
-export function useNeverminedService(config: Config, {web3, address}: Web3ServiceContext) {
+export function useNeverminedService(config: Config, {web3, address, network: {chainId}}: Web3ServiceContext) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [sdk, setSdk] = useState({} as Nevermined);
   const [account, setAccount] = useState<Account>(new Account(''));
   const [balance, setBalance] = useState<{eth?: number, nevermined?: number}>({});
+  const [networkName, setNetworkName] = useState('');
 
   // Update balance function
   const updateBalance = useCallback(
@@ -38,7 +39,15 @@ export function useNeverminedService(config: Config, {web3, address}: Web3Servic
           return updateBalance(sdkAccount);
         }
       })
+  }, [address, sdk]);
 
+  // Fetch network name
+  useEffect(() => {
+    if (!chainId || !sdk?.keeper) {
+      return
+    }
+    sdk.keeper.getNetworkName()
+      .then(setNetworkName)
   }, [address, sdk]);
 
   // Load Nevermined SDK
@@ -62,6 +71,10 @@ export function useNeverminedService(config: Config, {web3, address}: Web3Servic
       account,
       address,
       updateBalance,
+    },
+    network: {
+      chainId,
+      networkName,
     },
   }
 }

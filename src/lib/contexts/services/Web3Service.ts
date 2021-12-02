@@ -9,6 +9,7 @@ export function useWeb3Service(config: Config, reloadOnNetworkChange?: boolean) 
   const [isConnected, setIsConnected] = useState<boolean>(true);
   const [web3, setWeb3] = useState<Web3>();
   const [address, setAddress] = useState<string | undefined>('');
+  const [chainId, setChainId] = useState<string | undefined>('');
 
   // TODO: BurnerWallet needs to be integrated
   // TODO: It's necessary to watch the account change
@@ -30,20 +31,22 @@ export function useWeb3Service(config: Config, reloadOnNetworkChange?: boolean) 
     return browserProvider
   }, []);
 
-  const disconnect = () => {
+  const disconnect = useCallback(() => {
     setIsConnected(false);
     const browserProvider = BrowserProvider;
     browserProvider.logout();
-  };
+  }, []);
 
   const initialize = async () => {
-    const provider = await connect();
-    provider.onAccountChange(address => setAddress(address));
-    provider.onNetworkChange(() => {
+    const wallet = await connect();
+    wallet.onAccountChange(address => setAddress(address));
+    wallet.onNetworkChange(chainId => {
+      setChainId(chainId)
       if (reloadOnNetworkChange) {
         window.location?.reload();
       }
     });
+    setChainId(await wallet.getProvider().eth.getChainId())
   };
 
   useEffect(() => {
@@ -56,6 +59,9 @@ export function useWeb3Service(config: Config, reloadOnNetworkChange?: boolean) 
     isConnected,
     connect,
     disconnect,
+    network: {
+      chainId,
+    },
   }
 }
 
