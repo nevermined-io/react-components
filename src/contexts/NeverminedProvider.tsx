@@ -1,15 +1,12 @@
 import React, { useState, useCallback, useEffect, createContext, useContext } from 'react';
 
 import Web3 from 'web3';
-import { Nevermined, Account } from '@nevermined-io/nevermined-sdk-js';
+import { Nevermined, Account, Config } from '@nevermined-io/nevermined-sdk-js';
 import MetaMaskProvider from './wallets/MetaMaskProvider';
 
-import generalConfig from '../config';
 import BurnerWalletProvider from './wallets/BurnerWalletProvider';
 import { FaucetResponse, requestFromFaucet } from '../utils/requestFromFaucet';
 
-const config = generalConfig.neverminedConfig;
-const isBurnerWalletEnabled = generalConfig.isBurnerWalletEnabled;
 
 interface NeverminedProviderValue {
   isLoggedIn: boolean;
@@ -22,7 +19,6 @@ interface NeverminedProviderValue {
   // network: string
   web3: Web3;
   sdk: Nevermined;
-  requestFromFaucet?(account: string): Promise<FaucetResponse>;
   connect(): Promise<any>;
   disconnect(): void;
 
@@ -30,7 +26,12 @@ interface NeverminedProviderValue {
   // tokenSymbol: string;
 }
 
-const NeverminedProvider = ({ children }: { children: React.ReactNode }): React.ReactElement => {
+interface NeverminedProviderProps {
+  children: React.ReactNode
+  config: Config
+}
+
+const NeverminedProvider = ({ children, config }: NeverminedProviderProps): React.ReactElement => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
   const [balance, setBalance] = useState({
@@ -92,20 +93,10 @@ const NeverminedProvider = ({ children }: { children: React.ReactNode }): React.
     }
   }, [web3]);
 
-  // * LIFECYCLE
-  useEffect(() => {
-    fetchAccounts();
-  }, [fetchAccounts]);
-
-  useEffect(() => {
-    loadNevermined();
-  }, [web3, loadNevermined]);
-
   const connect = async () => {
     let metamaskProvider;
-    if (isBurnerWalletEnabled === 'true') {
-      // changed to false from true
-      console.log(isBurnerWalletEnabled);
+    if (false) {
+      console.warn('Using Burner Wallet. Only for testing purposes.');
       metamaskProvider = new BurnerWalletProvider();
     } else {
       metamaskProvider = MetaMaskProvider;
@@ -127,9 +118,18 @@ const NeverminedProvider = ({ children }: { children: React.ReactNode }): React.
     await connect();
   };
 
+  // * LIFECYCLE
+  useEffect(() => {
+    fetchAccounts();
+  }, [fetchAccounts]);
+
+  useEffect(() => {
+    loadNevermined();
+  }, [web3, loadNevermined]);
+
   useEffect(() => {
     initialize();
-  });
+  }, []);
 
   return (
     <NeverminedContext.Provider
@@ -156,8 +156,8 @@ const NeverminedProvider = ({ children }: { children: React.ReactNode }): React.
 };
 
 const NeverminedContext = createContext({} as NeverminedProviderValue);
-// Helper hook to access the provider values
 
+// Helper hook to access the provider values
 const useNevermined = (): NeverminedProviderValue => useContext(NeverminedContext);
 
 export { useNevermined, NeverminedContext };

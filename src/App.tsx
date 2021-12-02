@@ -5,10 +5,12 @@ import Example from './Example';
 import NeverminedProvider from './contexts/NeverminedProvider';
 import AssetRegistrationProvider from './contexts/AssetRegistrationProvider';
 
+import generalConfig from './config';
+
 function App() {
   return (
     <div className="App">
-      <NeverminedProvider>
+      <NeverminedProvider config={generalConfig.neverminedConfig}>
         <AssetRegistrationProvider>
           <MetaDataFormProvider>
             <Example />
