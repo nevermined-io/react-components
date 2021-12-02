@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect, createContext, useContext } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Web3 from 'web3';
-import { Config, Account } from '@nevermined-io/nevermined-sdk-js';
+import { Config } from '@nevermined-io/nevermined-sdk-js';
 
 import BurnerWalletProvider from 'lib/contexts/wallets/BurnerWalletProvider';
 import BrowserProvider from 'lib/contexts/wallets/BrowserProvider';
 
-export function useWeb3Service(config: Config, reloadOnNetworkChange?: boolean) {
+export function useWeb3Service(config: Config, shouldReloadOnNetworkChange?: boolean) {
   const [isConnected, setIsConnected] = useState<boolean>(true);
   const [web3, setWeb3] = useState<Web3>();
   const [address, setAddress] = useState<string | undefined>('');
@@ -42,7 +42,7 @@ export function useWeb3Service(config: Config, reloadOnNetworkChange?: boolean) 
     wallet.onAccountChange(address => setAddress(address));
     wallet.onNetworkChange(chainId => {
       setChainId(chainId)
-      if (reloadOnNetworkChange) {
+      if (shouldReloadOnNetworkChange) {
         window.location?.reload();
       }
     });

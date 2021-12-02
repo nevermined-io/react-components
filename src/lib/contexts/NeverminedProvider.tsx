@@ -1,34 +1,34 @@
-import React, { useState, useCallback, useEffect, createContext, useContext } from 'react';
+import React, { createContext, useContext } from 'react';
+import { Config } from '@nevermined-io/nevermined-sdk-js';
 
-import Web3 from 'web3';
-import { Nevermined, Account, Config } from '@nevermined-io/nevermined-sdk-js';
-import BrowserProvider from './wallets/BrowserProvider';
+import { useWeb3Service, Web3ServiceContext } from 'lib/contexts/services/Web3Service';
+import {
+  useNeverminedService,
+  NeverminedServiceContext
+} from 'lib/contexts/services/NeverminedService';
 
-import BurnerWalletProvider from './wallets/BurnerWalletProvider';
-import { FaucetResponse, requestFromFaucet } from '../utils/requestFromFaucet';
-
-import { useWeb3Service, Web3ServiceContext } from 'lib/contexts/services/Web3Service'
-import { useNeverminedService, NeverminedServiceContext } from 'lib/contexts/services/NeverminedService'
-
-
-export type NeverminedProviderContext = Web3ServiceContext & NeverminedServiceContext
+export type NeverminedProviderContext = Web3ServiceContext & NeverminedServiceContext;
 
 interface NeverminedProviderProps {
-  children: React.ReactNode
-  config: Config
-  reloadOnNetworkChange?: boolean
+  children: React.ReactNode;
+  config: Config;
+  shouldReloadOnNetworkChange?: boolean;
 }
 
-const NeverminedProvider = ({ children, config, reloadOnNetworkChange }: NeverminedProviderProps): React.ReactElement => {
-  const web3Context = useWeb3Service(config, reloadOnNetworkChange)
-  const neverminedContext = useNeverminedService(config, web3Context)
+const NeverminedProvider = ({
+  children,
+  config,
+  shouldReloadOnNetworkChange
+}: NeverminedProviderProps): React.ReactElement => {
+  const web3Context = useWeb3Service(config, shouldReloadOnNetworkChange);
+  const neverminedContext = useNeverminedService(config, web3Context);
 
   return (
     <NeverminedContext.Provider
       value={
         {
           ...web3Context,
-          ...neverminedContext,
+          ...neverminedContext
         } as NeverminedProviderContext
       }
     >

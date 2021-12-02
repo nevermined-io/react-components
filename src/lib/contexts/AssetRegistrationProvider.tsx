@@ -1,7 +1,7 @@
 import { DDO, DID, MetaData } from '@nevermined-io/nevermined-sdk-js';
 import React, { createContext, useContext } from 'react';
 import { useNevermined } from './NeverminedProvider';
-import { MetaDataFormDTO } from './forms/MetaDataFormProvider';
+
 interface AssetRegistrationProviderValue {
   registerAsset(data: MetaData): Promise<DDO>;
   registerMintableAsset(): Promise<DDO>;
@@ -14,7 +14,10 @@ const AssetRegistrationProvider = ({
 }: {
   children: React.ReactNode;
 }): React.ReactElement => {
-  const { sdk, user: {account} } = useNevermined();
+  const {
+    sdk,
+    user: { account }
+  } = useNevermined();
 
   const registerAsset = async (data: MetaData): Promise<DDO> => {
     const asset = await sdk.assets.create(
