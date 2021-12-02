@@ -14,7 +14,6 @@ const defaultConfig = {
 
 const config = {
   neverminedConfig: defaultConfig,
-  isBurnerWalletEnabled: "false"
 };
 
 export default config;

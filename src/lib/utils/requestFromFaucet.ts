@@ -1,7 +1,5 @@
 import { Logger } from '@nevermined-io/nevermined-sdk-js';
-import config from "../config";
 
-const faucetUri = config.neverminedConfig;
 //
 // Faucet
 //
@@ -11,7 +9,7 @@ export interface FaucetResponse {
   trxHash?: string
 }
 
-export async function requestFromFaucet(account: string): Promise<any> {
+export async function requestFromFaucet(faucetUri: string, account: string): Promise<any> {
   try {
     const url = `${faucetUri}/faucet`
     const response = await fetch(url, {

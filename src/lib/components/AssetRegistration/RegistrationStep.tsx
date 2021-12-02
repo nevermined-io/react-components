@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormInformation } from '../../types';
+import { FormFieldData } from './types';
 import cx from 'classnames';
 import defaultStyles from './scss/RegistrationStep.module.scss';
 import FormField from './FormField';
@@ -14,7 +14,7 @@ interface RegistrationStepProps {
     formElement?: any;
     registrationStep?: any;
   };
-  fields: Array<FormInformation>;
+  fields: Array<FormFieldData>;
   children?: React.ReactNode;
 }
 
@@ -37,7 +37,7 @@ const RegistrationStep = ({
       {typeof title === 'string' ? <h2>{title}</h2> : title}
       <form className={b('form')}>
         <ul className={b('form-list')}>
-          {fields.map(({ id, label, type, rows, cols, min, max, step }: FormInformation) => {
+          {fields.map(({ id, label, type, rows, cols, min, max, step }: FormFieldData) => {
             const fieldClassName = b('formfield');
             return (
               <FormField

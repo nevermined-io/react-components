@@ -1,14 +1,16 @@
 import React from 'react';
 import './scss/style.scss';
-import MetaDataFormProvider from './contexts/forms/MetaDataFormProvider';
+import MetaDataFormProvider from 'lib/contexts/forms/MetaDataFormProvider';
 import Example from './Example';
-import NeverminedProvider from './contexts/NeverminedProvider';
-import AssetRegistrationProvider from './contexts/AssetRegistrationProvider';
+import NeverminedProvider from 'lib/contexts/NeverminedProvider';
+import AssetRegistrationProvider from 'lib/contexts/AssetRegistrationProvider';
+
+import generalConfig from './config';
 
 function App() {
   return (
     <div className="App">
-      <NeverminedProvider>
+      <NeverminedProvider config={generalConfig.neverminedConfig}>
         <AssetRegistrationProvider>
           <MetaDataFormProvider>
             <Example />

@@ -1,9 +1,7 @@
-import Web3 from 'web3'
-import { Eth } from 'web3/eth'
+import { MetaMaskInpageProvider } from "@metamask/providers";
 
 declare global {
-    interface Window {
-        web3: Web3
-        ethereum: Eth
-    }
+  interface Window {
+    ethereum: MetaMaskInpageProvider
+  }
 }
