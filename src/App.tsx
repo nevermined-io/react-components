@@ -10,7 +10,7 @@ import generalConfig from './config';
 function App() {
   return (
     <div className="App">
-      <NeverminedProvider config={generalConfig.neverminedConfig} reloadOnNetworkChange>
+      <NeverminedProvider config={generalConfig.neverminedConfig} shouldReloadOnNetworkChange>
         <AssetRegistrationProvider>
           <MetaDataFormProvider>
             <Example />

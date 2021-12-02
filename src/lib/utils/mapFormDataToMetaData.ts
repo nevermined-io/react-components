@@ -26,7 +26,6 @@ export const mapFileToMetaDataFile = (file: File, index: number): AssetFile => {
  */
 const mapFormDataToMetaData = (customDataName = "customData", formData: MetaDataFormDTO): MetaData => {
   const { type, name, author, license, price, files, description, copyrightHolder, ...rest } = formData;
-  let mappedFiles;
 
   return {
     main: {

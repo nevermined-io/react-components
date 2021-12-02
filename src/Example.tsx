@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import './scss/style.scss';
 import mapFormDataToMetaData from 'lib/utils/mapFormDataToMetaData';
-import { postMetaData, getMetaData } from 'lib/hooks/publishMetaData';
+
 import { DDO } from '@nevermined-io/nevermined-sdk-js';
-import { useFormContext, MetaDataFormDTO } from 'lib/contexts/forms/MetaDataFormProvider';
+import { MetaDataFormDTO } from 'lib/contexts/forms/MetaDataFormProvider';
 import { useNevermined } from 'lib/contexts/NeverminedProvider';
-import { AssetRegistration, FormField, FormFieldData } from 'lib/components/AssetRegistration';
+import { AssetRegistration, FormFieldData } from 'lib/components/AssetRegistration';
 import { useAssetRegistration } from 'lib/contexts/AssetRegistrationProvider';
 
 function Example() {
@@ -35,7 +35,7 @@ function Example() {
       console.log('login nvmContext ye', nvmContext, nvmContext.user.balance);
     };
     login();
-  }, []);
+  }, [nvmContext]);
 
   const fields: FormFieldData[] = [
     { id: 'name', label: 'Asset Name', type: 'text' },
@@ -54,7 +54,7 @@ function Example() {
         </form>
       )}
       */}
-
+      {/* <div className="loader" /> */}
       <AssetRegistration
         onSubmit={onSubmit}
         onSubmitError={onSubmitError}
