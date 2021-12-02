@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, createContext, useContext } fr
 
 import Web3 from 'web3';
 import { Nevermined, Account, Config } from '@nevermined-io/nevermined-sdk-js';
-import MetaMaskProvider from './wallets/MetaMaskProvider';
+import BrowserProvider from './wallets/BrowserProvider';
 
 import BurnerWalletProvider from './wallets/BurnerWalletProvider';
 import { FaucetResponse, requestFromFaucet } from '../utils/requestFromFaucet';
@@ -94,24 +94,24 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps): Reac
   }, [web3]);
 
   const connect = async () => {
-    let metamaskProvider;
+    let browserProvider;
     if (false) {
       console.warn('Using Burner Wallet. Only for testing purposes.');
-      metamaskProvider = new BurnerWalletProvider(config.nodeUri!);
+      browserProvider = new BurnerWalletProvider(config.nodeUri!);
     } else {
-      metamaskProvider = MetaMaskProvider;
+      browserProvider = BrowserProvider;
     }
-    await metamaskProvider.startLogin();
-    const accounts: string[] = await (metamaskProvider as any).web3?.eth.getAccounts();
+    await browserProvider.startLogin();
+    const accounts: string[] = await (browserProvider as any).web3?.eth.getAccounts();
     setIsLoggedIn(true);
-    setWeb3((metamaskProvider as any).web3);
+    setWeb3((browserProvider as any).web3);
     setAccount(new Account(accounts[0]));
   };
 
   const disconnect = () => {
-    const metamaskProvider = MetaMaskProvider;
+    const browserProvider = BrowserProvider;
     setIsLoggedIn(false);
-    metamaskProvider.logout();
+    browserProvider.logout();
   };
 
   const initialize = async (): Promise<void> => {

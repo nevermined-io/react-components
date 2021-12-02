@@ -22,18 +22,13 @@ export default class BurnerWalletProvider {
   }
 
   public async startLogin(): Promise<void> {
-    let mnemonic
-
-    const isLoggedIn = await this.isLoggedIn()
-
-    if (isLoggedIn) {
-      mnemonic = localStorage.getItem('seedphrase')
-    } else {
-      mnemonic = bip39.generateMnemonic()
-      localStorage.setItem('seedphrase', mnemonic)
+    if (!await this.isLoggedIn()) {
+      console.error('BurnerWallet needs "seedphrase" on localStorage. Use this only for testing purposes.')
+      return
     }
 
-    // localStorage.setItem('logType', 'BurnerWallet')
+    const mnemonic = localStorage.getItem('seedphrase') as string
+
     const provider = new HDWalletProvider(mnemonic, this.nodeUri, 0, 1)
     this.web3 = new Web3(provider as any)
     const accounts = await this.web3.eth.getAccounts()

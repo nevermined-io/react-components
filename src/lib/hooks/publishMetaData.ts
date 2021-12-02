@@ -1,7 +1,9 @@
 import { Config, Nevermined, Account, MetaData } from '@nevermined-io/nevermined-sdk-js';
-import MetaMaskProvider from '../contexts/wallets/MetaMaskProvider';
+// import MetaMaskProvider from '../contexts/wallets/MetaMaskProvider';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards'
 import { ERRORS, BadGatewayAddressError } from '../errors/index';
+
+const MetaMaskProvider = {} as any
 
 const config = {
     metadataUri: 'http://localhost:5000',

@@ -2,7 +2,7 @@ import Web3 from 'web3'
 import { provider } from 'web3-core'
 
 // eslint-disable-next-line import/prefer-default-export
-class MetamaskProvider {
+class BrowserProvider {
   private web3: Web3
 
   public constructor() {
@@ -20,7 +20,9 @@ class MetamaskProvider {
   }
 
   public async isLogged(): Promise<boolean> {
-    if (this.web3 === null) return false
+    if (this.web3 === null) {
+      return false
+    }
     if ((await this.web3.eth.getAccounts()).length > 0) {
       return true
     }
@@ -29,17 +31,13 @@ class MetamaskProvider {
 
   public async startLogin() {
     try {
-      const response = await window.ethereum?.request({ method: 'eth_requestAccounts' })
-      if (response) {
-        localStorage.setItem('logType', 'Metamask')
-      }
+      await window.ethereum?.request({ method: 'eth_requestAccounts' })
     } catch (error) {
       return await Promise.reject(error)
     }
   }
 
   public async logout() {
-    localStorage.removeItem('logType')
   }
 
   public getProvider(): any {
@@ -47,4 +45,4 @@ class MetamaskProvider {
   }
 }
 
-export default new MetamaskProvider();
+export default new BrowserProvider();
