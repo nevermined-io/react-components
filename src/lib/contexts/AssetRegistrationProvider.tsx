@@ -14,7 +14,7 @@ const AssetRegistrationProvider = ({
 }: {
   children: React.ReactNode;
 }): React.ReactElement => {
-  const { sdk, account } = useNevermined();
+  const { sdk, user: {account} } = useNevermined();
 
   const registerAsset = async (data: MetaData): Promise<DDO> => {
     const asset = await sdk.assets.create(

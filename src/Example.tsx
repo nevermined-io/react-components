@@ -28,11 +28,11 @@ function Example() {
 
   const onSubmitError = (data: any) => console.log('onSubmitError', data);
 
-  const result = useNevermined();
+  const nvmContext = useNevermined();
   useEffect(() => {
     const login = async () => {
-      await result.connect();
-      console.log('login result ye', result, result.balance);
+      await nvmContext.connect();
+      console.log('login nvmContext ye', nvmContext, nvmContext.user.balance);
     };
     login();
   }, []);

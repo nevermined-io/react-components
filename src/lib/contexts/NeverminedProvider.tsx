@@ -7,147 +7,29 @@ import BrowserProvider from './wallets/BrowserProvider';
 import BurnerWalletProvider from './wallets/BurnerWalletProvider';
 import { FaucetResponse, requestFromFaucet } from '../utils/requestFromFaucet';
 
+import { useWeb3Service, Web3ServiceContext } from 'lib/contexts/services/Web3Service'
+import { useNeverminedService, NeverminedServiceContext } from 'lib/contexts/services/NeverminedService'
 
-interface NeverminedProviderValue {
-  isLoggedIn: boolean;
-  isLoading: boolean;
-  account: Account;
-  balance: {
-    eth: number;
-    nevermined: number;
-  };
-  // network: string
-  web3: Web3;
-  sdk: Nevermined;
-  connect(): Promise<any>;
-  disconnect(): void;
 
-  // message: string;
-  // tokenSymbol: string;
-}
+export type NeverminedProviderContext = Web3ServiceContext & NeverminedServiceContext
 
 interface NeverminedProviderProps {
   children: React.ReactNode
   config: Config
+  reloadOnNetworkChange?: boolean
 }
 
-const NeverminedProvider = ({ children, config }: NeverminedProviderProps): React.ReactElement => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
-  const [balance, setBalance] = useState({
-    eth: 0,
-    nevermined: 0
-  });
-
-  const [web3, setWeb3] = useState<Web3>();
-  const [account, setAccount] = useState<Account>(new Account(''));
-  const [sdk, setSdk] = useState({} as Nevermined);
-
-  const fetchBalance = useCallback(
-    async (balanceAccount: Account) => {
-      const balanceFetched = await balanceAccount.getBalance();
-      const { eth, nevermined } = balance;
-      if (eth !== balanceFetched.eth || nevermined !== balanceFetched.nevermined) {
-        setBalance(balanceFetched);
-      }
-    },
-    [balance]
-  );
-
-  const fetchAccounts = useCallback(async () => {
-    if (sdk.accounts) {
-      let accounts;
-
-      // Modern dapp browsers
-      if (window.ethereum && !isLoggedIn) {
-        // simply set to empty, and have user click a button somewhere
-        // to initiate account unlocking
-        accounts = [];
-
-        // alternatively, automatically prompt for account unlocking
-      }
-
-      if (sdk && sdk.accounts) {
-        accounts = await sdk.accounts?.list();
-
-        if (accounts.length > 0) {
-          const accountFetched = accounts[0].getId();
-
-          if (account && accountFetched !== account?.getId()) {
-            setAccount(accounts[0]);
-            setIsLoggedIn(true);
-          }
-          await fetchBalance(accounts[0]);
-        } else if (!isLoggedIn) {
-          console.log('No account logged');
-        }
-      }
-    }
-  }, [account, isLoggedIn, sdk, fetchBalance]);
-
-  const loadNevermined = useCallback(async (): Promise<void> => {
-    if (web3) {
-      const nvmSdk: any = await Nevermined.getInstance(config);
-      setSdk(nvmSdk);
-      setIsLoading(false);
-    }
-  }, [web3]);
-
-  const connect = async () => {
-    let browserProvider;
-    if (false) {
-      console.warn('Using Burner Wallet. Only for testing purposes.');
-      browserProvider = new BurnerWalletProvider(config.nodeUri!);
-    } else {
-      browserProvider = BrowserProvider;
-    }
-    await browserProvider.startLogin();
-    const accounts: string[] = await (browserProvider as any).web3?.eth.getAccounts();
-    setIsLoggedIn(true);
-    setWeb3((browserProvider as any).web3);
-    setAccount(new Account(accounts[0]));
-  };
-
-  const disconnect = () => {
-    const browserProvider = BrowserProvider;
-    setIsLoggedIn(false);
-    browserProvider.logout();
-  };
-
-  const initialize = async (): Promise<void> => {
-    await connect();
-  };
-
-  // * LIFECYCLE
-  useEffect(() => {
-    fetchAccounts();
-  }, [fetchAccounts]);
-
-  useEffect(() => {
-    loadNevermined();
-  }, [web3, loadNevermined]);
-
-  useEffect(() => {
-    initialize();
-  }, []);
+const NeverminedProvider = ({ children, config, reloadOnNetworkChange }: NeverminedProviderProps): React.ReactElement => {
+  const web3Context = useWeb3Service(config, reloadOnNetworkChange)
+  const neverminedContext = useNeverminedService(config, web3Context)
 
   return (
     <NeverminedContext.Provider
       value={
         {
-          isLoggedIn,
-          isLoading,
-          account,
-          balance,
-          web3,
-          sdk,
-          connect,
-          disconnect,
-          // network,
-          requestFromFaucet
-          // message,
-          // tokenSymbol
-        } as NeverminedProviderValue
+          ...web3Context,
+          ...neverminedContext,
+        } as NeverminedProviderContext
       }
     >
       {children}
@@ -155,10 +37,9 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps): Reac
   );
 };
 
-const NeverminedContext = createContext({} as NeverminedProviderValue);
+export const NeverminedContext = createContext({} as NeverminedProviderContext);
 
 // Helper hook to access the provider values
-const useNevermined = (): NeverminedProviderValue => useContext(NeverminedContext);
+export const useNevermined = (): NeverminedProviderContext => useContext(NeverminedContext);
 
-export { useNevermined, NeverminedContext };
 export default NeverminedProvider;
