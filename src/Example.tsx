@@ -5,7 +5,7 @@ import { postMetaData, getMetaData } from 'lib/hooks/publishMetaData';
 import { DDO } from '@nevermined-io/nevermined-sdk-js';
 import { useFormContext, MetaDataFormDTO } from 'lib/contexts/forms/MetaDataFormProvider';
 import { useNevermined } from 'lib/contexts/NeverminedProvider';
-import { AssetRegistration, FormField, FormFieldData} from 'lib/components/AssetRegistration';
+import { AssetRegistration, FormField, FormFieldData } from 'lib/components/AssetRegistration';
 import { useAssetRegistration } from 'lib/contexts/AssetRegistrationProvider';
 
 function Example() {
@@ -19,8 +19,6 @@ function Example() {
     try {
       const res: DDO = await registerAsset(mapFormDataToMetaData('jochenname', data));
       console.log(res);
-      const res2 = await getMetaData(res.id);
-      console.log('res2', res2);
     } catch (e) {
       console.error('appsubmiterr', e);
     }
