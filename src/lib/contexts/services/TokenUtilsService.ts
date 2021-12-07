@@ -40,30 +40,31 @@ class TokenUtilsService {
   constructor(private web3: Web3) { }
 
   getInstantSymbol(address: string) {
-    return this.getInstantValue(address, ERC20SymbolAbi)
+    return this.getInstantValue<string>(address, ERC20SymbolAbi)
   }
   getSymbol(address: string) {
-    return this.getValue(address, ERC20SymbolAbi)
+    return this.getValue<string>(address, ERC20SymbolAbi)
   }
 
   getInstantDecimals(address: string) {
-    return this.getInstantValue(address, ERC20DecimalsAbi)
+    return this.getInstantValue<number>(address, ERC20DecimalsAbi)
   }
   getDecimals(address: string) {
-    return this.getValue(address, ERC20DecimalsAbi)
+    return this.getValue<number>(address, ERC20DecimalsAbi)
   }
 
-  private getInstantValue(address: string, abi: AbiItem) {
+  private getInstantValue<T>(address: string, abi: AbiItem): T | null {
     if (!address) {
       return null
     }
     const param = abi.name!
     if (this.cache[param]?.[address] as any) {
-      return this.cache[param]?.[address].value
+      return this.cache[param]?.[address].value || null
     }
+    return null
   }
 
-  private getValue(address: string, abi: AbiItem) {
+  private getValue<T>(address: string, abi: AbiItem): Promise<T | undefined> {
     const param = abi.name!
     console.log(param)
     if (!address) {
