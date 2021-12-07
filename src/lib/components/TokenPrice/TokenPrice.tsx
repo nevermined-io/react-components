@@ -13,7 +13,6 @@ export const NuiTokenPrice = React.memo(function({address, children}: TokenPrice
 
   useEffect(() => {
     if (tokenDecimals === null && tokenUtils) {
-      console.log('token', 1)
       tokenUtils.getDecimals(address)
         .then(value => setTokenDecimals(value || null))
     }

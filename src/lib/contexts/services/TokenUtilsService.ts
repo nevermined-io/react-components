@@ -66,7 +66,6 @@ class TokenUtilsService {
 
   private getValue<T>(address: string, abi: AbiItem): Promise<T | undefined> {
     const param = abi.name!
-    console.log(param)
     if (!address) {
       return Promise.resolve(undefined)
     }

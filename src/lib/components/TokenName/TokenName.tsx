@@ -12,7 +12,6 @@ export const NuiTokenName = React.memo(function({address}: TokenNameProps) {
 
   useEffect(() => {
     if (tokenSymbol === null && tokenUtils) {
-      console.log('token', 1)
       tokenUtils.getSymbol(address)
         .then(value => setTokenSymbol(value || null))
     }
