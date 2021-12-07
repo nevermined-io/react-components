@@ -12,8 +12,6 @@ export function useWeb3Service(config: Config, shouldReloadOnNetworkChange?: boo
   const [chainId, setChainId] = useState<string | undefined>('');
 
   // TODO: BurnerWallet needs to be integrated
-  // TODO: It's necessary to watch the account change
-  // TODO: It's necessary to watch the network change
 
   const connect = useCallback(async () => {
     let browserProvider: typeof BrowserProvider | BurnerWalletProvider;
