@@ -1,4 +1,4 @@
-import React, { Props, useContext, useEffect, useState } from 'react'
+import React, { Props, useEffect, useState } from 'react'
 import BN from 'bn.js'
 import { useNevermined } from 'lib/contexts/NeverminedProvider'
 
