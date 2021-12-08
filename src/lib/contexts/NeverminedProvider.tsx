@@ -6,8 +6,9 @@ import {
   useNeverminedService,
   NeverminedServiceContext
 } from 'lib/contexts/services/NeverminedService';
+import { useTokenUtilsService, TokenUtilsServiceContext } from 'lib/contexts/services/TokenUtilsService';
 
-export type NeverminedProviderContext = Web3ServiceContext & NeverminedServiceContext;
+export type NeverminedProviderContext = Web3ServiceContext & NeverminedServiceContext & {services: TokenUtilsServiceContext};
 
 interface NeverminedProviderProps {
   children: React.ReactNode;
@@ -23,12 +24,17 @@ const NeverminedProvider = ({
   const web3Context = useWeb3Service(config, shouldReloadOnNetworkChange);
   const neverminedContext = useNeverminedService(config, web3Context);
 
+  const tokenUtils = useTokenUtilsService(config, web3Context);
+
   return (
     <NeverminedContext.Provider
       value={
         {
           ...web3Context,
-          ...neverminedContext
+          ...neverminedContext,
+          services: {
+            ...tokenUtils,
+          }
         } as NeverminedProviderContext
       }
     >
