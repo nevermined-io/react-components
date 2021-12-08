@@ -18,7 +18,7 @@ class BrowserProvider {
     return this.web3 !== null
   }
 
-  async isLogged(): Promise<boolean> {
+  async isLoggedIn(): Promise<boolean> {
     if (this.web3 === null) {
       return false
     }

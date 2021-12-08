@@ -1,6 +1,3 @@
-import React from "react";
-import web3 from "web3";
-
 import BurnerWalletProvider from './BurnerWalletProvider';
 
 

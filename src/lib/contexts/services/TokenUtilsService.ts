@@ -19,6 +19,7 @@ const ERC20SymbolAbi = {
   stateMutability: 'view' as const,
   type: 'function' as const,
 }
+
 const ERC20DecimalsAbi = {
   constant: true,
   inputs: [],
