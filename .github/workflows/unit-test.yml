@@ -18,7 +18,7 @@ jobs:
     - name: Install dependencies
       run: |
         npm install -g npm
-        npm install -g eslint@7.32.0
         npm i
-    - name: Run linter
+        npm run test
+    - name: Run Unit Tests
       run: npm run ts:lint
