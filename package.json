@@ -6,7 +6,8 @@
     "start": "BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --coverage --watchAll=false --silent --env=./test/custom-env.js",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "ts:lint": "npx eslint . --ext .ts,.tsx"
   },
   "eslintConfig": {
     "extends": [
