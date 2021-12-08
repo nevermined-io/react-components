@@ -7,7 +7,7 @@ on:
       - '!master'
       - '!*release*'
 jobs:
-  lint:
+  unit-test:
     runs-on: ubuntu-latest
     # env:
     steps:
