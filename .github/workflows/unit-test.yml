@@ -1,4 +1,4 @@
-name: Run linters
+name: Run Unit Tests
 
 on:
   push:
@@ -19,6 +19,5 @@ jobs:
       run: |
         npm install -g npm
         npm i
-        npm run test
     - name: Run Unit Tests
-      run: npm run ts:lint
+      run: npm run test
