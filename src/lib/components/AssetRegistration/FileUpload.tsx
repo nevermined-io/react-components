@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import mapFileUrlToPreview from 'lib/utils/mapFileUrlToPreview';
+import React, { ReactNode, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useFormContext } from 'react-hook-form';
 
@@ -10,14 +11,17 @@ interface FileUploadProps extends FormFieldData {
   labelClassName?: string;
   elementClassName?: string;
   previewClassName?: string;
+  onDrop?(): void;
+  dragActiveComponent?: ReactNode | string;
+  dragInactiveComponent?: ReactNode | string;
 }
 
 interface FileWithPreview extends File {
   preview: string;
 }
 
-const FileUpload = (props: FileUploadProps) => {
-  const {
+const FileUpload = React.memo(
+  ({
     id,
     className,
     labelClassName,
@@ -25,60 +29,55 @@ const FileUpload = (props: FileUploadProps) => {
     previewClassName,
     type,
     label,
-    mimeType
-  } = props;
-  const { register, setValue, getValues } = useFormContext();
-  const [files, setFiles] = useState([]);
+    mimeType,
+    onDrop,
+    dragActiveComponent = <p>Drop the files here ...</p>,
+    dragInactiveComponent = <p>Drag 'n' drop some files here, or click to select files</p>
+  }: FileUploadProps) => {
+    const { register, setValue, getValues } = useFormContext();
+    const prevFiles = getValues('files');
+    const [files, setFiles] = useState(prevFiles);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: mimeType || 'image/*',
-    onDrop: (acceptedFiles) => {
-      setValue(
-        id,
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-        )
-      );
-      setFiles(getValues(id));
-    }
-  });
-  // const inputClass = cx({ elementClassName, 'drag-active': isDragActive });
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+      accept: mimeType || 'image/*',
+      onDrop: (acceptedFiles) => {
+        setValue(id, acceptedFiles.map(mapFileUrlToPreview));
+        setFiles(getValues(id));
+        if (onDrop) onDrop();
+      }
+    });
+    // const inputClass = cx({ elementClassName, 'drag-active': isDragActive });
 
-  return (
-    <li className={className} {...getRootProps()} role="button" aria-label="File Upload">
-      <label className={labelClassName} htmlFor={id}>
-        {label}
-      </label>
-      <div className={elementClassName}>
-        <input
-          {...register(id)}
-          {...getInputProps()}
-          type={type}
-          id={id}
-          className={elementClassName}
-        />
-        {isDragActive ? (
-          <p>Drop the files here ...</p>
-        ) : (
-          <p>Drag 'n' drop some files here, or click to select files</p>
-        )}
+    return (
+      <li className={className} {...getRootProps()} role="button" aria-label="File Upload">
+        <label className={labelClassName} htmlFor={id}>
+          {label}
+        </label>
+        <div className={elementClassName}>
+          <input
+            {...register(id)}
+            {...getInputProps()}
+            type={type}
+            id={id}
+            className={elementClassName}
+          />
+          {isDragActive ? dragActiveComponent : dragInactiveComponent}
 
-        {!!files?.length && (
-          <div className={previewClassName}>
-            {files.map((file: FileWithPreview) => {
-              return (
-                <div key={file.name}>
-                  <img src={file.preview} alt={file.name} />
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-    </li>
-  );
-};
+          {!!files?.length && (
+            <div className={previewClassName}>
+              {files.map((file: FileWithPreview) => {
+                return (
+                  <div key={file.name}>
+                    <img src={file.preview} alt={file.name} />
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </li>
+    );
+  }
+);
 
 export default FileUpload;
