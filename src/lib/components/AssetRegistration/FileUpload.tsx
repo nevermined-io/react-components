@@ -1,5 +1,6 @@
 import mapFileUrlToPreview from 'lib/utils/mapFileUrlToPreview';
-import React, { ReactNode, useState } from 'react';
+import useRefState from 'lib/utils/useRefState';
+import React, { ReactNode, useState, useRef, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useFormContext } from 'react-hook-form';
 
@@ -12,11 +13,11 @@ interface FileUploadProps extends FormFieldData {
   elementClassName?: string;
   previewClassName?: string;
   onDrop?(): void;
-  dragActiveComponent?: ReactNode | string;
-  dragInactiveComponent?: ReactNode | string;
+  DragActiveComponent?: ReactNode | string;
+  DragInactiveComponent?: ReactNode | string;
 }
 
-interface FileWithPreview extends File {
+export interface FileWithPreview extends File {
   preview: string;
 }
 
@@ -31,12 +32,18 @@ const FileUpload = React.memo(
     label,
     mimeType,
     onDrop,
-    dragActiveComponent = <p>Drop the files here ...</p>,
-    dragInactiveComponent = <p>Drag 'n' drop some files here, or click to select files</p>
+    DragActiveComponent = <p>Drop the files here ...</p>,
+    DragInactiveComponent = <p>Drag 'n' drop some files here, or click to select files</p>
   }: FileUploadProps) => {
-    const { register, setValue, getValues } = useFormContext();
+    const {
+      register,
+      setValue,
+      getValues,
+      formState: { isSubmitting }
+    } = useFormContext();
+    const test = register(`${id}-previewvalues`);
     const prevFiles = getValues(id);
-    const [files, setFiles] = useState(prevFiles);
+    const [files, setFiles] = useState<FileWithPreview[]>(prevFiles);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
       accept: mimeType || 'image/*',
@@ -46,6 +53,16 @@ const FileUpload = React.memo(
         if (onDrop) onDrop();
       }
     });
+
+    useEffect(() => {
+      if (isSubmitting) {
+        console.log('bro', files);
+        files?.forEach((file: FileWithPreview): void => {
+          URL.revokeObjectURL(file.preview);
+        });
+        if (files) setFiles([]);
+      }
+    }, [isSubmitting, files]);
 
     return (
       <li className={className} {...getRootProps()} role="button" aria-label="File Upload">
@@ -58,9 +75,10 @@ const FileUpload = React.memo(
             {...getInputProps()}
             type={type}
             id={id}
-            className={elementClassName}
+            className={`${elementClassName}input`}
           />
-          {isDragActive ? dragActiveComponent : dragInactiveComponent}
+
+          {!files?.length && (isDragActive ? DragActiveComponent : DragInactiveComponent)}
 
           {!!files?.length && (
             <div className={previewClassName}>

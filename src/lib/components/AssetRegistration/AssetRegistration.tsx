@@ -38,7 +38,7 @@ export default function AssetRegistration({
   const { watch, handleSubmit } = useFormContext();
   const [currentStep, setCurrentStep] = useState(0);
 
-  // if (debug) console.log(watch());
+  // * logging input values
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
       if (debug) console.log(value, name);
@@ -46,6 +46,7 @@ export default function AssetRegistration({
 
     return () => subscription.unsubscribe();
   }, [watch]);
+
   const onNextClick = () => setCurrentStep(currentStep + 1);
   const onPreviousClick = () => setCurrentStep(currentStep - 1);
 

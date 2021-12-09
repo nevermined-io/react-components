@@ -15,7 +15,6 @@ function Example() {
   const { registerAsset, retrieveAssetDDO } = useAssetRegistration();
 
   const onSubmit = async (data: MetaDataFormDTO) => {
-    console.log('onSubmityes', data);
     const dataToSend = mapFormDataToMetaData('jochenname', data);
     console.log('mappedData', dataToSend);
 
@@ -32,7 +31,7 @@ function Example() {
   const onSubmitError = (data: any) => console.log('onSubmitError', data);
 
   const nvmContext = useNevermined();
-  (window as any).nvm = nvmContext
+  (window as any).nvm = nvmContext;
   useEffect(() => {
     const login = async () => {
       await nvmContext.connect();
@@ -51,10 +50,10 @@ function Example() {
   return (
     <>
       {/* Rinkeby test token */}
-      <NuiTokenPrice address="0x022E292b44B5a146F2e8ee36Ff44D3dd863C915c">1234567890000000000</NuiTokenPrice>
-      {' '}
-      <NuiTokenName address="0x022E292b44B5a146F2e8ee36Ff44D3dd863C915c"/>
-
+      <NuiTokenPrice address="0x022E292b44B5a146F2e8ee36Ff44D3dd863C915c">
+        1234567890000000000
+      </NuiTokenPrice>{' '}
+      <NuiTokenName address="0x022E292b44B5a146F2e8ee36Ff44D3dd863C915c" />
       {/* {isLoggedIn && (
         <form className={formClassName}>
           {fields.map((field: FormFieldData) => (
