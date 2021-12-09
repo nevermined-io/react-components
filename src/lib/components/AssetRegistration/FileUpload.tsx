@@ -46,7 +46,6 @@ const FileUpload = React.memo(
         if (onDrop) onDrop();
       }
     });
-    // const inputClass = cx({ elementClassName, 'drag-active': isDragActive });
 
     return (
       <li className={className} {...getRootProps()} role="button" aria-label="File Upload">
