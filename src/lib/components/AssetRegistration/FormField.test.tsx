@@ -15,4 +15,3 @@ describe('FormField', () => {
     expect(container.querySelector('label')).toHaveClass('textarea-label');
   });
 });
-s
