@@ -1,6 +1,5 @@
 import mapFileUrlToPreview from 'lib/utils/mapFileUrlToPreview';
-import useRefState from 'lib/utils/useRefState';
-import React, { ReactNode, useState, useRef, useEffect } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useFormContext } from 'react-hook-form';
 
@@ -39,15 +38,18 @@ const FileUpload = React.memo(
       register,
       setValue,
       getValues,
-      formState: { isSubmitting }
+      formState: { isSubmitting, isSubmitted }
     } = useFormContext();
     const test = register(`${id}-previewvalues`);
-    const prevFiles = getValues(id);
+    const prevFiles = getValues(id) || [];
     const [files, setFiles] = useState<FileWithPreview[]>(prevFiles);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
       accept: mimeType || 'image/*',
       onDrop: (acceptedFiles) => {
+        files?.forEach((file: FileWithPreview): void => {
+          URL.revokeObjectURL(file.preview);
+        });
         setValue(id, acceptedFiles.map(mapFileUrlToPreview));
         setFiles(getValues(id));
         if (onDrop) onDrop();
@@ -55,21 +57,32 @@ const FileUpload = React.memo(
     });
 
     useEffect(() => {
+      // * revoke object urls of preview images when going back while submitting!
       if (isSubmitting) {
-        console.log('bro', files);
         files?.forEach((file: FileWithPreview): void => {
           URL.revokeObjectURL(file.preview);
         });
         if (files) setFiles([]);
       }
-    }, [isSubmitting, files]);
+    }, [isSubmitting]);
+
+    useEffect(() => {
+      // * revoke object urls of preview images after submit!
+      if (isSubmitted) {
+        console.log('bro2', files);
+        files?.forEach((file: FileWithPreview): void => {
+          URL.revokeObjectURL(file.preview);
+        });
+        if (files) setFiles([]);
+      }
+    }, [isSubmitted]);
 
     return (
-      <li className={className} {...getRootProps()} role="button" aria-label="File Upload">
+      <li className={className} role="button" aria-label="File Upload">
         <label className={labelClassName} htmlFor={id}>
           {label}
         </label>
-        <div className={elementClassName}>
+        <div {...getRootProps()} className={elementClassName}>
           <input
             {...register(id)}
             {...getInputProps()}
