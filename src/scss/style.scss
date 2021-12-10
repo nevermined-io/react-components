@@ -148,13 +148,11 @@ footer {
       padding: 0.5em;
       font-size: 1.2em;
       border-radius: 5%;
-      // box-shadow: 0px 0px 5px gray;
       &:disabled {
         background-color: gray;
       }
     }
-    &__submit-button {
-    }
+
   }
   .registration-step {
     display: flex;
@@ -163,9 +161,7 @@ footer {
     flex-direction: column;
     &__form {
       margin: 0 auto;
-      // width: 80%;
       width: 100%;
-      // background-color: burlywood;
     }
 
     &__form-list {
@@ -173,8 +169,6 @@ footer {
       width: 100%;
       display: flex;
       flex-direction: column;
-      // justify-content: center;
-      // align-items: center;
       flex-wrap: wrap;
     }
     &__formfield {
@@ -183,21 +177,8 @@ footer {
       justify-content: flex-end;
       margin: 0.5rem;
       padding: 0.5rem;
-      // flex-wrap: wrap;
-      // border: 2px solid red;
-      // display: flex;
-      // flex-direction: row;
-      // justify-content: left;
-      // flex: 1 0 50%;
-      // justify-content: space-around;
-      // flex: 0 50%;
-      // align-items: center;
-      // padding: 0.2em;
     }
 
-    // &list {
-    //   display: flex;
-    // }
     &__formfield-label {
       flex: 1;
       align-self: center;
