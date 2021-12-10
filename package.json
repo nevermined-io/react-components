@@ -6,7 +6,8 @@
     "start": "BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --coverage --watchAll=false --silent --env=./test/custom-env.js",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "ts:lint": "npx eslint . --ext .ts,.tsx"
   },
   "eslintConfig": {
     "extends": [
@@ -59,6 +60,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-cypress": "^2.12.1",
     "jest-environment-jsdom": "^27.4.3",
     "jest-mock-axios": "^4.4.1",
     "prettier": "^2.4.1",
