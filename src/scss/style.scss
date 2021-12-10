@@ -98,6 +98,7 @@ main {
 }
 
 footer {
+  padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -152,7 +153,6 @@ footer {
         background-color: gray;
       }
     }
-
   }
   .registration-step {
     display: flex;
