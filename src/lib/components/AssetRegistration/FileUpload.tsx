@@ -40,7 +40,7 @@ const FileUpload = React.memo(
       getValues,
       formState: { isSubmitting, isSubmitted }
     } = useFormContext();
-    const test = register(`${id}-previewvalues`);
+
     const prevFiles = getValues(id) || [];
     const [files, setFiles] = useState<FileWithPreview[]>(prevFiles);
 
