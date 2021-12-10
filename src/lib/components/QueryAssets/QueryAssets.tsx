@@ -19,14 +19,19 @@ interface QueryStats {
   totalResults: number
 }
 
-export const NuiQueryAssets = React.memo(function ({children}: QueryAssetsProps) {
+export const NuiQueryAssets = React.memo(function ({children, infinite}: QueryAssetsProps) {
   const { sdk } = useNevermined();
   const [ assets, setAssets ] = useState<DDO[]>([]);
   const [ stats, setStats ] = useState<QueryStats>();
   const [ page, setPage ] = useState<number>(1);
 
   const canGoNext = page < (stats?.totalPages || -Infinity)
-  const canGoPrev = page > 1
+  const canGoPrev = (page > 1) && !infinite
+
+  useEffect(() => {
+    setAssets([])
+    setPage(1)
+  }, [infinite])
 
   useEffect(() => {
     if (!sdk?.assets) {
@@ -43,21 +48,26 @@ export const NuiQueryAssets = React.memo(function ({children}: QueryAssetsProps)
       })
       .then(result => {
         setStats({...result, results: undefined} as any)
-        setAssets(result.results)
+        if (infinite) {
+          setAssets([...assets, ...result.results])
+        } else {
+          setAssets(result.results)
+        }
       })
-  }, [sdk, page])
+  }, [sdk, page, infinite])
+
 
   const goNext = useCallback(() => {
     if (canGoNext) {
       setPage(page + 1)
     }
-  }, [page])
+  }, [page, infinite])
 
   const goPrev = useCallback(() => {
     if (canGoPrev) {
       setPage(page - 1)
     }
-  }, [page])
+  }, [page, infinite])
 
   if (stats && goNext && goPrev) {
     return children(assets, {...stats, canGoNext, canGoPrev}, goNext, goPrev)
