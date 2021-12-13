@@ -10,6 +10,7 @@ import { useAssetRegistration } from 'lib/contexts/AssetRegistrationProvider';
 
 import { NuiTokenPrice } from 'lib/components/TokenPrice';
 import { NuiTokenName } from 'lib/components/TokenName';
+import { NuiQueryAssets } from 'lib/components/QueryAssets';
 import Header from 'lib/components/Layout/Header';
 import Footer from 'lib/components/Layout/Footer';
 import Main from 'lib/components/Layout/Main';
@@ -97,6 +98,20 @@ function Example() {
             {/* <button onClick={handleSubmit(onSubmit, onSubmitError)} type="button">
         Submit
       </button> */}
+          </section>
+          <section>
+            <NuiQueryAssets>
+              {(assets, info, goNext, goPrev) => {
+                return <>
+                  {assets.map(_ => _.id).join(', ')}
+                  <br/><br/>
+                  {JSON.stringify(info, null, 2)}
+                  <br/><br/>
+                  {info.canGoPrev && <span onClick={goPrev}> Prev </span>}
+                  {info.canGoNext && <span onClick={goNext}> Next </span>}
+                </>
+              }}
+            </NuiQueryAssets>
           </section>
         </article>
       </Main>
