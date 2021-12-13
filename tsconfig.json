@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES6",
     "lib": [
       "dom",
       "dom.iterable",
@@ -13,17 +13,22 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
+    "module": "commonjs",
+    "declaration": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react-jsx",
+    "rootDir": "./src/lib",
     "baseUrl": "./src",
-    "outDir": "./dist/node/"
+    "outDir": "./dist/node"
   },
   "include": [
-    "src/lib/**/*",
-    "src/types/*",
+    "src/lib",
+    "src/types/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.test.ts"
   ]
 }

@@ -58,3 +58,6 @@ yarn-error.log*
 # vercel
 .vercel
 .env
+
+# dist folder
+dist/
