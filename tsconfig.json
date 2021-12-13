@@ -13,7 +13,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "commonjs",
+    "module": "esnext",
     "declaration": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -21,7 +21,7 @@
     "jsx": "react-jsx",
     "rootDir": "./src/lib",
     "baseUrl": "./src",
-    "outDir": "./dist/node"
+    "outDir": "./dist"
   },
   "include": [
     "src/lib",

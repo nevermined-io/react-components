@@ -1,15 +1,17 @@
 {
-  "name": "testing-nvm",
+  "name": "@nevermined-io/components-catalog",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "BROWSER=none react-scripts start",
     "build": "react-scripts build",
-    "build:tsc": "tsc --sourceMap",
+    "build:tsc": "rm -rf dist && tsc --sourceMap",
     "test": "react-scripts test --coverage --watchAll=false --silent --env=./test/custom-env.js",
     "eject": "react-scripts eject",
     "ts:lint": "npx eslint . --ext .ts,.tsx"
   },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "eslintConfig": {
     "extends": [
       "react-app",

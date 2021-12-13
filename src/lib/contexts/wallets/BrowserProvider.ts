@@ -1,7 +1,7 @@
 import Web3 from 'web3'
 import { provider } from 'web3-core'
 
-class BrowserProvider {
+export class BrowserProvider {
   private web3: Web3
 
   constructor() {
@@ -52,4 +52,4 @@ class BrowserProvider {
   }
 }
 
-export default new BrowserProvider();
+export const browserProviderInstance =  new BrowserProvider();
