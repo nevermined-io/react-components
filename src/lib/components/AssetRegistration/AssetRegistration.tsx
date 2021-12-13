@@ -24,7 +24,6 @@ interface AssetRegistrationProps {
   pricingFields?: Array<FormFieldData>;
 }
 
-const b = BEM('asset-registration');
 export default function AssetRegistration({
   debug = false,
   onSubmit = (data: any) => console.log('Should submit to API', data),
@@ -38,7 +37,9 @@ export default function AssetRegistration({
   const { watch, handleSubmit } = useFormContext();
   const [currentStep, setCurrentStep] = useState(0);
 
-  // if (debug) console.log(watch());
+  const b = BEM(className);
+
+  // * logging input values
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
       if (debug) console.log(value, name);
@@ -46,12 +47,13 @@ export default function AssetRegistration({
 
     return () => subscription.unsubscribe();
   }, [watch]);
+
   const onNextClick = () => setCurrentStep(currentStep + 1);
   const onPreviousClick = () => setCurrentStep(currentStep - 1);
 
   return (
     <section className={className}>
-      <h1>Asset Registration, Current Step: {currentStep}</h1>
+      <h1>{`Asset Registration, Current Step: ${currentStep}`}</h1>
 
       {currentStep === 0 && (
         <RegistrationStep
@@ -71,7 +73,6 @@ export default function AssetRegistration({
       {currentStep === 1 && (
         <RegistrationStep
           className={'registration-step'}
-          // styles={styles.registrationStep}
           title={<h2>Authorship</h2>}
           fields={uniqBy(
             [{ id: 'author', label: 'Asset Author', type: 'text' }, ...authorshipFields],
@@ -99,19 +100,33 @@ export default function AssetRegistration({
         />
       )}
 
-      <section className={styles.navigationButtonContainer}>
+      <section className={b('button-container')}>
         {currentStep !== 0 && (
-          <button disabled={currentStep === 0} onClick={onPreviousClick} type="button">
+          <button
+            className={b('button-secondary')}
+            disabled={currentStep === 0}
+            onClick={onPreviousClick}
+            type="button"
+          >
             Previous
           </button>
         )}
         {currentStep < 2 && (
-          <button disabled={currentStep === 2} onClick={onNextClick} type="button">
+          <button
+            className={b('button-secondary')}
+            disabled={currentStep === 2}
+            onClick={onNextClick}
+            type="button"
+          >
             Next
           </button>
         )}
         {currentStep === 2 && (
-          <button onClick={handleSubmit(onSubmit, onSubmitError)} type="button">
+          <button
+            className={b('button-primary')}
+            onClick={handleSubmit(onSubmit, onSubmitError)}
+            type="button"
+          >
             Submit
           </button>
         )}
