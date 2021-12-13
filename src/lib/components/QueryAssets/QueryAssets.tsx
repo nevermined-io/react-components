@@ -4,7 +4,8 @@ import { DDO } from '@nevermined-io/nevermined-sdk-js';
 import { useNevermined } from 'lib/contexts/NeverminedProvider';
 
 interface QueryAssetsProps {
-  infinite?: boolean // TODO: works with pagination or infinite
+  infinite?: boolean
+  size?: number
   children: (
     assets: DDO[],
     info: QueryStats & {canGoNext: boolean, canGoPrev: boolean},
@@ -19,7 +20,7 @@ interface QueryStats {
   totalResults: number
 }
 
-export const NuiQueryAssets = React.memo(function ({children, infinite}: QueryAssetsProps) {
+export const NuiQueryAssets = React.memo(function ({children, infinite, size = 12}: QueryAssetsProps) {
   const { sdk } = useNevermined();
   const [ assets, setAssets ] = useState<DDO[]>([]);
   const [ stats, setStats ] = useState<QueryStats>();
@@ -39,7 +40,7 @@ export const NuiQueryAssets = React.memo(function ({children, infinite}: QueryAs
     }
     sdk.assets
       .query({
-        offset: 10,
+        offset: size,
         page,
         query: {},
         sort: {
