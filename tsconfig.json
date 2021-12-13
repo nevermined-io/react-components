@@ -19,9 +19,11 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "outDir": "./dist/node/"
   },
   "include": [
-    "src"
+    "src/lib/**/*",
+    "src/types/*",
   ]
 }
