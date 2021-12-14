@@ -2,8 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import Web3 from 'web3';
 import { Config } from '@nevermined-io/nevermined-sdk-js';
 
-import BurnerWalletProvider from 'lib/contexts/wallets/BurnerWalletProvider';
-import { BrowserProvider, browserProviderInstance } from 'lib/contexts/wallets/BrowserProvider';
+import BurnerWalletProvider from '../wallets/BurnerWalletProvider';
+import { BrowserProvider, browserProviderInstance } from '../wallets/BrowserProvider';
 
 export function useWeb3Service(config: Config, shouldReloadOnNetworkChange?: boolean) {
   const [isConnected, setIsConnected] = useState<boolean>(true);

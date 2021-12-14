@@ -1,12 +1,12 @@
 import React, { createContext, useContext } from 'react';
 import { Config } from '@nevermined-io/nevermined-sdk-js';
 
-import { useWeb3Service, Web3ServiceContext } from 'lib/contexts/services/Web3Service';
+import { useWeb3Service, Web3ServiceContext } from './services/Web3Service';
 import {
   useNeverminedService,
   NeverminedServiceContext
-} from 'lib/contexts/services/NeverminedService';
-import { useTokenUtilsService, TokenUtilsServiceContext } from 'lib/contexts/services/TokenUtilsService';
+} from './services/NeverminedService';
+import { useTokenUtilsService, TokenUtilsServiceContext } from './services/TokenUtilsService';
 
 export type NeverminedProviderContext = Web3ServiceContext & NeverminedServiceContext & {services: TokenUtilsServiceContext};
 

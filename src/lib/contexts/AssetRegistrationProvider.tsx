@@ -1,6 +1,6 @@
 import { DDO, DID, MetaData } from '@nevermined-io/nevermined-sdk-js';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
-import { BadGatewayAddressError, ERRORS } from 'lib/errors';
+import { BadGatewayAddressError, ERRORS } from '../errors';
 import React, { createContext, useContext } from 'react';
 import { useNevermined } from './NeverminedProvider';
 

@@ -8,6 +8,9 @@ export class BrowserProvider {
     // Default
     this.web3 = null as any
     // Modern dapp browsers
+    if (typeof window === "undefined") {
+      return
+    }
     if (window.ethereum) {
       this.web3 = new Web3(window.ethereum as provider)
       console.log(this.web3)

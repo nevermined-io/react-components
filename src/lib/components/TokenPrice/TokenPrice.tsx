@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BN from 'bn.js';
-import { useNevermined } from 'lib/contexts/NeverminedProvider';
+import { useNevermined } from '../../contexts/NeverminedProvider';
 
 interface TokenPriceProps {
   address: string;
