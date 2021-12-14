@@ -107,6 +107,7 @@ export default function AssetRegistration({
             disabled={currentStep === 0}
             onClick={onPreviousClick}
             type="button"
+            name="previous"
           >
             Previous
           </button>
@@ -117,6 +118,7 @@ export default function AssetRegistration({
             disabled={currentStep === 2}
             onClick={onNextClick}
             type="button"
+            name="next"
           >
             Next
           </button>
@@ -125,7 +127,8 @@ export default function AssetRegistration({
           <button
             className={b('button-primary')}
             onClick={handleSubmit(onSubmit, onSubmitError)}
-            type="button"
+            type="submit"
+            name="submit"
           >
             Submit
           </button>
