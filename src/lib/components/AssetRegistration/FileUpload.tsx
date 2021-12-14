@@ -29,7 +29,7 @@ const FileUpload = React.memo(
     previewClassName,
     type,
     label,
-    mimeType,
+    mimeType = 'image/*',
     onDrop,
     DragActiveComponent = <p>Drop the files here ...</p>,
     DragInactiveComponent = <p>Drag 'n' drop some files here, or click to select files</p>
@@ -45,7 +45,7 @@ const FileUpload = React.memo(
     const [files, setFiles] = useState<FileWithPreview[]>(prevFiles);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
-      accept: mimeType || 'image/*',
+      accept: mimeType,
       onDrop: (acceptedFiles) => {
         files?.forEach((file: FileWithPreview): void => {
           URL.revokeObjectURL(file.preview);
@@ -69,7 +69,6 @@ const FileUpload = React.memo(
     useEffect(() => {
       // * revoke object urls of preview images after submit!
       if (isSubmitted) {
-        console.log('bro2', files);
         files?.forEach((file: FileWithPreview): void => {
           URL.revokeObjectURL(file.preview);
         });
@@ -78,34 +77,29 @@ const FileUpload = React.memo(
     }, [isSubmitted]);
 
     return (
-      <li className={className} role="button" aria-label="File Upload">
-        <label className={labelClassName} htmlFor={id}>
-          {label}
-        </label>
-        <div {...getRootProps()} className={elementClassName}>
-          <input
-            {...register(id)}
-            {...getInputProps()}
-            type={type}
-            id={id}
-            className={`${elementClassName}input`}
-          />
+      <div {...getRootProps()} className={elementClassName}>
+        <input
+          {...register(id)}
+          {...getInputProps()}
+          type={type}
+          id={id}
+          className={`${elementClassName}input`}
+        />
 
-          {!files?.length && (isDragActive ? DragActiveComponent : DragInactiveComponent)}
+        {!files?.length && (isDragActive ? DragActiveComponent : DragInactiveComponent)}
 
-          {!!files?.length && (
-            <div className={previewClassName}>
-              {files.map((file: FileWithPreview) => {
-                return (
-                  <div key={file.name}>
-                    <img src={file.preview} alt={file.name} />
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </li>
+        {!!files?.length && mimeType?.startsWith('image') && (
+          <div className={previewClassName}>
+            {files.map((file: FileWithPreview) => {
+              return (
+                <picture key={file.name}>
+                  <img src={file.preview} alt={file.name} />
+                </picture>
+              );
+            })}
+          </div>
+        )}
+      </div>
     );
   }
 );
