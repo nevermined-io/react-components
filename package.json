@@ -4,8 +4,12 @@
   "private": true,
   "scripts": {
     "start": "BROWSER=none react-scripts start",
-    "build": "react-scripts build",
-    "build:tsc": "rm -rf dist && tsc --sourceMap",
+    "build": "npm run clean && npm run build:tsc && npm run copy:scss && npm run build:webpack",
+    "build:react": "react-scripts build",
+    "build:tsc": "tsc",
+    "build:webpack": "webpack --mode production",
+    "clean": "rm -rf dist",
+    "copy:scss": "cd src/lib && find . -name '*.scss' -exec cp --parents \\{\\} ../../dist/node \\; && cd ../..",
     "test": "react-scripts test --coverage --watchAll=false --silent --env=./test/custom-env.js",
     "eject": "react-scripts eject",
     "ts:lint": "npx eslint . --ext .ts,.tsx"
@@ -52,6 +56,9 @@
     "web3": "^1.6.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
     "@metamask/providers": "^8.1.1",
     "@react-mock/state": "^0.1.8",
     "@testing-library/jest-dom": "^5.15.1",
@@ -62,6 +69,9 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "babel-loader": "^8.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "5.2.7",
     "eslint-config-react-app": "^6.0.0",
     "eslint-plugin-cypress": "^2.12.1",
     "jest-environment-jsdom": "^27.4.3",
@@ -70,6 +80,11 @@
     "prettier-eslint": "^13.0.0",
     "prettier-stylelint": "^0.4.2",
     "sass": "^1.43.4",
-    "typescript": "^4.5.3"
+    "sass-loader": "10.1.1",
+    "style-loader": "2.0.0",
+    "typescript": "^4.5.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-node-externals": "^1.7.2"
   }
 }

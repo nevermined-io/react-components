@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { fireEvent, render, act } from '@testing-library/react';
-import MetaDataFormProvider from '../../context/forms/MetaDataFormProvider';
+import MetaDataFormProvider from '../../contexts/forms/MetaDataFormProvider';
 import FileUpload from './FileUpload';
 
 const renderWithProvider = (comp: ReactNode, rest?: any) => {
