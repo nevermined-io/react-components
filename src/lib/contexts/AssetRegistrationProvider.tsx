@@ -11,7 +11,7 @@ interface AssetRegistrationProviderValue {
 }
 
 const AssetRegistrationContext = createContext({} as AssetRegistrationProviderValue);
-const AssetRegistrationProvider = ({
+export const AssetRegistrationProvider = ({
   children
 }: {
   children: React.ReactNode;
@@ -86,7 +86,6 @@ const AssetRegistrationProvider = ({
   );
 };
 
-const useAssetRegistration = (): AssetRegistrationProviderValue =>
+export const useAssetRegistration = (): AssetRegistrationProviderValue =>
   useContext(AssetRegistrationContext);
-export { useAssetRegistration, AssetRegistrationContext };
 export default AssetRegistrationProvider;

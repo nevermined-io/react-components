@@ -16,7 +16,7 @@ interface NeverminedProviderProps {
   shouldReloadOnNetworkChange?: boolean;
 }
 
-const NeverminedProvider = ({
+export const NeverminedProvider = ({
   children,
   config,
   shouldReloadOnNetworkChange

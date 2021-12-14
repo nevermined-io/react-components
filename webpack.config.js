@@ -1,6 +1,7 @@
 const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const nodeExternals = require('webpack-node-externals');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const nodeExternals = require('webpack-node-externals')
 
 module.exports = {
   entry: './dist/node/index.js',
@@ -8,13 +9,15 @@ module.exports = {
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
-    library: '',
     libraryTarget: 'commonjs'
   },
-  plugins: [new CleanWebpackPlugin({
-    root: path.resolve(__dirname, 'dist/node'),
-    cleanOnceBeforeBuildPatterns: ['**/*.js', '**/*.scss']
-  })],
+  plugins: [
+    new CleanWebpackPlugin({
+      root: path.resolve(__dirname, 'dist/node'),
+      cleanOnceBeforeBuildPatterns: ['**/*.js', '**/*.scss']
+    }),
+    new MiniCssExtractPlugin()
+  ],
   module: {
     rules: [
       {
@@ -24,7 +27,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
         include: path.resolve(__dirname, './dist/node')
       }
     ]
