@@ -12,11 +12,12 @@ describe.skip('Asset Registration', () => {
     localStorage.setItem('seedphrase', mnemonic);
   });
   beforeEach(() => {
-    cy.visit('/');
+    cy.visit('/').debug();
     cy.get('.asset-registration');
   });
 
   it('should do something', () => {
-    cy.get('article form h2', { timeout: 60000 }).should('contain', 'Details');
+    cy.get('.asset-registration').should('contain', 'Details');
+    // cy.get('article form h2', { timeout: 60000 }).should('contain', 'Details');
   });
 });
