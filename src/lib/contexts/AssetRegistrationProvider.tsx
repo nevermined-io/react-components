@@ -1,7 +1,7 @@
 import { DDO, DID, MetaData } from '@nevermined-io/nevermined-sdk-js';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import { BadGatewayAddressError, ERRORS } from 'lib/errors';
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNevermined } from './NeverminedProvider';
 
 interface AssetRegistrationProviderValue {
@@ -29,6 +29,19 @@ const AssetRegistrationProvider = ({
   const [hasFinishedPublishing, setHasFinishedPublishing] = useState(false);
   const [hasPublishingError, setHasPublishingError] = useState(false);
   const [publishingError, setPublishingError] = useState<any>(null);
+
+  useEffect(() => {
+    // * simple method to reset error state for now
+    if (hasFinishedPublishing) {
+      if (hasPublishingError) {
+        setTimeout(() => {
+          setPublishingError(null);
+          setHasFinishedPublishing(false);
+          setIsPublishing(false);
+        }, 5000);
+      }
+    }
+  }, [hasFinishedPublishing, hasPublishingError]);
 
   const registerAsset = async (data: MetaData): Promise<DDO | any> => {
     try {

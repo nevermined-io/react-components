@@ -19,14 +19,7 @@ import { ReactComponent as NeverminedLogo } from './lib/components/Layout/Logos/
 import { ReactComponent as KeykoLogo } from './lib/components/Layout/Logos/keyko-logo.svg';
 
 function Example() {
-  const {
-    registerAsset,
-    retrieveAssetDDO,
-    isPublishing,
-    hasFinishedPublishing,
-    hasPublishingError,
-    publishingError
-  } = useAssetRegistration();
+  const { registerAsset, retrieveAssetDDO } = useAssetRegistration();
 
   const onSubmit = async (data: MetaDataFormDTO) => {
     const dataToSend = mapFormDataToMetaData('jochenname', data);
@@ -82,12 +75,6 @@ function Example() {
       </Header>
       <Main>
         <article>
-          <section>
-            isPublishing: {isPublishing ? 'YES' : 'NO'} <br />
-            hasFinishedPublishing: {hasFinishedPublishing ? 'YES' : 'NO'} <br />
-            hasPublishingError: {hasPublishingError ? 'YES' : 'NO'} <br />
-            publishingError: {publishingError} <br />
-          </section>
           <section>
             <NeverminedLogo width="256px" height="256px" />
           </section>

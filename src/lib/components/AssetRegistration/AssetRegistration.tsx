@@ -8,6 +8,7 @@ import { FormFieldData } from './types';
 import uniqBy from 'lodash.uniqby';
 import { BEM } from '../../utils/bemHelpers';
 // import MetaDataFormProvider, { MetaDataFormDTO } from '../../contexts/form/MetaDataFormProvider';
+import PublishingState from './PublishingState';
 
 interface AssetRegistrationProps {
   styles?: {
@@ -54,7 +55,6 @@ export default function AssetRegistration({
   return (
     <section className={className}>
       <h1>{`Asset Registration, Current Step: ${currentStep}`}</h1>
-
       {currentStep === 0 && (
         <RegistrationStep
           className={'registration-step'}
@@ -99,7 +99,9 @@ export default function AssetRegistration({
           )}
         />
       )}
-
+      <section className={b('publishing-state')}>
+        <PublishingState />
+      </section>
       <section className={b('button-container')}>
         {currentStep !== 0 && (
           <button
