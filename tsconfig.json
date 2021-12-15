@@ -21,7 +21,8 @@
     "jsx": "react-jsx",
     "rootDir": "./src/lib",
     "baseUrl": "./src",
-    "outDir": "./dist/node"
+    "outDir": "./dist/node",
+    "noEmit": true
   },
   "include": [
     "src/lib",
