@@ -7,17 +7,17 @@ const mnemonic =
   process.env.REACT_APP_BURNER_MNEMONIC ||
   'taxi music thumb unique chat sand crew more leg another off lamp';
 
-describe.skip('Asset Registration', () => {
+describe('Asset Registration', () => {
   before(() => {
     localStorage.setItem('seedphrase', mnemonic);
   });
   beforeEach(() => {
-    cy.visit('/').debug();
-    cy.get('.asset-registration');
+    // cy.get('.asset-registration');
   });
 
   it('should do something', () => {
-    cy.get('.asset-registration').should('contain', 'Details');
+    cy.visit('/');
+    cy.get('.asset-registration', { timeout: 60000 }).should('contain', 'Details');
     // cy.get('article form h2', { timeout: 60000 }).should('contain', 'Details');
   });
 });
