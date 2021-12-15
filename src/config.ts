@@ -16,7 +16,6 @@ export const faucetUri = process.env.REACT_APP_FAUCET_URI || 'http://localhost:3
 export const nodeUri = process.env.REACT_APP_NODE_URI || 'http://localhost:8545'
 export const secretStoreUri = process.env.REACT_APP_SECRET_STORE_URI || 'http://localhost:12001'
 export const parityUri = process.env.REACT_APP_PARITY_URI || 'http://localhost:9545';
-export const shouldUseBurnerWallet = process.env.REACT_APP_BURNER_WALLET_ENABLED || false;
 
 const defaultConfig = {
   metadataUri,
@@ -31,8 +30,7 @@ const defaultConfig = {
 } as Config;
 
 const config = {
-  neverminedConfig: defaultConfig,
-  shouldUseBurnerWallet
+  neverminedConfig: defaultConfig
 };
 
 export default config;

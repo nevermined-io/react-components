@@ -108,6 +108,7 @@ export default function AssetRegistration({
             onClick={onPreviousClick}
             type="button"
             name="previous"
+            data-qa="previous-button"
           >
             Previous
           </button>
@@ -119,6 +120,7 @@ export default function AssetRegistration({
             onClick={onNextClick}
             type="button"
             name="next"
+            data-qa="next-button"
           >
             Next
           </button>
@@ -129,6 +131,7 @@ export default function AssetRegistration({
             onClick={handleSubmit(onSubmit, onSubmitError)}
             type="submit"
             name="submit"
+            data-qa="submit-button"
           >
             Submit
           </button>

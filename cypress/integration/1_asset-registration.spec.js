@@ -18,6 +18,10 @@ describe('Asset Registration', () => {
   it('should do something', () => {
     cy.visit('/');
     cy.get('.asset-registration', { timeout: 60000 }).should('contain', 'Details');
+    $('next-button').should('not.be.disabled');
+    $('next-button').click();
+    $('next-button').click();
+    $('submit-button').click();
     // cy.get('article form h2', { timeout: 60000 }).should('contain', 'Details');
   });
 });
