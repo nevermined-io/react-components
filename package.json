@@ -1,7 +1,7 @@
 {
   "name": "@nevermined-io/components-catalog",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.0.1",
+  "private": false,
   "scripts": {
     "start": "BROWSER=none react-scripts start",
     "build": "npm run clean && npm run build:tsc && npm run copy:scss && npm run build:webpack",
