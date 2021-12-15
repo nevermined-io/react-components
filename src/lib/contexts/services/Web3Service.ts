@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import Web3 from 'web3';
 import { Config } from '@nevermined-io/nevermined-sdk-js';
-
+import { shouldUseBurnerWallet } from '../../../config';
 import BurnerWalletProvider from 'lib/contexts/wallets/BurnerWalletProvider';
 import BrowserProvider from 'lib/contexts/wallets/BrowserProvider';
 
@@ -15,7 +15,7 @@ export function useWeb3Service(config: Config, shouldReloadOnNetworkChange?: boo
 
   const connect = useCallback(async () => {
     let browserProvider: typeof BrowserProvider | BurnerWalletProvider;
-    if (false) {
+    if (shouldUseBurnerWallet) {
       console.warn('Using Burner Wallet. Only for testing purposes.');
       browserProvider = new BurnerWalletProvider(config.nodeUri!);
     } else {
