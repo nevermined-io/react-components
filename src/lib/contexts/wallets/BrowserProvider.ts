@@ -1,13 +1,16 @@
 import Web3 from 'web3'
 import { provider } from 'web3-core'
 
-class BrowserProvider {
+export class BrowserProvider {
   private web3: Web3
 
   constructor() {
     // Default
     this.web3 = null as any
     // Modern dapp browsers
+    if (typeof window === "undefined") {
+      return
+    }
     if (window.ethereum) {
       this.web3 = new Web3(window.ethereum as provider)
       console.log(this.web3)
@@ -52,4 +55,4 @@ class BrowserProvider {
   }
 }
 
-export default new BrowserProvider();
+export const browserProviderInstance =  new BrowserProvider();

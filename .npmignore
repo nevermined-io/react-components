@@ -59,5 +59,8 @@ yarn-error.log*
 .vercel
 .env
 
-# dist folder
-dist/
+# source folder
+.github
+src
+test
+public

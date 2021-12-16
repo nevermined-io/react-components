@@ -14,9 +14,8 @@ import Header from 'lib/components/Layout/Header';
 import Footer from 'lib/components/Layout/Footer';
 import Main from 'lib/components/Layout/Main';
 
-import { ReactComponent as NeverminedWhiteLogo } from './lib/components/Layout/Logos/nevermined-logo-modifiable.svg';
-import { ReactComponent as NeverminedLogo } from './lib/components/Layout/Logos/nevermined-logo.svg';
-import { ReactComponent as KeykoLogo } from './lib/components/Layout/Logos/keyko-logo.svg';
+import { NeverminedLogo } from './lib/components/Layout/Logos/Logo';
+import { KeykoLogo } from './lib/components/Layout/Logos/KeykoLogo';
 
 function Example() {
   const { registerAsset, retrieveAssetDDO } = useAssetRegistration();
@@ -46,7 +45,7 @@ function Example() {
       console.log('login nvmContext ye', nvmContext, nvmContext.user.balance);
     };
     login();
-  }, [nvmContext]);
+  }, []);
 
   const fields: FormFieldData[] = [
     { id: 'name', label: 'Asset Name', type: 'text' },
@@ -62,7 +61,7 @@ function Example() {
         <nav>
           <ul>
             <li>
-              <NeverminedWhiteLogo width="48px" height="48px" fill="#ffffff" />
+              <NeverminedLogo width={48} height={48} color="#ffffff" />
             </li>
             <li>
               <NuiTokenPrice address="0x022E292b44B5a146F2e8ee36Ff44D3dd863C915c">
@@ -76,7 +75,7 @@ function Example() {
       <Main>
         <article>
           <section>
-            <NeverminedLogo width="256px" height="256px" />
+            <NeverminedLogo width={256} height={256} />
           </section>
           <AssetRegistration
             onSubmit={onSubmit}
@@ -103,10 +102,10 @@ function Example() {
         <nav>
           <ul>
             <li>
-              <NeverminedWhiteLogo width="48px" height="48px" fill="#ffffff" />
+              <NeverminedLogo width={48} height={48} color="#ffffff" />
             </li>
             <li>
-              <KeykoLogo width="48px" height="48px" fill="#ffffff" />
+              <KeykoLogo width={48} height={48} color="#ffffff" />
             </li>
           </ul>
         </nav>
