@@ -14,6 +14,16 @@ jobs:
       fail-fast: false
       matrix:
         network: ['--spree-embedded-contracts', '--polygon']
+    env:
+      SENDGRID_API_KEY: 'xxx'
+      IPFS_GATEWAY_URI: 'https://ipfs.oceanprotocol.com'
+      S3_MINIO_ACCESS_KEY_ID: 'minioadmin'
+      S3_MINIO_SECRET_ACCESS_KEY: 'minioadmin'
+      S3_AWS_ACCESS_KEY_ID: 'AKIAQ3QJX777QT3XNUEM'
+      S3_AWS_SECRET_ACCESS_KEY: '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'
+      S3_AWS_ENDPOINT: 's3.eu-central-1.amazonaws.com'
+      S3_MINIO_ENDPOINT: 'http://kubernetes.docker.internal:9000'
+      S3_LOCALHOST_ENDPOINT: 'http://localhost:9000'
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
