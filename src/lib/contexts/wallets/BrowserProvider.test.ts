@@ -1,10 +1,10 @@
-import BrowserProvider from './BrowserProvider';
+import { browserProviderInstance } from './BrowserProvider';
 
 
 describe("BrowserProvider", () => {
-  let provider: typeof BrowserProvider;
+  let provider: typeof browserProviderInstance;
   beforeEach(() => {
-    provider = BrowserProvider;
+    provider = browserProviderInstance;
   })
 
   it("Should instantiate", () => {

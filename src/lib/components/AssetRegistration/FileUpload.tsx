@@ -1,8 +1,8 @@
-import mapFileUrlToPreview from 'lib/utils/mapFileUrlToPreview';
 import React, { ReactNode, useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useFormContext } from 'react-hook-form';
 
+import mapFileUrlToPreview from '../../utils/mapFileUrlToPreview';
 import { FormFieldData } from './types';
 
 interface FileUploadProps extends FormFieldData {

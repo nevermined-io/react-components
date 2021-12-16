@@ -2,8 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import Web3 from 'web3';
 import { Config } from '@nevermined-io/nevermined-sdk-js';
 
-import BurnerWalletProvider from 'lib/contexts/wallets/BurnerWalletProvider';
-import BrowserProvider from 'lib/contexts/wallets/BrowserProvider';
+import BurnerWalletProvider from '../wallets/BurnerWalletProvider';
+import { BrowserProvider, browserProviderInstance } from '../wallets/BrowserProvider';
 
 export function useWeb3Service(config: Config, shouldReloadOnNetworkChange?: boolean) {
   const [isConnected, setIsConnected] = useState<boolean>(true);
@@ -13,13 +13,13 @@ export function useWeb3Service(config: Config, shouldReloadOnNetworkChange?: boo
 
   // TODO: BurnerWallet needs to be integrated
 
-  const connect = useCallback(async () => {
-    let browserProvider: typeof BrowserProvider | BurnerWalletProvider;
+  const connect = useCallback<any>(async () => {
+    let browserProvider: typeof browserProviderInstance | BurnerWalletProvider;
     if (false) {
       console.warn('Using Burner Wallet. Only for testing purposes.');
       browserProvider = new BurnerWalletProvider(config.nodeUri!);
     } else {
-      browserProvider = BrowserProvider;
+      browserProvider = browserProviderInstance;
     }
     await browserProvider.startLogin();
     const accounts: string[] = await (browserProvider as any).web3?.eth.getAccounts();
@@ -31,12 +31,12 @@ export function useWeb3Service(config: Config, shouldReloadOnNetworkChange?: boo
 
   const disconnect = useCallback(() => {
     setIsConnected(false);
-    const browserProvider = BrowserProvider;
+    const browserProvider = browserProviderInstance;
     browserProvider.logout();
   }, []);
 
   const initialize = async () => {
-    const wallet = await connect();
+    const wallet: BrowserProvider = await connect();
     wallet.onAccountChange(address => setAddress(address));
     wallet.onNetworkChange(chainId => {
       setChainId(chainId)

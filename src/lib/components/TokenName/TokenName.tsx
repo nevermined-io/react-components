@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNevermined } from 'lib/contexts/NeverminedProvider';
+import { useNevermined } from '../../contexts/NeverminedProvider';
 
 interface TokenNameProps {
   address: string;
