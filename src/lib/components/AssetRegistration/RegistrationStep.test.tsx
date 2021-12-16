@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import RegistrationStep from './RegistrationStep';
 import { render } from '@testing-library/react';
-import MetaDataFormProvider from 'lib/contexts/forms/MetaDataFormProvider';
+import MetaDataFormProvider from '../../contexts/forms/MetaDataFormProvider';
 
 const renderWithProvider = (comp: ReactNode) => {
   return render(<MetaDataFormProvider>{comp}</MetaDataFormProvider>);
@@ -49,8 +49,8 @@ describe('RegistrationStep', () => {
     const { container } = renderWithProvider(
       <RegistrationStep className="registration-step" title={title} fields={[]} />
     );
-    expect(container.querySelector('h2')).toBeInTheDocument();
-    expect(container.querySelector('h2')).toHaveTextContent(title);
+    expect(container.querySelector('legend')).toBeInTheDocument();
+    expect(container.querySelector('legend')).toHaveTextContent(title);
   });
 
   it('renders title as custom component', () => {
