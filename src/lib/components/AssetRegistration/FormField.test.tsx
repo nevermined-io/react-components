@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import FormField from './FormField';
 import { render } from '@testing-library/react';
-import MetaDataFormProvider from 'lib/contexts/forms/MetaDataFormProvider';
+import MetaDataFormProvider from '../../contexts/forms/MetaDataFormProvider';
 
 const renderWithProvider = (comp: ReactNode) => {
   return render(<MetaDataFormProvider>{comp}</MetaDataFormProvider>);
