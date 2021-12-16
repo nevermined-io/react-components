@@ -37,6 +37,7 @@ jobs:
           rm -rf "${HOME}/.nevermined/nevermined-contracts/artifacts"
           ./start_nevermined.sh --latest --no-marketplace ${{ matrix.network }} &
           cd ..
+          echo pwd
           ./scripts/nevermined-tools.sh
       - name: Run e2e test
         env:
