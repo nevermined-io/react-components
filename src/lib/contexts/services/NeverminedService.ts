@@ -52,7 +52,10 @@ export function useNeverminedService(config: Config, { web3, address, network: {
   // Load Nevermined SDK
   const loadNevermined = useCallback(async (): Promise<void> => {
     if (web3) {
-      const nvmSdk: any = await Nevermined.getInstance(config);
+      const nvmSdk: any = await Nevermined.getInstance({
+        ...config,
+        web3Provider: web3,
+      });
       setSdk(nvmSdk);
       setIsLoading(false);
     }

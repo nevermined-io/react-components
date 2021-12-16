@@ -40,11 +40,10 @@ function Example() {
   (window as any).nvm = nvmContext;
 
   useEffect(() => {
-    const login = async () => {
-      await nvmContext.connect();
-      console.log('login nvmContext ye', nvmContext, nvmContext.user.balance);
-    };
-    login();
+    nvmContext.connect()
+      .then(() => {
+        console.log('login nvmContext ye', nvmContext, nvmContext.user.balance);
+      })
   }, []);
 
   const fields: FormFieldData[] = [
