@@ -23,7 +23,7 @@ function Example() {
 
   const onSubmit = async (data: MetaDataFormDTO) => {
     const dataToSend = mapFormDataToMetaData('jochenname', data);
-    console.log('mappedData', dataToSend);
+    console.error('mappedData', dataToSend);
 
     try {
       const res: DDO = await registerAsset(mapFormDataToMetaData('jochenname', data));
