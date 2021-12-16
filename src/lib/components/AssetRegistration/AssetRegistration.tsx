@@ -58,7 +58,7 @@ export default function AssetRegistration({
       {currentStep === 0 && (
         <RegistrationStep
           className={'registration-step'}
-          title={'Details'}
+          title={<h2>Details</h2>}
           fields={uniqBy(
             [
               { id: 'name', label: 'Asset Name', type: 'text' },
