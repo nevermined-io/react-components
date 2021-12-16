@@ -27,8 +27,8 @@ function Example() {
     try {
       const res: DDO = await registerAsset(mapFormDataToMetaData('jochenname', data));
       console.log(res);
-      const res2: DDO = await retrieveAssetDDO(res.id);
-      console.log('res2', res2);
+      // const res2: DDO = await retrieveAssetDDO(res.id);
+      // console.log('res2', res2);
     } catch (e) {
       console.error('appsubmiterr', e);
     }

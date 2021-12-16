@@ -22,6 +22,7 @@ describe('Asset Registration', () => {
     $('next-button').click();
     $('next-button').click();
     $('submit-button').click();
+    cy.get('#successMessage', { timeout: 60000 });
     // cy.get('article form h2', { timeout: 60000 }).should('contain', 'Details');
   });
 });

@@ -25,14 +25,13 @@ $button-color-main: linear-gradient(92.67deg, #7834f9 0%, #67cff9 100%);
   box-sizing: border-box;
 }
 html {
-  font-family: 'Archia', sans-serif;
   overflow-x: hidden;
   color: $font-color-secondary;
+  font-family: 'Titillium Web', sans-serif;
 }
 
 body {
   overflow-x: hidden;
-  font-family: 'Titillium Web', sans-serif;
   overflow-y: hidden;
   // min-height: 100vh;
   text-align: center;
@@ -61,6 +60,14 @@ li {
 
 label {
   font-size: 16px;
+}
+
+fieldset {
+  border: none;
+}
+legend {
+  text-transform: uppercase;
+  font-size: 24px;
 }
 
 // * semantics & basic layout

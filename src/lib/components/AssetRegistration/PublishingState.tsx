@@ -12,7 +12,7 @@ const PublishingState = () => {
     if (hasPublishingError) {
       return <h2>{`Error: ${publishingError}`}</h2>;
     }
-    return <h2>Publishing successful</h2>;
+    return <h2 id="successMessage">Publishing successful</h2>;
   }
 
   return <></>;
