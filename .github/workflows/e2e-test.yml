@@ -14,8 +14,6 @@ jobs:
       fail-fast: false
       matrix:
         network: ['--spree-embedded-contracts', '--polygon']
-    env:
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
