@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import './scss/style.scss';
-import mapFormDataToMetaData from 'lib/utils/mapFormDataToMetaData';
+import mapFormDataToMetaData from './lib/utils/mapFormDataToMetaData';
 
 import { DDO } from '@nevermined-io/nevermined-sdk-js';
-import { MetaDataFormDTO } from 'lib/contexts/forms/MetaDataFormProvider';
-import { useNevermined } from 'lib/contexts/NeverminedProvider';
-import { AssetRegistration, FormFieldData } from 'lib/components/AssetRegistration';
-import { useAssetRegistration } from 'lib/contexts/AssetRegistrationProvider';
+import { MetaDataFormDTO } from './lib/contexts/forms/MetaDataFormProvider';
+import { useNevermined } from './lib/contexts/NeverminedProvider';
+import { AssetRegistration, FormFieldData } from './lib/components/AssetRegistration';
+import { useAssetRegistration } from './lib/contexts/AssetRegistrationProvider';
 
-import { NuiTokenPrice } from 'lib/components/TokenPrice';
-import { NuiTokenName } from 'lib/components/TokenName';
-import Header from 'lib/components/Layout/Header';
-import Footer from 'lib/components/Layout/Footer';
-import Main from 'lib/components/Layout/Main';
+import { NuiTokenPrice } from './lib/components/TokenPrice';
+import { NuiTokenName } from './lib/components/TokenName';
+import Header from './lib/components/Layout/Header';
+import Footer from './lib/components/Layout/Footer';
+import Main from './lib/components/Layout/Main';
 
 import { NeverminedLogo } from './lib/components/Layout/Logos/Logo';
 import { KeykoLogo } from './lib/components/Layout/Logos/KeykoLogo';
@@ -26,11 +26,11 @@ function Example() {
 
     try {
       const res: DDO = await registerAsset(mapFormDataToMetaData('jochenname', data));
-      console.log(res);
+      console.log('result', res);
       // const res2: DDO = await retrieveAssetDDO(res.id);
       // console.log('res2', res2);
     } catch (e) {
-      console.error('appsubmiterr', e);
+      console.error('onSubmit error', e);
     }
   };
 
@@ -40,10 +40,9 @@ function Example() {
   (window as any).nvm = nvmContext;
 
   useEffect(() => {
-    nvmContext.connect()
-      .then(() => {
-        console.log('login nvmContext ye', nvmContext, nvmContext.user.balance);
-      })
+    nvmContext.connect().then(() => {
+      console.log('login nvmContext ye', nvmContext, nvmContext.user.balance);
+    });
   }, []);
 
   const fields: FormFieldData[] = [
@@ -104,7 +103,7 @@ function Example() {
               <NeverminedLogo width={48} height={48} color="#ffffff" />
             </li>
             <li>
-              <KeykoLogo width={48} height={48} color="#ffffff" />
+              <KeykoLogo size={48} color="#ffffff" />
             </li>
           </ul>
         </nav>

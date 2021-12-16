@@ -48,9 +48,12 @@ export const AssetRegistrationProvider = ({
     try {
       setIsPublishing(true);
       setHasFinishedPublishing(false);
+
       const asset = await sdk.assets.create(data, account);
+
       setIsPublishing(false);
       setHasFinishedPublishing(true);
+      
       return asset;
     } catch (e: any) {
       setPublishingError(e.message);

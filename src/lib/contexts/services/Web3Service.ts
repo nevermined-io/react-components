@@ -20,7 +20,6 @@ export function useWeb3Service(config: Config, shouldReloadOnNetworkChange?: boo
     if (localStorage.getItem('seedphrase') !== null) {
       console.warn('Using Burner Wallet. Only for testing purposes.');
       browserProvider = new BurnerWalletProvider(config.nodeUri!);
-      console.log("THIS SHOULD BE CALLED", browserProvider);
     } else {
       browserProvider = browserProviderInstance;
     }
