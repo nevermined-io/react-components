@@ -51,7 +51,6 @@ jobs:
           IPFS_GATEWAY_URI: 'https://ipfs.infura.io'
           FAUCET_TIMESPAN: 0
           # REACT_APP_CI_INFURA_URI: "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
-          REACT_APP_BURNER_WALLET_ENABLED: true
           REACT_APP_BURNER_MNEMONIC: ${{ secrets.seedWords }}
           # REACT_APP_MUSDC_ADDRESS: "0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e"
           # REACT_APP_MUSDC_DECIMALS: 6
