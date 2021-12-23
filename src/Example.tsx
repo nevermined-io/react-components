@@ -104,19 +104,51 @@ function Example() {
             </section>
           )}
           {currentPage === 1 && (
-            <section>
+            <section className="query-assets">
               <NuiQueryAssets>
                 {(assets, info, goNext, goPrev) => {
                   return (
                     <>
-                      {assets.map((_) => _.id).join(', ')}
-                      <br />
-                      <br />
                       {JSON.stringify(info, null, 2)}
-                      <br />
-                      <br />
-                      {info.canGoPrev && <span onClick={goPrev}> Prev </span>}
-                      {info.canGoNext && <span onClick={goNext}> Next </span>}
+                      <ul>
+                        {assets.map((ddo: DDO) => {
+                          const {
+                            id,
+                            service: [metadata, ...rest]
+                          } = ddo;
+                          const {
+                            attributes: {
+                              additionalInformation: { description }
+                            }
+                          } = metadata;
+
+                          return (
+                            <li key={id}>
+                              <ul>
+                                <li>
+                                  <label>ID:</label>
+                                  <span>{id}</span>
+                                </li>
+                                <li>
+                                  <label>Description:</label>
+                                  <span>{description}</span>
+                                </li>
+                              </ul>
+                            </li>
+                          );
+                        })}
+
+                        {info.canGoPrev && (
+                          <li>
+                            <button onClick={goPrev}> Prev </button>
+                          </li>
+                        )}
+                        {info.canGoNext && (
+                          <li>
+                            <button onClick={goNext}> Next </button>
+                          </li>
+                        )}
+                      </ul>
                     </>
                   );
                 }}

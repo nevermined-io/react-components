@@ -249,3 +249,43 @@ footer {
     }
   }
 }
+
+.query-assets {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  button {
+    background: $button-color-main;
+    color: white;
+    width: 50%;
+    min-height: 64px;
+    border-radius: 4px;
+  }
+  ul {
+    display: flex;
+    // align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    li {
+      border: 2px solid $defi-main-dark-gray;
+      padding: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      ul {
+        li {
+          border: none;
+          label {
+            font-size: 16px;
+            flex: 1 20%;
+          }
+          span {
+            font-size: 16px;
+            flex: 2;
+            margin-left: 0 auto;
+          }
+        }
+      }
+    }
+  }
+}

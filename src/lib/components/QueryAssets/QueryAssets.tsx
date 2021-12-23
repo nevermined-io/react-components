@@ -29,7 +29,7 @@ export const NuiQueryAssets = React.memo(function ({
   const [assets, setAssets] = useState<DDO[]>([]);
   const [stats, setStats] = useState<QueryStats>();
   const [page, setPage] = useState<number>(1);
-
+  console.log('page', page);
   const canGoNext = page < (stats?.totalPages || -Infinity);
   const canGoPrev = page > 1 && !infinite;
 
