@@ -87,7 +87,7 @@ header {
         &:first-child {
           padding-left: 1.2rem;
         }
-        &:nth-child(2) {
+        &:last-child {
           margin-left: auto;
           padding-right: 1.2rem;
         }
@@ -99,9 +99,26 @@ header {
 main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  // justify-content: center;
   padding: 2rem;
   min-height: 60vh;
+  article {
+    nav {
+      ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        li {
+          padding: 2rem;
+          font-size: 24px;
+          &:hover {
+            cursor: pointer;
+            color: $defi-secondary-light-purple;
+          }
+        }
+      }
+    }
+  }
 }
 
 footer {
