@@ -1,13 +1,18 @@
 import { DDO, DID, MetaData } from '@nevermined-io/nevermined-sdk-js';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
-import { BadGatewayAddressError, ERRORS } from '../errors';
-import React, { createContext, useContext } from 'react';
+import { BadGatewayAddressError, ERRORS } from 'lib/errors';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+
 import { useNevermined } from './NeverminedProvider';
 
 interface AssetRegistrationProviderValue {
   registerAsset(data: MetaData): Promise<DDO>;
   registerMintableAsset(): Promise<DDO>;
   retrieveAssetDDO(did: DID | string): Promise<DDO>;
+  isPublishing: boolean;
+  hasFinishedPublishing: boolean;
+  hasPublishingError: boolean;
+  publishingError: any;
 }
 
 const AssetRegistrationContext = createContext({} as AssetRegistrationProviderValue);
@@ -21,9 +26,41 @@ export const AssetRegistrationProvider = ({
     user: { account }
   } = useNevermined();
 
-  const registerAsset = async (data: MetaData): Promise<DDO> => {
-    const asset = await sdk.assets.create(data, account);
-    return asset;
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [hasFinishedPublishing, setHasFinishedPublishing] = useState(false);
+  const [hasPublishingError, setHasPublishingError] = useState(false);
+  const [publishingError, setPublishingError] = useState<any>(null);
+
+  useEffect(() => {
+    // * simple method to reset error state for now
+    if (hasFinishedPublishing) {
+      if (hasPublishingError) {
+        setTimeout(() => {
+          setPublishingError(null);
+          setHasFinishedPublishing(false);
+          setIsPublishing(false);
+        }, 5000);
+      }
+    }
+  }, [hasFinishedPublishing, hasPublishingError]);
+
+  const registerAsset = async (data: MetaData): Promise<DDO | any> => {
+    try {
+      setIsPublishing(true);
+      setHasFinishedPublishing(false);
+
+      const asset = await sdk.assets.create(data, account);
+
+      setIsPublishing(false);
+      setHasFinishedPublishing(true);
+      
+      return asset;
+    } catch (e: any) {
+      setPublishingError(e.message);
+      setHasPublishingError(true);
+      setIsPublishing(false);
+      setHasFinishedPublishing(true);
+    }
   };
 
   const registerMintableAsset = async (data: MetaData): Promise<DDO> => {
@@ -77,7 +114,11 @@ export const AssetRegistrationProvider = ({
         {
           registerAsset,
           registerMintableAsset,
-          retrieveAssetDDO
+          retrieveAssetDDO,
+          isPublishing,
+          hasFinishedPublishing,
+          hasPublishingError,
+          publishingError
         } as AssetRegistrationProviderValue
       }
     >

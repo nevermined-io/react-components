@@ -25,14 +25,13 @@ $button-color-main: linear-gradient(92.67deg, #7834f9 0%, #67cff9 100%);
   box-sizing: border-box;
 }
 html {
-  font-family: 'Archia', sans-serif;
   overflow-x: hidden;
   color: $font-color-secondary;
+  font-family: 'Titillium Web', sans-serif;
 }
 
 body {
   overflow-x: hidden;
-  font-family: 'Titillium Web', sans-serif;
   overflow-y: hidden;
   // min-height: 100vh;
   text-align: center;
@@ -63,6 +62,14 @@ label {
   font-size: 16px;
 }
 
+fieldset {
+  border: none;
+}
+legend {
+  text-transform: uppercase;
+  font-size: 24px;
+}
+
 // * semantics & basic layout
 header {
   padding: 1rem;
@@ -80,7 +87,7 @@ header {
         &:first-child {
           padding-left: 1.2rem;
         }
-        &:nth-child(2) {
+        &:last-child {
           margin-left: auto;
           padding-right: 1.2rem;
         }
@@ -92,12 +99,30 @@ header {
 main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  // justify-content: center;
   padding: 2rem;
   min-height: 60vh;
+  article {
+    nav {
+      ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        li {
+          padding: 2rem;
+          font-size: 24px;
+          &:hover {
+            cursor: pointer;
+            color: $defi-secondary-light-purple;
+          }
+        }
+      }
+    }
+  }
 }
 
 footer {
+  padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -152,7 +177,6 @@ footer {
         background-color: gray;
       }
     }
-
   }
   .registration-step {
     display: flex;
@@ -222,6 +246,48 @@ footer {
       padding: 0.2em;
       flex: 2;
       color: white;
+    }
+  }
+}
+
+.query-assets {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  button {
+    background: $button-color-main;
+    color: white;
+    width: 50%;
+    min-height: 64px;
+    border-radius: 4px;
+  }
+  ul {
+    display: flex;
+    // align-items: flex-start;
+    flex-direction: column;
+    width: 80%;
+    li {
+      border: 2px solid $defi-main-dark-gray;
+      padding: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      ul {
+        li {
+          border: none;
+          label {
+            font-size: 16px;
+            flex: 1 20%;
+          }
+          span {
+            background-color: $defi-main-dark-gray;
+            font-size: 16px;
+            flex: 2;
+            margin-left: 0 auto;
+          }
+        }
+      }
     }
   }
 }

@@ -32,8 +32,8 @@ const RegistrationStep = ({
 }: RegistrationStepProps) => {
   const b = BEM(className);
   return (
-    <section className={className}>
-      {typeof title === 'string' ? <h2>{title}</h2> : title}
+    <fieldset className={className}>
+      {typeof title === 'string' ? <legend>{title}</legend> : title}
       <form className={b('form')}>
         <ul className={b('form-list')}>
           {fields.map(({ id, label, type, rows, cols, min, max, step }: FormFieldData) => {
@@ -56,7 +56,7 @@ const RegistrationStep = ({
         </ul>
       </form>
       {children}
-    </section>
+    </fieldset>
   );
 };
 

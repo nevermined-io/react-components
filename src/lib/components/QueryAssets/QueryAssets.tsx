@@ -4,39 +4,43 @@ import { DDO } from '@nevermined-io/nevermined-sdk-js';
 import { useNevermined } from 'lib/contexts/NeverminedProvider';
 
 interface QueryAssetsProps {
-  infinite?: boolean
-  size?: number
+  infinite?: boolean;
+  size?: number;
   children: (
     assets: DDO[],
-    info: QueryStats & {canGoNext: boolean, canGoPrev: boolean},
+    info: QueryStats & { canGoNext: boolean; canGoPrev: boolean },
     goNext: () => void,
-    goPrev?: () => void,
-  ) => any
+    goPrev?: () => void
+  ) => any;
 }
 
 interface QueryStats {
-  page: number
-  totalPages: number
-  totalResults: number
+  page: number;
+  totalPages: number;
+  totalResults: number;
 }
 
-export const NuiQueryAssets = React.memo(function ({children, infinite, size = 12}: QueryAssetsProps) {
+export const NuiQueryAssets = React.memo(function ({
+  children,
+  infinite,
+  size = 12
+}: QueryAssetsProps) {
   const { sdk } = useNevermined();
-  const [ assets, setAssets ] = useState<DDO[]>([]);
-  const [ stats, setStats ] = useState<QueryStats>();
-  const [ page, setPage ] = useState<number>(1);
-
-  const canGoNext = page < (stats?.totalPages || -Infinity)
-  const canGoPrev = (page > 1) && !infinite
+  const [assets, setAssets] = useState<DDO[]>([]);
+  const [stats, setStats] = useState<QueryStats>();
+  const [page, setPage] = useState<number>(1);
+  console.log('page', page);
+  const canGoNext = page < (stats?.totalPages || -Infinity);
+  const canGoPrev = page > 1 && !infinite;
 
   useEffect(() => {
-    setAssets([])
-    setPage(1)
-  }, [infinite])
+    setAssets([]);
+    setPage(1);
+  }, [infinite]);
 
   useEffect(() => {
     if (!sdk?.assets) {
-      return
+      return;
     }
     sdk.assets
       .query({
@@ -45,33 +49,32 @@ export const NuiQueryAssets = React.memo(function ({children, infinite, size = 1
         query: {},
         sort: {
           created: -1
-        },
-      })
-      .then(result => {
-        setStats({...result, results: undefined} as any)
-        if (infinite) {
-          setAssets([...assets, ...result.results])
-        } else {
-          setAssets(result.results)
         }
       })
-  }, [sdk, page, infinite])
-
+      .then((result) => {
+        setStats({ ...result, results: undefined } as any);
+        if (infinite) {
+          setAssets([...assets, ...result.results]);
+        } else {
+          setAssets(result.results);
+        }
+      });
+  }, [sdk, page, infinite]);
 
   const goNext = useCallback(() => {
     if (canGoNext) {
-      setPage(page + 1)
+      setPage(page + 1);
     }
-  }, [page, infinite])
+  }, [page, infinite]);
 
   const goPrev = useCallback(() => {
     if (canGoPrev) {
-      setPage(page - 1)
+      setPage(page - 1);
     }
-  }, [page, infinite])
+  }, [page, infinite]);
 
   if (stats && goNext && goPrev) {
-    return children(assets, {...stats, canGoNext, canGoPrev}, goNext, goPrev)
+    return children(assets, { ...stats, canGoNext, canGoPrev }, goNext, goPrev);
   }
-  return null
+  return null;
 });

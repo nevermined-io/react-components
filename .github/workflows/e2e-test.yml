@@ -1,0 +1,61 @@
+name: Integration steps main - e2e
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        network: ['--spree-embedded-contracts', '--polygon']
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - name: Install dependencies
+        run: |
+          npm install -g npm
+          npm install -g eslint@7.32.0
+          npm install -g ganache-cli@~6.9.1
+          npm i
+      - name: Run tools (network)
+        run: |
+          sudo chmod go+r /etc/hosts
+          sudo echo "127.0.0.1  nevermined-metadata" | sudo tee -a /etc/hosts
+          sudo echo "127.0.0.1  metadata" | sudo tee -a /etc/hosts
+          echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+          git clone https://github.com/nevermined-io/tools nevermined-tools
+          cd nevermined-tools
+          export KEEPER_OWNER_ROLE_ADDRESS="0xe2DD09d719Da89e5a3D0F2549c7E24566e947260"
+          rm -rf "${HOME}/.nevermined/nevermined-contracts/artifacts"
+          ./start_nevermined.sh --latest --no-marketplace ${{ matrix.network }} &
+          cd ..
+          ls -la
+          ./scripts/nevermined-tools.sh
+      - name: Run e2e test
+        env:
+          REACT_APP_NODE_URI: 'http://localhost:8545'
+          REACT_APP_METADATA_URI: 'http://nevermined-metadata:5000'
+          REACT_APP_GATEWAY_URI: 'http://localhost:8030'
+          REACT_APP_SECRET_STORE_URI: 'http://localhost:12001'
+          REACT_APP_FAUCET_URI: 'http://localhost:3001'
+          REACT_APP_GATEWAY_ADDRESS: '0x068ed00cf0441e4829d9784fcbe7b9e26d4bd8d0'
+          REACT_APP_IPFS_GATEWAY_URI: 'https://ipfs.infura.io'
+          REACT_APP_IPFS_NODE_URI: ${{ secrets.ipfsNodeUri }}
+          IPFS_GATEWAY_URI: 'https://ipfs.infura.io'
+          FAUCET_TIMESPAN: 0
+          # REACT_APP_CI_INFURA_URI: "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
+          REACT_APP_BURNER_MNEMONIC: ${{ secrets.seedWords }}
+          # REACT_APP_MUSDC_ADDRESS: "0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e"
+          # REACT_APP_MUSDC_DECIMALS: 6
+          # REACT_APP_TOKEN_TICKER: "USDC"
+          # REACT_APP_MARKETPLACE_ADDRESS: "0xe2DD09d719Da89e5a3D0F2549c7E24566e947260"
+          # REACT_APP_FUND_TOKENS: true
+        run: npm run test:e2e

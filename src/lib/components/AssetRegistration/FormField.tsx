@@ -98,15 +98,20 @@ const FormField = ({
 
   if (type === 'file') {
     return (
-      <FileUpload
-        className={className}
-        labelClassName={labelClassName}
-        elementClassName={elementClassName}
-        previewClassName={`${elementClassName}preview`}
-        id={id}
-        label={label}
-        type={type}
-      />
+      <li className={className} role="button" aria-label="File Upload">
+        <label className={labelClassName} htmlFor={id}>
+          {label}
+        </label>
+        <FileUpload
+          className={className}
+          labelClassName={labelClassName}
+          elementClassName={elementClassName}
+          previewClassName={`${elementClassName}preview`}
+          id={id}
+          label={label}
+          type={type}
+        />
+      </li>
     );
   }
   return <div />;

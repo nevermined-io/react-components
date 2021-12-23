@@ -13,26 +13,32 @@ export function useWeb3Service(config: Config, shouldReloadOnNetworkChange?: boo
 
   // TODO: BurnerWallet needs to be integrated
 
+
   const connect = useCallback<any>(async () => {
     let browserProvider: typeof browserProviderInstance | BurnerWalletProvider;
-    if (false) {
+
+    if (localStorage.getItem('seedphrase') !== null) {
       console.warn('Using Burner Wallet. Only for testing purposes.');
       browserProvider = new BurnerWalletProvider(config.nodeUri!);
     } else {
       browserProvider = browserProviderInstance;
     }
+
     await browserProvider.startLogin();
+
     const accounts: string[] = await (browserProvider as any).web3?.eth.getAccounts();
+
     setIsConnected(true);
     setWeb3((browserProvider as any).web3);
     setAddress(accounts[0]);
+
     return browserProvider
   }, []);
 
   const disconnect = useCallback(() => {
     setIsConnected(false);
-    const browserProvider = browserProviderInstance;
-    browserProvider.logout();
+    // const browserProvider = browserProviderInstance;
+    // if (localStorage.getItem("seedphrase"))  browserProvider.logout();
   }, []);
 
   const initialize = async () => {

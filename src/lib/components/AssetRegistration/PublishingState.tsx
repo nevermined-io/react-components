@@ -1,0 +1,22 @@
+import React from 'react';
+import { useAssetRegistration } from 'lib/contexts/AssetRegistrationProvider';
+
+const PublishingState = () => {
+  const { isPublishing, hasFinishedPublishing, hasPublishingError, publishingError } =
+    useAssetRegistration();
+  if (isPublishing) {
+    return <h2>Publishing...</h2>;
+  }
+
+  if (hasFinishedPublishing) {
+    if (hasPublishingError) {
+      console.error('has publishing error', publishingError);
+      return <h2>{`Error: ${publishingError}`}</h2>;
+    }
+    return <h2 id="successMessage">Publishing successful</h2>;
+  }
+
+  return <></>;
+};
+
+export default PublishingState;
