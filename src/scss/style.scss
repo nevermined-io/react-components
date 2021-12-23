@@ -254,6 +254,7 @@ footer {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   button {
     background: $button-color-main;
     color: white;
@@ -265,7 +266,7 @@ footer {
     display: flex;
     // align-items: flex-start;
     flex-direction: column;
-    width: 100%;
+    width: 80%;
     li {
       border: 2px solid $defi-main-dark-gray;
       padding: 12px;
@@ -280,6 +281,7 @@ footer {
             flex: 1 20%;
           }
           span {
+            background-color: $defi-main-dark-gray;
             font-size: 16px;
             flex: 2;
             margin-left: 0 auto;
