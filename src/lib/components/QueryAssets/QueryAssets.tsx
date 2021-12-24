@@ -1,7 +1,3 @@
-/**
- * @moduledefinition QueryAssets
- */
-
 import React, { useEffect, useState, useCallback } from 'react';
 import { DDO } from '@nevermined-io/nevermined-sdk-js';
 
