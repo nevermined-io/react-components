@@ -1,9 +1,14 @@
+/**
+ * @module AssetRegistrationProvider
+ */
+
 import { DDO, DID, MetaData } from '@nevermined-io/nevermined-sdk-js';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import { BadGatewayAddressError, ERRORS } from 'lib/errors';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { useNevermined } from './NeverminedProvider';
+import { ProviderRPCError } from '../errors/index';
 
 interface AssetRegistrationProviderValue {
   registerAsset(data: MetaData): Promise<DDO>;
@@ -53,13 +58,15 @@ export const AssetRegistrationProvider = ({
 
       setIsPublishing(false);
       setHasFinishedPublishing(true);
-      
+
       return asset;
-    } catch (e: any) {
-      setPublishingError(e.message);
-      setHasPublishingError(true);
-      setIsPublishing(false);
-      setHasFinishedPublishing(true);
+    } catch (e) {
+      if (e instanceof Error) {
+        setPublishingError(e.message);
+        setHasPublishingError(true);
+        setIsPublishing(false);
+        setHasFinishedPublishing(true);
+      }
     }
   };
 
@@ -83,11 +90,13 @@ export const AssetRegistrationProvider = ({
       );
       console.log(asset);
       return asset;
-    } catch (e: any) {
-      if (e.code === 4001) {
-        throw new ERRORS[4001](e.message);
+    } catch (e) {
+      const err: ProviderRPCError = e as ProviderRPCError;
+
+      if (err.code === 4001) {
+        throw new ERRORS[4001](err.message);
       }
-      if (e.message.startsWith('invalid address')) {
+      if (err.message.startsWith('invalid address')) {
         throw new BadGatewayAddressError();
       }
     }

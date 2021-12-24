@@ -7,10 +7,10 @@ import { FormFieldData } from './types';
 
 import uniqBy from 'lodash.uniqby';
 import { BEM } from '../../utils/bemHelpers';
-// import MetaDataFormProvider, { MetaDataFormDTO } from '../../contexts/form/MetaDataFormProvider';
+
 import PublishingState from './PublishingState';
 
-interface AssetRegistrationProps {
+export interface AssetRegistrationProps {
   styles?: {
     root?: string;
     navigationButtonContainer?: string;
@@ -25,7 +25,7 @@ interface AssetRegistrationProps {
   pricingFields?: Array<FormFieldData>;
 }
 
-export default function AssetRegistration({
+const AssetRegistration = ({
   debug = false,
   onSubmit = (data: any) => console.log('Should submit to API', data),
   onSubmitError = (error: any) => console.log('Error', error),
@@ -34,7 +34,7 @@ export default function AssetRegistration({
   detailFields = [],
   pricingFields = [],
   authorshipFields = []
-}: AssetRegistrationProps) {
+}: AssetRegistrationProps) => {
   const { watch, handleSubmit } = useFormContext();
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -141,4 +141,6 @@ export default function AssetRegistration({
       </section>
     </section>
   );
-}
+};
+
+export default AssetRegistration;

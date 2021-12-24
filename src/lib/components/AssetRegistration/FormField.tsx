@@ -6,7 +6,7 @@ import { FormFieldData } from './types';
 
 import FileUpload from './FileUpload';
 
-interface FormFieldProps extends FormFieldData {
+export interface FormFieldProps extends FormFieldData {
   className?: string;
 }
 
