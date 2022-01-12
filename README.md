@@ -31,42 +31,25 @@ Builds the library. It uses a custom webpack config found under `webpack.config.
 
 This config is only used for building the `PACKAGE`, not for dev mode.
 
+### Documentation
+
+Documentation uses [`typedoc`](https://github.com/TypeStrong/typedoc) under the hood.
+
+To generate documentation:
+
+`yarn docs:generate`.
+
+To view documentation:
+
+`yarn docs:serve`
+
+Utility command to do both:
+
+`yarn docs:dev`
+
+
+Documentation is currently not hosted or committed to git.
+
 ## Components
 
-To see the components in action, start the server. The [Example](/src/Example.tsx) contains a small app showcasing all the components. Please make sure to add new components to the example.
-
-### [AssetRegistration](/src/lib/components/AssetRegistration/AssetRegistration.tsx)
-
-This component provides automated generation of form fields for the MetaData API.
-
-It needs to be wrapped in a [AssetRegistrationProvider](/src/lib/contexts/AssetRegistrationProvider.tsx) and a [MetaDataFormProvider](/src/lib/contexts/forms/MetaDataFormProvider.tsx) to work.
-
-It can be given a classname. This classname will generate the subclass names of the form field components.
-
-### Token Components
-
-TBD.
-
-### QueryAssets
-
-TBD.
-
-## Contexts
-
-TBD
-
-### Registering an asset
-
-TBD
-
-#### MetaDataFormProvider
-
-TBD
-
-#### AssetRegistrationProvider
-
-TBD
-
-## Services
-
-TBD
+To see the components in action, start the server. The [Example](/src/Example.tsx) contains a small app showcasing all the components. Please make sure to add new component examples to the example when you add new ones.
