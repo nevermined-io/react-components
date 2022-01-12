@@ -33,7 +33,7 @@ This config is only used for building the `PACKAGE`, not for dev mode.
 
 ### Documentation
 
-Documentation uses [`typedoc`](https://github.com/TypeStrong/typedoc) under the hood.
+Documentation uses [typedoc](https://github.com/TypeStrong/typedoc) under the hood.
 
 To generate documentation:
 
