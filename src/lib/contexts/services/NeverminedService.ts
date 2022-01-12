@@ -1,13 +1,23 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Nevermined, Config, Account } from '@nevermined-io/nevermined-sdk-js';
 
-import { Web3ServiceContext } from './Web3Service'
+import { Web3ServiceContext } from './Web3Service';
 
-export function useNeverminedService(config: Config, { web3, address, network: { chainId } }: Web3ServiceContext) {
+/**
+ *
+ * @param Config
+ * @param Web3ServiceContext
+ * @returns <NeverminedProvider />
+ * @returns useNevermined()
+ */
+export function useNeverminedService(
+  config: Config,
+  { web3, address, network: { chainId } }: Web3ServiceContext
+) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [sdk, setSdk] = useState({} as Nevermined);
   const [account, setAccount] = useState<Account>(new Account(''));
-  const [balance, setBalance] = useState<{ eth?: number, nevermined?: number }>({});
+  const [balance, setBalance] = useState<{ eth?: number; nevermined?: number }>({});
   const [networkName, setNetworkName] = useState('');
 
   // Update balance function
@@ -25,28 +35,26 @@ export function useNeverminedService(config: Config, { web3, address, network: {
   // Fetch account using current address
   useEffect(() => {
     if (!address || !sdk?.accounts) {
-      return
+      return;
     }
-    sdk.accounts?.list()
-      .then(([sdkAccount]) => {
-        if (account) {
-          const accountFetched = sdkAccount.getId();
+    sdk.accounts?.list().then(([sdkAccount]) => {
+      if (account) {
+        const accountFetched = sdkAccount.getId();
 
-          if (account && accountFetched.toLowerCase() !== account.getId().toLowerCase()) {
-            setAccount(sdkAccount);
-          }
-          return updateBalance(sdkAccount);
+        if (account && accountFetched.toLowerCase() !== account.getId().toLowerCase()) {
+          setAccount(sdkAccount);
         }
-      })
+        return updateBalance(sdkAccount);
+      }
+    });
   }, [address, sdk]);
 
   // Fetch network name
   useEffect(() => {
     if (!chainId || !sdk?.keeper) {
-      return
+      return;
     }
-    sdk.keeper.getNetworkName()
-      .then(setNetworkName)
+    sdk.keeper.getNetworkName().then(setNetworkName);
   }, [address, sdk]);
 
   // Load Nevermined SDK
@@ -54,7 +62,7 @@ export function useNeverminedService(config: Config, { web3, address, network: {
     if (web3) {
       const nvmSdk: any = await Nevermined.getInstance({
         ...config,
-        web3Provider: web3,
+        web3Provider: web3
       });
       setSdk(nvmSdk);
       setIsLoading(false);
@@ -72,13 +80,13 @@ export function useNeverminedService(config: Config, { web3, address, network: {
       balance,
       account,
       address,
-      updateBalance,
+      updateBalance
     },
     network: {
       chainId,
-      networkName,
-    },
-  }
+      networkName
+    }
+  };
 }
 
-export type NeverminedServiceContext = ReturnType<typeof useNeverminedService>
+export type NeverminedServiceContext = ReturnType<typeof useNeverminedService>;

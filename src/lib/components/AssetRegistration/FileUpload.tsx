@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import mapFileUrlToPreview from '../../utils/mapFileUrlToPreview';
 import { FormFieldData } from './types';
 
-interface FileUploadProps extends FormFieldData {
+export interface FileUploadProps extends FormFieldData {
   mimeType?: string;
   className?: string;
   labelClassName?: string;

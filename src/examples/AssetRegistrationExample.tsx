@@ -19,10 +19,6 @@ const AssetRegistrationExample = ({ onSubmit, onSubmitError }) => {
         ]}
         pricingFields={[{ id: 'anotherthing', label: 'Another thing:', type: 'textarea' }]}
       />
-      {/* {!isLoggedIn && <div>not logged in</div>} */}
-      {/* <button onClick={handleSubmit(onSubmit, onSubmitError)} type="button">
-        Submit
-      </button> */}
     </section>
   );
 };

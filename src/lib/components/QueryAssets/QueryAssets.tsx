@@ -3,7 +3,7 @@ import { DDO } from '@nevermined-io/nevermined-sdk-js';
 
 import { useNevermined } from 'lib/contexts/NeverminedProvider';
 
-interface QueryAssetsProps {
+export interface QueryAssetsProps {
   infinite?: boolean;
   size?: number;
   children: (
@@ -14,7 +14,7 @@ interface QueryAssetsProps {
   ) => any;
 }
 
-interface QueryStats {
+export interface QueryStats {
   page: number;
   totalPages: number;
   totalResults: number;

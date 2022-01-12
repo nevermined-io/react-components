@@ -1,3 +1,7 @@
+/**
+ * @module Errors
+ */
+
 export class MessageSignatureDeniedError extends Error {
   constructor(message = 'Message signature denied') {
     super(message);
@@ -25,3 +29,9 @@ export class BadGatewayAddressError extends Error {
 export const ERRORS = {
   4001: MessageSignatureDeniedError
 };
+
+export interface ProviderRPCError extends Error {
+  message: string;
+  code: number;
+  data?: unknown;
+}

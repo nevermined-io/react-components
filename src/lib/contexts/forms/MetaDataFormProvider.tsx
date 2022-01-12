@@ -1,6 +1,9 @@
 import React, { createContext, useContext } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 
+/**
+ * One-dimensional mapping of Nevermined MetaData to be used with thwe form.
+ */
 export interface MetaDataFormDTO {
   name?: string;
   type?: 'dataset' | 'algorithm' | 'compute' | 'workflow' | 'compute';
@@ -20,7 +23,11 @@ export interface MetaDataFormDTO {
 
 interface MetaDataFormProviderValue {}
 
-interface MetaDataFormProviderProps {
+/**
+ * Props for the FormProvider.
+ * You can set default values that match the @MetaDataFormDTO
+ */
+export interface MetaDataFormProviderProps {
   children?: React.ReactNode;
   defaultValues?: MetaDataFormDTO;
 }

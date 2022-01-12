@@ -1,4 +1,24 @@
 {
+  "typedocOptions": {
+    "entryPoints": [
+      "src/lib/components/AssetRegistration/",
+      "src/lib/components/QueryAssets/",
+      "src/lib/components/TokenName/",
+      "src/lib/components/TokenPrice/",
+      "src/lib/contexts/NeverminedProvider.tsx",
+      "src/lib/contexts/AssetRegistrationProvider.tsx",
+      "src/lib/contexts/services",
+      "src/lib/utils/",
+      "src/lib/errors/",
+    ],
+    "out": "docs",
+    "name": "Component Catalog Documentation",
+    "theme": "default",
+    "sort": [
+      "source-order"
+    ],
+    "hideGenerator": true
+  },
   "compilerOptions": {
     "target": "ES6",
     "lib": [

@@ -1,5 +1,6 @@
 import React from 'react';
 import { NuiQueryAssets } from 'lib/components/QueryAssets';
+import { DDO } from '@nevermined-io/nevermined-sdk-js';
 
 const QueryAssetExample = () => {
   return (
