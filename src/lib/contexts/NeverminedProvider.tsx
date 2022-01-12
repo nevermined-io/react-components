@@ -15,6 +15,9 @@ export type NeverminedProviderContext = Web3ServiceContext &
 
 interface NeverminedProviderProps {
   children: React.ReactNode;
+  /**
+   * javascript sdk config
+   */
   config: Config;
   shouldReloadOnNetworkChange?: boolean;
 }

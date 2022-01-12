@@ -7,7 +7,8 @@ import { Web3ServiceContext } from './Web3Service';
  *
  * @param Config
  * @param Web3ServiceContext
- * @returns creates custom hook for nevermined relevant stuff TBD: make this more concise
+ * @returns <NeverminedProvider />
+ * @returns useNevermined()
  */
 export function useNeverminedService(
   config: Config,

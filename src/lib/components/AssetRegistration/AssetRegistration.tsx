@@ -3,27 +3,12 @@ import { useFormContext } from 'react-hook-form';
 
 import defaultStyles from './scss/index.module.scss';
 import RegistrationStep from './RegistrationStep';
-import { FormFieldData } from './types';
+import { FormFieldData, AssetRegistrationProps } from './types';
 
 import uniqBy from 'lodash.uniqby';
 import { BEM } from '../../utils/bemHelpers';
 
 import PublishingState from './PublishingState';
-
-export interface AssetRegistrationProps {
-  styles?: {
-    root?: string;
-    navigationButtonContainer?: string;
-    registrationStep?: string;
-  };
-  className?: string;
-  debug?: boolean;
-  onSubmit?: (data: any) => void;
-  onSubmitError?: (error: any) => void;
-  detailFields?: Array<FormFieldData>;
-  authorshipFields?: Array<FormFieldData>;
-  pricingFields?: Array<FormFieldData>;
-}
 
 const AssetRegistration = ({
   debug = false,
