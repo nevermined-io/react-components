@@ -41,12 +41,11 @@
     ]
   },
   "peerDependencies": {
-    "@nevermined-io/nevermined-sdk-js": "^0.16.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "dependencies": {
-    "@nevermined-io/nevermined-sdk-js": "^0.16.0",
+    "@nevermined-io/nevermined-sdk-js": "^0.14.5",
     "@truffle/hdwallet-provider": "^2.0.0",
     "axios": "^0.24.0",
     "bem-helpers": "^1.1.0",
