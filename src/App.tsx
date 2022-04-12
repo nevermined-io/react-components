@@ -7,7 +7,7 @@ import AssetRegistrationProvider from 'lib/contexts/AssetRegistrationProvider';
 
 import generalConfig from './config';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <NeverminedProvider config={generalConfig.neverminedConfig} shouldReloadOnNetworkChange>

@@ -78,6 +78,7 @@ export const AssetRegistrationProvider = ({
       const nftAmount = 1;
       const royalties = 0;
 
+      //@ts-ignore
       const assetRewards = new AssetRewards(new Map([[account.getId(), Number(2)]]));
       const asset = await sdk.nfts.create(
         data,

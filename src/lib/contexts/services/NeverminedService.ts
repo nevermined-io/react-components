@@ -25,7 +25,9 @@ export function useNeverminedService(
     async (balanceAccount: Account) => {
       const balanceFetched = await balanceAccount.getBalance();
       const { eth, nevermined } = balance;
+      //@ts-ignore
       if (eth !== balanceFetched.eth || nevermined !== balanceFetched.nevermined) {
+        //@ts-ignore
         setBalance(balanceFetched);
       }
     },

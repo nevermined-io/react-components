@@ -8,7 +8,7 @@ const AssetRegistrationExample = ({ onSubmit, onSubmitError }) => {
         onSubmit={onSubmit}
         onSubmitError={onSubmitError}
         detailFields={[
-          { id: 'name', label: 'Asset Name', type: 'text' },
+          { id: 'name', label: '12 Asset Name', type: 'text' },
           { id: 'description', label: 'Asset Description:', type: 'textarea' },
           { id: 'testing', label: 'One thing:', type: 'textarea' },
           { id: 'something', label: 'Something:', type: 'textarea' }
