@@ -1,6 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './App';
+import './scss/style.scss';
+import MetaDataFormProvider from 'lib/contexts/forms/MetaDataFormProvider';
+import NeverminedProvider from 'lib/contexts/NeverminedProvider';
+import generalConfig from './config';
 
 // const mnemonic =
 //   process.env.REACT_APP_BURNER_MNEMONIC ||
@@ -8,4 +12,12 @@ import App from './App';
 
 // localStorage.setItem('seedphrase', mnemonic);
 
-ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);
+ReactDOM.render(
+  <NeverminedProvider config={generalConfig.neverminedConfig}>
+      <MetaDataFormProvider>
+        <App />
+      </MetaDataFormProvider>
+  </NeverminedProvider>,
+
+  document.getElementById('root') as HTMLElement
+);
