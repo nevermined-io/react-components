@@ -1,10 +1,7 @@
-// TODO: add MUI? https://blog.logrocket.com/using-material-ui-with-react-hook-form/
-
 import React from 'react';
 import { FormFieldData } from './types';
-
 import FileUpload from './FileUpload';
-import { useFormContext } from 'lib/contexts/forms/MetaDataFormProvider';
+import { useFormContext } from 'lib/contexts/MetaDataFormProvider';
 
 export interface FormFieldProps extends FormFieldData {
   className?: string;

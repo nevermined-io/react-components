@@ -1,7 +1,6 @@
 import { Account } from '@nevermined-io/nevermined-sdk-js';
+import { useNevermined, useWeb3Service } from 'lib/contexts/NeverminedProvider';
 import { useCallback, useEffect, useState } from 'react';
-import { useNevermined } from './NeverminedProvider';
-import { useWeb3Service } from './services';
 
 export const useAccountManager = () => {
   const { sdk } = useNevermined();

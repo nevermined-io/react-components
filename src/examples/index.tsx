@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import mapFormDataToMetaData from 'lib/utils/mapFormDataToMetaData';
 
 import { DDO } from '@nevermined-io/nevermined-sdk-js';
-import { MetaDataFormDTO } from 'lib/contexts/forms/MetaDataFormProvider';
 import { useNevermined } from 'lib/contexts/NeverminedProvider';
-import { useAssetManager } from 'lib/contexts/AssetRegistrationProvider';
-import { useAccountManager } from 'lib/contexts/AccountProvider';
 
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
@@ -16,6 +13,9 @@ import { KeykoLogo } from './components/Layout/Logos/KeykoLogo';
 import QueryAssetExample from './QueryAssetExample';
 import AssetRegistrationExample from './AssetRegistrationExample';
 import TokenExample from './TokenExample';
+import { useAssetManager } from 'lib/hooks/UseAssetManager';
+import { useAccountManager } from 'lib/hooks/UseAccountManager';
+import { MetaDataFormDTO } from 'lib/contexts/MetaDataFormProvider';
 
 function Example(props: any) {
   const { registerAsset } = useAssetManager();
