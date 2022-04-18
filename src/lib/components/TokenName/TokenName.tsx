@@ -1,20 +1,19 @@
+import { useTokenUtilsService } from 'lib/contexts';
 import React, { useEffect, useState } from 'react';
-import { useNevermined } from '../../contexts/NeverminedProvider';
 
 interface TokenNameProps {
   address: string;
 }
 
 export const NuiTokenName = React.memo(function ({ address }: TokenNameProps) {
-  const {
-    services: { tokenUtils }
-  } = useNevermined();
+  const { tokenUtils } = useTokenUtilsService();
   const [tokenSymbol, setTokenSymbol] = useState<string | null>(
     tokenUtils?.getInstantSymbol(address) || null
   );
 
   useEffect(() => {
-    if (tokenSymbol === null && tokenUtils) {
+    //tokenSymbol === null &&
+    if (tokenUtils) {
       tokenUtils.getSymbol(address).then((value) => setTokenSymbol(value || null));
     }
   }, [address, tokenUtils]);

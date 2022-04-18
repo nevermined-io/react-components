@@ -1,9 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
-import { Config } from '@nevermined-io/nevermined-sdk-js';
-
-import { Web3ServiceContext } from './Web3Service'
+import { useWeb3Service } from './Web3Service';
 
 const ERC20SymbolAbi = {
   constant: true,
@@ -17,8 +15,8 @@ const ERC20SymbolAbi = {
   ],
   payable: false,
   stateMutability: 'view' as const,
-  type: 'function' as const,
-}
+  type: 'function' as const
+};
 
 const ERC20DecimalsAbi = {
   constant: true,
@@ -32,78 +30,82 @@ const ERC20DecimalsAbi = {
   ],
   payable: false,
   stateMutability: 'view' as const,
-  type: 'function' as const,
-}
+  type: 'function' as const
+};
 
 class TokenUtilsService {
-  private cache: {[param: string]: {[address: string]: Promise<any> & {value?: any}}} = {}
+  private cache: { [param: string]: { [address: string]: Promise<any> & { value?: any } } } = {};
 
-  constructor(private web3: Web3) { }
+  constructor(private web3: Web3) {}
 
   getInstantSymbol(address: string) {
-    return this.getInstantValue<string>(address, ERC20SymbolAbi)
+    return this.getInstantValue<string>(address, ERC20SymbolAbi);
   }
   getSymbol(address: string) {
-    return this.getValue<string>(address, ERC20SymbolAbi)
+    return this.getValue<string>(address, ERC20SymbolAbi);
   }
 
   getInstantDecimals(address: string) {
-    return this.getInstantValue<number>(address, ERC20DecimalsAbi)
+    return this.getInstantValue<number>(address, ERC20DecimalsAbi);
   }
   getDecimals(address: string) {
-    return this.getValue<number>(address, ERC20DecimalsAbi)
+    return this.getValue<number>(address, ERC20DecimalsAbi);
   }
 
   private getInstantValue<T>(address: string, abi: AbiItem): T | null {
     if (!address) {
-      return null
+      return null;
     }
-    const param = abi.name!
+    const param = abi.name!;
     if (this.cache[param]?.[address] as any) {
-      return this.cache[param]?.[address].value || null
+      return this.cache[param]?.[address].value || null;
     }
-    return null
+    return null;
   }
 
   private getValue<T>(address: string, abi: AbiItem): Promise<T | undefined> {
-    const param = abi.name!
+    const param = abi.name!;
     if (!address) {
-      return Promise.resolve(undefined)
+      return Promise.resolve(undefined);
     }
     if (!this.cache[param]) {
-      this.cache[param] = {}
+      this.cache[param] = {};
     }
     if (this.cache[param][address] as any) {
-      return this.cache[param][address]
+      return this.cache[param][address];
     }
-    this.cache[param][address] = new Promise(async resolve => {
-      const contract = new this.web3.eth.Contract([abi], address)
+    this.cache[param][address] = new Promise(async (resolve) => {
+      const contract = new this.web3.eth.Contract([abi], address);
       try {
-        const value = await contract.methods[param]().call()
-        this.cache[param][address].value = value
-        resolve(value)
+        const value = await contract.methods[param]().call();
+        this.cache[param][address].value = value;
+        resolve(value);
       } catch {
-        this.cache[param][address].value = null
-        resolve(undefined)
+        this.cache[param][address].value = null;
+        resolve(undefined);
       }
-    })
-    return this.cache[param][address]
+    });
+    return this.cache[param][address];
   }
 }
 
-export function useTokenUtilsService(config: Config, { web3 }: Web3ServiceContext) {
+export function useTokenUtilsService() {
+  const { wallet } = useWeb3Service();
   const [tokenUtilsService, setTokenUtilsService] = useState<TokenUtilsService>();
 
   useEffect(() => {
-    if (web3) {
-      setTokenUtilsService(new TokenUtilsService(web3))
-    }
-  }, [web3])
+    const handler = async () => {
+      const isWeb3Available = await wallet?.isAvailable();
+      if (isWeb3Available) {
+        const web3 = wallet.getProvider();
+
+        setTokenUtilsService(new TokenUtilsService(web3));
+      }
+    };
+    handler();
+  }, [wallet]);
 
   return {
-    tokenUtils: tokenUtilsService,
-  }
+    tokenUtils: tokenUtilsService
+  };
 }
-
-export type TokenUtilsServiceContext = ReturnType<typeof useTokenUtilsService>
- 

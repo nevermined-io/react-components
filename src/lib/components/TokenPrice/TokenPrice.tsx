@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BN from 'bn.js';
-import { useNevermined } from '../../contexts/NeverminedProvider';
+import { useTokenUtilsService } from 'lib/contexts';
 
 interface TokenPriceProps {
   address: string;
@@ -8,15 +8,14 @@ interface TokenPriceProps {
 }
 
 export const NuiTokenPrice = React.memo(function ({ address, children }: TokenPriceProps) {
-  const {
-    services: { tokenUtils }
-  } = useNevermined();
+  const { tokenUtils } = useTokenUtilsService();
+
   const [tokenDecimals, setTokenDecimals] = useState<number | null>(
     tokenUtils?.getInstantDecimals(address) || null
   );
-
   useEffect(() => {
-    if (tokenDecimals === null && tokenUtils) {
+    //tokenDecimals === null &&
+    if (tokenUtils) {
       tokenUtils.getDecimals(address).then((value) => setTokenDecimals(value || null));
     }
   }, [address, tokenUtils]);

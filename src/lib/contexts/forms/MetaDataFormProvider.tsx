@@ -1,12 +1,18 @@
 import React, { createContext, useContext } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 
+export enum AssetType {
+  dataset,
+  algorithm,
+  compute,
+  workflow
+}
 /**
- * One-dimensional mapping of Nevermined MetaData to be used with thwe form.
+ * One-dimensional mapping of Nevermined MetaData to be used with the form.
  */
 export interface MetaDataFormDTO {
   name?: string;
-  type?: 'dataset' | 'algorithm' | 'compute' | 'workflow' | 'compute';
+  type?: AssetType;
   dateCreated?: string;
   datePublished?: string;
   author?: string;

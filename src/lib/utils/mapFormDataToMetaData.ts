@@ -1,5 +1,5 @@
 import { File as AssetFile, MetaData } from '@nevermined-io/nevermined-sdk-js';
-import { MetaDataFormDTO } from '../contexts/forms/MetaDataFormProvider';
+import { AssetType, MetaDataFormDTO } from '../contexts/forms/MetaDataFormProvider';
 
 export const mapFileToMetaDataFile = (file: File, index: number): AssetFile => {
   return {
@@ -26,21 +26,14 @@ export const mapFormDataToMetaData = (
   customDataName = 'customData',
   formData: MetaDataFormDTO
 ): MetaData => {
-  const {
-    type,
-    name,
-    author,
-    license,
-    price,
-    files,
-    description,
-    copyrightHolder,
-    ...rest
-  } = formData;
+  const { type, name, author, license, price, files, description, copyrightHolder, ...rest } =
+    formData;
 
   return {
     main: {
-      type: type || 'dataset',
+      //should add AssetType to sdk
+      //@ts-ignore
+      type: type || AssetType.dataset,
       name: name || '',
       datePublished: `${new Date().toISOString().split('.')[0]}Z`,
       dateCreated: `${new Date().toISOString().split('.')[0]}Z`, // remove milliseconds

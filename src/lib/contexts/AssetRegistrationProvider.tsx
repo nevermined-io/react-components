@@ -1,71 +1,25 @@
-/**
- * @module AssetRegistrationProvider
- */
-
-import { DDO, DID, MetaData } from '@nevermined-io/nevermined-sdk-js';
+import { Account, DDO, DID, MetaData } from '@nevermined-io/nevermined-sdk-js';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import { BadGatewayAddressError, ERRORS } from 'lib/errors';
-import React, { createContext, useContext, useEffect, useState } from 'react';
-
 import { useNevermined } from './NeverminedProvider';
 import { ProviderRPCError } from '../errors/index';
 
-interface AssetRegistrationProviderValue {
-  registerAsset(data: MetaData): Promise<DDO>;
-  registerMintableAsset(): Promise<DDO>;
-  retrieveAssetDDO(did: DID | string): Promise<DDO>;
-  isPublishing: boolean;
-  hasFinishedPublishing: boolean;
-  hasPublishingError: boolean;
-  publishingError: any;
+export interface UseAssetManager {
+  registerAsset: (data: MetaData) => Promise<DDO | any>;
+  registerMintableAsset: (data: MetaData) => Promise<DDO>;
+  retrieveAssetDDO: (did: DID | string) => Promise<DDO>;
 }
 
-const AssetRegistrationContext = createContext({} as AssetRegistrationProviderValue);
-export const AssetRegistrationProvider = ({
-  children
-}: {
-  children: React.ReactNode;
-}): React.ReactElement => {
-  const {
-    sdk,
-    user: { account }
-  } = useNevermined();
-
-  const [isPublishing, setIsPublishing] = useState(false);
-  const [hasFinishedPublishing, setHasFinishedPublishing] = useState(false);
-  const [hasPublishingError, setHasPublishingError] = useState(false);
-  const [publishingError, setPublishingError] = useState<any>(null);
-
-  useEffect(() => {
-    // * simple method to reset error state for now
-    if (hasFinishedPublishing) {
-      if (hasPublishingError) {
-        setTimeout(() => {
-          setPublishingError(null);
-          setHasFinishedPublishing(false);
-          setIsPublishing(false);
-        }, 5000);
-      }
-    }
-  }, [hasFinishedPublishing, hasPublishingError]);
-
+export const useAssetManager = (): UseAssetManager => {
+  const { sdk } = useNevermined();
   const registerAsset = async (data: MetaData): Promise<DDO | any> => {
     try {
-      setIsPublishing(true);
-      setHasFinishedPublishing(false);
-
-      const asset = await sdk.assets.create(data, account);
-
-      setIsPublishing(false);
-      setHasFinishedPublishing(true);
-
-      return asset;
+      // FIXME
+      // const asset = await sdk.assets.create(data, account);
+      // FIXME
+      //return asset;
     } catch (e) {
       if (e instanceof Error) {
-        setPublishingError(e.message);
-        setHasPublishingError(true);
-        setIsPublishing(false);
-        setHasFinishedPublishing(true);
       }
     }
   };
@@ -82,7 +36,8 @@ export const AssetRegistrationProvider = ({
       const assetRewards = new AssetRewards(new Map([[account.getId(), Number(2)]]));
       const asset = await sdk.nfts.create(
         data,
-        account,
+        {} as Account,
+        //       account,
         nftAmount,
         royalties,
         assetRewards,
@@ -103,7 +58,8 @@ export const AssetRegistrationProvider = ({
     }
     const asset = await sdk.assets.create(
       data,
-      account
+      {} as Account
+      //       account,
       // 1,
       // 0,
       // assetRewards,
@@ -118,25 +74,5 @@ export const AssetRegistrationProvider = ({
     return res;
   };
 
-  return (
-    <AssetRegistrationContext.Provider
-      value={
-        {
-          registerAsset,
-          registerMintableAsset,
-          retrieveAssetDDO,
-          isPublishing,
-          hasFinishedPublishing,
-          hasPublishingError,
-          publishingError
-        } as AssetRegistrationProviderValue
-      }
-    >
-      {children}
-    </AssetRegistrationContext.Provider>
-  );
+  return { retrieveAssetDDO, registerAsset, registerMintableAsset };
 };
-
-export const useAssetRegistration = (): AssetRegistrationProviderValue =>
-  useContext(AssetRegistrationContext);
-export default AssetRegistrationProvider;

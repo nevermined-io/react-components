@@ -1,46 +1,27 @@
-/**
- * @module NeverminedProvider
- * @description This module encapsulates the NeverminedServiceContext and TokenUtilsServiceContext.
- */
-
 import React, { createContext, useContext } from 'react';
 import { Config } from '@nevermined-io/nevermined-sdk-js';
-
-import { useWeb3Service, Web3ServiceContext } from './services/Web3Service';
+import { Web3ServiceContext } from './services/Web3Service';
 import { useNeverminedService, NeverminedServiceContext } from './services/NeverminedService';
-import { useTokenUtilsService, TokenUtilsServiceContext } from './services/TokenUtilsService';
 
-export type NeverminedProviderContext = Web3ServiceContext &
-  NeverminedServiceContext & { services: TokenUtilsServiceContext };
+export type NeverminedProviderContext = Web3ServiceContext & NeverminedServiceContext;
 
 interface NeverminedProviderProps {
   children: React.ReactNode;
-  /**
-   * javascript sdk config
-   */
   config: Config;
-  shouldReloadOnNetworkChange?: boolean;
 }
+const NeverminedContext = createContext({} as NeverminedProviderContext);
 
 export const NeverminedProvider = ({
   children,
-  config,
-  shouldReloadOnNetworkChange
+  config
 }: NeverminedProviderProps): React.ReactElement => {
-  const web3Context = useWeb3Service(config, shouldReloadOnNetworkChange);
-  const neverminedContext = useNeverminedService(config, web3Context);
-
-  const tokenUtils = useTokenUtilsService(config, web3Context);
+  const neverminedContext = useNeverminedService(config);
 
   return (
     <NeverminedContext.Provider
       value={
         {
-          ...web3Context,
-          ...neverminedContext,
-          services: {
-            ...tokenUtils
-          }
+          ...neverminedContext
         } as NeverminedProviderContext
       }
     >
@@ -49,13 +30,6 @@ export const NeverminedProvider = ({
   );
 };
 
-export const NeverminedContext = createContext({} as NeverminedProviderContext);
-
-// Helper hook to access the provider values
-/**
- *
- * @description Custom hook to access the NeverminedProvider functions.
- */
 export const useNevermined = (): NeverminedProviderContext => useContext(NeverminedContext);
 
 export default NeverminedProvider;

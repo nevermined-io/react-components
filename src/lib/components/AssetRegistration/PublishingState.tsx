@@ -1,9 +1,13 @@
 import React from 'react';
-import { useAssetRegistration } from 'lib/contexts/AssetRegistrationProvider';
 
 const PublishingState = () => {
-  const { isPublishing, hasFinishedPublishing, hasPublishingError, publishingError } =
-    useAssetRegistration();
+  // FIXME
+  const { isPublishing, hasFinishedPublishing, hasPublishingError, publishingError } = {
+    isPublishing: false,
+    hasFinishedPublishing: false,
+    hasPublishingError: false,
+    publishingError: undefined 
+  };
   if (isPublishing) {
     return <h2>Publishing...</h2>;
   }
