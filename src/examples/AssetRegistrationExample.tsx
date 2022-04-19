@@ -1,7 +1,7 @@
 import React from 'react';
-import AssetRegistration from 'lib/components/AssetRegistration/AssetRegistration';
+import AssetRegistration from './components/AssetRegistration/AssetRegistration';
 
-const AssetRegistrationExample = ({ onSubmit, onSubmitError }) => {
+const AssetRegistrationExample = ({ onSubmit, onSubmitError }: any) => {
   return (
     <section>
       <AssetRegistration

@@ -1,5 +1,6 @@
+import React from 'react';
 import './scss/style.scss';
-import Example from './Example';
+import Example from './examples';
 
 const App = () => {
   return <Example />;

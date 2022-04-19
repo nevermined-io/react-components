@@ -1,7 +1,7 @@
 import { Account, DDO, DID, MetaData } from '@nevermined-io/nevermined-sdk-js';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
+import { useNevermined } from 'lib/contexts/NeverminedProvider';
 import { BadGatewayAddressError, ERRORS } from 'lib/errors';
-import { useNevermined } from './NeverminedProvider';
 import { ProviderRPCError } from '../errors/index';
 
 export interface UseAssetManager {

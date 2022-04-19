@@ -2,7 +2,7 @@ import React from 'react';
 import { FormFieldData } from './types';
 import defaultStyles from './scss/RegistrationStep.module.scss';
 import FormField from './FormField';
-import { BEM } from '../../utils/bemHelpers';
+import { BEM } from 'lib';
 
 interface RegistrationStepProps {
   title: string | React.ReactNode;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { NuiTokenName } from 'lib/components/TokenName/TokenName';
-import { NuiTokenPrice } from 'lib/components/TokenPrice/TokenPrice';
+import { NuiTokenName } from './components/TokenName/TokenName';
+import { NuiTokenPrice } from './components/TokenPrice/TokenPrice';
 
 const TokenExample = () => {
   return (

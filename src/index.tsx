@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './App';
 import './scss/style.scss';
-import MetaDataFormProvider from 'lib/contexts/forms/MetaDataFormProvider';
 import NeverminedProvider from 'lib/contexts/NeverminedProvider';
 import generalConfig from './config';
+import MetaDataFormProvider from 'lib/contexts/MetaDataFormProvider';
 
 // const mnemonic =
 //   process.env.REACT_APP_BURNER_MNEMONIC ||

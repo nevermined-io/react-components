@@ -6,9 +6,9 @@ import RegistrationStep from './RegistrationStep';
 import { FormFieldData, AssetRegistrationProps } from './types';
 
 import uniqBy from 'lodash.uniqby';
-import { BEM } from '../../utils/bemHelpers';
 
 import PublishingState from './PublishingState';
+import { BEM } from 'lib';
 
 const AssetRegistration = ({
   debug = false,

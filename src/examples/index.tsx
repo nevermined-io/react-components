@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
-import './scss/style.scss';
 import mapFormDataToMetaData from 'lib/utils/mapFormDataToMetaData';
 
 import { DDO } from '@nevermined-io/nevermined-sdk-js';
-import { MetaDataFormDTO } from 'lib/contexts/forms/MetaDataFormProvider';
 import { useNevermined } from 'lib/contexts/NeverminedProvider';
-import { useAssetManager } from 'lib/contexts/AssetRegistrationProvider';
-import { useAccountManager } from 'lib/contexts/AccountProvider';
 
-import Header from 'lib/components/Layout/Header';
-import Footer from 'lib/components/Layout/Footer';
-import Main from 'lib/components/Layout/Main';
+import Header from './components/Layout/Header';
+import Footer from './components/Layout/Footer';
+import Main from './components/Layout/Main';
 
-import { NeverminedLogo } from './lib/components/Layout/Logos/Logo';
-import { KeykoLogo } from './lib/components/Layout/Logos/KeykoLogo';
-import QueryAssetExample from './examples/QueryAssetExample';
-import AssetRegistrationExample from './examples/AssetRegistrationExample';
-import TokenExample from './examples/TokenExample';
+import { NeverminedLogo } from './components/Layout/Logos/Logo';
+import { KeykoLogo } from './components/Layout/Logos/KeykoLogo';
+import QueryAssetExample from './QueryAssetExample';
+import AssetRegistrationExample from './AssetRegistrationExample';
+import TokenExample from './TokenExample';
+import { useAssetManager } from 'lib/hooks/UseAssetManager';
+import { useAccountManager } from 'lib/hooks/UseAccountManager';
+import { MetaDataFormDTO } from 'lib/contexts/MetaDataFormProvider';
 
 function Example(props: any) {
   const { registerAsset } = useAssetManager();

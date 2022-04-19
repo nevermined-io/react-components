@@ -1,7 +1,7 @@
+import { useWeb3Service } from 'lib/contexts/NeverminedProvider';
 import { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
-import { useWeb3Service } from './Web3Service';
 
 const ERC20SymbolAbi = {
   constant: true,

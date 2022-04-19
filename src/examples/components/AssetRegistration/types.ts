@@ -1,4 +1,4 @@
-import { MetaDataFormDTO } from 'lib/contexts/forms/MetaDataFormProvider';
+import { MetaDataFormDTO } from "lib/contexts/MetaDataFormProvider";
 
 export interface FormFieldData {
   label: string;

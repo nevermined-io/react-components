@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BN from 'bn.js';
-import { useTokenUtilsService } from 'lib/contexts';
+import { useTokenUtilsService } from 'lib/hooks/UseTokenUtilsManager';
 
 interface TokenPriceProps {
   address: string;

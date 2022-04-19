@@ -1,4 +1,4 @@
-import { useTokenUtilsService } from 'lib/contexts';
+import { useTokenUtilsService } from 'lib/hooks/UseTokenUtilsManager';
 import React, { useEffect, useState } from 'react';
 
 interface TokenNameProps {

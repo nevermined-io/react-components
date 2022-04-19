@@ -1,5 +1,5 @@
 import { File as AssetFile, MetaData } from '@nevermined-io/nevermined-sdk-js';
-import { AssetType, MetaDataFormDTO } from '../contexts/forms/MetaDataFormProvider';
+import { MetaDataFormDTO } from 'lib/contexts/MetaDataFormProvider';
 
 export const mapFileToMetaDataFile = (file: File, index: number): AssetFile => {
   return {

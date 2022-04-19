@@ -1,31 +1,14 @@
 {
   "typedocOptions": {
-    "entryPoints": [
-      "src/lib/components/AssetRegistration/",
-      "src/lib/components/QueryAssets/",
-      "src/lib/components/TokenName/",
-      "src/lib/components/TokenPrice/",
-      "src/lib/contexts/NeverminedProvider.tsx",
-      "src/lib/contexts/AssetRegistrationProvider.tsx",
-      "src/lib/contexts/services",
-      "src/lib/utils/",
-      "src/lib/errors/",
-    ],
     "out": "docs",
     "name": "Component Catalog Documentation",
     "theme": "default",
-    "sort": [
-      "source-order"
-    ],
+    "sort": ["source-order"],
     "hideGenerator": true
   },
   "compilerOptions": {
     "target": "ES6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -39,20 +22,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react",
-    "rootDir": "./src/lib",
+    "rootDir": ".",
     "baseUrl": "./src",
     "outDir": "./dist/node",
     "noEmit": true,
     "downlevelIteration": true,
     "sourceMap": false
   },
-  "include": [
-    "src/lib",
-    "src/types/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.test.ts",
-    "**/*.test.tsx"
-  ]
+  "include": ["src/"],
+  "exclude": ["node_modules", "**/*.test.ts", "**/*.test.tsx"]
 }
