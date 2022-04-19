@@ -1,4 +1,4 @@
-import { useTokenUtilsService } from 'lib/hooks/UseTokenUtilsManager';
+import { useNevermined } from 'lib/contexts/NeverminedProvider';
 import React, { useEffect, useState } from 'react';
 
 interface TokenNameProps {
@@ -6,7 +6,7 @@ interface TokenNameProps {
 }
 
 export const NuiTokenName = React.memo(function ({ address }: TokenNameProps) {
-  const { tokenUtils } = useTokenUtilsService();
+  const { tokenUtils } = useNevermined();
   const [tokenSymbol, setTokenSymbol] = useState<string | null>(
     tokenUtils?.getInstantSymbol(address) || null
   );

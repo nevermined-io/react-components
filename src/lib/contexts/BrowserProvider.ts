@@ -1,64 +1,105 @@
-import Web3 from 'web3';
+import { useState, createContext, useEffect } from 'react';
 import { provider } from 'web3-core';
+import { Logger } from '@nevermined-io/nevermined-sdk-js';
+import { zeroX } from '@nevermined-io/nevermined-sdk-js/dist/node/utils';
+import Web3 from 'web3';
+import { acceptedChainId, nodeUri } from 'config';
+import ChainConfig from 'chain_config';
 
-export class BrowserProvider {
-  private web3: Web3;
+const acceptedChainIdHex = zeroX((+acceptedChainId).toString(16));
 
-  constructor() {
-    // Default
-    this.web3 = null as any;
-    // Modern dapp browsers
-    if (typeof window === 'undefined') {
-      return;
-    }
-    if (window.ethereum) {
-      this.web3 = new Web3(window.ethereum as provider);
-      console.log(this.web3);
-    }
-  }
+export interface Web3Manager {
+  startLogin: () => Promise<string[]>;
+  isLoggedIn: () => Promise<boolean>;
+  isAvailable: () => boolean;
+}
 
-  async isAvailable(): Promise<boolean> {
-    return this.web3 !== null;
-  }
+interface WalletProviderState {
+  getProvider: () => Web3;
+  logout: () => void;
+  isLogged: () => Promise<boolean>;
+  isAvailable: () => boolean;
+  promptSwitchAccounts: () => Promise<void>;
+  walletAddress: string;
+  loginMetamask: () => Promise<void>;
+}
 
-  async getAccountString(): Promise<string> {
-    if (this.web3 === null) {
-      return '';
-    }
-    const accounts = await this?.web3?.eth?.getAccounts();
-    return accounts?.length ? accounts[0] : '';
-  }
+export const WalletContext = createContext({} as WalletProviderState);
 
-  async isLoggedIn(): Promise<boolean> {
-    if (this.web3 === null) {
-      return false;
-    }
-    if ((await this.web3.eth.getAccounts()).length > 0) {
-      return true;
-    }
-    return false;
-  }
+export const useWeb3Manager = (
+  web3: Web3
+): {
+  startLogin: () => Promise<string[]>;
+  isLoggedIn: () => Promise<boolean>;
+  isAvailable: () => boolean;
+} => {
+  const isAvailable = (): boolean => web3 !== null;
 
-  async startLogin() {
+  const isLoggedIn = async (): Promise<boolean> => {
+    if (!isAvailable() && !web3?.eth?.getAccounts) return false;
+    const accounts = await web3?.eth?.getAccounts();
+    return accounts && accounts?.length > 0;
+  };
+
+  const startLogin = async (): Promise<string[]> => {
     try {
-      await window.ethereum?.request({ method: 'eth_requestAccounts' });
+      const response = await window.ethereum.request<string[]>({
+        method: 'eth_requestAccounts'
+      });
+      if (!response?.length || !response[0]) {
+        return [];
+      }
+      //@ts-ignore
+      return response;
     } catch (error) {
       return await Promise.reject(error);
     }
-  }
+  };
 
-  async logout() {}
+  const IState = {
+    startLogin,
+    isLoggedIn,
+    isAvailable
+  };
 
-  getProvider(): Web3 {
-    return this.web3;
-  }
+  return { ...IState };
+};
 
-  onAccountChange(cb: (account: string) => void) {
-    window.ethereum?.on('accountsChanged', (([account]: string[]) => cb(account)) as any);
-  }
 
-  onNetworkChange(cb: (chainId: string) => void) {
-    window.ethereum?.on('chainChanged', ((chainId: string) => cb(chainId)) as any);
-  }
-}
 
+  //const useSwitchChainsListener = () => {
+    //useEffect(() => {
+      //const switchChainsOrRegisterSupportedChain = async (): Promise<void> => {
+        //try {
+          //await window.ethereum.request({
+            //method: 'wallet_switchEthereumChain',
+            //params: [
+              //{
+                //chainId: acceptedChainIdHex
+              //}
+            //]
+          //});
+        //} catch (switchError) {
+          //if ((switchError as any).code === 4902) {
+            //try {
+              //const currentChainConfig = ChainConfig.returnConfig(acceptedChainIdHex);
+              //const configParam = await window.ethereum.request({
+                //method: 'wallet_addEthereumChain',
+                //params: [currentChainConfig]
+              //});
+              //if (!configParam) {
+                //console.log(`Chain ${acceptedChainId} added successfully!`);
+              //}
+            //} catch (addError) {
+              //Logger.error(addError);
+            //}
+          //}
+          //Logger.error(switchError);
+        //}
+      //};
+      //switchChainsOrRegisterSupportedChain();
+    //}, []);
+  //};
+
+
+// Web3.utils.toChecksumAddress(accounts[0])

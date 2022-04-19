@@ -1,4 +1,4 @@
-import { useWeb3Service } from 'lib/contexts/NeverminedProvider';
+import { useNevermined } from 'lib/contexts/NeverminedProvider';
 import { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
@@ -33,7 +33,7 @@ const ERC20DecimalsAbi = {
   type: 'function' as const
 };
 
-class TokenUtilsService {
+export class TokenUtilsService {
   private cache: { [param: string]: { [address: string]: Promise<any> & { value?: any } } } = {};
 
   constructor(private web3: Web3) {}
@@ -89,23 +89,3 @@ class TokenUtilsService {
   }
 }
 
-export function useTokenUtilsService() {
-  const { wallet } = useWeb3Service();
-  const [tokenUtilsService, setTokenUtilsService] = useState<TokenUtilsService>();
-
-  useEffect(() => {
-    const handler = async () => {
-      const isWeb3Available = await wallet?.isAvailable();
-      if (isWeb3Available) {
-        const web3 = wallet.getProvider();
-
-        setTokenUtilsService(new TokenUtilsService(web3));
-      }
-    };
-    handler();
-  }, [wallet]);
-
-  return {
-    tokenUtils: tokenUtilsService
-  };
-}
