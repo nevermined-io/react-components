@@ -1,5 +1,3 @@
-import { useNevermined } from 'lib/contexts/NeverminedProvider';
-import { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
 

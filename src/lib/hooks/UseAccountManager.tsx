@@ -1,10 +1,18 @@
 import { Account } from '@nevermined-io/nevermined-sdk-js';
 import { useNevermined } from 'lib/contexts/NeverminedProvider';
+import { UseIsAccountLoggedInInput, Web3Manager } from 'lib/types';
 import { useEffect, useState } from 'react';
 
-export const useAccountManager = (): { address: string } => {
-  const { sdk } = useNevermined();
+export const useAccountAddressManager = (): {
+  address: string;
+  updateAddress: (address: string) => void;
+} => {
+  const { sdk, web3Manager } = useNevermined();
   const [address, setAddress] = useState<string>('');
+
+  const updateAddress = (address: string) => {
+    setAddress(address);
+  };
 
   useEffect(() => {
     Promise.resolve(sdk?.accounts?.list())
@@ -17,9 +25,27 @@ export const useAccountManager = (): { address: string } => {
         console.log('err fetching account');
         console.log(err);
       });
-  }, [sdk]);
+  }, [sdk, web3Manager]);
 
   return {
-    address
+    address,
+    updateAddress
   };
+};
+
+export const useAccountLogInManager = (
+  web3Manager: Web3Manager,
+  address: string
+): UseIsAccountLoggedInInput => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handler = async () => {
+      const response = await web3Manager?.isLoggedIn();
+      setIsLoggedIn(response);
+    };
+    handler();
+  }, [web3Manager, address]);
+
+  return { isLoggedIn, setIsLoggedIn };
 };

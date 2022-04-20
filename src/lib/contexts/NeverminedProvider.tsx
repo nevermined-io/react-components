@@ -1,22 +1,10 @@
-import React, { createContext, useContext } from 'react';
-import { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import { Nevermined, Config } from '@nevermined-io/nevermined-sdk-js';
-import { useWeb3Manager, Web3Manager } from './BrowserProvider';
 import Web3 from 'web3';
 import { TokenUtilsService } from 'lib/hooks/UseTokenUtilsManager';
-
-const initWeb3 = (): Web3 => {
-  const provider = window?.ethereum
-    ? window.ethereum
-    : //@ts-ignore
-    window?.web3
-    ? //@ts-ignore
-      window.web3.currentProvider
-    : //@ts-ignore
-      Web3.providers.HttpProvider(nodeUri); // default provider
-  const web3 = new Web3(provider);
-  return web3;
-};
+import initWeb3 from 'lib/services/web3_provider';
+import { NeverminedProviderContext, NeverminedProviderProps } from 'lib/types';
+import { useWeb3Manager } from 'lib/hooks/UseWeb3Manager';
 
 const useNeverminedService = (
   config: Config,
@@ -27,65 +15,30 @@ const useNeverminedService = (
 
   useEffect(() => {
     const loadNevermined = async (): Promise<void> => {
-      if (
+      const invalidInputs =
         !web3Provider ||
         !config ||
         Object.keys(web3Provider).length < 1 ||
-        Object.keys(config).length < 1 ||
-        Object.keys(sdk).length > 0
-      )
-        return;
-
-      console.log('config', config)
-      console.log('web3Provider', web3Provider)
+        Object.keys(config).length < 1;
+      if (invalidInputs) return;
+      console.log('Start Loading SDK..');
       setIsLoading(true);
       const nvmSdk: any = await Nevermined.getInstance({
         ...config,
         web3Provider
       });
       setSdk(nvmSdk);
+      console.log('Loading SDK Finished:', nvmSdk);
       setIsLoading(false);
     };
-
-    loadNevermined();
+    const sdkAlreadyLoaded = Object.keys(sdk).length > 0;
+    !sdkAlreadyLoaded && loadNevermined();
   }, [web3Provider, config]);
 
   return {
     isLoading,
     sdk
   };
-};
-
-export interface NeverminedProviderContext {
-  sdk: Nevermined;
-  web3Manager: Web3Manager;
-  tokenUtils: TokenUtilsService;
-}
-
-interface NeverminedProviderProps {
-  children: React.ReactNode;
-  config: Config;
-}
-
-const useAccountsChangedListener = () => {
-  useEffect(() => {
-    const registerOnAccounsChangedListener = async (): Promise<void> => {
-      console.log('here');
-      //@ts-ignore
-      window.ethereum.on('accountsChanged', (newAccount: string[]) => {
-        console.log('newAccount', newAccount);
-        if (newAccount && newAccount.length > 0) {
-          //           setWalletAddress(Web3.utils.toChecksumAddress(newAccount[0]));
-        } else {
-          //         user disconneted via metamask
-          //         setWalletAddress('');
-          console.log('No Account found!');
-        }
-      });
-    };
-
-    registerOnAccounsChangedListener();
-  }, []);
 };
 
 const NeverminedContext = createContext({} as NeverminedProviderContext);
@@ -96,19 +49,8 @@ export const NeverminedProvider = ({
 }: NeverminedProviderProps): React.ReactElement => {
   const web3Provider = initWeb3();
   const neverminedContext = useNeverminedService(config, web3Provider);
-  const [tokenUtilsService, setTokenUtilsService] = useState<TokenUtilsService>();
+  const [tokenUtilsService] = useState<TokenUtilsService>();
   const web3Manager = useWeb3Manager(web3Provider);
-  // useAccountsChangedListener();
-
-  //useEffect(() => {
-  //const handler = async () => {
-  //const isWeb3Available = await web3Manager?.isAvailable();
-  //if (isWeb3Available) {
-  //setTokenUtilsService(new TokenUtilsService(web3Provider));
-  //}
-  //};
-  //handler();
-  //}, [web3Manager, web3Provider]);
 
   return (
     <NeverminedContext.Provider
@@ -116,7 +58,8 @@ export const NeverminedProvider = ({
         {
           ...neverminedContext,
           web3Manager,
-          tokenUtils: tokenUtilsService
+          tokenUtils: tokenUtilsService,
+          web3Provider
         } as NeverminedProviderContext
       }
     >
@@ -129,7 +72,6 @@ export const useNevermined = (): NeverminedProviderContext => useContext(Nevermi
 
 export default NeverminedProvider;
 
-//
 // const cid = await wallet.getProvider().eth.getChainId();
 //   setChainId(cid);
 // setWeb3((browserProvider as any).web3);
@@ -180,3 +122,16 @@ export default NeverminedProvider;
 //},
 //[balance]
 //);
+//
+//
+//
+
+//useEffect(() => {
+//const handler = async () => {
+//const isWeb3Available = await web3Manager?.isAvailable();
+//if (isWeb3Available) {
+//setTokenUtilsService(new TokenUtilsService(web3Provider));
+//}
+//};
+//handler();
+//}, [web3Manager, web3Provider]);
