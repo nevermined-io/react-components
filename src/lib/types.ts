@@ -1,4 +1,4 @@
-import { Config, Nevermined } from "@nevermined-io/nevermined-sdk-js";
+import { Config, DDO, Nevermined } from "@nevermined-io/nevermined-sdk-js";
 import Web3 from "web3";
 import { TokenUtilsService } from "./hooks/UseTokenUtilsManager";
 
@@ -27,3 +27,7 @@ export interface UseIsAccountLoggedInInput {
   setIsLoggedIn: (i: boolean) => void;
 }
 
+export interface UseAllAssetsResult {
+  assets: DDO[];
+  isLoading: boolean;
+}

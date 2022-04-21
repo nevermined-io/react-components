@@ -31,6 +31,7 @@ const useNeverminedService = (
       console.log('Loading SDK Finished:', nvmSdk);
       setIsLoading(false);
     };
+
     const sdkAlreadyLoaded = Object.keys(sdk).length > 0;
     !sdkAlreadyLoaded && loadNevermined();
   }, [web3Provider, config]);
@@ -48,7 +49,7 @@ export const NeverminedProvider = ({
   config
 }: NeverminedProviderProps): React.ReactElement => {
   const web3Provider = initWeb3();
-  const neverminedContext = useNeverminedService(config, web3Provider);
+  const { sdk, isLoading } = useNeverminedService(config, web3Provider);
   const [tokenUtilsService] = useState<TokenUtilsService>();
   const web3Manager = useWeb3Manager(web3Provider);
 
@@ -56,7 +57,7 @@ export const NeverminedProvider = ({
     <NeverminedContext.Provider
       value={
         {
-          ...neverminedContext,
+          sdk,
           web3Manager,
           tokenUtils: tokenUtilsService,
           web3Provider

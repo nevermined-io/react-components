@@ -1,4 +1,4 @@
-import Web3 from 'web3';
+import Web3 from "web3";
 
 const initWeb3 = (): Web3 => {
   const provider = window?.ethereum
@@ -13,7 +13,5 @@ const initWeb3 = (): Web3 => {
 
   return web3;
 };
-
-const listeners = {};
 
 export default initWeb3;

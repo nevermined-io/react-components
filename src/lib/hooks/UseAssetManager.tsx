@@ -1,7 +1,9 @@
-import { Account, DDO, DID, MetaData } from '@nevermined-io/nevermined-sdk-js';
+import { Account, DDO, DID, MetaData, SearchQuery } from '@nevermined-io/nevermined-sdk-js';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import { useNevermined } from 'lib/contexts/NeverminedProvider';
 import { BadGatewayAddressError, ERRORS } from 'lib/errors';
+import { UseAllAssetsResult } from 'lib/types';
+import { useEffect, useState } from 'react';
 import { ProviderRPCError } from '../errors/index';
 
 export interface UseAssetManager {
@@ -56,16 +58,7 @@ export const useAssetManager = (): UseAssetManager => {
         throw new BadGatewayAddressError();
       }
     }
-    const asset = await sdk.assets.create(
-      data,
-      {} as Account
-      //       account,
-      // 1,
-      // 0,
-      // assetRewards,
-      // 1,
-      // erc20TokenAddress
-    );
+    const asset = await sdk.assets.create(data, {} as Account);
     return asset;
   };
 
@@ -75,4 +68,36 @@ export const useAssetManager = (): UseAssetManager => {
   };
 
   return { retrieveAssetDDO, registerAsset, registerMintableAsset };
+};
+
+export const useAllAssets = (query = allAssetsDefaultQuery): UseAllAssetsResult => {
+  const { sdk } = useNevermined();
+  const [assets, setAssets] = useState<DDO[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const fetchAllAssets = (query: SearchQuery) => {
+    setIsLoading(true);
+    sdk?.assets.query(query).then((result) => {
+      setIsLoading(true);
+      setAssets(result.results);
+    });
+  };
+
+  useEffect(() => {
+    if (!sdk?.assets) {
+      return;
+    }
+    fetchAllAssets(query);
+  }, [sdk, query]);
+
+  return { assets, isLoading };
+};
+
+const allAssetsDefaultQuery: SearchQuery = {
+  offset: 1,
+  page: 1,
+  query: {},
+  sort: {
+    created: -1
+  }
 };
