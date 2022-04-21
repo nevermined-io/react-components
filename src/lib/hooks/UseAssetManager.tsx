@@ -2,15 +2,9 @@ import { Account, DDO, DID, MetaData, SearchQuery } from '@nevermined-io/nevermi
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import { useNevermined } from 'lib/contexts/NeverminedProvider';
 import { BadGatewayAddressError, ERRORS } from 'lib/errors';
-import { UseAllAssetsResult } from 'lib/types';
+import { UseAllAssetsResult, UseAssetManager } from 'lib/types';
 import { useEffect, useState } from 'react';
 import { ProviderRPCError } from '../errors/index';
-
-export interface UseAssetManager {
-  registerAsset: (data: MetaData) => Promise<DDO | any>;
-  registerMintableAsset: (data: MetaData) => Promise<DDO>;
-  retrieveAssetDDO: (did: DID | string) => Promise<DDO>;
-}
 
 export const useAssetManager = (): UseAssetManager => {
   const { sdk } = useNevermined();

@@ -44,7 +44,7 @@ const useNeverminedService = (
 
 const NeverminedContext = createContext({} as NeverminedProviderContext);
 
-export const NeverminedProvider = ({
+const NeverminedProvider = ({
   children,
   config
 }: NeverminedProviderProps): React.ReactElement => {
