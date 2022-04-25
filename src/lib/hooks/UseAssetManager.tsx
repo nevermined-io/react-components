@@ -1,8 +1,8 @@
 import { Account, DDO, DID, MetaData, SearchQuery } from '@nevermined-io/nevermined-sdk-js';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
-import { useNevermined } from 'lib/contexts/NeverminedProvider';
-import { BadGatewayAddressError, ERRORS } from 'lib/errors';
-import { UseAllAssetsResult, UseAssetManager } from 'lib/types';
+import { useNevermined } from '../contexts/NeverminedProvider';
+import { BadGatewayAddressError, ERRORS } from '../errors';
+import { UseAllAssetsResult, UseAssetManager } from '../types';
 import { useEffect, useState } from 'react';
 import { ProviderRPCError } from '../errors/index';
 

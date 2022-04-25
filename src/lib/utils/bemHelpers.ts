@@ -2,7 +2,7 @@ import { BEMBlock, BEMModifiers } from 'bem-helpers';
 
 export type modList = (string | undefined)[];
 
-interface BEMFunction {
+export interface BEMFunction {
   (element?: string, modifiers?: BEMModifiers | modList): string;
   (modifiers?: BEMModifiers | modList): string;
 }

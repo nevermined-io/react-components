@@ -1,7 +1,3 @@
-/**
- * @module Errors
- */
-
 export class MessageSignatureDeniedError extends Error {
   constructor(message = 'Message signature denied') {
     super(message);

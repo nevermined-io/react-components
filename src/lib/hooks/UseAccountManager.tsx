@@ -1,6 +1,6 @@
 import { Account } from '@nevermined-io/nevermined-sdk-js';
-import { useNevermined } from 'lib/contexts/NeverminedProvider';
-import { UseIsAccountLoggedInInput, Web3Manager } from 'lib/types';
+import { useNevermined } from '../contexts/NeverminedProvider';
+import { UseIsAccountLoggedInInput, Web3Manager } from '../types';
 import { useEffect, useState } from 'react';
 
 export const useAccountAddressManager = (): {

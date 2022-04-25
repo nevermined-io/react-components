@@ -1,10 +1,10 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import { Nevermined, Config } from '@nevermined-io/nevermined-sdk-js';
 import Web3 from 'web3';
-import { TokenUtilsService } from 'lib/hooks/UseTokenUtilsManager';
-import initWeb3 from 'lib/services/web3_provider';
-import { NeverminedProviderContext, NeverminedProviderProps } from 'lib/types';
-import { useWeb3Manager } from 'lib/hooks/UseWeb3Manager';
+import { TokenUtilsService } from '../hooks/UseTokenUtilsManager';
+import { NeverminedProviderContext, NeverminedProviderProps } from '../types';
+import { useWeb3Manager } from '../hooks/UseWeb3Manager';
+import initWeb3 from '../services/web3_provider';
 
 const useNeverminedService = (
   config: Config,
@@ -31,7 +31,6 @@ const useNeverminedService = (
       console.log('Loading SDK Finished:', nvmSdk);
       setIsLoading(false);
     };
-
     const sdkAlreadyLoaded = Object.keys(sdk).length > 0;
     !sdkAlreadyLoaded && loadNevermined();
   }, [web3Provider, config]);
@@ -49,7 +48,7 @@ const NeverminedProvider = ({
   config
 }: NeverminedProviderProps): React.ReactElement => {
   const web3Provider = initWeb3();
-  const { sdk, isLoading } = useNeverminedService(config, web3Provider);
+  const { sdk } = useNeverminedService(config, web3Provider);
   const [tokenUtilsService] = useState<TokenUtilsService>();
   const web3Manager = useWeb3Manager(web3Provider);
 
@@ -76,8 +75,6 @@ export default NeverminedProvider;
 // const cid = await wallet.getProvider().eth.getChainId();
 //   setChainId(cid);
 // setWeb3((browserProvider as any).web3);
-//
-//
 
 // Fetch network name
 //  useEffect(() => {
@@ -123,8 +120,6 @@ export default NeverminedProvider;
 //},
 //[balance]
 //);
-//
-//
 //
 
 //useEffect(() => {

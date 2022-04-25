@@ -1,4 +1,4 @@
-import { UseAccountsChangedListenerInput, Web3Manager } from 'lib/types';
+import { UseAccountsChangedListenerInput, Web3Manager } from '../types';
 import { useEffect } from 'react';
 import Web3 from 'web3';
 

@@ -1,6 +1,6 @@
-import * as UseAccountManager from './UseAccountManager';
-import * as UseAssetsManager from './UseAssetManager';
-import * as UseTokenUtilsManager from './UseTokenUtilsManager';
-import * as UseWeb3Manager from './UseWeb3Manager';
+import * as useAccountManager from './UseAccountManager';
+import * as useAssetsManager from './UseAssetManager';
+import * as useTokenUtilsManager from './UseTokenUtilsManager';
+import * as useWeb3Manager from './UseWeb3Manager';
 
-export { UseAccountManager, UseAssetsManager, UseTokenUtilsManager, UseWeb3Manager };
+export { useAccountManager, useAssetsManager, useTokenUtilsManager, useWeb3Manager };

@@ -1,3 +1,5 @@
-import * as entryPoint from 'lib';
+import { NeverminedProvider, useNevermined } from './lib/contexts';
 
-export const library = entryPoint;
+const Catalog = { useNevermined, NeverminedProvider };
+
+export default Catalog;
