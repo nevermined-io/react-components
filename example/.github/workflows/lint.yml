@@ -1,0 +1,24 @@
+name: Run linters
+
+on:
+  push:
+    branches:
+      - '**'
+      - '!master'
+      - '!*release*'
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    # env:
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
+    - name: Install dependencies
+      run: |
+        npm install -g npm
+        npm install -g eslint@7.32.0
+        npm i
+    - name: Run linter
+      run: npm run ts:lint
