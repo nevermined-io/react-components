@@ -1,6 +1,6 @@
 {
-  "name": "hello-catalog",
-  "version": "0.0.9",
+  "name": "@nevermined-io/components-catalog",
+  "version": "0.0.1",
   "private": false,
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false PORT=3446 BROWSER=none react-app-rewired start",
