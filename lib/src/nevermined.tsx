@@ -38,6 +38,7 @@ const useNeverminedService = (config: Config): OutputUseNeverminedService => {
           return;
         }
 
+        console.log('Loading SDK Started..');
         const web3Provider = !isEmptyObject(config.web3Provider)
           ? config.web3Provider
           : getEtheruemProvider();
