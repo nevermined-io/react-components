@@ -1,20 +1,13 @@
-import { NeverminedProvider, useNevermined } from './lib/contexts';
-import {
-  useAccountManager,
-  useAssetsManager,
-  useTokenUtilsManager,
-  useWeb3Manager
-} from './lib/hooks';
-import utils from './lib/utils';
+import NeverminedProvider, { useNevermined, getEtheruemProvider } from './nevermined';
+import useWeb3Service from './services/UseWeb3Service';
+import useAssetService from './services/UseAssetService';
 
 const Catalog = {
-  useNevermined,
+  getEtheruemProvider,
   NeverminedProvider,
-  useAccountManager,
-  useAssetsManager,
-  useTokenUtilsManager,
-  useWeb3Manager,
-  utils
+  useNevermined,
+  useWeb3Service,
+  useAssetService
 };
 
 export default Catalog;
