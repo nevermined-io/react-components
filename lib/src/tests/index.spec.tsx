@@ -1,65 +1,83 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import { NameContext, NameProvider, NameConsumer } from '../react-context';
+import { initializeNevermined } from '../nevermined';
+import { Config } from '@nevermined-io/nevermined-sdk-js';
+import Catalog from '../index';
+import { allAssetsDefaultQuery, fetchAssets } from '../services/UseAssetService';
+import { service as web3Service } from '../services/UseWeb3Service';
+import Web3 from 'web3';
 
-/**
- * Test default values by rendering a context consumer without a
- * matching provider
- */
-test('NameConsumer shows default value', () => {
-  render(<NameConsumer />);
-  expect(screen.getByText(/^My Name Is:/)).toHaveTextContent('My Name Is: Unknown');
+const serviceUri = 'https://autonomies-backend.autonomies.staging.nevermined.rocks';
+const metadataUri = 'https://metadata.autonomies.staging.nevermined.rocks'; // 'http://localhost:5000'
+const gatewayAddress = '0xe63a11dC61b117D9c2B1Ac8021d4cffEd8EC213b';
+const gatewayUri = 'https://gateway.autonomies.staging.nevermined.rocks';
+const faucetUri = 'https://faucet.autonomies.staging.nevermined.rocks';
+const nodeUri = 'https://polygon-mumbai.infura.io/v3/eda048626e2745b182f43de61ac70be1';
+const acceptedChainId = '80001'; // for Mumbai
+
+const testConfig = {
+  metadataUri,
+  gatewayUri,
+  faucetUri,
+  nodeUri,
+  gatewayAddress,
+  verbose: true
+} as Config;
+
+jest.setTimeout(20000);
+
+describe('validate package exported items', () => {
+  test('exist', () => {
+    expect(Catalog.getEtheruemProvider).toBeDefined();
+    expect(Catalog.NeverminedProvider).toBeDefined();
+    expect(Catalog.useAssetService).toBeDefined();
+    expect(Catalog.useNevermined).toBeDefined();
+    expect(Catalog.useWeb3Service).toBeDefined();
+  });
 });
 
-/**
- * A custom render to setup providers. Extends regular
- * render options with `providerProps` to allow injecting
- * different scenarios to test with.
- *
- * @see https://testing-library.com/docs/react-testing-library/setup#custom-render
- */
-const customRender = (ui, { providerProps, ...renderOptions }) => {
-  return render(
-    <NameContext.Provider {...providerProps}>{ui}</NameContext.Provider>,
-    renderOptions
-  );
-};
-
-test('NameConsumer shows value from provider', () => {
-  const providerProps = {
-    value: 'C3PO'
-  };
-  customRender(<NameConsumer />, { providerProps });
-  expect(screen.getByText(/^My Name Is:/)).toHaveTextContent('My Name Is: C3P0');
+describe('initializeNevermined', () => {
+  test('success', async () => {
+    console.log('Testing nevermined initiliziation with config: ', JSON.stringify(testConfig));
+    //@ts-ignore
+    global.window = {}; // needed - for some reason jest remove window object
+    const response = await initializeNevermined(testConfig);
+    //@ts-ignore
+    expect(response?.data?._web3?._requestManager?.provider?.host).toEqual(nodeUri); // maybe we have a better indication for successfull connection with nevermined
+    expect(false).toEqual(false);
+  });
 });
 
-/**
- * To test a component that provides a context value, render a matching
- * consumer as the child
- */
-test('NameProvider composes full name from first, last', () => {
-  const providerProps = {
-    first: 'Boba',
-    last: 'Fett'
-  };
-  customRender(
-    <NameContext.Consumer>{(value) => <span>Received: {value}</span>}</NameContext.Consumer>,
-    { providerProps }
-  );
-  expect(screen.getByText(/^Received:/).textContent).toBe('Received: Boba Fett');
+describe('fetch assets', () => {
+  test('all assets query(offset=2)', async () => {
+    console.log('Testing nevermined initiliziation with config: ', JSON.stringify(testConfig));
+    //@ts-ignore
+    global.window = {};
+    const response = await initializeNevermined(testConfig);
+    //@ts-ignore
+    expect(response?.data?._web3?._requestManager?.provider?.host).toEqual(nodeUri);
+    const assets = await fetchAssets(response.data, allAssetsDefaultQuery);
+    expect(assets.data.length).toEqual(2);
+  });
 });
 
-/**
- * A tree containing both a providers and consumer can be rendered normally
- */
-test('NameProvider/Consumer shows name of character', () => {
-  const wrapper = ({ children }) => (
-    <NameProvider first="Leia" last="Organa">
-      {children}
-    </NameProvider>
-  );
-
-  render(<NameConsumer />, { wrapper });
-  expect(screen.getByText(/^My Name Is:/).textContent).toBe('My Name Is: Leia Organa');
+describe('web3 service', () => {
+  test('exports', async () => {
+    expect(web3Service.getAccounts).toBeDefined();
+    expect(web3Service.isLoggedIn).toBeDefined();
+    expect(web3Service.startLogin).toBeDefined();
+  });
+  test('getAccounts', async () => {
+    const web3 = new Web3(nodeUri);
+    const response = await web3Service.getAccounts(web3);
+    expect(response).toEqual([]);
+  });
+  test('isLoggedIn', async () => {
+    const web3 = new Web3(nodeUri);
+    const response = await web3Service.isLoggedIn(web3);
+    expect(response).toEqual(false);
+  });
+  test('startLogin', async () => {
+    const response = await web3Service.startLogin();
+    expect(response).toEqual([]); // empty - no users in jest env
+  });
 });
