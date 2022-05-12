@@ -1,10 +1,10 @@
-import { DDO, DID, SearchQuery } from '@nevermined-io/nevermined-sdk-js';
+import { DDO, DID, Nevermined, SearchQuery } from '@nevermined-io/nevermined-sdk-js';
 import { useEffect, useState } from 'react';
-import { UseAssetService } from '../types';
+import { GenericOutput, UseAssetService } from '../types';
 import { useNevermined } from '../nevermined';
 
-const allAssetsDefaultQuery: SearchQuery = {
-  offset: 1,
+export const allAssetsDefaultQuery: SearchQuery = {
+  offset: 2, // limit response to 2 items
   page: 1,
   query: {},
   sort: {
@@ -12,9 +12,22 @@ const allAssetsDefaultQuery: SearchQuery = {
   }
 };
 
+export const fetchAssets = async (
+  sdk: Nevermined,
+  q: SearchQuery
+): Promise<GenericOutput<DDO[], any>> => {
+  try {
+    const response = await sdk?.assets.query(q);
+    return { success: true, data: response.results, error: undefined };
+  } catch (error) {
+    return { success: false, data: [], error };
+  }
+};
+
 const useAssetService = (): UseAssetService => {
   const { sdk } = useNevermined();
   const [assets, setAssets] = useState<DDO[]>([]);
+  const [errorFetchAssets, setErrorFetchAssets] = useState<any>(undefined);
   const [isLoadingFetchAssets, setIsLoadingFetchAssets] = useState<boolean>(false);
 
   const getAssetDDO = async (did: DID | string): Promise<DDO> => {
@@ -29,18 +42,22 @@ const useAssetService = (): UseAssetService => {
       if (!sdk?.assets) {
         return;
       }
-      const fetchAllAssets = (q: SearchQuery) => {
-        setIsLoadingFetchAssets(true);
-        sdk?.assets.query(q).then((result: any) => {
-          setAssets(result.results);
-          setIsLoadingFetchAssets(false);
-        });
+      setIsLoadingFetchAssets(true);
+      const handler = async () => {
+        const response = await fetchAssets(sdk, query);
+        if (response.success) {
+          setAssets(response.data);
+          setErrorFetchAssets(undefined);
+        } else {
+          setErrorFetchAssets(response.error);
+        }
+        setIsLoadingFetchAssets(false);
       };
-      fetchAllAssets(query);
+      handler();
     }, [sdk, query]);
   };
 
-  return { getAssetDDO, assets, isLoadingFetchAssets, useFetchAssets };
+  return { getAssetDDO, assets, isLoadingFetchAssets, errorFetchAssets, useFetchAssets };
 };
 
 export default useAssetService;
