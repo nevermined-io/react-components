@@ -1,5 +1,6 @@
 {
   "extends": ["react-app", "react-app/jest"],
+  "parse": "@typescript-eslint/parser",
   "env": {
     "es6": true,
     "browser": true,
