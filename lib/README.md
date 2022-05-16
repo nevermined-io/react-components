@@ -5,7 +5,7 @@ connect and communicate with Nevermined.
 
 ### Example
 
-`
+```typescript
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Config } from '@nevermined-io/nevermined-sdk-js';
@@ -28,7 +28,6 @@ const appConfig = {
 } as Config;
 
 ReactDOM.render(
-
   <div>
     <Catalog.NeverminedProvider config={appConfig}>
       <App />
@@ -36,4 +35,4 @@ ReactDOM.render(
   </div>,
   document.getElementById('root') as HTMLElement
 );
-`
+```
