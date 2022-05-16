@@ -5,7 +5,7 @@ connect and communicate with Nevermined.
 
 ### Example
 
-`
+```typescript
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Config, DDO } from '@nevermined-io/nevermined-sdk-js';
@@ -65,5 +65,4 @@ ReactDOM.render(
   </div>,
   document.getElementById('root') as HTMLElement
 );
-
-`
+```
