@@ -1,55 +1,39 @@
-# Preqrequisites
+# Nevermined React Library
 
-1. have `yarn` installed
-2. have `nvm` installed (or node version 14)
-3. use node version 14: `nvm use`
-4. install packages: `yarn`.
+This projects aims to provide generic React components that
+connect and communicate with Nevermined.
 
-## Available Scripts
+### Example
 
-In the project directory, you can run:
+`
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Config } from '@nevermined-io/nevermined-sdk-js';
+import Catalog from '@nevermined-io/components-catalog';
+import App from 'app';
 
-### `yarn start`
+const metadataUri = 'https://metadata.autonomies.staging.nevermined.rocks';
+const gatewayAddress = '0xe63a11dC61b117D9c2B1Ac8021d4cffEd8EC213b';
+const gatewayUri = 'https://gateway.autonomies.staging.nevermined.rocks';
+const faucetUri = 'https://faucet.autonomies.staging.nevermined.rocks';
+const nodeUri = 'https://polygon-mumbai.infura.io/v3/eda048626e2745b182f43de61ac70be1';
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+const appConfig = {
+    metadataUri,
+    gatewayUri,
+    faucetUri,
+    nodeUri,
+    gatewayAddress,
+    verbose: true
+} as Config;
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+ReactDOM.render(
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-
-### `yarn test:e2e`
-
-Start integration tests.
-
-### `yarn build`
-
-Builds the library. It uses a custom webpack config found under `webpack.config.js`
-
-This config is only used for building the `PACKAGE`, not for dev mode.
-
-### Documentation
-
-Documentation uses [typedoc](https://github.com/TypeStrong/typedoc) under the hood.
-
-To generate documentation:
-
-`yarn docs:generate`.
-
-To view documentation:
-
-`yarn docs:serve`
-
-Utility command to do both:
-
-`yarn docs:dev`
-
-
-Documentation is currently not hosted or committed to git.
-
-## Components
-
-To see the components in action, start the server. The [Example](/src/Example.tsx) contains a small app showcasing all the components. Please make sure to add new component examples to the example when you add new ones.
+  <div>
+    <Catalog.NeverminedProvider config={appConfig}>
+      <App />
+    </Catalog.NeverminedProvider>
+  </div>,
+  document.getElementById('root') as HTMLElement
+);
+`
