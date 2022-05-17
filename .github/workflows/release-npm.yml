@@ -6,7 +6,7 @@ name: NPM Release
 on:
   push:
     tags:
-      - 'v*.*'
+      - "v*.*"
 
 jobs:
   publish-npm:
@@ -15,10 +15,10 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: '17.x'
+          node-version: "17.x"
           registry-url: https://registry.npmjs.org/
-      - run: yarn install --frozen-lockfile --ignore-engines
-      - run: yarn build:tsc
-      - run: npm publish --access public
+      - run: cd lib && yarn install --frozen-lockfile --ignore-engines
+      - run: cd lib && yarn build:tsc
+      - run: cd lib && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
