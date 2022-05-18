@@ -27,16 +27,11 @@ export const initializeNevermined = async (
 ): Promise<GenericOutput<Nevermined, any>> => {
   try {
     console.log('Loading SDK Started..');
-    const web3Provider = !isEmptyObject(config.web3Provider)
-      ? config.web3Provider
-      : getEtheruemProvider();
-
     const nvmSdk: Nevermined = await Nevermined.getInstance({
       ...config,
-      web3Provider
     });
     console.log('Loading SDK Finished Successfully');
-    return { data: nvmSdk, error: undefined, success: false };
+    return { data: nvmSdk, error: undefined, success: true };
   } catch (error) {
     console.log('Loading SDK Failed:');
     console.log(error);
