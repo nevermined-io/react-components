@@ -1,4 +1,5 @@
 import React from 'react';
+import { newKitFromWeb3 } from '@celo/contractkit';
 import { initializeNevermined } from '../nevermined';
 import { Config } from '@nevermined-io/nevermined-sdk-js';
 import Catalog from '../index';
@@ -43,7 +44,6 @@ describe('initializeNevermined', () => {
     const response = await initializeNevermined(testConfig);
     //@ts-ignore
     expect(response?.data?._web3?._requestManager?.provider?.host).toEqual(nodeUri); // maybe we have a better indication for successfull connection with nevermined
-    expect(false).toEqual(false);
   });
 });
 
@@ -79,5 +79,23 @@ describe('web3 service', () => {
   test('startLogin', async () => {
     const response = await web3Service.startLogin();
     expect(response).toEqual([]); // empty - no users in jest env
+  });
+});
+
+describe('contract kit', () => {
+  test('success', async () => {
+    console.log('Testing nevermined initiliziation with contract kit: ');
+    //@ts-ignore
+    global.window = {}; // needed - for some reason jest remove window object
+    const celo_node = 'https://alfajores-forno.celo-testnet.org';
+    const w3 = new Web3(celo_node);
+    //@ts-ignore
+    const kit = newKitFromWeb3(w3);
+    const con = testConfig;
+    con.nodeUri = celo_node;
+    con.web3Provider = kit.web3;
+    const response = await initializeNevermined(con);
+    //@ts-ignore
+    expect(response?.data?._config?.nodeUri).toEqual(celo_node); // maybe we have a better indication for successfull connection with nevermined
   });
 });
