@@ -26,7 +26,10 @@ import {
   calculateAssetPrice,
   findCoverForAsset,
   formatArtwork,
+  getAssetsOfAccount,
   getItemsFromDids,
+  getReleasesOfAccount,
+  initializeNevermined,
   isEmptyObject,
   Queries,
   truthy,
@@ -38,75 +41,6 @@ import { ServiceCommon } from '@nevermined-io/nevermined-sdk-js/dist/node/ddo/Se
 
 const DEFAULT_NODE_URI =
   'https://polygon-mumbai.infura.io/v3/eda048626e2745b182f43de61ac70be1'; /** MOVE ME TO NEV **/
-
-export const initializeNevermined = async (
-  config: Config
-): Promise<GenericOutput<Nevermined, any>> => {
-  try {
-    console.log('Loading SDK Started..');
-    const nvmSdk: Nevermined = await Nevermined.getInstance({
-      ...config
-    });
-    console.log('Loading SDK Finished Successfully');
-    return { data: nvmSdk, error: undefined, success: false };
-  } catch (error) {
-    console.log('Loading SDK Failed:');
-    console.log(error);
-    return { data: {} as Nevermined, error, success: false };
-  }
-};
-const getReleasesOfAccount = async (
-  account: string,
-  sdk: Nevermined
-): Promise<CollectionItem[]> => {
-  if (!account) return [];
-  const dids = await getAssetsReleasedByAddress(account, sdk);
-  return getItemsFromDids(dids, sdk);
-};
-
-const getAssetsReleasedByAddress = async (address: string, sdk: Nevermined): Promise<string[]> => {
-  if (sdk && sdk.keeper) {
-    const query = await sdk.keeper.didRegistry.events.getPastEvents({
-      eventName: 'DidAttributeRegistered',
-      methodName: 'getDIDAttributeRegistereds',
-      filterSubgraph: {
-        where: { _owner: address },
-        orderBy: '_blockNumberUpdated',
-        orderDirection: 'desc'
-      },
-      result: {
-        id: true,
-        _did: true,
-        _owner: true,
-        _blockNumberUpdated: true,
-        _lastUpdatedBy: true
-      }
-    });
-
-    return query.map((item) => item._did);
-  } else return [];
-};
-
-const getAssetsReceivedByAddress = async (
-  address: string,
-  sdk: Nevermined
-): Promise<{ _did: string; timestamp: number }[]> => {
-  const query = await sdk?.keeper?.conditions?.transferNftCondition?.events?.getPastEvents({
-    eventName: 'Fulfilled',
-    methodName: 'getFulfilleds',
-    filterSubgraph: { where: { _receiver: address }, orderBy: '_did', orderDirection: 'desc' },
-    result: {
-      id: true,
-      _did: true,
-      _receiver: true,
-      _agreementId: true,
-      _contract: true
-    }
-  });
-  if (!query || query.length == 0) return [];
-
-  return query;
-};
 
 const reducer = (state: NeverminedState, action: { type: string; payload: Nevermined }) => {
   switch (action.type) {
@@ -186,23 +120,7 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
       const loadReleases = async (): Promise<void> => {
         setIsLoading(true);
         const releasesTemp = await getReleasesOfAccount(id, sdk);
-        setAccountReleases(
-          releasesTemp.sort((a, b) => {
-            if (
-              a.artwork.findServiceByType('metadata').attributes.main.dateCreated <
-              b.artwork.findServiceByType('metadata').attributes.main.dateCreated
-            ) {
-              return 1;
-            }
-            if (
-              a.artwork.findServiceByType('metadata').attributes.main.dateCreated >
-              b.artwork.findServiceByType('metadata').attributes.main.dateCreated
-            ) {
-              return -1;
-            }
-            return 0;
-          })
-        );
+        setAccountReleases(releasesTemp);
         setIsLoading(false);
       };
       loadReleases();
@@ -218,62 +136,12 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
     const [accountCollection, setAccountCollection] = useState<
       (CollectionItem & { txTimestamp: number })[]
     >([]);
-    const filterItemListForAccount = async (
-      account: Account,
-      items: (CollectionItem & { txTimestamp: number })[]
-    ): Promise<(CollectionItem & { txTimestamp: number })[]> => {
-      const assetsOfAccount: (CollectionItem & { txTimestamp: number })[] = [];
-      await Promise.all(
-        items.map(async (item) => {
-          const balanceOfAccount = await sdk.nfts.balance(item.artwork.id, account);
-          if (balanceOfAccount > 0) {
-            assetsOfAccount.push(item);
-          }
-        })
-      );
-      return assetsOfAccount;
-    };
-    const getItemFromDid = async (did: string) => {
-      try {
-        const asset = await sdk.assets.resolve(did);
-        if (!asset || !asset.findServiceByType('metadata')) return undefined;
-        const unwrapped = unwrapNeverminedMetaData(asset.findServiceByType('metadata').attributes);
-        const coverUrl = unwrapped.autonomies?.coverUrl;
-        if (coverUrl) {
-          return {
-            artwork: asset,
-            cover: coverUrl,
-            secondaryAgreements: [],
-            price: +unwrapped.main.price
-          } as CollectionItem;
-        }
-        return undefined;
-      } catch (error) {
-        console.log('error resolving did', error);
-      }
-      return undefined;
-    };
-    const getAssetsOfAccount = async (
-      account: string
-    ): Promise<(CollectionItem & { txTimestamp: number })[]> => {
-      const dids = await getAssetsReceivedByAddress(account, sdk);
-      const uniqueDids = [...new Set(dids.map((item) => item))];
-      const items: (CollectionItem & { txTimestamp: number })[] = [];
-      for (let i = 0; i < uniqueDids.length; i++) {
-        const did = uniqueDids[i];
-        const item = await getItemFromDid(did._did);
-        if (item) items.push({ ...item, txTimestamp: did.timestamp });
-      }
-      const result = await filterItemListForAccount(new Account(account), items);
-
-      return result.sort((a, b) => b.txTimestamp - a.txTimestamp);
-    };
 
     useEffect(() => {
       const loadCollection = async (): Promise<void> => {
         if (!id || !sdk.utils) return;
         setLoading(true);
-        const collection = await getAssetsOfAccount(id);
+        const collection = await getAssetsOfAccount(id, sdk);
         setAccountCollection(collection);
         console.log(collection);
         setLoading(false);
@@ -425,7 +293,6 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
         );
 
         const aws = artworks?.length ? artworks.filter(truthy) : [];
-        console.log('aws', aws);
         //@ts-ignore
         setAllArtwork(aws);
         setIsLoading(false);
