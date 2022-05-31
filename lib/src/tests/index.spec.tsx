@@ -3,8 +3,6 @@ import { initializeNevermined } from '../nevermined';
 import { Config } from '@nevermined-io/nevermined-sdk-js';
 import Catalog from '../index';
 import { allAssetsDefaultQuery, fetchAssets } from '../services/UseAssetService';
-import { service as web3Service } from '../services/UseWeb3Service';
-import Web3 from 'web3';
 
 const serviceUri = 'https://autonomies-backend.autonomies.staging.nevermined.rocks';
 const metadataUri = 'https://metadata.autonomies.staging.nevermined.rocks'; // 'http://localhost:5000'
@@ -27,11 +25,9 @@ jest.setTimeout(20000);
 
 describe('validate package exported items', () => {
   test('exist', () => {
-    expect(Catalog.getEtheruemProvider).toBeDefined();
     expect(Catalog.NeverminedProvider).toBeDefined();
     expect(Catalog.useAssetService).toBeDefined();
     expect(Catalog.useNevermined).toBeDefined();
-    expect(Catalog.useWeb3Service).toBeDefined();
   });
 });
 
@@ -57,27 +53,5 @@ describe('fetch assets', () => {
     expect(response?.data?._web3?._requestManager?.provider?.host).toEqual(nodeUri);
     const assets = await fetchAssets(response.data, allAssetsDefaultQuery);
     expect(assets.data.length).toEqual(2);
-  });
-});
-
-describe('web3 service', () => {
-  test('exports', async () => {
-    expect(web3Service.getAccounts).toBeDefined();
-    expect(web3Service.isLoggedIn).toBeDefined();
-    expect(web3Service.startLogin).toBeDefined();
-  });
-  test('getAccounts', async () => {
-    const web3 = new Web3(nodeUri);
-    const response = await web3Service.getAccounts(web3);
-    expect(response).toEqual([]);
-  });
-  test('isLoggedIn', async () => {
-    const web3 = new Web3(nodeUri);
-    const response = await web3Service.isLoggedIn(web3);
-    expect(response).toEqual(false);
-  });
-  test('startLogin', async () => {
-    const response = await web3Service.startLogin();
-    expect(response).toEqual([]); // empty - no users in jest env
   });
 });

@@ -1,12 +1,14 @@
-import NeverminedProvider, { useNevermined, getEtheruemProvider } from './nevermined';
-import useWeb3Service from './services/UseWeb3Service';
+import NeverminedProvider, {
+  useNevermined,
+  useNeverminedService,
+  initializeNevermined
+} from './nevermined';
 import useAssetService from './services/UseAssetService';
 
 const Catalog = {
-  getEtheruemProvider,
+  useNeverminedService,
   NeverminedProvider,
   useNevermined,
-  useWeb3Service,
   useAssetService
 };
 
