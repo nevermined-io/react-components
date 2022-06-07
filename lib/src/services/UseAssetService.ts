@@ -1,63 +1,55 @@
-import { DDO, DID, Nevermined, SearchQuery } from '@nevermined-io/nevermined-sdk-js';
-import { useEffect, useState } from 'react';
-import { GenericOutput, UseAssetService } from '../types';
-import { useNevermined } from '../nevermined';
+import { DDO } from '@nevermined-io/nevermined-sdk-js';
+import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
+import { useContext, useEffect, useState } from 'react';
+import { NeverminedContext } from '../nevermined';
+import { CollectionItem } from '../types';
+import { formatArtwork, truthy } from '../utils';
 
-export const allAssetsDefaultQuery: SearchQuery = {
-  offset: 2, // limit response to 2 items
-  page: 1,
-  query: {},
-  sort: {
-    created: -1
-  }
-};
+export const useAllAssets = (): {
+  allArtwork: CollectionItem[];
+  isLoading: boolean;
+} => {
+  const decimals = 18;
+  const { assets } = useContext(NeverminedContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [allArtwork, setAllArtwork] = useState<CollectionItem[]>([]);
 
-export const fetchAssets = async (
-  sdk: Nevermined,
-  q: SearchQuery
-): Promise<GenericOutput<DDO[], any>> => {
-  try {
-    const response = await sdk?.assets.query(q);
-    return { success: true, data: response.results, error: undefined };
-  } catch (error) {
-    return { success: false, data: [], error };
-  }
-};
+  const handler = async () => {
+    setIsLoading(true);
+    try {
+      const queryResponse: QueryResult = await assets.getAll();
+      const artworks: (CollectionItem | undefined)[] = await Promise.all(
+        queryResponse?.results?.map(async (artwork: DDO): Promise<CollectionItem | undefined> => {
+          try {
+            const resvoledAsset = await assets.resolve(artwork.id);
+            if (!resvoledAsset) return undefined;
+            const formattedArtwork = await formatArtwork(artwork, decimals);
+            return {
+              ...formattedArtwork
+            };
+          } catch (error) {
+            return undefined;
+          }
+        })
+      );
 
-const useAssetService = (): UseAssetService => {
-  const { sdk } = useNevermined();
-  const [assets, setAssets] = useState<DDO[]>([]);
-  const [errorFetchAssets, setErrorFetchAssets] = useState<any>(undefined);
-  const [isLoadingFetchAssets, setIsLoadingFetchAssets] = useState<boolean>(false);
-
-  const getAssetDDO = async (did: DID | string): Promise<DDO> => {
-    const res = await sdk.metadata.retrieveDDO(did);
-    return res;
+      const aws = artworks?.length ? artworks.filter(truthy) : [];
+      //@ts-ignore
+      setAllArtwork(aws);
+      setIsLoading(false);
+    } catch (error) {
+      console.log('error', error);
+      setIsLoading(false);
+    }
   };
 
-  const useFetchAssets = (query = allAssetsDefaultQuery): void => {
-    const { sdk } = useNevermined();
+  useEffect(() => {
+    if (isLoading) return;
+    handler();
+  }, [decimals]);
 
-    useEffect(() => {
-      if (!sdk?.assets) {
-        return;
-      }
-      setIsLoadingFetchAssets(true);
-      const handler = async () => {
-        const response = await fetchAssets(sdk, query);
-        if (response.success) {
-          setAssets(response.data);
-          setErrorFetchAssets(undefined);
-        } else {
-          setErrorFetchAssets(response.error);
-        }
-        setIsLoadingFetchAssets(false);
-      };
-      handler();
-    }, [sdk, query]);
+  return {
+    allArtwork,
+    isLoading: isLoading
   };
-
-  return { getAssetDDO, assets, isLoadingFetchAssets, errorFetchAssets, useFetchAssets };
 };
-
-export default useAssetService;
