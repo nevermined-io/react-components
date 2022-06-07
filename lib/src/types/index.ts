@@ -1,22 +1,16 @@
+import { Config, DDO, MetaData, Nevermined, SearchQuery } from '@nevermined-io/nevermined-sdk-js';
 import {
-  Config,
-  DDO,
-  DID,
-  MetaData,
-  Nevermined,
-  SearchQuery
-} from '@nevermined-io/nevermined-sdk-js';
+  ContractEventSubscription,
+  EventResult
+} from '@nevermined-io/nevermined-sdk-js/dist/node/events';
+import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 
 export interface NeverminedProviderContext {
-  useSubscribeToPaymentEvents: any;
-  useFetchAssetData: any;
-  useAllAssets: any;
-  useSubscribeToTransferEvents: any;
   sdk: Nevermined;
-  useAccountCollection: any;
-  useAccountReleases: any;
-  usePaymentEvents: any;
-  useUserTransferEvents: any;
+  subscribe: SubscribeModule;
+  assets: AssetsModule;
+  account: AccountModule;
+  events: EventsModule;
 }
 
 export interface NeverminedProviderProps {
@@ -107,3 +101,37 @@ export const AutonomiesAttributeNames = [
   'audioUrls',
   'priceInEther'
 ];
+
+export type DID = string;
+
+export interface NFTDetails {
+  owner: any;
+  lastChecksum: any;
+  url: any;
+  lastUpdatedBy: any;
+  blockNumberUpdated: number;
+  providers: any;
+  nftSupply: number;
+  mintCap: number;
+  royalties: number;
+}
+
+export interface AccountModule {
+  getReleases: (address: string) => Promise<DID[]>;
+  getCollection: (address: string) => Promise<DID[]>;
+}
+
+export interface EventsModule {
+  fetchAccountTransferEvents: (address: string) => Promise<EventResult>;
+}
+
+export interface AssetsModule {
+  getSingle: (did: DID) => Promise<DDO>;
+  getAll: () => Promise<QueryResult>;
+  resolve: (did: DID) => Promise<DDO | undefined>;
+}
+
+export interface SubscribeModule {
+  paymentEvents: (cb: (events: EventResult[]) => void) => ContractEventSubscription;
+  transferEvents: (cb: (events: EventResult[]) => void) => ContractEventSubscription;
+}
