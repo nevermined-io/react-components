@@ -233,8 +233,9 @@ export const initializeNevermined = async (
     const nvmSdk: Nevermined = await Nevermined.getInstance({
       ...config
     });
+
     console.log('Loading SDK Finished Successfully');
-    return { data: nvmSdk, error: undefined, success: false };
+    return { data: nvmSdk, error: undefined, success: true };
   } catch (error) {
     console.log('Loading SDK Failed:');
     console.log(error);

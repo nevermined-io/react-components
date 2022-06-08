@@ -7,6 +7,7 @@ import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata
 
 export interface NeverminedProviderContext {
   sdk: Nevermined;
+  isLoadingSDK: boolean;
   subscribe: SubscribeModule;
   assets: AssetsModule;
   account: AccountModule;
@@ -129,9 +130,18 @@ export interface AssetsModule {
   getSingle: (did: DID) => Promise<DDO>;
   getAll: () => Promise<QueryResult>;
   resolve: (did: DID) => Promise<DDO | undefined>;
+  nftDetails: (did: string) => Promise<NFTDetails>;
 }
 
 export interface SubscribeModule {
   paymentEvents: (cb: (events: EventResult[]) => void) => ContractEventSubscription;
   transferEvents: (cb: (events: EventResult[]) => void) => ContractEventSubscription;
+}
+
+export interface AssetState {
+  ddo: DDO;
+  metadata: MetaData;
+  error: string;
+  isLoading: boolean;
+  nftDetails: any;
 }

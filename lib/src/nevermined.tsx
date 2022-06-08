@@ -1,68 +1,59 @@
 import { Config, DDO, Logger, MetaData, Nevermined } from '@nevermined-io/nevermined-sdk-js';
 import {
-  ContractEventSubscription,
-  EventResult
+    ContractEventSubscription,
+    EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
-  AccountModule,
-  AssetsModule,
-  EventsModule,
-  NeverminedProviderContext,
-  NeverminedProviderProps,
-  NeverminedState,
-  OutputUseNeverminedService,
-  SubscribeModule
+    AccountModule,
+    AssetsModule,
+    EventsModule,
+    NeverminedProviderContext,
+    NeverminedProviderProps,
+    NeverminedState,
+    NFTDetails,
+    OutputUseNeverminedService,
+    SubscribeModule
 } from './types';
-import { initializeNevermined, isEmptyObject, Queries } from './utils';
+import { initializeNevermined, Queries } from './utils';
 
 const DEFAULT_NODE_URI =
   'https://polygon-mumbai.infura.io/v3/eda048626e2745b182f43de61ac70be1'; /** MOVE ME TO NEV **/
-
-export const useNeverminedService = (config: Config): OutputUseNeverminedService => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<any>(undefined);
-  const [sdk, setSdk] = useState({} as Nevermined);
-
-  useEffect(() => {
-    const loadNevermined = async (): Promise<void> => {
-      const sdkAlreadyLoaded = !isEmptyObject(sdk);
-      if (isLoading) {
-        console.log('Still Trying to loading from previous call');
-        return;
-      }
-      if (!config.web3Provider) {
-        console.log('Please include web3 proivder in your sdk config. aborting.');
-        return;
-      }
-      if (sdkAlreadyLoaded) {
-        console.log('SDK already loaded.');
-        return;
-      }
-      setIsLoading(true);
-      const { data, success, error } = await initializeNevermined(config);
-      if (success) {
-        setSdk(data);
-        setError(error);
-      } else {
-        setError(error);
-      }
-      setIsLoading(false);
-    };
-    loadNevermined();
-  }, [config, sdk]);
-
-  return {
-    isLoading,
-    sdk,
-    error
-  };
-};
-
 const initialState: NeverminedState = { currentCase: 'empty', sdk: {} as Nevermined };
 
 const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
+  const useNeverminedService = (config: Config): OutputUseNeverminedService => {
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<any>(undefined);
+    const [sdk, setSdk] = useState({} as Nevermined);
+
+    useEffect(() => {
+      const loadNevermined = async (): Promise<void> => {
+        if (!config.web3Provider) {
+          console.log('Please include web3 proivder in your sdk config. aborting.');
+          return;
+        }
+        setIsLoading(true);
+        const { data, success, error } = await initializeNevermined(config);
+        if (success) {
+          setSdk(data);
+          setError(error);
+        } else {
+          setError(error);
+        }
+        setIsLoading(false);
+      };
+      loadNevermined();
+    }, [config]);
+
+    return {
+      isLoading,
+      sdk,
+      error
+    };
+  };
+
   const { isLoading, sdk, error } = useNeverminedService(config);
 
   const account: AccountModule = {
@@ -143,7 +134,6 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
         const queryResponse: QueryResult = await sdk?.assets?.query(Queries.allAssets());
         return queryResponse;
       } catch (error) {
-        console.log('error', error);
         return {} as QueryResult;
       }
     },
@@ -151,6 +141,11 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
     resolve: async (did: string): Promise<DDO | undefined> => {
       const resvoledAsset = await sdk.assets.resolve(did);
       return resvoledAsset;
+    },
+
+    nftDetails: async (did: string): Promise<NFTDetails> => {
+      const details = sdk.nfts.details(did);
+      return details;
     }
   };
 
@@ -188,6 +183,7 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
 
   const IState = {
     sdk,
+    isLoadingSDK: isLoading,
     subscribe,
     assets,
     account,

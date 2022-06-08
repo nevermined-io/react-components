@@ -1,11 +1,11 @@
-import NeverminedProvider, { useNevermined, useNeverminedService } from './nevermined';
-import useAssetService from './services/UseAssetService';
+import NeverminedProvider, { useNevermined } from './nevermined';
+import { useAllAssets, useAsset } from './services/UseAssetService';
 
 const Catalog = {
-  useNeverminedService,
   NeverminedProvider,
   useNevermined,
-  useAssetService
+  useAllAssets,
+  useAsset
 };
 
 export default Catalog;

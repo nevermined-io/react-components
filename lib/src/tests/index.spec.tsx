@@ -1,5 +1,4 @@
 import React from 'react';
-import { initializeNevermined } from '../nevermined';
 import { Config } from '@nevermined-io/nevermined-sdk-js';
 import Catalog from '../index';
 import { allAssetsDefaultQuery, fetchAssets } from '../services/UseAssetService';
