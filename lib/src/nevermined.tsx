@@ -1,19 +1,20 @@
 import { Config, DDO, Logger, MetaData, Nevermined } from '@nevermined-io/nevermined-sdk-js';
 import {
-    ContractEventSubscription,
-    EventResult
+  ContractEventSubscription,
+  EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
-    AccountModule,
-    AssetsModule,
-    EventsModule, NeverminedProviderContext,
-    NeverminedProviderProps,
-    NeverminedState,
-    NFTDetails,
-    OutputUseNeverminedService,
-    SubscribeModule
+  AccountModule,
+  AssetsModule,
+  EventsModule,
+  NeverminedProviderContext,
+  NeverminedProviderProps,
+  NeverminedState,
+  NFTDetails,
+  OutputUseNeverminedService,
+  SubscribeModule
 } from './types';
 import { initializeNevermined, Queries } from './utils';
 
@@ -29,8 +30,13 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
 
     useEffect(() => {
       const loadNevermined = async (): Promise<void> => {
+        const isAlreadyLoaded = () => sdk && Object.keys(sdk).length > 0;
         if (!config.web3Provider) {
           console.log('Please include web3 proivder in your sdk config. aborting.');
+          return;
+        }
+        if (isAlreadyLoaded()) {
+          console.log('SDK is already loaded. aborting');
           return;
         }
         setIsLoading(true);
