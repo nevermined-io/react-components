@@ -16,6 +16,7 @@ export interface NeverminedProviderContext {
 
 export interface NeverminedProviderProps {
   children: any;
+  verbose?: boolean;
   config: Config;
 }
 
