@@ -1,4 +1,5 @@
 import { Config } from '@nevermined-io/nevermined-sdk-js';
+import Web3 from 'web3';
 
 //
 // marketplace-server connection
@@ -36,5 +37,19 @@ const config = {
   ...defaultConfig, //?
   neverminedConfig: defaultConfig
 };
+
+export const appConfig = {
+    //@ts-ignore
+    web3Provider: new Web3(window.ethereum),
+    nodeUri,
+    metadataUri,
+    gatewayUri,
+    faucetUri,
+    verbose: true,
+    gatewayAddress,
+    secretStoreUri: "",
+    graphHttpUri: "",
+};
+
 
 export default config;

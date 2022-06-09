@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Catalog from 'hello-catalog';
-import appConfig from './config';
+import Catalog from '@nevermined-io/components-catalog';
+import { appConfig } from './config';
 import Example from 'examples';
 
 ReactDOM.render(
