@@ -62,4 +62,44 @@ ReactDOM.render(
   document.getElementById('root') as HTMLElement
 );
 ```
+### Project Structure
 
+The file `src/nevermined.ts` holds the core module. in this file the sdk is initialized and the context
+is exposed. The context holds the code that interacts directly with the sdk.
+
+There is also `src/services` folder that holds the code that interacts with the context 
+from `src/nevermined.ts` and introduces state management to the main functions implemented in the context.
+
+For example, for the asset service, we have `getSingle` in the context and `useAsset` under 
+`src/services/UseAssetService.ts` as a hook wrapping the `getSingle` function. 
+
+The code that communicates directly with the sdk from the context:
+
+```typescript
+type DID = string;
+
+- 1 account
+    getReleases(address: string) -> Promise<DID[]>
+        returns assets released by address
+    getCollection(address: string) -> Promise<DID[]>
+        returns assets bought by address
+
+- 2 asset
+    getSingle(did: DID) -> Promise<DDO>
+        returns single asset data
+    getAll() -> Promise<QueryResult>
+        returns all avaialble assets
+    resolve(did: DID) -> Promise<DDO | undefined>
+        resolves did into asset, undefined if asset not available(usually happens due to broken mint flow)
+    nftDetails(did: DID) -> Promise<NFTDetails>
+        return nft details
+
+- 3 event
+    accountTransferEvents(address: string) -> Promise<EventsResult>
+        return user recieved transactions
+
+- 4 subscribe
+    paymentEvents(cb: (events: EventResult[]) -> void) -> ContractEventSubscribtion
+        start subscribtion listening to payment events in the network
+    transferEvents(cb: (events: EventResult[]) -> void) -> ContractEventSubscribtion
+        start subscribtion listening to transfer events in the network
