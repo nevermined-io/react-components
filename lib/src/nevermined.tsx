@@ -22,7 +22,7 @@ const DEFAULT_NODE_URI =
   'https://polygon-mumbai.infura.io/v3/eda048626e2745b182f43de61ac70be1'; /** MOVE ME TO NEV **/
 const initialState: NeverminedState = { currentCase: 'empty', sdk: {} as Nevermined };
 
-const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
+const NeverminedProvider = ({ children, config, verbose }: NeverminedProviderProps) => {
   const useNeverminedService = (config: Config): OutputUseNeverminedService => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(undefined);
@@ -58,6 +58,7 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
       error
     };
   };
+
   const { isLoading, sdk, error } = useNeverminedService(config);
   const account: AccountModule = {
     getReleases: async (address: string): Promise<string[]> => {
@@ -76,7 +77,7 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
         });
         return query.map((item) => item._did);
       } catch (error) {
-        Logger.error(error);
+        verbose && Logger.error(error);
         return [];
       }
     },
@@ -103,7 +104,7 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
         const dids = [...new Set(query.map((item) => item))]; //unique items
         return dids;
       } catch (error) {
-        Logger.error(error);
+        verbose && Logger.error(error);
         return [];
       }
     }
@@ -128,7 +129,7 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
         });
         return data;
       } catch (error) {
-        Logger.error(error);
+        verbose && Logger.error(error);
         return [] as any[];
       }
     }
@@ -142,7 +143,7 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
         const nftDetails = await sdk.nfts.details(String(did));
         return ddo;
       } catch (e) {
-        Logger.error(e as Error);
+        verbose && Logger.error(error);
         return {} as DDO;
       }
     },
@@ -152,7 +153,7 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
         const queryResponse: QueryResult = await sdk?.assets?.query(Queries.allAssets());
         return queryResponse;
       } catch (error) {
-        Logger.error(error);
+        verbose && Logger.error(error);
         return {} as QueryResult;
       }
     },
@@ -162,7 +163,7 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
         const resvoledAsset = await sdk.assets.resolve(did);
         return resvoledAsset;
       } catch (error) {
-        Logger.error(error);
+        verbose && Logger.error(error);
         return undefined;
       }
     },
@@ -172,7 +173,7 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
         const details = sdk.nfts.details(did);
         return details;
       } catch (error) {
-        Logger.error(error);
+        verbose && Logger.error(error);
         return {} as NFTDetails;
       }
     }
@@ -194,8 +195,8 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
         };
         return sdk.keeper.conditions.lockPaymentCondition.events.subscribe(cb, config);
       } catch (error) {
+        verbose && Logger.error(error);
         return {} as ContractEventSubscription;
-        Logger.error(error);
       }
     },
 
@@ -214,7 +215,7 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
         };
         return sdk.keeper.conditions.transferNftCondition.events.subscribe(cb, config);
       } catch (error) {
-        Logger.error(error);
+        verbose && Logger.error(error);
         return {} as ContractEventSubscription;
       }
     }
