@@ -62,17 +62,16 @@ ReactDOM.render(
   document.getElementById('root') as HTMLElement
 );
 ```
-
 ### Project Structure
 
-The file src/nevermined.ts holds the core module. in this file the sdk is initialized and the context
+The file `src/nevermined.ts` holds the core module. in this file the sdk is initialized and the context
 is exposed. The context holds the code that interacts directly with the sdk.
 
-There is also src/services folder that holds 4 files. This folder holds the code that interacts with the context 
-from src/nevermined.ts and introduces state management to the main functions implemented in the context.
+There is also `src/services` folder that holds the code that interacts with the context 
+from `src/nevermined.ts` and introduces state management to the main functions implemented in the context.
 
-For example, for the asset service, we have getSingle in the context and useAsset under 
-src/services/UseAssetService.ts as a hook wrapping the getSingle function. 
+For example, for the asset service, we have `getSingle` in the context and `useAsset` under 
+`src/services/UseAssetService.ts` as a hook wrapping the `getSingle` function. 
 
 The code that communicates directly with the sdk from the context:
 
