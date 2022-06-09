@@ -18,6 +18,23 @@ import {
 } from './types';
 import { initializeNevermined, Queries } from './utils';
 
+export const initializeNevermined = async (
+  config: Config
+): Promise<GenericOutput<Nevermined, any>> => {
+  try {
+    console.log('Loading SDK Started..');
+    const nvmSdk: Nevermined = await Nevermined.getInstance({
+      ...config,
+    });
+    console.log('Loading SDK Finished Successfully');
+    return { data: nvmSdk, error: undefined, success: true };
+  } catch (error) {
+    console.log('Loading SDK Failed:');
+    console.log(error);
+    return { data: {} as Nevermined, error, success: false };
+  }
+};
+
 const DEFAULT_NODE_URI =
   'https://polygon-mumbai.infura.io/v3/eda048626e2745b182f43de61ac70be1'; /** MOVE ME TO NEV **/
 const initialState: NeverminedState = { currentCase: 'empty', sdk: {} as Nevermined };
@@ -53,9 +70,7 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
       error
     };
   };
-
   const { isLoading, sdk, error } = useNeverminedService(config);
-
   const account: AccountModule = {
     getReleases: async (address: string): Promise<string[]> => {
       try {

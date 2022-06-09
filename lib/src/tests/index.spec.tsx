@@ -38,7 +38,6 @@ describe('initializeNevermined', () => {
     const response = await initializeNevermined(testConfig);
     //@ts-ignore
     expect(response?.data?._web3?._requestManager?.provider?.host).toEqual(nodeUri); // maybe we have a better indication for successfull connection with nevermined
-    expect(false).toEqual(false);
   });
 });
 
@@ -54,3 +53,4 @@ describe('fetch assets', () => {
     expect(assets.data.length).toEqual(2);
   });
 });
+
