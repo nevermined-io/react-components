@@ -1,11 +1,7 @@
 import React from 'react';
-import { newKitFromWeb3 } from '@celo/contractkit';
-import { initializeNevermined } from '../nevermined';
 import { Config } from '@nevermined-io/nevermined-sdk-js';
 import Catalog from '../index';
 import { allAssetsDefaultQuery, fetchAssets } from '../services/UseAssetService';
-import { service as web3Service } from '../services/UseWeb3Service';
-import Web3 from 'web3';
 
 const serviceUri = 'https://autonomies-backend.autonomies.staging.nevermined.rocks';
 const metadataUri = 'https://metadata.autonomies.staging.nevermined.rocks'; // 'http://localhost:5000'
@@ -28,11 +24,9 @@ jest.setTimeout(20000);
 
 describe('validate package exported items', () => {
   test('exist', () => {
-    expect(Catalog.getEtheruemProvider).toBeDefined();
     expect(Catalog.NeverminedProvider).toBeDefined();
     expect(Catalog.useAssetService).toBeDefined();
     expect(Catalog.useNevermined).toBeDefined();
-    expect(Catalog.useWeb3Service).toBeDefined();
   });
 });
 
@@ -60,42 +54,3 @@ describe('fetch assets', () => {
   });
 });
 
-describe('web3 service', () => {
-  test('exports', async () => {
-    expect(web3Service.getAccounts).toBeDefined();
-    expect(web3Service.isLoggedIn).toBeDefined();
-    expect(web3Service.startLogin).toBeDefined();
-  });
-  test('getAccounts', async () => {
-    const web3 = new Web3(nodeUri);
-    const response = await web3Service.getAccounts(web3);
-    expect(response).toEqual([]);
-  });
-  test('isLoggedIn', async () => {
-    const web3 = new Web3(nodeUri);
-    const response = await web3Service.isLoggedIn(web3);
-    expect(response).toEqual(false);
-  });
-  test('startLogin', async () => {
-    const response = await web3Service.startLogin();
-    expect(response).toEqual([]); // empty - no users in jest env
-  });
-});
-
-describe('contract kit', () => {
-  test('success', async () => {
-    console.log('Testing nevermined initiliziation with contract kit: ');
-    //@ts-ignore
-    global.window = {}; // needed - for some reason jest remove window object
-    const celo_node = 'https://alfajores-forno.celo-testnet.org';
-    const w3 = new Web3(celo_node);
-    //@ts-ignore
-    const kit = newKitFromWeb3(w3);
-    const con = testConfig;
-    con.nodeUri = celo_node;
-    con.web3Provider = kit.web3;
-    const response = await initializeNevermined(con);
-    //@ts-ignore
-    expect(response?.data?._config?.nodeUri).toEqual(celo_node); // maybe we have a better indication for successfull connection with nevermined
-  });
-});

@@ -1,89 +1,233 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
-import { Nevermined, Config } from '@nevermined-io/nevermined-sdk-js';
-import Web3 from 'web3';
+import { Config, DDO, Logger, MetaData, Nevermined } from '@nevermined-io/nevermined-sdk-js';
 import {
-  GenericOutput,
-  NeverminedProviderContext,
-  NeverminedProviderProps,
-  OutputUseNeverminedService
+    ContractEventSubscription,
+    EventResult
+} from '@nevermined-io/nevermined-sdk-js/dist/node/events';
+import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import {
+    AccountModule,
+    AssetsModule,
+    EventsModule, NeverminedProviderContext,
+    NeverminedProviderProps,
+    NeverminedState,
+    NFTDetails,
+    OutputUseNeverminedService,
+    SubscribeModule
 } from './types';
-import { isEmptyObject } from './utils';
-import { provider } from 'web3-core';
+import { initializeNevermined, Queries } from './utils';
 
 const DEFAULT_NODE_URI =
   'https://polygon-mumbai.infura.io/v3/eda048626e2745b182f43de61ac70be1'; /** MOVE ME TO NEV **/
+const initialState: NeverminedState = { currentCase: 'empty', sdk: {} as Nevermined };
 
-export const getEtheruemProvider = () => {
-  const handler = (): Web3 => {
-    const provider: provider = window?.ethereum;
-    const web3 = new Web3(isEmptyObject(provider) ? DEFAULT_NODE_URI : provider);
-    return web3;
-  };
-  return handler();
-};
+const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
+  const useNeverminedService = (config: Config): OutputUseNeverminedService => {
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<any>(undefined);
+    const [sdk, setSdk] = useState({} as Nevermined);
 
-export const initializeNevermined = async (
-  config: Config
-): Promise<GenericOutput<Nevermined, any>> => {
-  try {
-    console.log('Loading SDK Started..');
-    const nvmSdk: Nevermined = await Nevermined.getInstance({
-      ...config,
-    });
-    console.log('Loading SDK Finished Successfully');
-    return { data: nvmSdk, error: undefined, success: true };
-  } catch (error) {
-    console.log('Loading SDK Failed:');
-    console.log(error);
-    return { data: {} as Nevermined, error, success: false };
-  }
-};
+    useEffect(() => {
+      const loadNevermined = async (): Promise<void> => {
+        if (!config.web3Provider) {
+          console.log('Please include web3 proivder in your sdk config. aborting.');
+          return;
+        }
+        setIsLoading(true);
+        const { data, success, error } = await initializeNevermined(config);
+        if (success) {
+          setSdk(data);
+          setError(error);
+        } else {
+          setError(error);
+        }
+        setIsLoading(false);
+      };
+      loadNevermined();
+    }, [config]);
 
-const useNeverminedService = (config: Config): OutputUseNeverminedService => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<any>(undefined);
-  const [sdk, setSdk] = useState({} as Nevermined);
-
-  useEffect(() => {
-    const loadNevermined = async (): Promise<void> => {
-      const sdkAlreadyLoaded = !isEmptyObject(sdk);
-      if (sdkAlreadyLoaded) {
-        console.log('SDK already loaded.');
-        return;
-      }
-      setIsLoading(true);
-      const { data, success, error } = await initializeNevermined(config);
-      if (success) {
-        setSdk(data);
-        setError(error);
-      } else {
-        setError(error);
-      }
-      setIsLoading(false);
+    return {
+      isLoading,
+      sdk,
+      error
     };
-    loadNevermined();
-  }, [config, sdk]);
-
-  return {
-    isLoading,
-    sdk,
-    error
   };
+  const { isLoading, sdk, error } = useNeverminedService(config);
+  const account: AccountModule = {
+    getReleases: async (address: string): Promise<string[]> => {
+      try {
+        const query = await sdk.keeper.didRegistry.events.getPastEvents({
+          eventName: 'DidAttributeRegistered',
+          methodName: 'getDIDAttributeRegistereds',
+          filterSubgraph: {
+            where: { _owner: address },
+            orderBy: '_blockNumberUpdated',
+            orderDirection: 'desc'
+          },
+          result: {
+            _did: true
+          }
+        });
+        return query.map((item) => item._did);
+      } catch (error) {
+        Logger.error(error);
+        return [];
+      }
+    },
+
+    getCollection: async (address: string): Promise<string[]> => {
+      try {
+        const query = await sdk?.keeper?.conditions?.transferNftCondition?.events?.getPastEvents({
+          eventName: 'Fulfilled',
+          methodName: 'getFulfilleds',
+          filterSubgraph: {
+            where: { _receiver: address },
+            orderBy: '_did',
+            orderDirection: 'desc'
+          },
+          result: {
+            id: true,
+            _did: true,
+            _receiver: true,
+            _agreementId: true,
+            _contract: true
+          }
+        });
+        if (!query || query.length == 0) return [];
+        const dids = [...new Set(query.map((item) => item))]; //unique items
+        return dids;
+      } catch (error) {
+        Logger.error(error);
+        return [];
+      }
+    }
+  };
+
+  const events: EventsModule = {
+    fetchAccountTransferEvents: async (address: string): Promise<EventResult> => {
+      try {
+        const data: any[] = await sdk.keeper.conditions.transferNftCondition.events.getEventData({
+          filterSubgraph: {
+            where: {
+              _receiver: address
+            }
+          },
+          methodName: 'getFulfilleds',
+          result: {
+            id: true,
+            _did: true,
+            _agreementId: true,
+            _receiver: true
+          }
+        });
+        return data;
+      } catch (error) {
+        Logger.error(error);
+        return [] as any[];
+      }
+    }
+  };
+
+  const assets: AssetsModule = {
+    getSingle: async (did: string): Promise<DDO> => {
+      try {
+        const ddo: DDO = await sdk.assets.resolve(String(did));
+        const metaData: MetaData = ddo.findServiceByType('metadata').attributes;
+        const nftDetails = await sdk.nfts.details(String(did));
+        return ddo;
+      } catch (e) {
+        Logger.error(e as Error);
+        return {} as DDO;
+      }
+    },
+
+    getAll: async (): Promise<QueryResult> => {
+      try {
+        const queryResponse: QueryResult = await sdk?.assets?.query(Queries.allAssets());
+        return queryResponse;
+      } catch (error) {
+        Logger.error(error);
+        return {} as QueryResult;
+      }
+    },
+
+    resolve: async (did: string): Promise<DDO | undefined> => {
+      try {
+        const resvoledAsset = await sdk.assets.resolve(did);
+        return resvoledAsset;
+      } catch (error) {
+        Logger.error(error);
+        return undefined;
+      }
+    },
+
+    nftDetails: async (did: string): Promise<NFTDetails> => {
+      try {
+        const details = sdk.nfts.details(did);
+        return details;
+      } catch (error) {
+        Logger.error(error);
+        return {} as NFTDetails;
+      }
+    }
+  };
+
+  const subscribe: SubscribeModule = {
+    paymentEvents: (cb: (events: EventResult[]) => void): ContractEventSubscription => {
+      try {
+        const config = {
+          filterSubgraph: {},
+          methodName: 'getFulfilleds',
+          result: {
+            id: true,
+            _did: true,
+            _agreementId: true,
+            _amounts: true,
+            _receivers: true
+          }
+        };
+        return sdk.keeper.conditions.lockPaymentCondition.events.subscribe(cb, config);
+      } catch (error) {
+        return {} as ContractEventSubscription;
+        Logger.error(error);
+      }
+    },
+
+    transferEvents: (cb: (events: EventResult[]) => void): ContractEventSubscription => {
+      try {
+        const config = {
+          filterSubgraph: {},
+          methodName: 'getFulfilleds',
+          result: {
+            id: true,
+            _did: true,
+            _agreementId: true,
+            _amounts: true,
+            _receivers: true
+          }
+        };
+        return sdk.keeper.conditions.transferNftCondition.events.subscribe(cb, config);
+      } catch (error) {
+        Logger.error(error);
+        return {} as ContractEventSubscription;
+      }
+    }
+  };
+
+  const IState = {
+    sdk,
+    isLoadingSDK: isLoading,
+    subscribe,
+    assets,
+    account,
+    events
+  };
+
+  return <NeverminedContext.Provider value={IState}>{children}</NeverminedContext.Provider>;
 };
 
 export const NeverminedContext = createContext({} as NeverminedProviderContext);
 
-const NeverminedProvider = ({ children, config }: NeverminedProviderProps): React.ReactElement => {
-  const { sdk } = useNeverminedService(config);
-
-  return (
-    <NeverminedContext.Provider value={{ sdk } as NeverminedProviderContext}>
-      {children}
-    </NeverminedContext.Provider>
-  );
-};
-
-/** helper **/
 export const useNevermined = (): NeverminedProviderContext => useContext(NeverminedContext);
 
 export default NeverminedProvider;
