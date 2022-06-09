@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: "17.x"
           registry-url: https://registry.npmjs.org/
-      - run: cd lib && yarn install --frozen-lockfile --ignore-engines
+      - run: cd lib && yarn install --ignore-engines
       - run: cd lib && yarn build:tsc
       - run: cd lib && npm publish --access public
         env:
