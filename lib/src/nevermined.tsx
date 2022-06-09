@@ -1,20 +1,20 @@
 import { Config, DDO, Logger, MetaData, Nevermined } from '@nevermined-io/nevermined-sdk-js';
 import {
-    ContractEventSubscription,
-    EventResult
+  ContractEventSubscription,
+  EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
-    AccountModule,
-    AssetsModule,
-    EventsModule,
-    NeverminedProviderContext,
-    NeverminedProviderProps,
-    NeverminedState,
-    NFTDetails,
-    OutputUseNeverminedService,
-    SubscribeModule
+  AccountModule,
+  AssetsModule,
+  EventsModule,
+  NeverminedProviderContext,
+  NeverminedProviderProps,
+  NeverminedState,
+  NFTDetails,
+  OutputUseNeverminedService,
+  SubscribeModule
 } from './types';
 import { initializeNevermined, Queries } from './utils';
 
@@ -58,39 +58,54 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
 
   const account: AccountModule = {
     getReleases: async (address: string): Promise<string[]> => {
-      const query = await sdk.keeper.didRegistry.events.getPastEvents({
-        eventName: 'DidAttributeRegistered',
-        methodName: 'getDIDAttributeRegistereds',
-        filterSubgraph: {
-          where: { _owner: address },
-          orderBy: '_blockNumberUpdated',
-          orderDirection: 'desc'
-        },
-        result: {
-          _did: true
-        }
-      });
-      return query.map((item) => item._did);
+      try {
+        const query = await sdk.keeper.didRegistry.events.getPastEvents({
+          eventName: 'DidAttributeRegistered',
+          methodName: 'getDIDAttributeRegistereds',
+          filterSubgraph: {
+            where: { _owner: address },
+            orderBy: '_blockNumberUpdated',
+            orderDirection: 'desc'
+          },
+          result: {
+            _did: true
+          }
+        });
+        return query.map((item) => item._did);
+      } catch (error) {
+        Logger.error(error);
+        return [];
+      }
     },
 
     getCollection: async (address: string): Promise<string[]> => {
-      const query = await sdk?.keeper?.conditions?.transferNftCondition?.events?.getPastEvents({
-        eventName: 'Fulfilled',
-        methodName: 'getFulfilleds',
-        filterSubgraph: { where: { _receiver: address }, orderBy: '_did', orderDirection: 'desc' },
-        result: {
-          id: true,
-          _did: true,
-          _receiver: true,
-          _agreementId: true,
-          _contract: true
-        }
-      });
-      if (!query || query.length == 0) return [];
-      const dids = [...new Set(query.map((item) => item))]; //unique items
-      return dids;
+      try {
+        const query = await sdk?.keeper?.conditions?.transferNftCondition?.events?.getPastEvents({
+          eventName: 'Fulfilled',
+          methodName: 'getFulfilleds',
+          filterSubgraph: {
+            where: { _receiver: address },
+            orderBy: '_did',
+            orderDirection: 'desc'
+          },
+          result: {
+            id: true,
+            _did: true,
+            _receiver: true,
+            _agreementId: true,
+            _contract: true
+          }
+        });
+        if (!query || query.length == 0) return [];
+        const dids = [...new Set(query.map((item) => item))]; //unique items
+        return dids;
+      } catch (error) {
+        Logger.error(error);
+        return [];
+      }
     }
   };
+
   const events: EventsModule = {
     fetchAccountTransferEvents: async (address: string): Promise<EventResult> => {
       try {
@@ -134,50 +149,71 @@ const NeverminedProvider = ({ children, config }: NeverminedProviderProps) => {
         const queryResponse: QueryResult = await sdk?.assets?.query(Queries.allAssets());
         return queryResponse;
       } catch (error) {
+        Logger.error(error);
         return {} as QueryResult;
       }
     },
 
     resolve: async (did: string): Promise<DDO | undefined> => {
-      const resvoledAsset = await sdk.assets.resolve(did);
-      return resvoledAsset;
+      try {
+        const resvoledAsset = await sdk.assets.resolve(did);
+        return resvoledAsset;
+      } catch (error) {
+        Logger.error(error);
+        return undefined;
+      }
     },
 
     nftDetails: async (did: string): Promise<NFTDetails> => {
-      const details = sdk.nfts.details(did);
-      return details;
+      try {
+        const details = sdk.nfts.details(did);
+        return details;
+      } catch (error) {
+        Logger.error(error);
+        return {} as NFTDetails;
+      }
     }
   };
 
   const subscribe: SubscribeModule = {
     paymentEvents: (cb: (events: EventResult[]) => void): ContractEventSubscription => {
-      const config = {
-        filterSubgraph: {},
-        methodName: 'getFulfilleds',
-        result: {
-          id: true,
-          _did: true,
-          _agreementId: true,
-          _amounts: true,
-          _receivers: true
-        }
-      };
-      return sdk.keeper.conditions.lockPaymentCondition.events.subscribe(cb, config);
+      try {
+        const config = {
+          filterSubgraph: {},
+          methodName: 'getFulfilleds',
+          result: {
+            id: true,
+            _did: true,
+            _agreementId: true,
+            _amounts: true,
+            _receivers: true
+          }
+        };
+        return sdk.keeper.conditions.lockPaymentCondition.events.subscribe(cb, config);
+      } catch (error) {
+        return {} as ContractEventSubscription;
+        Logger.error(error);
+      }
     },
 
     transferEvents: (cb: (events: EventResult[]) => void): ContractEventSubscription => {
-      const config = {
-        filterSubgraph: {},
-        methodName: 'getFulfilleds',
-        result: {
-          id: true,
-          _did: true,
-          _agreementId: true,
-          _amounts: true,
-          _receivers: true
-        }
-      };
-      return sdk.keeper.conditions.transferNftCondition.events.subscribe(cb, config);
+      try {
+        const config = {
+          filterSubgraph: {},
+          methodName: 'getFulfilleds',
+          result: {
+            id: true,
+            _did: true,
+            _agreementId: true,
+            _amounts: true,
+            _receivers: true
+          }
+        };
+        return sdk.keeper.conditions.transferNftCondition.events.subscribe(cb, config);
+      } catch (error) {
+        Logger.error(error);
+        return {} as ContractEventSubscription;
+      }
     }
   };
 
