@@ -31,8 +31,8 @@
     ]
   },
   "dependencies": {
-    "@nevermined-io/nevermined-sdk-js": "0.19.20",
-    "@nevermined-io/components-catalog": "0.0.7",
+    "@nevermined-io/nevermined-sdk-js": "0.20.0",
+    "@nevermined-io/components-catalog": "0.0.72",
     "@truffle/hdwallet-provider": "^2.0.0",
     "axios": "^0.24.0",
     "babel-eslint": "^10.1.0",
