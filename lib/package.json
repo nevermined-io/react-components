@@ -1,6 +1,6 @@
 {
   "name": "@nevermined-io/components-catalog",
-  "version": "0.0.7",
+  "version": "0.0.71",
   "private": false,
   "scripts": {
     "watch": "./node_modules/.bin/nodemon",
@@ -33,7 +33,7 @@
     ]
   },
   "dependencies": {
-    "@nevermined-io/nevermined-sdk-js": "0.19.20",
+    "@nevermined-io/nevermined-sdk-js": "0.20.0",
     "@types/react": "^17.0.39",
     "nodemon": "^2.0.16",
     "react": "^17.0.2",

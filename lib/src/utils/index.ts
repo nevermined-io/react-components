@@ -59,9 +59,6 @@ export const Queries = {
       offset: 150,
       page: 1,
       query: lenientCategoriesQuery,
-      sort: {
-        created: -1
-      }
     };
     return q;
   }
