@@ -1,28 +1,51 @@
-import { Config, DDO, Logger, MetaData, Nevermined } from '@nevermined-io/nevermined-sdk-js';
 import {
-  ContractEventSubscription,
-  EventResult
+    Config,
+    DDO,
+    Logger,
+    MetaData,
+    Nevermined,
+    SearchQuery
+} from '@nevermined-io/nevermined-sdk-js';
+import {
+    ContractEventSubscription,
+    EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
-  AccountModule,
-  AssetsModule,
-  EventsModule,
-  NeverminedProviderContext,
-  NeverminedProviderProps,
-  NeverminedState,
-  NFTDetails,
-  OutputUseNeverminedService,
-  SubscribeModule
+    AccountModule,
+    AssetsModule,
+    EventsModule,
+    GenericOutput,
+    NeverminedProviderContext,
+    NeverminedProviderProps, NFTDetails,
+    OutputUseNeverminedService,
+    SubscribeModule
 } from './types';
-import { initializeNevermined, Queries } from './utils';
+import { isEmptyObject } from './utils';
+
+const initializeNevermined = async (
+  config: Config
+): Promise<GenericOutput<Nevermined, any>> => {
+  try {
+    console.log('Loading SDK Started..');
+    const nvmSdk: Nevermined = await Nevermined.getInstance({
+      ...config
+    });
+
+    console.log('Loading SDK Finished Successfully');
+    return { data: nvmSdk, error: undefined, success: true };
+  } catch (error) {
+    console.log('Loading SDK Failed:');
+    console.log(error);
+    return { data: {} as Nevermined, error, success: false };
+  }
+};
 
 const DEFAULT_NODE_URI =
   'https://polygon-mumbai.infura.io/v3/eda048626e2745b182f43de61ac70be1'; /** MOVE ME TO NEV **/
-const initialState: NeverminedState = { currentCase: 'empty', sdk: {} as Nevermined };
 
-const NeverminedProvider = ({ children, config, verbose }: NeverminedProviderProps) => {
+export const NeverminedProvider = ({ children, config, verbose }: NeverminedProviderProps) => {
   const useNeverminedService = (config: Config): OutputUseNeverminedService => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(undefined);
@@ -148,9 +171,10 @@ const NeverminedProvider = ({ children, config, verbose }: NeverminedProviderPro
       }
     },
 
-    getAll: async (): Promise<QueryResult> => {
+    query: async (q: SearchQuery): Promise<QueryResult> => {
       try {
-        const queryResponse: QueryResult = await sdk?.assets?.query(Queries.allAssets());
+        if (isEmptyObject(sdk)) return {} as QueryResult;
+        const queryResponse: QueryResult = await sdk?.assets?.query(q);
         return queryResponse;
       } catch (error) {
         verbose && Logger.error(error);
@@ -236,5 +260,3 @@ const NeverminedProvider = ({ children, config, verbose }: NeverminedProviderPro
 export const NeverminedContext = createContext({} as NeverminedProviderContext);
 
 export const useNevermined = (): NeverminedProviderContext => useContext(NeverminedContext);
-
-export default NeverminedProvider;

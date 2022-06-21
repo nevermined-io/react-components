@@ -12,7 +12,7 @@ export const useAccountReleases = (
   useEffect(() => {
     const loadReleases = async (): Promise<void> => {
       setIsLoading(true);
-    const data = await account.getReleases(id);
+      const data = await account.getReleases(id);
       setAccountReleases(data);
       if (format) {
         setAccountReleases(format(data));
@@ -29,7 +29,7 @@ export const useAccountReleases = (
 
 export const useAccountCollection = (
   id: string,
-  format?: (dids: string[]) => any
+  format: (dids: string[]) => any
 ): { isLoading: boolean; accountCollection: string[] } => {
   const { sdk, account } = useContext(NeverminedContext);
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -52,4 +52,3 @@ export const useAccountCollection = (
 
   return { isLoading, accountCollection };
 };
-
