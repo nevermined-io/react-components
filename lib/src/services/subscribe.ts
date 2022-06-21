@@ -1,11 +1,13 @@
 import { Nevermined } from '@nevermined-io/nevermined-sdk-js';
 import {
-    ContractEventSubscription,
-    EventResult
+  ContractEventSubscription,
+  EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { NeverminedContext } from '../nevermined';
 
-export const useSubscribeToPaymentEvents = (sdk: Nevermined) => () => {
+export const useSubscribeToPaymentEvents = () => () => {
+  const { sdk } = useContext(NeverminedContext);
   const [paymentSubscription, setPaymentSubscription] = useState<ContractEventSubscription>();
   const [paymentEvents, setPaymentEvents] = useState([] as EventResult[]);
 
@@ -35,7 +37,8 @@ export const useSubscribeToPaymentEvents = (sdk: Nevermined) => () => {
   return { paymentEvents, paymentSubscription };
 };
 
-export const useSubscribeToTransferEvents = (sdk: Nevermined) => () => {
+export const useSubscribeToTransferEvents = () => () => {
+  const { sdk } = useContext(NeverminedContext);
   const [transferSubscription, setTransferSubscription] = useState<ContractEventSubscription>();
   const [transferEvents, setTransferEvents] = useState([] as EventResult[]);
 

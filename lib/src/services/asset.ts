@@ -1,45 +1,26 @@
-import { DDO, MetaData } from '@nevermined-io/nevermined-sdk-js';
+import { DDO, MetaData, SearchQuery } from '@nevermined-io/nevermined-sdk-js';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import { useContext, useEffect, useState } from 'react';
 import { NeverminedContext } from '../nevermined';
-import { AssetState, CollectionItem } from '../types';
-import { formatArtwork, isEmptyObject, truthy } from '../utils';
+import { AssetState } from '../types';
 
-export const useAllAssets = (): {
-  allArtwork: CollectionItem[];
+export const useAssets = (
+  q: SearchQuery
+): {
+  result: QueryResult;
   isLoading: boolean;
 } => {
-  const decimals = 18;
   const { assets, sdk } = useContext(NeverminedContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [allArtwork, setAllArtwork] = useState<CollectionItem[]>([]);
+  const [result, setResult] = useState<QueryResult>({} as QueryResult);
 
   const handler = async () => {
-    if (isEmptyObject(sdk)) return;
-    setIsLoading(true);
     try {
-      const queryResponse: QueryResult = await assets.getAll();
-      const artworks: (CollectionItem | undefined)[] = await Promise.all(
-        queryResponse?.results?.map(async (artwork: DDO): Promise<CollectionItem | undefined> => {
-          try {
-            const resvoledAsset = await assets.resolve(artwork.id);
-            if (!resvoledAsset) return undefined;
-            const formattedArtwork = await formatArtwork(artwork, decimals);
-            return {
-              ...formattedArtwork
-            };
-          } catch (error) {
-            return undefined;
-          }
-        })
-      );
-
-      const aws = artworks?.length ? artworks.filter(truthy) : [];
-      //@ts-ignore
-      setAllArtwork(aws);
+      setIsLoading(true);
+      const queryResponse: QueryResult = await assets.query(q);
+      setResult(queryResponse);
       setIsLoading(false);
     } catch (error) {
-      console.log('error', error);
       setIsLoading(false);
     }
   };
@@ -47,11 +28,11 @@ export const useAllAssets = (): {
   useEffect(() => {
     if (isLoading) return;
     handler();
-  }, [decimals, assets, sdk]);
+  }, [assets, sdk, q]);
 
   return {
-    allArtwork,
-    isLoading: isLoading
+    result,
+    isLoading
   };
 };
 

@@ -9,13 +9,13 @@ import { NeverminedContext } from '../nevermined';
 export const usePaymentEvents = () => {
     const { sdk } = useContext(NeverminedContext);
     const [paymentEvents, setPaymentEvents] = useState([] as EventResult[]);
-    const [isLoadingPaymentEvents, setIsLoadingPaymentEvents] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const getPayments = async () => {
             if (sdk && sdk.keeper) {
                 try {
-                    setIsLoadingPaymentEvents(true);
+                    setIsLoading(true);
                     const lockEventData = await sdk.keeper.conditions.lockPaymentCondition.events.getEventData({
                         filterSubgraph: {},
                         methodName: 'getFulfilleds',
@@ -32,24 +32,24 @@ export const usePaymentEvents = () => {
                     console.error(error);
                 }
             }
-            setIsLoadingPaymentEvents(false);
+            setIsLoading(false);
         };
         getPayments();
     }, [sdk]);
 
-    return { paymentEvents, isLoadingPaymentEvents };
+    return { paymentEvents, isLoading };
 };
 
 export const useUserTransferEvents = (id: string) => {
     const { sdk } = useContext(NeverminedContext);
     const [transferEvents, setTransferEvents] = useState([] as EventResult[]);
-    const [isLoadingTransferEvents, setIsLoadingTransferEvents] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const getTransfers = async () => {
             if (sdk && sdk.keeper && id) {
                 try {
-                    setIsLoadingTransferEvents(true);
+                    setIsLoading(true);
                     const data = await sdk.keeper.conditions.transferNftCondition.events.getEventData({
                         filterSubgraph: {
                             where: {
@@ -68,11 +68,11 @@ export const useUserTransferEvents = (id: string) => {
                 } catch (error) {
                     console.error(error);
                 }
-                setIsLoadingTransferEvents(false);
+                setIsLoading(false);
             }
         };
         getTransfers();
     }, [sdk]);
 
-    return { isLoadingTransferEvents, transferEvents };
+    return { isLoading, transferEvents };
 };

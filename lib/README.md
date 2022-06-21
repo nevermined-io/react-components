@@ -19,12 +19,12 @@ const faucetUri = 'https://faucet.autonomies.staging.nevermined.rocks';
 const nodeUri = 'https://polygon-mumbai.infura.io/v3/eda048626e2745b182f43de61ac70be1';
 
 const appConfig = {
-    metadataUri,
-    gatewayUri,
-    faucetUri,
-    nodeUri,
-    gatewayAddress,
-    verbose: true
+  metadataUri,
+  gatewayUri,
+  faucetUri,
+  nodeUri,
+  gatewayAddress,
+  verbose: true
 } as Config;
 
 const assetsQuery = {
@@ -67,8 +67,63 @@ ReactDOM.render(
 );
 ```
 
+The NVM context exposes different modules that each compose multiple functions.
+Current implemented modules are subscribe, assets, account, and events. Each
+one of these modules interact directly  with the sdk and exposes the functionality through the context.
+For example:
 
-### Available Services
+```typescript
+  const SingleAssetView = () => {
+      const { assets, sdk } = useContext(NeverminedContext);
+      const did = '123';
+      const { ddo, metadata, error, isLoading, nftDetails } = assets.useAsset(did);
 
-#### useAssetService
-#### useWeb3Service
+      return (
+        ...
+      )
+  }
+```
+
+
+### Plug and Play Services
+
+These services use the core functions mentioned above, but with state management capabilities.
+Example: If u need to fetch account releases u can use useAccountReleases(see Account Service section), its built using the assets module
+exposed from the sdk context.
+
+#### Account Service
+
+```typescript
+function useAccountReleases(id: string): {isLoading: boolean; accountReleases: string[]}
+A hook to return user releases dids in array.
+
+function useAccountCollection(id: string): {isLoading: boolean; accountCollection: string[]}
+A hook to return user collection dids in array.
+```
+
+#### Asset Service
+
+```typescript
+function useAssets(q: SearchQuery): {isLoading: boolean, result: QueryResult}
+A hook to query assets with specific query.
+
+function useAsset(did: string): AssetState
+A hook to fetch single asset by did.
+```
+
+#### Event Service
+
+```typescript
+function usePaymentEvents(): {paymentEvents: EventResult[], isLoading: boolean}
+A hook to fetch fulfilled payment events.
+
+function useUserTransferEvents(id: string): {transferEvents: EventResult[], isLoading: boolean}
+A hook to fetch fulfilled user transfer events.
+```
+
+#### Subscribe Service
+
+```typescript
+useSubscribeToTransferEvents(): {paymentEvents, paymentsubscription}
+useSubscribeToPaymentEvents(): {transferEvents, transferSubscription}
+```
