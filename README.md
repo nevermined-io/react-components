@@ -33,7 +33,7 @@ After finishing these two steps you have two different ways to utilise the packa
 1) use core functions exposed through the context, for example: 
 ```typescript
     const { asset } = useContext(Catalog.NeverminedContext);
-    const result = await asset.resolbe();
+    const result = await asset.resolve();
 ```
 
 2) use hooks exported from services folder.
