@@ -16,6 +16,7 @@ export const useAssets = (
 
   const handler = async () => {
     try {
+      if (!q) return;
       setIsLoading(true);
       const queryResponse: QueryResult = await assets.query(q);
       setResult(queryResponse);

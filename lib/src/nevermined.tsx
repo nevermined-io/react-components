@@ -1,38 +1,40 @@
 import {
-    Config,
-    DDO,
-    Logger,
-    MetaData,
-    Nevermined,
-    SearchQuery
+  Account,
+  Config,
+  DDO,
+  Logger,
+  MetaData,
+  Nevermined,
+  SearchQuery
 } from '@nevermined-io/nevermined-sdk-js';
 import {
-    ContractEventSubscription,
-    EventResult
+  ContractEventSubscription,
+  EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
+import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
+import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
-    AccountModule,
-    AssetsModule,
-    EventsModule,
-    GenericOutput,
-    NeverminedProviderContext,
-    NeverminedProviderProps, NFTDetails,
-    OutputUseNeverminedService,
-    SubscribeModule
+  AccountModule,
+  AssetsModule,
+  EventsModule,
+  GenericOutput,
+  MintNFTInput,
+  NeverminedProviderContext,
+  NeverminedProviderProps,
+  NFTDetails,
+  OutputUseNeverminedService,
+  SubscribeModule
 } from './types';
 import { isEmptyObject } from './utils';
 
-const initializeNevermined = async (
-  config: Config
-): Promise<GenericOutput<Nevermined, any>> => {
+const initializeNevermined = async (config: Config): Promise<GenericOutput<Nevermined, any>> => {
   try {
     console.log('Loading SDK Started..');
     const nvmSdk: Nevermined = await Nevermined.getInstance({
       ...config
     });
-
     console.log('Loading SDK Finished Successfully');
     return { data: nvmSdk, error: undefined, success: true };
   } catch (error) {
@@ -41,9 +43,6 @@ const initializeNevermined = async (
     return { data: {} as Nevermined, error, success: false };
   }
 };
-
-const DEFAULT_NODE_URI =
-  'https://polygon-mumbai.infura.io/v3/eda048626e2745b182f43de61ac70be1'; /** MOVE ME TO NEV **/
 
 export const NeverminedProvider = ({ children, config, verbose }: NeverminedProviderProps) => {
   const useNeverminedService = (config: Config): OutputUseNeverminedService => {
@@ -83,6 +82,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   };
 
   const { isLoading, sdk, error } = useNeverminedService(config);
+
   const account: AccountModule = {
     getReleases: async (address: string): Promise<string[]> => {
       try {
@@ -161,6 +161,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   const assets: AssetsModule = {
     getSingle: async (did: string): Promise<DDO> => {
       try {
+        if (isEmptyObject(sdk)) return {} as DDO;
         const ddo: DDO = await sdk.assets.resolve(String(did));
         const metaData: MetaData = ddo.findServiceByType('metadata').attributes;
         const nftDetails = await sdk.nfts.details(String(did));
@@ -174,7 +175,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     query: async (q: SearchQuery): Promise<QueryResult> => {
       try {
         if (isEmptyObject(sdk)) return {} as QueryResult;
-        const queryResponse: QueryResult = await sdk?.assets?.query(q);
+        const queryResponse: QueryResult = await sdk?.assets.query(q);
         return queryResponse;
       } catch (error) {
         verbose && Logger.error(error);
@@ -182,8 +183,31 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
+    mint: async (input: MintNFTInput): Promise<DDO | undefined> => {
+      try {
+        if (isEmptyObject(sdk)) return undefined;
+        const minted: DDO = await sdk.nfts.create(
+          input.metadata,
+          input.publisher,
+          input.cap,
+          input.royalties,
+          input.assetRewards,
+          input.nftAmount,
+          input.erc20TokenAddress,
+          input.preMint,
+          input.nftMetadata,
+          input.txParams
+        );
+        return minted;
+      } catch (error) {
+        verbose && Logger.error(error);
+        return undefined;
+      }
+    },
+
     resolve: async (did: string): Promise<DDO | undefined> => {
       try {
+        if (isEmptyObject(sdk)) return undefined;
         const resvoledAsset = await sdk.assets.resolve(did);
         return resvoledAsset;
       } catch (error) {
@@ -194,6 +218,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
     nftDetails: async (did: string): Promise<NFTDetails> => {
       try {
+        if (isEmptyObject(sdk)) return {} as NFTDetails;
         const details = sdk.nfts.details(did);
         return details;
       } catch (error) {

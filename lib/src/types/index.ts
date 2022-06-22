@@ -1,9 +1,11 @@
-import { Config, DDO, MetaData, Nevermined, SearchQuery } from '@nevermined-io/nevermined-sdk-js';
+import { Account, Config, DDO, MetaData, Nevermined, SearchQuery } from '@nevermined-io/nevermined-sdk-js';
 import {
     ContractEventSubscription,
     EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
+import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
+import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 
 export interface NeverminedProviderContext {
   sdk: Nevermined;
@@ -59,6 +61,7 @@ export interface AssetsModule {
   getSingle: (did: DID) => Promise<DDO>;
   query: (q: SearchQuery) => Promise<QueryResult>;
   resolve: (did: DID) => Promise<DDO | undefined>;
+  mint: (did: any) => Promise<any>;
   nftDetails: (did: string) => Promise<NFTDetails>;
 }
 
@@ -75,3 +78,15 @@ export interface AssetState {
   nftDetails: NFTDetails;
 }
 
+export interface MintNFTInput {
+  metadata: MetaData;
+  publisher: Account;
+  cap: number;
+  royalties: number;
+  assetRewards: AssetRewards;
+  nftAmount?: number;
+  erc20TokenAddress?: string;
+  preMint?: boolean;
+  nftMetadata?: string;
+  txParams?: TxParameters;
+}
