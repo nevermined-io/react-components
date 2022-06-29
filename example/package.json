@@ -4,6 +4,7 @@
   "private": false,
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false PORT=3445 BROWSER=none react-app-rewired start",
+    "start-https": "GENERATE_SOURCEMAP=false HTTPS=true PORT=3445 BROWSER=none react-app-rewired start",
     "build": "npm run clean && npm run build:tsc && npm run build:webpack",
     "build:react": "react-scripts build",
     "build:tsc": "tsc --noEmit false",
@@ -31,7 +32,7 @@
     ]
   },
   "dependencies": {
-    "@nevermined-io/components-catalog": "0.0.72",
+    "@nevermined-io/components-catalog": "0.0.74",
     "@truffle/hdwallet-provider": "^2.0.0",
     "axios": "^0.24.0",
     "babel-eslint": "^10.1.0",
