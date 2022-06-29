@@ -2011,12 +2011,54 @@
     web3-utils "^1.7.3"
     whatwg-url "^7.1.0"
 
+"@nevermined-io/nevermined-sdk-js@^0.20.3":
+  version "0.20.3"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.20.3.tgz#7ea6bc7905cc7ea7965ad95cc043249db01b40ad"
+  integrity sha512-AbQubCmU3FCQ+3O8Cik1OO4nPgEk2V5TRBdJNgrRVORKlU+UfXmziB+PM1HFvQaehZrJzfQLj7clNUHRdegxpw==
+  dependencies:
+    "@nevermined-io/contracts" "^2.0.0"
+    "@nevermined-io/secret-store-client" "^0.0.16"
+    "@nevermined-io/subgraphs" "0.3.0"
+    assert "^2.0.0"
+    bignumber.js "^9.0.2"
+    circomlibjs "^0.1.1"
+    codegen-graph-ts "npm:@nevermined-io/codegen-graph-ts@0.1.4"
+    crypto-browserify "^3.12.0"
+    deprecated-decorator "^0.1.6"
+    ethers "^5.6.5"
+    ffjavascript "0.2.50"
+    https-browserify "^1.0.0"
+    jose "^4.5.1"
+    js-file-download "^0.4.12"
+    node-fetch "^2.6.1"
+    os-browserify "^0.3.0"
+    path-browserify "^1.0.1"
+    save-file "^2.3.1"
+    snarkjs "0.4.14"
+    stream-browserify "^3.0.0"
+    stream-http "^3.2.0"
+    url "^0.11.0"
+    uuid "^3.4.0"
+    web3 "^1.7.3"
+    web3-eth-contract "^1.7.3"
+    web3-utils "^1.7.3"
+    whatwg-url "^7.1.0"
+
 "@nevermined-io/secret-store-client@^0.0.16":
   version "0.0.16"
   resolved "https://registry.yarnpkg.com/@nevermined-io/secret-store-client/-/secret-store-client-0.0.16.tgz#45f2ffbd5855642912a153d20001674c6aa6ce96"
   integrity sha512-2YJpxQ38iYToXtOUK3ta8HrAqZL0/sBOxznbZNZO0Dbo6w9e2oKdQivRMnzqkBBFCIyXWFiv3So/cWHGUHa65A==
   dependencies:
     node-fetch "^2.6.0"
+
+"@nevermined-io/subgraphs@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/subgraphs/-/subgraphs-0.3.0.tgz#3b806f59d0eb8be0d59663dacde6db5b9cf3227e"
+  integrity sha512-sj2HDnW8U2Nk7RR0hvEnqVbz6V0a7H0sZtmLgX77G9m7CAMUUkxo6JfH8y7XRYFLSRAjEPhmm0f8Hm8tCYqaiQ==
+  dependencies:
+    codegen-graph-ts "npm:@nevermined-io/codegen-graph-ts@0.1.4"
+    glob "^7.2.0"
+    js-yaml "^4.1.0"
 
 "@nevermined-io/subgraphs@0.3.0-rc5":
   version "0.3.0-rc5"

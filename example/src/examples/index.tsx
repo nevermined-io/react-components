@@ -1,4 +1,5 @@
 import React from 'react';
+import { Account, Config, DDO, MetaData, Nevermined, SearchQuery } from '@nevermined-io/nevermined-sdk-js';
 import Catalog from '@nevermined-io/components-catalog';
 import { AssetState, MintNFTInput } from '@nevermined-io/components-catalog/dist/node/types';
 
@@ -55,14 +56,6 @@ export interface MetaDataMain {
   //   service?: Service;
 }
 
-export interface MetaData {
-  userId?: string;
-  main: MetaDataMain;
-  //encryptedFiles?: string;
-  //additionalInformation?: AdditionalInformation;
-  //curation?: Curation;
-}
-
 export interface _MintNFTInput {
   metadata: MetaData;
   //publisher: Account;
@@ -93,11 +86,11 @@ const MintAsset = () => {
     try {
       const [publisher] = await sdk.accounts.list();
       const data: MintNFTInput = {
-        // metadata,
-        // publisher,
-        // cap,
-        // royalties,
-        // assetRewards
+         metadata,
+         publisher,
+         cap,
+         royalties,
+         assetRewards
       } as MintNFTInput;
       const response = await assets.mint(data);
       console.log('response', response);
