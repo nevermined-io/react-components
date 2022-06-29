@@ -16,9 +16,9 @@ export const nodeUri =
   process.env.REACT_APP_NODE_URI ||
   'https://polygon-mumbai.infura.io/v3/eda048626e2745b182f43de61ac70be1';
 export const acceptedChainId = process.env.REACT_APP_ACCEPTED_CHAIN_ID || '80001'; // for Mumbai
-export const rootUri = process.env.REACT_APP_ROOT_URI || 'http://localhost:3445';
-//export const marketplaceUri = process.env.REACT_APP_MARKETPLACE_URI || 'https://marketplace-api.auto-nvm2.nevermined.rocks';
-export const marketplaceUri = 'https://metadata.auto-nvm2.nevermined.rocks';
+export const rootUri = process.env.REACT_APP_ROOT_URI || 'https://localhost:3445';
+export const marketplaceUri = 'https://marketplace-api.auto-nvm2.nevermined.rocks';
+//export const marketplaceUri = 'https://metadata.auto-nvm2.nevermined.rocks';
 
 export const appConfig: Config = {
   //@ts-ignore
