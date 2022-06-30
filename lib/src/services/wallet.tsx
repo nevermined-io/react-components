@@ -1,38 +1,35 @@
 import React, { useState, createContext, useEffect, useRef, useContext } from 'react';
 import { Logger, Config } from '@nevermined-io/nevermined-sdk-js';
-import { zeroX } from '@nevermined-io/nevermined-sdk-js/dist/node/utils';
+import { noZeroX, zeroX } from '@nevermined-io/nevermined-sdk-js/dist/node/utils';
 import { ChainConfig } from '../types';
 import Web3 from 'web3';
 
 export interface WalletProviderState {
     getProvider: () => Web3;
     logout: () => void;
-    isLogged: () => Promise<boolean>;
+    checkIsLogged: () => Promise<boolean>;
     isAvailable: () => boolean;
     promptSwitchAccounts: () => Promise<void>;
+    switchChainsOrRegisterSupportedChain: () => Promise<void>
     walletAddress: string;
     loginMetamask: () => Promise<void>;
 }
 
 export const WalletContext = createContext({} as WalletProviderState);
 
-export const WalletProvider = ({ children, nvmConfig, chainConfig }: { children: React.ReactElement, nvmConfig: Config, chainConfig: ChainConfig }) => {
-    const { nodeUri } = nvmConfig;
+export const WalletProvider = ({ children, nodeUri, chainConfig }: { children: React.ReactElement, nodeUri: string, chainConfig: ChainConfig }) => {
     const w3 = useRef({} as Web3);
     const [walletAddress, setWalletAddress] = useState<string>('');
     const [acceptedChainId, setAcceptedChainId] = useState('')
     const [acceptedChainIdHex, setAcceptedChainIdHex] = useState('');
 
     useEffect(() => {
-        if(isAvailable() && w3.current?.eth?.net) {
-            (async () => {
-                const chainId = await w3.current.eth.net.getId();
-                setAcceptedChainId(chainId.toString())
-                setAcceptedChainIdHex(zeroX((+chainId).toString(16)))
+        if(acceptedChainId && acceptedChainIdHex) {
+            (async() => {
+                switchChainsOrRegisterSupportedChain()      
             })()
         }
-        
-    }, [acceptedChainId, acceptedChainIdHex, w3.current?.eth])
+    }, [acceptedChainId, acceptedChainIdHex]);
 
     useEffect(() => {
         const registerOnAccounsChangedListener = async (): Promise<void> => {
@@ -55,41 +52,6 @@ export const WalletProvider = ({ children, nvmConfig, chainConfig }: { children:
     };
 
     useEffect(() => {
-        if(!acceptedChainIdHex) {
-            return
-        }
-        const switchChainsOrRegisterSupportedChain = async (): Promise<void> => {
-            try {
-                await window.ethereum.request?.({
-                    method: 'wallet_switchEthereumChain',
-                    params: [
-                        {
-                            chainId: acceptedChainIdHex,
-                        },
-                    ],
-                });
-            } catch (switchError) {
-                if ((switchError as any).code === 4902) {
-                    try {
-                        const currentChainConfig = chainConfig.returnConfig(acceptedChainIdHex);
-                        const configParam = await window.ethereum.request?.({
-                            method: 'wallet_addEthereumChain',
-                            params: [currentChainConfig],
-                        });
-                        if (!configParam) {
-                            console.log(`Chain ${acceptedChainId} added successfully!`);
-                        }
-                    } catch (addError) {
-                        Logger.error(addError);
-                    }
-                }
-                Logger.error(switchError);
-            }
-        };
-        switchChainsOrRegisterSupportedChain();
-    }, [acceptedChainIdHex]);
-
-    useEffect(() => {
         const getWeb3 = () => {
             let web3 = {} as Web3;
             // Modern dapp browsers
@@ -109,6 +71,36 @@ export const WalletProvider = ({ children, nvmConfig, chainConfig }: { children:
         getWeb3();
     }, []);
 
+    const switchChainsOrRegisterSupportedChain = async (): Promise<void> => {
+        try {
+
+            await window.ethereum.request?.({
+                method: 'wallet_switchEthereumChain',
+                params: [
+                    {
+                        chainId: acceptedChainIdHex,
+                    },
+                ],
+            });
+        } catch (switchError) {
+            if ((switchError as any).code === 4902) {
+                try {
+                    const currentChainConfig = chainConfig.returnConfig(acceptedChainIdHex);
+                    const configParam = await window.ethereum.request?.({
+                        method: 'wallet_addEthereumChain',
+                        params: [currentChainConfig],
+                    });
+                    if (!configParam) {
+                        console.log(`Chain ${acceptedChainId} added successfully!`);
+                    }
+                } catch (addError) {
+                    Logger.error(addError);
+                }
+            }
+            Logger.error(switchError);
+        }
+    };
+
     const isAvailable = (): boolean => {
         return w3.current !== null;
     };
@@ -124,7 +116,7 @@ export const WalletProvider = ({ children, nvmConfig, chainConfig }: { children:
         });
     };
 
-    const isLogged = async (): Promise<boolean> => {
+    const checkIsLogged = async (): Promise<boolean> => {
         if (!isAvailable() && !w3.current?.eth?.getAccounts) return false;
         const accounts = await w3.current?.eth?.getAccounts();
         return accounts && accounts?.length > 0;
@@ -133,6 +125,14 @@ export const WalletProvider = ({ children, nvmConfig, chainConfig }: { children:
 
     const startLogin = async (): Promise<string[]> => {
         try {
+            const chainId = await window.ethereum.request?.({ method: 'eth_chainId' });
+            const chainIdHex = noZeroX((+chainId).toString(16))
+            setAcceptedChainId(chainId)
+            setAcceptedChainIdHex(chainIdHex)
+
+            if(chainId !== await acceptedChainId) {
+                
+            }
             const response = await window.ethereum.request?.({
                 method: 'eth_requestAccounts',
             });
@@ -169,7 +169,8 @@ export const WalletProvider = ({ children, nvmConfig, chainConfig }: { children:
         getProvider,
         logout,
         promptSwitchAccounts,
-        isLogged,
+        switchChainsOrRegisterSupportedChain,
+        checkIsLogged,
         isAvailable,
     };
 
