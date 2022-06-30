@@ -1,5 +1,4 @@
 import {
-  Account,
   Config,
   DDO,
   Logger,
@@ -11,15 +10,14 @@ import {
   ContractEventSubscription,
   EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
-import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
-import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import {
   AccountModule,
   AssetsModule,
   EventsModule,
   GenericOutput,
+  MarketplaceAPIToken,
   MintNFTInput,
   NeverminedProviderContext,
   NeverminedProviderProps,
@@ -28,10 +26,31 @@ import {
   SubscribeModule
 } from './types';
 import { isEmptyObject } from './utils';
+import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token';
 
-const initializeNevermined = async (config: Config): Promise<GenericOutput<Nevermined, any>> => {
+export const initialState = {
+  sdk: {} as Nevermined
+};
+
+export const neverminedReducer = (
+  state: { sdk: Nevermined },
+  action: { type: 'SET_SDK'; payload: { sdk: Nevermined } }
+) => {
+  console.log('action', action);
+  switch (action.type) {
+    case 'SET_SDK':
+      return { sdk: action.payload.sdk };
+    default:
+      return state;
+  }
+};
+
+export const initializeNevermined = async (
+  config: Config
+): Promise<GenericOutput<Nevermined, any>> => {
   try {
     console.log('Loading SDK Started..');
+    console.log('Marketplace auth token: ', config.marketplaceAuthToken);
     const nvmSdk: Nevermined = await Nevermined.getInstance({
       ...config
     });
@@ -45,48 +64,50 @@ const initializeNevermined = async (config: Config): Promise<GenericOutput<Never
 };
 
 export const NeverminedProvider = ({ children, config, verbose }: NeverminedProviderProps) => {
-  const useNeverminedService = (config: Config): OutputUseNeverminedService => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<any>(undefined);
-    const [sdk, setSdk] = useState({} as Nevermined);
+  const [{ sdk }, dispatch] = useReducer(neverminedReducer, initialState);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<any>(undefined);
 
-    useEffect(() => {
-      const loadNevermined = async (): Promise<void> => {
-        const isAlreadyLoaded = () => sdk && Object.keys(sdk).length > 0;
-        if (!config.web3Provider) {
-          console.log('Please include web3 proivder in your sdk config. aborting.');
-          return;
-        }
-        if (isAlreadyLoaded()) {
-          console.log('SDK is already loaded. aborting');
-          return;
-        }
-        setIsLoading(true);
-        const { data, success, error } = await initializeNevermined(config);
-        if (success) {
-          setSdk(data);
-          setError(error);
-        } else {
-          setError(error);
-        }
-        setIsLoading(false);
-      };
-      loadNevermined();
-    }, [config]);
-
-    return {
-      isLoading,
-      sdk,
-      error
+  useEffect(() => {
+    const loadNevermined = async (): Promise<void> => {
+      if (!config.web3Provider) {
+        console.log('Please include web3 proivder in your sdk config. aborting.');
+        return;
+      }
+      setIsLoading(true);
+      const { data, success, error } = await initializeNevermined(config);
+      if (success) {
+        dispatch({ type: 'SET_SDK', payload: { sdk: data } });
+      }
+      setError(error);
+      setIsLoading(false);
     };
+    loadNevermined();
+  }, [config]);
+
+  const updateSDK = async (newConfig: Config): Promise<boolean> => {
+    const newSDK = await initializeNevermined({ ...config, ...newConfig });
+    if (newSDK.success) {
+      dispatch({ type: 'SET_SDK', payload: { sdk: newSDK.data } });
+    }
+    return newSDK.success;
   };
 
-  const { isLoading, sdk, error } = useNeverminedService(config);
-
   const account: AccountModule = {
+    isTokenValid: (): boolean => isTokenValid(),
+    generateToken: async (): Promise<MarketplaceAPIToken> => {
+      const tokenData = await newMarketplaceApiToken(sdk);
+      const { data, success } = await initializeNevermined({
+        ...config,
+        marketplaceAuthToken: tokenData.token
+      });
+      dispatch({ type: 'SET_SDK', payload: { sdk: data } });
+      return tokenData;
+    },
+
     getReleases: async (address: string): Promise<string[]> => {
       try {
-        const query = await sdk.keeper.didRegistry.events.getPastEvents({
+        const query: { _did: string }[] = await sdk.keeper.didRegistry.events.getPastEvents({
           eventName: 'DidAttributeRegistered',
           methodName: 'getDIDAttributeRegistereds',
           filterSubgraph: {
@@ -98,7 +119,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
             _did: true
           }
         });
-        return query.map((item) => item._did);
+        return query?.map((item) => item._did) || [];
       } catch (error) {
         verbose && Logger.error(error);
         return [];
@@ -107,7 +128,9 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
     getCollection: async (address: string): Promise<string[]> => {
       try {
-        const query = await sdk?.keeper?.conditions?.transferNftCondition?.events?.getPastEvents({
+        const query: {
+          _did: string;
+        }[] = await sdk?.keeper?.conditions?.transferNftCondition?.events?.getPastEvents({
           eventName: 'Fulfilled',
           methodName: 'getFulfilleds',
           filterSubgraph: {
@@ -116,15 +139,11 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
             orderDirection: 'desc'
           },
           result: {
-            id: true,
-            _did: true,
-            _receiver: true,
-            _agreementId: true,
-            _contract: true
+            _did: true
           }
         });
         if (!query || query.length == 0) return [];
-        const dids = [...new Set(query.map((item) => item))]; //unique items
+        const dids = [...new Set(query.map((item) => item._did))]; //unique items
         return dids;
       } catch (error) {
         verbose && Logger.error(error);
@@ -186,10 +205,10 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     mint: async (input: MintNFTInput): Promise<DDO | undefined> => {
       try {
         if (isEmptyObject(sdk)) return undefined;
-        const [ publisherAddress ] = await sdk.accounts.list();
-        if(!publisherAddress) {
-            console.log("No account was found!");
-            return;
+        const [publisherAddress] = await sdk.accounts.list();
+        if (!publisherAddress) {
+          console.log('No account was found!');
+          return;
         }
         const minted: DDO = await sdk.nfts.create(
           input.metadata,
@@ -278,10 +297,12 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   const IState = {
     sdk,
     isLoadingSDK: isLoading,
+    sdkError: error,
     subscribe,
     assets,
     account,
-    events
+    events,
+    updateSDK
   };
 
   return <NeverminedContext.Provider value={IState}>{children}</NeverminedContext.Provider>;
