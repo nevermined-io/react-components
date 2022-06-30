@@ -1,6 +1,6 @@
 {
   "name": "@nevermined-io/components-catalog",
-  "version": "0.0.74",
+  "version": "0.0.75",
   "private": false,
   "scripts": {
     "watch": "./node_modules/.bin/nodemon",
