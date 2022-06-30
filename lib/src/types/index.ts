@@ -13,10 +13,19 @@ import {
 import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
+import { Bytes } from '@ethersproject/bytes';
+import {
+  ProviderMessage,
+  ProviderRpcError,
+  ProviderConnectInfo,
+  RequestArguments
+} from 'hardhat/types';
 
 export interface NeverminedProviderContext {
   sdk: Nevermined;
+  sdkError: any;
   isLoadingSDK: boolean;
+  updateSDK: (newConfig: Config) => Promise<boolean>;
   subscribe: SubscribeModule;
   assets: AssetsModule;
   account: AccountModule;
@@ -58,6 +67,8 @@ export interface NFTDetails {
 export interface AccountModule {
   getReleases: (address: string) => Promise<DID[]>;
   getCollection: (address: string) => Promise<DID[]>;
+  generateToken: () => Promise<MarketplaceAPIToken>;
+  isTokenValid: () => boolean;
 }
 
 export interface EventsModule {
@@ -98,13 +109,10 @@ export interface MintNFTInput {
   txParams?: TxParameters;
 }
 
-import { Bytes } from '@ethersproject/bytes';
-import {
-  ProviderMessage,
-  ProviderRpcError,
-  ProviderConnectInfo,
-  RequestArguments
-} from 'hardhat/types';
+export interface MarketplaceAPIToken {
+  token: string;
+  expirationTime: number;
+}
 
 interface ChainNetwork {
   chainId: string;

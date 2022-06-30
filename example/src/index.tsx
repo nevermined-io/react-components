@@ -6,7 +6,7 @@ import Example from 'examples';
 
 ReactDOM.render(
   <div>
-    <Catalog.NeverminedProvider config={appConfig}>
+    <Catalog.NeverminedProvider config={appConfig} verbose={true}>
       <Example />
     </Catalog.NeverminedProvider>
   </div>,

@@ -1,10 +1,12 @@
+import BigNumber from 'bignumber.js';
+import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React from 'react';
+import { MetaData } from '@nevermined-io/nevermined-sdk-js';
 import Catalog from '@nevermined-io/components-catalog';
-import { CollectionItem } from '@nevermined-io/components-catalog/dist/node/types';
+import { AssetState, MintNFTInput } from '@nevermined-io/components-catalog/dist/node/types';
 
-const App = (props: any) => {
+const SDKInstance = () => {
   const { sdk, isLoadingSDK } = Catalog.useNevermined();
-  const { isLoading: isLoadingAssets, allArtwork } = Catalog.useAllAssets();
 
   return (
     <>
@@ -12,14 +14,128 @@ const App = (props: any) => {
       <div>{isLoadingSDK ? 'Yes' : 'No'}</div>
       <div>Is SDK Avaialable:</div>
       <div>{sdk && Object.keys(sdk).length > 0 ? 'Yes' : 'No'}</div>
+    </>
+  );
+};
+
+const SingleAsset = () => {
+  const did = 'did:nv:f8a00c4881721f3c1c1762c280c665ee85f12265798075198129667626fad907';
+  const assetData: AssetState = Catalog.useAsset(did);
+
+  return (
+    <>
+      <div>Asset {did.slice(0, 10)}...:</div>
+      <div>{JSON.stringify(assetData.ddo)}</div>
+    </>
+  );
+};
+
+const q = {
+  offset: 150,
+  page: 1,
+  query: {},
+  sort: {
+    created: 'desc'
+  }
+};
+
+export const MultipleAssets = () => {
+  const { isLoading: isLoadingAssets, result } = Catalog.useAssets(q);
+
+  return (
+    <>
       <div>Is Loading Assets</div>
       <div>{isLoadingAssets ? 'Yes' : 'No'}</div>
       <div>Assets:</div>
-      <div>
-        {allArtwork?.map((asset: CollectionItem) => (
-          <div key={asset.artwork.id}>{asset.artwork.id}</div>
-        ))}
-      </div>
+      <div>{result && JSON.stringify(result?.results)}</div>
+    </>
+  );
+};
+
+const constructRewardMap = (
+  recipientsData: any[],
+  priceWithoutFee: number,
+  ownerWalletAddress: string
+): Map<string, BigNumber> => {
+  const rewardMap: Map<string, BigNumber> = new Map();
+  let recipients: any = [];
+  if (recipientsData.length === 1 && recipientsData[0].split === 0) {
+    recipients = [
+      {
+        name: ownerWalletAddress,
+        split: 100,
+        walletAddress: ownerWalletAddress
+      }
+    ];
+  }
+  let totalWithoutUser = 0;
+
+  recipients.forEach((recipient: any) => {
+    if (recipient.split && recipient.split > 0) {
+      const ownSplit = ((priceWithoutFee * recipient.split) / 100).toFixed();
+      rewardMap.set(recipient.walletAddress, new BigNumber(+ownSplit));
+      totalWithoutUser += recipient.split;
+    }
+  });
+
+  if (!rewardMap.has(ownerWalletAddress)) {
+    const ownSplitReinforced = +((priceWithoutFee * (100 - totalWithoutUser)) / 100).toFixed();
+    rewardMap.set(ownerWalletAddress, new BigNumber(ownSplitReinforced));
+  }
+
+  return rewardMap;
+};
+
+const MintAsset = () => {
+  const { assets, sdk } = Catalog.useNevermined();
+  const metadata: MetaData = {
+    main: {
+      name: '',
+      type: 'dataset',
+      author: '',
+      license: '',
+      dateCreated: '',
+      price: ''
+    }
+  };
+
+  const mint = async () => {
+    try {
+      const [publisher] = await sdk.accounts.list();
+      const rewardsRecipients: any[] = [];
+      const assetRewardsMap = constructRewardMap(rewardsRecipients, 100, publisher.getId());
+      const assetRewards = new AssetRewards(assetRewardsMap);
+      const data: MintNFTInput = {
+        metadata,
+        publisher,
+        cap: 1,
+        royalties: 0,
+        //@ts-ignore
+        assetRewards
+      };
+      const response = await assets.mint(data);
+      console.log('response', response);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  return (
+    <>
+      <button onClick={mint} disabled={!Object.keys(assets).length}>
+        mint
+      </button>
+    </>
+  );
+};
+
+const App = (props: any) => {
+  return (
+    <>
+      <SDKInstance />
+      <MintAsset />
+      {/**<MultipleAssets />**/}
+      <SingleAsset />
     </>
   );
 };
