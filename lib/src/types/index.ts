@@ -1,7 +1,14 @@
-import { Account, Config, DDO, MetaData, Nevermined, SearchQuery } from '@nevermined-io/nevermined-sdk-js';
 import {
-    ContractEventSubscription,
-    EventResult
+  Account,
+  Config,
+  DDO,
+  MetaData,
+  Nevermined,
+  SearchQuery
+} from '@nevermined-io/nevermined-sdk-js';
+import {
+  ContractEventSubscription,
+  EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
@@ -89,4 +96,80 @@ export interface MintNFTInput {
   preMint?: boolean;
   nftMetadata?: string;
   txParams?: TxParameters;
+}
+
+import { Bytes } from '@ethersproject/bytes';
+import {
+  ProviderMessage,
+  ProviderRpcError,
+  ProviderConnectInfo,
+  RequestArguments
+} from 'hardhat/types';
+
+interface ChainNetwork {
+  chainId: string;
+  chainName: string;
+  nativeCurrency: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  };
+  rpcUrls: string[];
+  blockExplorerUrls: string[];
+  iconUrls: string[];
+}
+
+export interface ChainConfig {
+  development: ChainNetwork;
+  mumbai: ChainNetwork;
+  mainnet: ChainNetwork;
+  returnConfig: (chainIdHex: string) => ChainNetwork;
+}
+
+export interface Methods<T> {
+  balanceOf: (address: string, tokenId: number) => this;
+  setApprovalForAll: (operator: string, approved: boolean) => this;
+  safeTransferFrom: (from: string, to: string, id: number, amount: number, data: Bytes) => this;
+  isApprovedForAll: (account: string, address: string) => this;
+  hasRole: (role: string, address: string) => this;
+  calcReward: (address: string) => this;
+  faucetNFT: () => this;
+  mintRZR: () => this;
+  call: () => T;
+  send: (from: string) => T;
+}
+
+export interface DispatchData<T> {
+  type: string;
+  payload: T;
+  error: Error;
+}
+
+export interface EthereumEvent {
+  connect: ProviderConnectInfo;
+  disconnect: ProviderRpcError;
+  accountsChanged: Array<string>;
+  chainChanged: string;
+  message: ProviderMessage;
+}
+
+type EventKeys = keyof EthereumEvent;
+type EventHandler<K extends EventKeys> = (event: EthereumEvent[K]) => void;
+
+export interface Ethereumish {
+  autoRefreshOnNetworkChange: boolean;
+  chainId: string;
+  isMetaMask?: boolean;
+  isStatus?: boolean;
+  networkVersion: string;
+  selectedAddress: any;
+
+  on<K extends EventKeys>(event: K, eventHandler: EventHandler<K>): void;
+  enable(): Promise<any>;
+  request?: (request: { method: string; params?: Array<any> }) => Promise<any>;
+  send?: (
+    request: { method: string; params?: Array<any> },
+    callback: (error: any, response: any) => void
+  ) => void;
+  sendAsync: (request: RequestArguments) => Promise<unknown>;
 }

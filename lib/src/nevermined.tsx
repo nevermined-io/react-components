@@ -1,5 +1,4 @@
 import {
-  Account,
   Config,
   DDO,
   Logger,
@@ -11,9 +10,7 @@ import {
   ContractEventSubscription,
   EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
-import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
-import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
   AccountModule,

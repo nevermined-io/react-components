@@ -1,9 +1,10 @@
-import { useState, createContext, useEffect, useRef } from 'react';
-import { Logger, Nevermined, Account } from '@nevermined-io/nevermined-sdk-js';
+import React, { useState, createContext, useEffect, useRef, useContext } from 'react';
+import { Logger, Config } from '@nevermined-io/nevermined-sdk-js';
 import { zeroX } from '@nevermined-io/nevermined-sdk-js/dist/node/utils';
+import { ChainConfig } from '../types';
 import Web3 from 'web3';
 
-interface WalletProviderState {
+export interface WalletProviderState {
     getProvider: () => Web3;
     logout: () => void;
     isLogged: () => Promise<boolean>;
@@ -15,10 +16,23 @@ interface WalletProviderState {
 
 export const WalletContext = createContext({} as WalletProviderState);
 
-export const WalletProvider = ({ children }: { children: React.ReactElement }) => {
+export const WalletProvider = ({ children, nvmConfig, chainConfig }: { children: React.ReactElement, nvmConfig: Config, chainConfig: ChainConfig }) => {
+    const { nodeUri } = nvmConfig;
     const w3 = useRef({} as Web3);
     const [walletAddress, setWalletAddress] = useState<string>('');
-    const acceptedChainIdHex = zeroX((+acceptedChainId).toString(16));
+    const [acceptedChainId, setAcceptedChainId] = useState('')
+    const [acceptedChainIdHex, setAcceptedChainIdHex] = useState('');
+
+    useEffect(() => {
+        if(isAvailable() && w3.current?.eth?.net) {
+            (async () => {
+                const chainId = await w3.current.eth.net.getId();
+                setAcceptedChainId(chainId.toString())
+                setAcceptedChainIdHex(zeroX((+chainId).toString(16)))
+            })()
+        }
+        
+    }, [acceptedChainId, acceptedChainIdHex, w3.current?.eth])
 
     useEffect(() => {
         const registerOnAccounsChangedListener = async (): Promise<void> => {
@@ -41,9 +55,12 @@ export const WalletProvider = ({ children }: { children: React.ReactElement }) =
     };
 
     useEffect(() => {
+        if(!acceptedChainIdHex) {
+            return
+        }
         const switchChainsOrRegisterSupportedChain = async (): Promise<void> => {
             try {
-                await window.ethereum.request({
+                await window.ethereum.request?.({
                     method: 'wallet_switchEthereumChain',
                     params: [
                         {
@@ -54,8 +71,8 @@ export const WalletProvider = ({ children }: { children: React.ReactElement }) =
             } catch (switchError) {
                 if ((switchError as any).code === 4902) {
                     try {
-                        const currentChainConfig = ChainConfig.returnConfig(acceptedChainIdHex);
-                        const configParam = await window.ethereum.request({
+                        const currentChainConfig = chainConfig.returnConfig(acceptedChainIdHex);
+                        const configParam = await window.ethereum.request?.({
                             method: 'wallet_addEthereumChain',
                             params: [currentChainConfig],
                         });
@@ -70,7 +87,7 @@ export const WalletProvider = ({ children }: { children: React.ReactElement }) =
             }
         };
         switchChainsOrRegisterSupportedChain();
-    }, []);
+    }, [acceptedChainIdHex]);
 
     useEffect(() => {
         const getWeb3 = () => {
@@ -84,7 +101,7 @@ export const WalletProvider = ({ children }: { children: React.ReactElement }) =
                 web3 = new Web3(window.web3.currentProvider);
             } else {
                 console.log('No Web3, defaulting to HTTPProvider');
-                web3 = new Web3(new Web3.providers.HttpProvider(nodeUri));
+                web3 = new Web3(new Web3.providers.HttpProvider(String(nodeUri)));
             }
             w3.current = web3;
             updateWalletAddress();
@@ -97,7 +114,7 @@ export const WalletProvider = ({ children }: { children: React.ReactElement }) =
     };
 
     const promptSwitchAccounts = async () => {
-        await window.ethereum.request({
+        await window.ethereum.request?.({
             method: 'wallet_requestPermissions',
             params: [
                 {
@@ -111,11 +128,12 @@ export const WalletProvider = ({ children }: { children: React.ReactElement }) =
         if (!isAvailable() && !w3.current?.eth?.getAccounts) return false;
         const accounts = await w3.current?.eth?.getAccounts();
         return accounts && accounts?.length > 0;
+    
     };
 
     const startLogin = async (): Promise<string[]> => {
         try {
-            const response = await window.ethereum.request({
+            const response = await window.ethereum.request?.({
                 method: 'eth_requestAccounts',
             });
             if (response) {
@@ -155,7 +173,8 @@ export const WalletProvider = ({ children }: { children: React.ReactElement }) =
         isAvailable,
     };
 
-    return <WalletContext.Provider value={IState}>{children}</WalletContext.Provider>;
-
+    return (<WalletContext.Provider value={IState}>{children}</WalletContext.Provider>);
 };
+
+export const useWallet = (): WalletProviderState => useContext(WalletContext);
 
