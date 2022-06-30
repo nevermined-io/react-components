@@ -186,18 +186,21 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     mint: async (input: MintNFTInput): Promise<DDO | undefined> => {
       try {
         if (isEmptyObject(sdk)) return undefined;
-        const [ publisher ] = await sdk.accounts.list();
-        //const ERC20TokenAddress = "ERC20TokenAddress";
+        const [ publisherAddress ] = await sdk.accounts.list();
+        if(!publisherAddress) {
+            console.log("No account was found!");
+            return;
+        }
         const minted: DDO = await sdk.nfts.create(
           input.metadata,
-          publisher,
+          publisherAddress,
           input.cap,
           input.royalties,
           input.assetRewards,
           input.nftAmount || undefined,
-          input.erc20TokenAddress,
-          input.preMint || true,
-          input.nftMetadata, // uri
+          input.erc20TokenAddress || undefined,
+          input.preMint || false,
+          input.nftMetadata || undefined, // uri
           input.txParams || undefined
         );
         return minted;
