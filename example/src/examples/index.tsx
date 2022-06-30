@@ -1,5 +1,7 @@
+import BigNumber from 'bignumber.js';
+import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React from 'react';
-import { Account, Config, DDO, MetaData, Nevermined, SearchQuery } from '@nevermined-io/nevermined-sdk-js';
+import { MetaData } from '@nevermined-io/nevermined-sdk-js';
 import Catalog from '@nevermined-io/components-catalog';
 import { AssetState, MintNFTInput } from '@nevermined-io/components-catalog/dist/node/types';
 
@@ -28,7 +30,16 @@ const SingleAsset = () => {
   );
 };
 
-const MultipleAssets = () => {
+const q = {
+  offset: 150,
+  page: 1,
+  query: {},
+  sort: {
+    created: 'desc'
+  }
+};
+
+export const MultipleAssets = () => {
   const { isLoading: isLoadingAssets, result } = Catalog.useAssets(q);
 
   return (
@@ -41,33 +52,39 @@ const MultipleAssets = () => {
   );
 };
 
-export interface MetaDataMain {
-  name: string;
-  type: 'dataset' | 'algorithm' | 'compute' | 'workflow' | 'compute';
-  dateCreated: string;
-  datePublished?: string;
-  author: string;
-  license: string;
-  price: string;
-  //   files?: File[];
-  //   encryptedService?: any;
-  //   workflow?: Workflow;
-  //   algorithm?: Algorithm;
-  //   service?: Service;
-}
+const constructRewardMap = (
+  recipientsData: any[],
+  priceWithoutFee: number,
+  ownerWalletAddress: string
+): Map<string, BigNumber> => {
+  const rewardMap: Map<string, BigNumber> = new Map();
+  let recipients: any = [];
+  if (recipientsData.length === 1 && recipientsData[0].split === 0) {
+    recipients = [
+      {
+        name: ownerWalletAddress,
+        split: 100,
+        walletAddress: ownerWalletAddress
+      }
+    ];
+  }
+  let totalWithoutUser = 0;
 
-export interface _MintNFTInput {
-  metadata: MetaData;
-  //publisher: Account;
-  cap: number;
-  royalties: number;
-  //assetRewards: AssetRewards;
-  nftAmount?: number;
-  erc20TokenAddress?: string;
-  preMint?: boolean;
-  nftMetadata?: string;
-  //txParams?: TxParameters;
-}
+  recipients.forEach((recipient: any) => {
+    if (recipient.split && recipient.split > 0) {
+      const ownSplit = ((priceWithoutFee * recipient.split) / 100).toFixed();
+      rewardMap.set(recipient.walletAddress, new BigNumber(+ownSplit));
+      totalWithoutUser += recipient.split;
+    }
+  });
+
+  if (!rewardMap.has(ownerWalletAddress)) {
+    const ownSplitReinforced = +((priceWithoutFee * (100 - totalWithoutUser)) / 100).toFixed();
+    rewardMap.set(ownerWalletAddress, new BigNumber(ownSplitReinforced));
+  }
+
+  return rewardMap;
+};
 
 const MintAsset = () => {
   const { assets, sdk } = Catalog.useNevermined();
@@ -85,13 +102,17 @@ const MintAsset = () => {
   const mint = async () => {
     try {
       const [publisher] = await sdk.accounts.list();
+      const rewardsRecipients: any[] = [];
+      const assetRewardsMap = constructRewardMap(rewardsRecipients, 100, publisher.getId());
+      const assetRewards = new AssetRewards(assetRewardsMap);
       const data: MintNFTInput = {
-         metadata,
-         publisher,
-         cap,
-         royalties,
-         assetRewards
-      } as MintNFTInput;
+        metadata,
+        publisher,
+        cap: 1,
+        royalties: 0,
+        //@ts-ignore
+        assetRewards
+      };
       const response = await assets.mint(data);
       console.log('response', response);
     } catch (error) {
@@ -106,15 +127,6 @@ const MintAsset = () => {
       </button>
     </>
   );
-};
-
-const q = {
-  offset: 150,
-  page: 1,
-  query: {},
-  sort: {
-    created: 'desc'
-  }
 };
 
 const App = (props: any) => {
