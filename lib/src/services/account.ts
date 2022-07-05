@@ -7,7 +7,7 @@ export const useAccountReleases = (
 ): { isLoading: boolean; accountReleases: string[] } => {
   const [accountReleases, setAccountReleases] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { account, sdk } = useContext(NeverminedContext);
+  const { account } = useContext(NeverminedContext);
 
   useEffect(() => {
     const loadReleases = async (): Promise<void> => {

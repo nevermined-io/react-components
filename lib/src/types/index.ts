@@ -64,6 +64,13 @@ export interface NFTDetails {
   royalties: number;
 }
 
+export interface UserProfileParams {
+  nickname: string;
+  name?: string;
+  email?: string;
+  additionalInformation?: unknown;
+}
+
 export interface AccountModule {
   getReleases: (address: string) => Promise<DID[]>;
   getCollection: (address: string) => Promise<DID[]>;

@@ -4,7 +4,7 @@ import { MarketplaceAPIToken } from '../types';
 
 const MARKETPLACE_API_TOKEN = 'marketplaceApiToken';
 
-const saveMarketplaceApiTokenToLocalStorage = (i: MarketplaceAPIToken): void => {
+export const saveMarketplaceApiTokenToLocalStorage = (i: MarketplaceAPIToken): void => {
   localStorage.setItem(
     MARKETPLACE_API_TOKEN,
     JSON.stringify({ token: i.token, expirationTime: i.expirationTime })
