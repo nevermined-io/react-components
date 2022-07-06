@@ -1,14 +1,11 @@
 import { Nevermined } from '@nevermined-io/nevermined-sdk-js';
-import { Account } from 'web3-core';
+import jwt from 'jsonwebtoken';
 import { MarketplaceAPIToken } from '../types';
 
-const MARKETPLACE_API_TOKEN = 'marketplaceApiToken';
+export const MARKETPLACE_API_TOKEN = 'marketplaceApiToken';
 
 export const saveMarketplaceApiTokenToLocalStorage = (i: MarketplaceAPIToken): void => {
-  localStorage.setItem(
-    MARKETPLACE_API_TOKEN,
-    JSON.stringify({ token: i.token, expirationTime: i.expirationTime })
-  );
+  localStorage.setItem(MARKETPLACE_API_TOKEN, JSON.stringify({ token: i.token }));
 };
 
 export const fetchMarketplaceApiTokenFromLocalStorage = (): MarketplaceAPIToken => {
@@ -17,8 +14,7 @@ export const fetchMarketplaceApiTokenFromLocalStorage = (): MarketplaceAPIToken 
     return JSON.parse(marketplaceApiTokenItem);
   } else {
     return {
-      token: '',
-      expirationTime: 0
+      token: ''
     };
   }
 };
@@ -29,19 +25,28 @@ export const newMarketplaceApiToken = async (sdk: Nevermined): Promise<Marketpla
     const credential = await sdk.utils.jwt.generateClientAssertion(account);
     const token = await sdk.marketplace.login(credential);
     const jwtData = JSON.parse(window.atob(token.split('.')[1]));
-    const expirationTime = +jwtData.exp * 1000;
-    saveMarketplaceApiTokenToLocalStorage({ token, expirationTime });
-    return { token, expirationTime };
+    saveMarketplaceApiTokenToLocalStorage({ token });
+    return { token };
   } catch (error) {
     console.log(error);
-    return { token: '', expirationTime: 0 };
+    return { token: '' };
   }
 };
 
 export const isTokenValid = () => {
-  const token = fetchMarketplaceApiTokenFromLocalStorage();
-  if (!token.expirationTime || token.expirationTime < new Date().getTime()) {
+  try {
+    const { token } = fetchMarketplaceApiTokenFromLocalStorage();
+    if (token && jwt.decode(token)) {
+      const decodedToken = jwt.decode(token);
+      //@ts-ignore
+      const expiry = decodedToken?.exp;
+      if (expiry) {
+        const now = new Date();
+        return now.getTime() > Number(expiry) * 1000;
+      }
+    }
+    return false;
+  } catch (error) {
     return false;
   }
-  return true;
 };

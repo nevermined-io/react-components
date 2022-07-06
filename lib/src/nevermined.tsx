@@ -35,7 +35,6 @@ export const neverminedReducer = (
   state: { sdk: Nevermined },
   action: { type: 'SET_SDK'; payload: { sdk: Nevermined } }
 ) => {
-  console.log('action', action);
   switch (action.type) {
     case 'SET_SDK':
       return { ...action.payload };
@@ -67,6 +66,9 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>(undefined);
 
+  // Invoked on start to initialise the SDK
+  // if you want to change the sdk based on user interaction
+  // you can use UpdateSDK functin exported from this provider
   useEffect(() => {
     const loadNevermined = async (): Promise<void> => {
       if (!config.web3Provider) {
@@ -94,6 +96,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
   const account: AccountModule = {
     isTokenValid: (): boolean => isTokenValid(),
+
     generateToken: async (): Promise<MarketplaceAPIToken> => {
       const tokenData = await newMarketplaceApiToken(sdk);
       const { data, success } = await initializeNevermined({
