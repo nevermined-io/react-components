@@ -164,8 +164,7 @@ export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfi
     const checkIsLogged = async (): Promise<boolean> => {
         if (!isAvailable() && !w3.current?.eth?.getAccounts) return false;
         const accounts = await w3.current?.eth?.getAccounts();
-        return accounts && accounts?.length > 0;
-    
+        return Boolean(accounts?.length);
     };
 
     const startLogin = async (): Promise<string[]> => {

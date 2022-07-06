@@ -7,7 +7,7 @@ import { saveMarketplaceApiTokenToLocalStorage } from '../utils/marketplace_toke
 
 export const useUserProfile = () => {
   const { sdk, account } = useNevermined();
-  const { walletAddress, w3 } = useContext(WalletContext);
+  const { walletAddress } = useContext(WalletContext);
   const [inputError, setInputError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -29,9 +29,14 @@ export const useUserProfile = () => {
 
   const onAddAddress = async () => {
     try {
-      const ethAccounts = await w3.current?.eth.requestAccounts();
-      const accounts = ethAccounts?.map((a) => new Account(a));
-      const accountToAdd = accounts?.find((a) => a.getId() === newAddress);
+      let accounts = await sdk.accounts.list();
+      let accountToAdd = accounts?.find((a) => a.getId() === newAddress);
+
+      if (!accountToAdd) {
+        accounts = await sdk.accounts.requestList();
+        accountToAdd = accounts?.find((a) => a.getId() === newAddress);
+      }
+
       const credential = await sdk.utils.jwt.generateClientAssertion(accountToAdd);
       const token = await sdk.marketplace.addNewAddress(credential);
       const jwtData = JSON.parse(window.atob(token.split('.')[1]));

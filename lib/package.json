@@ -1,6 +1,6 @@
 {
   "name": "components-catalog-nvm-test",
-  "version": "0.0.102",
+  "version": "0.0.106",
   "private": false,
   "scripts": {
     "watch": "./node_modules/.bin/nodemon",
