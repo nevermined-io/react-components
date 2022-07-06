@@ -1,4 +1,5 @@
 import {
+  Account,
   Config,
   DDO,
   Logger,
@@ -29,6 +30,38 @@ import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token'
 
 export const initialState = {
   sdk: {} as Nevermined
+};
+
+const conductOrder = async ({
+  sdk,
+  ddo,
+  gatewayAddress
+}: {
+  sdk: Nevermined;
+  gatewayAddress: string;
+  ddo: DDO;
+}): Promise<string> => {
+  try {
+    console.log('Checking if USDC spending is approved.');
+    const [account] = await sdk.accounts.list();
+    const isApproved = await sdk.keeper.nftUpgradeable.isApprovedForAll(
+      account.getId(),
+      gatewayAddress
+    );
+    if (!isApproved) {
+      const receipt = await sdk.nfts.setApprovalForAll(gatewayAddress, true, account);
+      Logger.log('Approval receipt:', receipt);
+    }
+    console.log('USDC spending is approved.');
+    console.log(`Asking for approval and locking payment for USDC.`);
+    const agreementId: string = await sdk.nfts.order(ddo.id, 1, account);
+    console.log('Transferring the NFT.');
+    Logger.log('Order agreement ID', agreementId);
+    return agreementId;
+  } catch (error) {
+    Logger.error(error);
+    throw new Error(error as unknown as string);
+  }
 };
 
 export const neverminedReducer = (
@@ -93,9 +126,8 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     return newSDK.success;
   };
 
-  const account: AccountModule = {
+  const accountModule: AccountModule = {
     isTokenValid: (): boolean => isTokenValid(),
-
     generateToken: async (): Promise<MarketplaceAPIToken> => {
       const tokenData = await newMarketplaceApiToken(sdk);
       const { data, success } = await initializeNevermined({
@@ -105,7 +137,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       dispatch({ type: 'SET_SDK', payload: { sdk: data } });
       return tokenData;
     },
-
     getReleases: async (address: string): Promise<string[]> => {
       try {
         const query: { _did: string }[] = await sdk.keeper.didRegistry.events.getPastEvents({
@@ -126,7 +157,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         return [];
       }
     },
-
     getCollection: async (address: string): Promise<string[]> => {
       try {
         const query: {
@@ -175,6 +205,82 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         verbose && Logger.error(error);
         return [] as any[];
       }
+    }
+  };
+
+  interface NFTTransferData {
+    agreementId: string;
+    nftHolder: string;
+    nftReceiver: string;
+    nftAmount: number;
+  }
+
+  const transferEndpoint = `${config.gatewayUri}/api/v1/gateway/services/nft-transfer`;
+
+  const transferNFT = async (transferData: NFTTransferData, nvm: Nevermined, tries = 1) => {
+    try {
+      let response: any;
+      let counter = 0;
+      while (counter < tries) {
+        try {
+          console.log(`Call # ${counter + 1}`);
+          const responseTemp = await nvm.utils.fetch.post(
+            transferEndpoint,
+            JSON.stringify(transferData)
+          );
+          response = responseTemp;
+          if (responseTemp.ok) {
+            break;
+          } else {
+            counter++;
+            await new Promise((res) => setTimeout(res, 500));
+          }
+        } catch (error) {
+          response = error as Response;
+          counter++;
+          await new Promise((res) => setTimeout(res, 500));
+        }
+      }
+      if (response && response.ok) return true;
+
+      if (response && !response.ok) {
+        let text = await response.text();
+        if (!text) {
+          text = 'errorMessage';
+        }
+        throw new Error(`${response.status}-${text}`);
+      }
+      throw new Error(`${response.status}-${await response.text()}`);
+    } catch (e) {
+      const messageTemp = (e as Error).message;
+      const [status, message] = messageTemp.split('-');
+      if (+status === 500 || !message) {
+        throw new Error(`${status}-${'errorMessage'}`);
+      } else {
+        throw new Error(`${status}-${message}`);
+      }
+    }
+  };
+
+  const transferNft = async (
+    agreementId: string,
+    nftAmount: number,
+    holder: Account
+  ): Promise<boolean> => {
+    try {
+    const [account] = await sdk.accounts.list();
+      const isSuccessful = await transferNFT(
+        { agreementId, nftAmount, nftHolder: holder.getId(), nftReceiver: account.getId() },
+        sdk,
+        10
+      );
+      // const isSuccessful = await sdk.nfts.transferForDelegate(agreementId, holder.getId(), account.getId(), nftAmount);
+      console.log('success', isSuccessful);
+      return isSuccessful;
+    } catch (error) {
+      const e = error as Error;
+      console.error(e);
+      return false;
     }
   };
 
@@ -227,6 +333,25 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       } catch (error) {
         verbose && Logger.error(error);
         return undefined;
+      }
+    },
+
+    transfer: async ({ ddo }: { ddo: DDO }) => {
+      try {
+        if (!config.gatewayAddress) return;
+        const agreementId = await conductOrder({ sdk, ddo, gatewayAddress: config.gatewayAddress });
+        Logger.log(`Obtained agreement ID ${agreementId}`);
+        const hodler = await sdk.assets.owner(ddo.id);
+        // await two seconds to allow the transaction to be processed
+        await new Promise((r) => setTimeout(r, 2000));
+        // TODO: BE AWARE THAT THIS IS WORKIGN ONLY FOR FIRST-MARKET, secondary market is not implemented yet
+        const isTransferSuccessful = await transferNft(agreementId, 1, new Account(hodler));
+        if (isTransferSuccessful) {
+          Logger.log(`Transfer of ${1} NFT of did ${ddo.id} succeeded to address }`);
+        } else {
+        }
+      } catch (e) {
+        Logger.error(e);
       }
     },
 
@@ -310,7 +435,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     sdkError: error,
     subscribe,
     assets,
-    account,
+    account: accountModule,
     events,
     updateSDK,
   };
