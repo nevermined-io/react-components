@@ -24,7 +24,6 @@ export const newMarketplaceApiToken = async (sdk: Nevermined): Promise<Marketpla
     const [account] = await sdk.accounts.list();
     const credential = await sdk.utils.jwt.generateClientAssertion(account);
     const token = await sdk.marketplace.login(credential);
-    const jwtData = JSON.parse(window.atob(token.split('.')[1]));
     saveMarketplaceApiTokenToLocalStorage({ token });
     return { token };
   } catch (error) {
@@ -42,7 +41,7 @@ export const isTokenValid = () => {
       const expiry = decodedToken?.exp;
       if (expiry) {
         const now = new Date();
-        return now.getTime() > Number(expiry) * 1000;
+        return now.getTime() < Number(expiry) * 1000;
       }
     }
     return false;

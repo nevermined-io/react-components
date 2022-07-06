@@ -1,5 +1,4 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Account } from '@nevermined-io/nevermined-sdk-js';
 import { useNevermined } from '../nevermined';
 import { WalletContext } from './wallet';
 import { UserProfileParams } from '../types';
@@ -39,10 +38,8 @@ export const useUserProfile = () => {
 
       const credential = await sdk.utils.jwt.generateClientAssertion(accountToAdd);
       const token = await sdk.marketplace.addNewAddress(credential);
-      const jwtData = JSON.parse(window.atob(token.split('.')[1]));
-      const expirationTime = +jwtData.exp * 1000;
 
-      saveMarketplaceApiTokenToLocalStorage({ token, expirationTime });
+      saveMarketplaceApiTokenToLocalStorage({ token });
       setAddresses([...addresses, newAddress]);
       setNewAddress('');
       setIsAddressAdded(true);
@@ -94,6 +91,10 @@ export const useUserProfile = () => {
           setNewAddress('');
         }
 
+        if (!account.isTokenValid()) {
+          await account.generateToken();
+        }
+
         setAddresses([...userProfileData.addresses]);
 
         setUserProfile({
@@ -102,9 +103,14 @@ export const useUserProfile = () => {
           email: userProfileData.email,
           additionalInformation: userProfileData.additionalInformation
         });
-      } catch (error) {
+      } catch (error: any) {
         if (addresses?.length && !addresses.some((a) => a.toLowerCase() === walletAddress)) {
           setNewAddress(walletAddress);
+        } else if (error.message.includes('"statusCode":404')) {
+          await account.generateToken();
+          setUserProfile({
+            nickname: walletAddress
+          });
         } else {
           setErrorMessage('Error getting user profile');
         }

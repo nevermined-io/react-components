@@ -48,8 +48,8 @@ export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfi
     const checkChain = async (chainHexId: string) => {
         if(checkIsNotChainCorrect(chainHexId)) {
             setAcceptedChainId(correctChainId);
-            setIsChainCorrect(false)
             setAcceptedChainIdHex(correctNetworkId);
+            setIsChainCorrect(false)
         } else {
             setAcceptedChainId(convertHextoIntString(chainHexId));
             setAcceptedChainIdHex(chainHexId);
