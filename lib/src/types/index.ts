@@ -105,5 +105,4 @@ export interface MintNFTInput {
 
 export interface MarketplaceAPIToken {
   token: string;
-  expirationTime: number;
 }
