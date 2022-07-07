@@ -22,7 +22,6 @@ import {
   NeverminedProviderContext,
   NeverminedProviderProps,
   NFTDetails,
-  OutputUseNeverminedService,
   SubscribeModule
 } from './types';
 import { isEmptyObject } from './utils';
@@ -38,7 +37,7 @@ export const neverminedReducer = (
 ) => {
   switch (action.type) {
     case 'SET_SDK':
-      return { sdk: action.payload.sdk };
+      return { ...action.payload };
     default:
       return state;
   }

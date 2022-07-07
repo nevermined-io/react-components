@@ -13,7 +13,13 @@ import {
 import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
-import { Token } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Token';
+import { Bytes } from '@ethersproject/bytes';
+import {
+  ProviderMessage,
+  ProviderRpcError,
+  ProviderConnectInfo,
+  RequestArguments
+} from 'hardhat/types';
 
 export interface NeverminedProviderContext {
   sdk: Nevermined;
@@ -56,6 +62,24 @@ export interface NFTDetails {
   nftSupply: number;
   mintCap: number;
   royalties: number;
+}
+
+export enum State {
+  Disabled = 'disabled',
+  Unconfirmed = 'unconfirmed',
+  Confirmed = 'confirmed'
+}
+
+export interface UserProfileParams {
+  userId: string;
+  isListed: boolean;
+  state: State;
+  nickname: string;
+  name: string;
+  email: string;
+  creationDate: string;
+  updateDate: string;
+  additionalInformation: unknown;
 }
 
 export interface AccountModule {
@@ -105,4 +129,41 @@ export interface MintNFTInput {
 
 export interface MarketplaceAPIToken {
   token: string;
+}
+
+interface ChainNetwork {
+  chainId: string;
+  chainName: string;
+  nativeCurrency: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  };
+  rpcUrls: string[];
+  blockExplorerUrls: string[];
+  iconUrls: string[];
+}
+
+export interface ChainConfig {
+  [network: string]: ChainNetwork | ((chainIdHex: string) => ChainNetwork);
+  returnConfig: (chainIdHex: string) => ChainNetwork;
+}
+
+export interface Methods<T> {
+  balanceOf: (address: string, tokenId: number) => this;
+  setApprovalForAll: (operator: string, approved: boolean) => this;
+  safeTransferFrom: (from: string, to: string, id: number, amount: number, data: Bytes) => this;
+  isApprovedForAll: (account: string, address: string) => this;
+  hasRole: (role: string, address: string) => this;
+  calcReward: (address: string) => this;
+  faucetNFT: () => this;
+  mintRZR: () => this;
+  call: () => T;
+  send: (from: string) => T;
+}
+
+export interface DispatchData<T> {
+  type: string;
+  payload: T;
+  error: Error;
 }
