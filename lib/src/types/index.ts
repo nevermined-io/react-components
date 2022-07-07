@@ -14,12 +14,6 @@ import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import { Bytes } from '@ethersproject/bytes';
-import {
-  ProviderMessage,
-  ProviderRpcError,
-  ProviderConnectInfo,
-  RequestArguments
-} from 'hardhat/types';
 
 export interface NeverminedProviderContext {
   sdk: Nevermined;
