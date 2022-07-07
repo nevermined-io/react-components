@@ -1,6 +1,7 @@
 import React, { useState, createContext, useEffect, useRef, useContext, RefObject } from 'react';
 import { Logger } from '@nevermined-io/nevermined-sdk-js';
 import { ChainConfig } from '../types';
+import { convertHextoIntString } from '../utils';
 import Web3 from 'web3';
 
 export interface WalletProviderState {
@@ -11,19 +12,11 @@ export interface WalletProviderState {
     promptSwitchAccounts: () => Promise<void>;
     switchChainsOrRegisterSupportedChain: () => Promise<void>
     walletAddress: string;
-    w3: RefObject<Web3>;
     loginMetamask: () => Promise<void>;
     isChainCorrect: boolean;
 }
 
 export const WalletContext = createContext({} as WalletProviderState);
-
-const convertHextoIntString = (hex: string) => {
-    const removedAddressFormat = hex.replace('0x', '');
-    const intString = parseInt(removedAddressFormat, 16);
-
-    return intString.toString();
-}
 
 export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfig }: { 
     children: React.ReactElement, nodeUri: string, correctNetworkId: string, chainConfig: ChainConfig 
@@ -172,9 +165,6 @@ export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfi
             const response = await window.ethereum.request?.({
                 method: 'eth_requestAccounts',
             });
-            if (response) {
-                localStorage.setItem('logType', 'Metamask');
-            }
             setWalletAddress(Web3.utils.toChecksumAddress(response[0]));
             return response;
         } catch (error) {
@@ -191,7 +181,6 @@ export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfi
     };
 
     const logout = (): void => {
-        localStorage.removeItem('logType');
         setWalletAddress('');
     };
 
@@ -201,7 +190,6 @@ export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfi
 
     const IState = {
         walletAddress,
-        w3,
         loginMetamask,
         getProvider,
         logout,

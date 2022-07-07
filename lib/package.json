@@ -33,8 +33,7 @@
     ]
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": "*"
   },
   "dependencies": {
     "@nevermined-io/nevermined-sdk-js": "0.21.1",
@@ -51,7 +50,6 @@
     "@babel/preset-react": "^7.16.5",
     "@types/jest": "^27.0.3",
     "@types/react": "17.0.2",
-    "@types/react-dom": "17.0.2",
     "babel-eslint": "^10.1.0",
     "babel-loader": "8.1.0",
     "hardhat": "^2.9.9",
