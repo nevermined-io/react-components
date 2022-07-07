@@ -32,12 +32,13 @@
     ]
   },
   "dependencies": {
-    "@nevermined-io/components-catalog": "0.0.74",
-    "@nevermined-io/nevermined-sdk-js": "^0.20.3",
+    "hello-catalog": "0.0.82",
+    "@nevermined-io/nevermined-sdk-js": "^0.20.0",
     "@truffle/hdwallet-provider": "^2.0.0",
     "axios": "^0.24.0",
     "babel-eslint": "^10.1.0",
     "bem-helpers": "^1.1.0",
+    "bignumber.js": "^9.0.2",
     "bip39": "^3.0.4",
     "classnames": "^2.3.1",
     "lodash.uniqby": "^4.7.0",

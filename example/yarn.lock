@@ -1959,18 +1959,6 @@
   resolved "https://registry.yarnpkg.com/@metamask/safe-event-emitter/-/safe-event-emitter-2.0.0.tgz#af577b477c683fad17c619a78208cede06f9605c"
   integrity sha512-/kSXhY692qiV1MXu6EeOZvg5nECLclxNXcKCxJ3cXQgYuRymRHpdx/t7JXfsK+JLjwA1e1c1/SBrlQYpusC29Q==
 
-"@nevermined-io/components-catalog@0.0.74":
-  version "0.0.74"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/components-catalog/-/components-catalog-0.0.74.tgz#48a057b192bffdb511436d61e82393d630d6f0c5"
-  integrity sha512-1rBUmlhR/ZI7xBDnkmksP/zu7KzuvYFvB9/ipRPwKpLpr2F6xfN9SAJXH2PZMRGVZ6LNQYtfB/SP1fh4dW/UvQ==
-  dependencies:
-    "@nevermined-io/nevermined-sdk-js" "0.20.0"
-    "@types/react" "^17.0.39"
-    "@types/react-dom" "^17.0.2"
-    nodemon "^2.0.16"
-    react "^17.0.2"
-    react-dom "^17.0.2"
-
 "@nevermined-io/contracts@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@nevermined-io/contracts/-/contracts-2.0.0.tgz#82daeecb2a7dae3af73e0dfa3f52488fd1e69369"
@@ -2011,10 +1999,10 @@
     web3-utils "^1.7.3"
     whatwg-url "^7.1.0"
 
-"@nevermined-io/nevermined-sdk-js@^0.20.3":
-  version "0.20.3"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.20.3.tgz#7ea6bc7905cc7ea7965ad95cc043249db01b40ad"
-  integrity sha512-AbQubCmU3FCQ+3O8Cik1OO4nPgEk2V5TRBdJNgrRVORKlU+UfXmziB+PM1HFvQaehZrJzfQLj7clNUHRdegxpw==
+"@nevermined-io/nevermined-sdk-js@^0.20.0":
+  version "0.20.4"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.20.4.tgz#d3d389a55b336359b33c37e5e051883d32780d6f"
+  integrity sha512-FnaNXjFb8WqvZtzKFriBMMgw/laiH+crpLthedkP5rXnhl2/9dZtQf61wQ9Fvm8YlVSfyd54BMk4oHz7PdU+2A==
   dependencies:
     "@nevermined-io/contracts" "^2.0.0"
     "@nevermined-io/secret-store-client" "^0.0.16"
@@ -2737,7 +2725,7 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.4.tgz#cd667bcfdd025213aafb7ca5915a932590acdcdc"
   integrity sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==
 
-"@types/react-dom@<18.0.0", "@types/react-dom@^17.0.0", "@types/react-dom@^17.0.2":
+"@types/react-dom@<18.0.0", "@types/react-dom@^17.0.0":
   version "17.0.17"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-17.0.17.tgz#2e3743277a793a96a99f1bf87614598289da68a1"
   integrity sha512-VjnqEmqGnasQKV0CWLevqMTXBYG9GbwuE6x3VetERLh0cq2LTptFE73MrQi2S7GkKXCf2GgwItB/melLnxfnsg==
@@ -4834,10 +4822,10 @@ confusing-browser-globals@^1.0.10, confusing-browser-globals@^1.0.11:
   resolved "https://registry.yarnpkg.com/confusing-browser-globals/-/confusing-browser-globals-1.0.11.tgz#ae40e9b57cdd3915408a2805ebd3a5585608dc81"
   integrity sha512-JsPKdmh8ZkmnHxDk55FZ1TqVLvEQTvoByJZRN9jzI0UjxK/QgAmsphz7PGtqgPieQZ/CQcHWXCR7ATDNhGe+YA==
 
-connect-history-api-fallback@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/connect-history-api-fallback/-/connect-history-api-fallback-1.6.0.tgz#8b32089359308d111115d81cad3fceab888f97bc"
-  integrity sha512-e54B99q/OUoH64zYYRf3HBP5z24G38h5D3qXu23JGRoigpX5Ss4r9ZnDk3g0Z8uQC2x2lPaJ+UlWBc1ZWBWdLg==
+connect-history-api-fallback@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/connect-history-api-fallback/-/connect-history-api-fallback-2.0.0.tgz#647264845251a0daf25b97ce87834cace0f5f1c8"
+  integrity sha512-U73+6lQFmfiNPrYbXqr6kZ1i1wiRqXnp2nhMsINseWXO8lDau0LGEffJ8kQi4EjLZympVgRdvqjAgiZ1tgzDDA==
 
 content-disposition@0.5.2:
   version "0.5.2"
@@ -5838,9 +5826,9 @@ ejs@^3.1.6:
     jake "^10.8.5"
 
 electron-to-chromium@^1.3.30, electron-to-chromium@^1.4.172:
-  version "1.4.172"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.172.tgz#87335795a3dc19e7b6dd5af291038477d81dc6b1"
-  integrity sha512-yDoFfTJnqBAB6hSiPvzmsBJSrjOXJtHSJoqJdI/zSIh7DYupYnIOHt/bbPw/WE31BJjNTybDdNAs21gCMnTh0Q==
+  version "1.4.174"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.174.tgz#ffdf57f26dd4558c5aabdb4b190c47af1c4e443b"
+  integrity sha512-JER+w+9MV2MBVFOXxP036bLlNOnzbYAWrWU8sNUwoOO69T3w4564WhM5H5atd8VVS8U4vpi0i0kdoYzm1NPQgQ==
 
 elliptic@6.5.4, elliptic@^6.4.0, elliptic@^6.5.2, elliptic@^6.5.3, elliptic@^6.5.4:
   version "6.5.4"
@@ -6789,9 +6777,9 @@ event-stream@=3.3.4:
     through "~2.3.1"
 
 eventemitter2@^6.4.3:
-  version "6.4.5"
-  resolved "https://registry.yarnpkg.com/eventemitter2/-/eventemitter2-6.4.5.tgz#97380f758ae24ac15df8353e0cc27f8b95644655"
-  integrity sha512-bXE7Dyc1i6oQElDG0jMRZJrRAn9QR2xyyFGmBdZleNmyQX0FqGYmhZIrIrpPfm/w//LTo4tVQGOGQcGCb5q9uw==
+  version "6.4.6"
+  resolved "https://registry.yarnpkg.com/eventemitter2/-/eventemitter2-6.4.6.tgz#92d56569cc147a4d9b9da9e942e89b20ce236b0a"
+  integrity sha512-OHqo4wbHX5VbvlbB6o6eDwhYmiTjrpWACjF8Pmof/GTD6rdBNdZFNck3xlhqOiQFGCOoq3uzHvA0cQpFHIGVAQ==
 
 eventemitter3@4.0.4:
   version "4.0.4"
@@ -7902,6 +7890,16 @@ he@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
+
+hello-catalog@0.0.82:
+  version "0.0.82"
+  resolved "https://registry.yarnpkg.com/hello-catalog/-/hello-catalog-0.0.82.tgz#2ba63ce3d1870847d02d839292bf3db9ece77033"
+  integrity sha512-UUCzR38AR0ui8YPgqZcmRG0ekuBgQbiOtN37LjoThP/Z0hCA8RXO8prS5A9XxdKtWL4uwXRTz+vNGr6vCmY8KA==
+  dependencies:
+    "@nevermined-io/nevermined-sdk-js" "0.20.0"
+    "@types/react" "^17.0.39"
+    nodemon "^2.0.16"
+    react "^17.0.2"
 
 hmac-drbg@^1.0.1:
   version "1.0.1"
@@ -15291,9 +15289,9 @@ webpack-dev-middleware@^5.3.1:
     schema-utils "^4.0.0"
 
 webpack-dev-server@^4.6.0:
-  version "4.9.2"
-  resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-4.9.2.tgz#c188db28c7bff12f87deda2a5595679ebbc3c9bc"
-  integrity sha512-H95Ns95dP24ZsEzO6G9iT+PNw4Q7ltll1GfJHV4fKphuHWgKFzGHWi4alTlTnpk1SPPk41X+l2RB7rLfIhnB9Q==
+  version "4.9.3"
+  resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-4.9.3.tgz#2360a5d6d532acb5410a668417ad549ee3b8a3c9"
+  integrity sha512-3qp/eoboZG5/6QgiZ3llN8TUzkSpYg1Ko9khWX1h40MIEUNS2mDoIa8aXsPfskER+GbTvs/IJZ1QTBBhhuetSw==
   dependencies:
     "@types/bonjour" "^3.5.9"
     "@types/connect-history-api-fallback" "^1.3.5"
@@ -15307,7 +15305,7 @@ webpack-dev-server@^4.6.0:
     chokidar "^3.5.3"
     colorette "^2.0.10"
     compression "^1.7.4"
-    connect-history-api-fallback "^1.6.0"
+    connect-history-api-fallback "^2.0.0"
     default-gateway "^6.0.3"
     express "^4.17.3"
     graceful-fs "^4.2.6"

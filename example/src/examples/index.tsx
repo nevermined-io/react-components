@@ -2,11 +2,12 @@ import BigNumber from 'bignumber.js';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React from 'react';
 import { MetaData } from '@nevermined-io/nevermined-sdk-js';
-import Catalog from '@nevermined-io/components-catalog';
-import { AssetState, MintNFTInput } from '@nevermined-io/components-catalog/dist/node/types';
+import Catalog from 'hello-catalog';
+import { AssetState, MintNFTInput } from 'hello-catalog/dist/node/types';
 
 const SDKInstance = () => {
   const { sdk, isLoadingSDK } = Catalog.useNevermined();
+  console.log('sdk', sdk);
 
   return (
     <>
@@ -19,7 +20,7 @@ const SDKInstance = () => {
 };
 
 const SingleAsset = () => {
-  const did = 'did:nv:f8a00c4881721f3c1c1762c280c665ee85f12265798075198129667626fad907';
+  const did = 'did:nv:25881196c2a72c1d76bc82d81b9d9fd12f6b1705ebb8174d80840ee1d8eb3c00';
   const assetData: AssetState = Catalog.useAsset(did);
 
   return (
@@ -87,14 +88,15 @@ const constructRewardMap = (
 };
 
 const MintAsset = () => {
-  const { assets, sdk } = Catalog.useNevermined();
+  const { assets, sdk, account } = Catalog.useNevermined();
   const metadata: MetaData = {
     main: {
       name: '',
+      files: [],
       type: 'dataset',
       author: '',
       license: '',
-      dateCreated: '',
+      dateCreated: new Date().toISOString(),
       price: ''
     }
   };
@@ -113,6 +115,9 @@ const MintAsset = () => {
         //@ts-ignore
         assetRewards
       };
+      if (!account.isTokenValid()) {
+        await account.generateToken();
+      }
       const response = await assets.mint(data);
       console.log('response', response);
     } catch (error) {
