@@ -67,7 +67,7 @@ export const useUserProfile = () => {
   const [isAddressAdded, setIsAddressAdded] = useState(false);
 
   const [userId, setUserId] = useState('');
-  const [userProfile, setUserProfile] = useState<UserProfileParams>({
+  const [userProfile, setUserProfile] = useState<Partial<UserProfileParams>>({
     nickname: '',
     name: '',
     email: '',
@@ -161,9 +161,11 @@ export const useUserProfile = () => {
           setNewAddress(walletAddress);
         } else if (error.message.includes('"statusCode":404')) {
           await account.generateToken();
+          const userProfileData = await sdk.profiles.findOneByAddress(walletAddress);
           setUserProfile({
-            nickname: walletAddress
+            nickname: userProfileData.nickname
           });
+          setUserId(userProfileData.userId);
         } else {
           setErrorMessage('Error getting user profile');
         }

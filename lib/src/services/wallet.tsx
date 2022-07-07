@@ -61,7 +61,7 @@ export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfi
             checkChain(chainIdHex);
         })()
 
-        window.ethereum.on('chainChanged', (chainHexId) => {
+        window.ethereum.on('chainChanged', (chainHexId: string) => {
             checkChain(chainHexId);
         });
     }, []);

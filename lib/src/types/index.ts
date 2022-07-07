@@ -64,11 +64,22 @@ export interface NFTDetails {
   royalties: number;
 }
 
+export enum State {
+  Disabled = 'disabled',
+  Unconfirmed = 'unconfirmed',
+  Confirmed = 'confirmed'
+}
+
 export interface UserProfileParams {
+  userId: string;
+  isListed: boolean;
+  state: State;
   nickname: string;
-  name?: string;
-  email?: string;
-  additionalInformation?: unknown;
+  name: string;
+  email: string;
+  creationDate: string;
+  updateDate: string;
+  additionalInformation: unknown;
 }
 
 export interface AccountModule {
@@ -134,9 +145,7 @@ interface ChainNetwork {
 }
 
 export interface ChainConfig {
-  development: ChainNetwork;
-  mumbai: ChainNetwork;
-  mainnet: ChainNetwork;
+  [network: string]: ChainNetwork | ((chainIdHex: string) => ChainNetwork);
   returnConfig: (chainIdHex: string) => ChainNetwork;
 }
 
@@ -157,33 +166,4 @@ export interface DispatchData<T> {
   type: string;
   payload: T;
   error: Error;
-}
-
-export interface EthereumEvent {
-  connect: ProviderConnectInfo;
-  disconnect: ProviderRpcError;
-  accountsChanged: Array<string>;
-  chainChanged: string;
-  message: ProviderMessage;
-}
-
-type EventKeys = keyof EthereumEvent;
-type EventHandler<K extends EventKeys> = (event: EthereumEvent[K]) => void;
-
-export interface Ethereumish {
-  autoRefreshOnNetworkChange: boolean;
-  chainId: string;
-  isMetaMask?: boolean;
-  isStatus?: boolean;
-  networkVersion: string;
-  selectedAddress: any;
-
-  on<K extends EventKeys>(event: K, eventHandler: EventHandler<K>): void;
-  enable(): Promise<any>;
-  request?: (request: { method: string; params?: Array<any> }) => Promise<any>;
-  send?: (
-    request: { method: string; params?: Array<any> },
-    callback: (error: any, response: any) => void
-  ) => void;
-  sendAsync: (request: RequestArguments) => Promise<unknown>;
 }
