@@ -48,7 +48,6 @@ export const initializeNevermined = async (
 ): Promise<GenericOutput<Nevermined, any>> => {
   try {
     console.log('Loading SDK Started..');
-    console.log('Marketplace auth token: ', config.marketplaceAuthToken);
     const nvmSdk: Nevermined = await Nevermined.getInstance({
       ...config
     });
