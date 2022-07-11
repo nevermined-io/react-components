@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import { NeverminedContext } from '../nevermined';
 import { useNevermined } from '../nevermined';
-import { WalletContext } from './wallet';
+import { useWallet } from './wallet';
 import { UserProfileParams } from '../types';
 import { saveMarketplaceApiTokenToLocalStorage } from '../utils/marketplace_token';
+import { Account } from '@nevermined-io/nevermined-sdk-js';
 
 export const useAccountReleases = (
   id: string,
@@ -57,9 +58,33 @@ export const useAccountCollection = (
   return { isLoading, accountCollection };
 };
 
+export const useGetAccount = (): { walletAccount: Account } => {
+  const { walletAddress } = useWallet();
+  const { sdk } = useNevermined();
+  const [walletAccount, setWalletAccount] = useState<Account>({} as Account);
+
+  useEffect(() => {
+    let accounts: Account[] = [];
+    (async () => {
+      if (sdk.accounts) {
+        accounts = await sdk.accounts.list();
+        if (!accounts?.length) {
+          accounts = await sdk.accounts.requestList();
+        }
+
+        setWalletAccount(accounts[0]);
+      }
+    })();
+  }, [walletAddress]);
+
+  return {
+    walletAccount
+  };
+};
+
 export const useUserProfile = () => {
   const { sdk, account } = useNevermined();
-  const { walletAddress } = useContext(WalletContext);
+  const { walletAddress } = useWallet();
   const [inputError, setInputError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -193,5 +218,25 @@ export const useUserProfile = () => {
     setUserProfile,
     onAddAddress,
     onSubmitUserProfile
+  };
+};
+
+export const useIsNFTHolder = (did: string): { ownNFT: boolean } => {
+  const { sdk } = useNevermined();
+  const { walletAddress } = useWallet();
+  const { walletAccount } = useGetAccount();
+  const [ownNFT, setOwnNFT] = useState<boolean>(false);
+
+  useEffect(() => {
+    (async () => {
+      if (walletAccount) {
+        const nft = await sdk.nfts.balance(did, walletAccount);
+        setOwnNFT(nft >= 0);
+      }
+    })();
+  }, [walletAddress]);
+
+  return {
+    ownNFT
   };
 };
