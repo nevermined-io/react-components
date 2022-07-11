@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, useRef } from 'react';
 import { NeverminedContext } from '../nevermined';
 import { useNevermined } from '../nevermined';
-import { useWallet, WalletContext } from './wallet';
+import { useWallet } from './wallet';
 import { UserProfileParams } from '../types';
 import { saveMarketplaceApiTokenToLocalStorage } from '../utils/marketplace_token';
 import { Account } from '@nevermined-io/nevermined-sdk-js';
