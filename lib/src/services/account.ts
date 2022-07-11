@@ -85,7 +85,6 @@ export const useGetAccount = (): { walletAccount: Account } => {
 export const useUserProfile = () => {
   const { sdk, account } = useNevermined();
   const { walletAddress } = useWallet();
-  const { walletAccount } = useGetAccount();
   const [inputError, setInputError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
