@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useRef } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { NeverminedContext } from '../nevermined';
 import { useNevermined } from '../nevermined';
 import { useWallet } from './wallet';
