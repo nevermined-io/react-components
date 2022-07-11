@@ -65,16 +65,16 @@ export const useGetAccount = (): { walletAccount: Account } => {
 
   useEffect(() => {
     let accounts: Account[] = [];
-    async () => {
+    (async () => {
       if (sdk.accounts) {
         accounts = await sdk.accounts.list();
         if (!accounts?.length) {
           accounts = await sdk.accounts.requestList();
         }
-      }
 
-      setWalletAccount(accounts[0]);
-    };
+        setWalletAccount(accounts[0]);
+      }
+    })();
   }, [walletAddress]);
 
   return {
