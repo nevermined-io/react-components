@@ -79,6 +79,15 @@ export const useUserProfile = () => {
 
   const [addresses, setAddresses] = useState<string[]>([]);
 
+  const checkAuth = async () => {
+    if (!account.isTokenValid()) {
+      setErrorMessage(
+        'Your login is expired. Please first sign with your wallet before to continue'
+      );
+      await account.generateToken();
+    }
+  };
+
   const onAddAddress = async () => {
     try {
       let accounts = await sdk.accounts.list();
@@ -104,9 +113,8 @@ export const useUserProfile = () => {
 
   const onSubmitUserProfile = async () => {
     try {
-      if (!account.isTokenValid()) {
-        await account.generateToken();
-      }
+      await checkAuth();
+
       if (!userProfile.nickname) {
         setInputError('Nickname is required');
         return;
@@ -144,9 +152,7 @@ export const useUserProfile = () => {
           setNewAddress('');
         }
 
-        if (!account.isTokenValid()) {
-          await account.generateToken();
-        }
+        await checkAuth();
 
         setAddresses([...userProfileData.addresses]);
 
@@ -161,11 +167,13 @@ export const useUserProfile = () => {
           setNewAddress(walletAddress);
         } else if (error.message.includes('"statusCode":404')) {
           await account.generateToken();
-          const userProfileData = await sdk.profiles.findOneByAddress(walletAddress);
-          setUserProfile({
-            nickname: userProfileData.nickname
-          });
-          setUserId(userProfileData.userId);
+          setTimeout(async () => {
+            const userProfileData = await sdk.profiles.findOneByAddress(walletAddress);
+            setUserProfile({
+              nickname: userProfileData.nickname
+            });
+            setUserId(userProfileData.userId);
+          }, 1000);
         } else {
           setErrorMessage('Error getting user profile');
         }

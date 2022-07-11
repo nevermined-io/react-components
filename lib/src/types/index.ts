@@ -142,22 +142,3 @@ export interface ChainConfig {
   [network: string]: ChainNetwork | ((chainIdHex: string) => ChainNetwork);
   returnConfig: (chainIdHex: string) => ChainNetwork;
 }
-
-export interface Methods<T> {
-  balanceOf: (address: string, tokenId: number) => this;
-  setApprovalForAll: (operator: string, approved: boolean) => this;
-  safeTransferFrom: (from: string, to: string, id: number, amount: number, data: Bytes) => this;
-  isApprovedForAll: (account: string, address: string) => this;
-  hasRole: (role: string, address: string) => this;
-  calcReward: (address: string) => this;
-  faucetNFT: () => this;
-  mintRZR: () => this;
-  call: () => T;
-  send: (from: string) => T;
-}
-
-export interface DispatchData<T> {
-  type: string;
-  payload: T;
-  error: Error;
-}
