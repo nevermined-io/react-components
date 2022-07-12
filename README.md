@@ -8,6 +8,8 @@ Steps to integrate:
 #### 1.
 ```typescript
 yarn add @nevermined-io/components-catalog
+or
+npm install --save @nevermined-io/components-catalog
 ```
 
 #### 2.
