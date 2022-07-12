@@ -5,16 +5,30 @@ connect and communicate with Nevermined.
 
 Steps to integrate:
 
-#### 1:
+#### 1.
 ```typescript
 yarn add @nevermined-io/components-catalog
 ```
 
-#### 2:
+#### 2.
 ```typescript
 import Catalog from '@nevermined-io/components-catalog';
-import { appConfig } from './config';
 import App from 'app';
+import { Config } from '@nevermined-io/nevermined-sdk-js';
+
+const appConfig: Config = {
+  web3Provider: new Web3(window.ethereum),
+  nodeUri,
+  gatewayUri,
+  faucetUri,
+  verbose,
+  gatewayAddress,
+  secretStoreUri,
+  graphHttpUri,
+  marketplaceAuthToken,
+  marketplaceUri,
+  artifactsFolder
+};
 
 ReactDOM.render(
   <div>
@@ -26,16 +40,22 @@ ReactDOM.render(
 );
 ```
 
-** you can find config example inside [examples](https://github.com/nevermined-io/components-catalog/blob/main/example/src/config.ts) folder in this repo.
+Your are all setup to start using the catalog now in your app.
 
-After finishing these two steps you have two different ways to utilise the package:
 
-1) use core functions exposed through the context, for example: 
 ```typescript
-    const { asset } = useContext(Catalog.NeverminedContext);
-    const result = await asset.resolve();
+const SingleAsset = () => {
+  const did = 'did:nv:f8a00...';
+  const assetData: AssetState = Catalog.useAsset(did);
+
+  return (
+    <>
+      <div>Asset {did}:</div>
+      <div>{JSON.stringify(assetData.ddo)}</div>
+    </>
+  );
+};
+
 ```
 
-2) use hooks exported from services folder.
-
-for more details and example https://github.com/nevermined-io/components-catalog/tree/main/lib#plug-and-play-services
+For an example visit example folder.
