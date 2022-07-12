@@ -41,9 +41,7 @@ ReactDOM.render(
   document.getElementById('root') as HTMLElement
 );
 ```
-
-You are ready to start using the catalog in your app.
-
+You are ready to use the catalog in your app.
 
 ```typescript
 const SingleAsset = () => {
