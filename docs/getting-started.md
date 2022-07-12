@@ -1,18 +1,25 @@
-# Nevermined React Library
+---
+sidebar_position: 1
+---
 
-This projects aims to provide generic React components that
-connect and communicate with Nevermined.
+# Getting Started
 
-Steps to integrate:
+This section provides information about how to get started with the Nevermined Components Catalog.
 
-#### 1.
-```typescript
+## Pre-requisites
+
+The Nevermined Components Catalog is a package built with React and Typescript.
+It requires [Node JS](https://nodejs.org/) v14 or higher. You can find online instructions about [How to install Node JS](https://nodejs.dev/learn/how-to-install-nodejs).
+
+## How to install ?
+
+```
 yarn add @nevermined-io/components-catalog
 or
 npm install --save @nevermined-io/components-catalog
 ```
 
-#### 2.
+## How to integrate ?
 ```typescript
 import Catalog from '@nevermined-io/components-catalog';
 import App from 'app';
@@ -41,7 +48,8 @@ ReactDOM.render(
   document.getElementById('root') as HTMLElement
 );
 ```
-You are ready to use the catalog in your app.
+
+## How to use ?
 
 ```typescript
 const SingleAsset = () => {
@@ -58,4 +66,4 @@ const SingleAsset = () => {
 
 ```
 
-For an example visit example folder.
+For a full [example](https://github.com/nevermined-io/components-catalog/tree/main/example).
