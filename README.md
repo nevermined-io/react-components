@@ -40,7 +40,7 @@ ReactDOM.render(
 );
 ```
 
-Your are all setup to start using the catalog now in your app.
+You are ready to start using the catalog in your app.
 
 
 ```typescript
