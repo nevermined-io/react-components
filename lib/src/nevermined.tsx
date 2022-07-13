@@ -217,69 +217,26 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
   const transferEndpoint = `${config.gatewayUri}/api/v1/gateway/services/nft-transfer`;
 
-  const transferNFT = async (transferData: NFTTransferData, nvm: Nevermined, tries = 1) => {
-    try {
-      let response: any;
-      let counter = 0;
-      while (counter < tries) {
-        try {
-          console.log(`Call # ${counter + 1}`);
-          const responseTemp = await nvm.utils.fetch.post(
-            transferEndpoint,
-            JSON.stringify(transferData)
-          );
-          response = responseTemp;
-          if (responseTemp.ok) {
-            break;
-          } else {
-            counter++;
-            await new Promise((res) => setTimeout(res, 500));
-          }
-        } catch (error) {
-          response = error as Response;
-          counter++;
-          await new Promise((res) => setTimeout(res, 500));
-        }
-      }
-      if (response && response.ok) return true;
-
-      if (response && !response.ok) {
-        let text = await response.text();
-        if (!text) {
-          text = 'errorMessage';
-        }
-        throw new Error(`${response.status}-${text}`);
-      }
-      throw new Error(`${response.status}-${await response.text()}`);
-    } catch (e) {
-      const messageTemp = (e as Error).message;
-      const [status, message] = messageTemp.split('-');
-      if (+status === 500 || !message) {
-        throw new Error(`${status}-${'errorMessage'}`);
-      } else {
-        throw new Error(`${status}-${message}`);
-      }
-    }
-  };
-
   const transferNft = async (
     agreementId: string,
     nftAmount: number,
     holder: Account
   ): Promise<boolean> => {
     try {
-    const [account] = await sdk.accounts.list();
-      const isSuccessful = await transferNFT(
-        { agreementId, nftAmount, nftHolder: holder.getId(), nftReceiver: account.getId() },
-        sdk,
-        10
+      const [account] = await sdk.accounts.list();
+      const response = await sdk.utils.fetch.post(
+        transferEndpoint,
+        JSON.stringify({
+          agreementId,
+          nftAmount,
+          nftHolder: holder.getId(),
+          nftReceiver: account.getId()
+        })
       );
       // const isSuccessful = await sdk.nfts.transferForDelegate(agreementId, holder.getId(), account.getId(), nftAmount);
-      console.log('success', isSuccessful);
-      return isSuccessful;
+      return response;
     } catch (error) {
-      const e = error as Error;
-      console.error(e);
+      console.log(error);
       return false;
     }
   };
