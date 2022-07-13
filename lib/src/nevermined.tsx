@@ -26,6 +26,7 @@ import {
   SubscribeModule,
 } from './types';
 import { isEmptyObject, getCurrentAccount, conductOrder } from './utils';
+import { isEmptyObject } from './utils';
 import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token';
 
 export const initialState = {
@@ -228,7 +229,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    transfer: async ({ ddo, amount }: { ddo: DDO; amount: number }) => {
+    transfer: async ({ did, amount }: { did: string; amount: number }) => {
       try {
         if (!config.gatewayAddress || !config.gatewayUri) {
           Logger.log(`gatewayAddress or gatewayUri is not set. abort.`);
@@ -240,6 +241,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
           Logger.log(`Users need to be connected to perform a transfer. abort.`);
           return;
         }
+        const ddo: DDO = await sdk.assets.resolve(String(did));
         const currentOwner = await sdk.assets.owner(ddo.id); // Get current owner
         const agreementId = await conductOrder({
           sdk,

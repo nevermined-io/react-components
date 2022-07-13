@@ -1,7 +1,5 @@
-import { Account, DDO, Nevermined } from "@nevermined-io/nevermined-sdk-js";
-import { Logger } from "@nevermined-io/nevermined-sdk-js/dist/node/utils";
+import { Account, DDO, Nevermined, Logger } from '@nevermined-io/nevermined-sdk-js';
 
-// if empty returns true
 export const isEmptyObject = (i: any) => !i || Object.keys(i).length < 1;
 
 export const convertHextoIntString = (hex: string) => {
