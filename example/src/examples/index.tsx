@@ -1,13 +1,12 @@
 import BigNumber from 'bignumber.js';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React from 'react';
-import { MetaData } from '@nevermined-io/nevermined-sdk-js';
+import { DDO, MetaData } from '@nevermined-io/nevermined-sdk-js';
 import Catalog from 'hello-catalog';
 import { AssetState, MintNFTInput } from 'hello-catalog/dist/node/types';
 
 const SDKInstance = () => {
   const { sdk, isLoadingSDK } = Catalog.useNevermined();
-  console.log('sdk', sdk);
 
   return (
     <>
@@ -31,7 +30,7 @@ const SingleAsset = () => {
   );
 };
 
-const q = {
+const useAssetsQuery = {
   offset: 150,
   page: 1,
   query: {},
@@ -41,7 +40,7 @@ const q = {
 };
 
 export const MultipleAssets = () => {
-  const { isLoading: isLoadingAssets, result } = Catalog.useAssets(q);
+  const { isLoading: isLoadingAssets, result } = Catalog.useAssets(useAssetsQuery);
 
   return (
     <>
@@ -129,6 +128,35 @@ const MintAsset = () => {
     <>
       <button onClick={mint} disabled={!Object.keys(assets).length}>
         mint
+      </button>
+    </>
+  );
+};
+
+const TransferAsset = () => {
+  const { assets, account } = Catalog.useNevermined();
+
+  const transfer = async () => {
+    try {
+      if (!account.isTokenValid()) {
+        await account.generateToken();
+      }
+      const did = 'did:nv:25881196c2a72c1d76bc82d81b9d9fd12f6b1705ebb8174d80840ee1d8eb3c00';
+      const input: { did: string; amount: number } = {
+        did,
+        amount: 1
+      };
+      const response = await assets.transfer(input);
+      console.log('response', response);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  return (
+    <>
+      <button onClick={transfer} disabled={!Object.keys(assets).length}>
+        transfer
       </button>
     </>
   );
