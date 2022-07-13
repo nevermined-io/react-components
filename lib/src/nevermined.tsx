@@ -25,43 +25,11 @@ import {
   NFTDetails,
   SubscribeModule,
 } from './types';
-import { isEmptyObject, getCurrentAccount } from './utils';
+import { isEmptyObject, getCurrentAccount, conductOrder } from './utils';
 import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token';
 
 export const initialState = {
   sdk: {} as Nevermined
-};
-
-const conductOrder = async ({
-  sdk,
-  ddo,
-  gatewayAddress
-}: {
-  sdk: Nevermined;
-  gatewayAddress: string;
-  ddo: DDO;
-}): Promise<string> => {
-  try {
-    console.log('Checking if USDC spending is approved.');
-    const [account] = await sdk.accounts.list();
-    const isApproved = await sdk.keeper.nftUpgradeable.isApprovedForAll(
-      account.getId(),
-      gatewayAddress
-    );
-    if (!isApproved) {
-      const receipt = await sdk.nfts.setApprovalForAll(gatewayAddress, true, account);
-      Logger.log('Approval receipt:', receipt);
-    }
-    console.log('USDC spending is approved.');
-    console.log(`Asking for approval and locking payment for USDC.`);
-    const agreementId: string = await sdk.nfts.order(ddo.id, 1, account);
-    console.log('Transferring the NFT.');
-    Logger.log('Order agreement ID', agreementId);
-    return agreementId;
-  } catch (error) {
-    Logger.error(error);
-    throw new Error(error as unknown as string);
-  }
 };
 
 export const neverminedReducer = (
@@ -80,15 +48,15 @@ export const initializeNevermined = async (
   config: Config
 ): Promise<GenericOutput<Nevermined, any>> => {
   try {
-    console.log('Loading SDK Started..');
+    Logger.log('Loading SDK Started..');
     const nvmSdk: Nevermined = await Nevermined.getInstance({
       ...config
     });
-    console.log('Loading SDK Finished Successfully');
+    Logger.log('Loading SDK Finished Successfully');
     return { data: nvmSdk, error: undefined, success: true };
   } catch (error) {
-    console.log('Loading SDK Failed:');
-    console.log(error);
+    Logger.log('Loading SDK Failed:');
+    Logger.log(error);
     return { data: {} as Nevermined, error, success: false };
   }
 };
@@ -104,7 +72,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   useEffect(() => {
     const loadNevermined = async (): Promise<void> => {
       if (!config.web3Provider) {
-        console.log('Please include web3 proivder in your sdk config. aborting.');
+        Logger.log('Please include web3 proivder in your sdk config. aborting.');
         return;
       }
       setIsLoading(true);
@@ -208,39 +176,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     }
   };
 
-  interface NFTTransferData {
-    agreementId: string;
-    nftHolder: string;
-    nftReceiver: string;
-    nftAmount: number;
-  }
-
-  const transferEndpoint = `${config.gatewayUri}/api/v1/gateway/services/nft-transfer`;
-
-  const transferNft = async (
-    agreementId: string,
-    nftAmount: number,
-    holder: Account
-  ): Promise<boolean> => {
-    try {
-      const [account] = await sdk.accounts.list();
-      const response = await sdk.utils.fetch.post(
-        transferEndpoint,
-        JSON.stringify({
-          agreementId,
-          nftAmount,
-          nftHolder: holder.getId(),
-          nftReceiver: account.getId()
-        })
-      );
-      // const isSuccessful = await sdk.nfts.transferForDelegate(agreementId, holder.getId(), account.getId(), nftAmount);
-      return response;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-  };
-
   const assets: AssetsModule = {
     getSingle: async (did: string): Promise<DDO> => {
       try {
@@ -271,7 +206,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         if (isEmptyObject(sdk)) return undefined;
         const [publisherAddress] = await sdk.accounts.list();
         if (!publisherAddress) {
-          console.log('No account was found!');
+          Logger.log('No account was found!');
           return;
         }
         const minted: DDO = await sdk.nfts.create(
@@ -293,22 +228,50 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    transfer: async ({ ddo }: { ddo: DDO }) => {
+    transfer: async ({ ddo, amount }: { ddo: DDO; amount: number }) => {
       try {
-        if (!config.gatewayAddress) return;
-        const agreementId = await conductOrder({ sdk, ddo, gatewayAddress: config.gatewayAddress });
+        if (!config.gatewayAddress || !config.gatewayUri) {
+          Logger.log(`gatewayAddress or gatewayUri is not set. abort.`);
+          return;
+        }
+        const transferEndpoint = `${config.gatewayUri}/api/v1/gateway/services/nft-transfer`;
+        const [newOwner] = await sdk.accounts.list();
+        if (!newOwner) {
+          Logger.log(`Users need to be connected to perform a transfer. abort.`);
+          return;
+        }
+        const currentOwner = await sdk.assets.owner(ddo.id); // Get current owner
+        const agreementId = await conductOrder({
+          sdk,
+          ddo,
+          gatewayAddress: config.gatewayAddress,
+          newOwner
+        });
+        await new Promise((r) => setTimeout(r, 3000)); // await two seconds to allow the transaction to be processed
+        if (!agreementId) {
+          Logger.log(`Could not approve spending from new owner wallet. abort.`);
+          return;
+        }
         Logger.log(`Obtained agreement ID ${agreementId}`);
-        const hodler = await sdk.assets.owner(ddo.id);
-        // await two seconds to allow the transaction to be processed
-        await new Promise((r) => setTimeout(r, 2000));
-        // TODO: BE AWARE THAT THIS IS WORKIGN ONLY FOR FIRST-MARKET, secondary market is not implemented yet
-        const isTransferSuccessful = await transferNft(agreementId, 1, new Account(hodler));
+        const isTransferSuccessful = await sdk.utils.fetch.post(
+          transferEndpoint,
+          JSON.stringify({
+            agreementId,
+            nftAmount: amount,
+            nftHolder: new Account(currentOwner).getId(),
+            nftReceiver: newOwner.getId()
+          })
+        );
         if (isTransferSuccessful) {
-          Logger.log(`Transfer of ${1} NFT of did ${ddo.id} succeeded to address }`);
+          Logger.log(`Transferred ${amount} NFT with did ${ddo.id} to ${newOwner.getId()}`);
+          return true;
         } else {
+          Logger.log(`Something went wrong! Please try again.`);
+          return false;
         }
       } catch (e) {
         Logger.error(e);
+        return false;
       }
     },
 
