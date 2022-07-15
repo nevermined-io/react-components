@@ -1,6 +1,6 @@
 {
-  "name": "@nevermined-io/components-catalog",
-  "version": "0.0.77",
+  "name": "components-catalog-nvm-test",
+  "version": "0.0.126",
   "private": false,
   "scripts": {
     "watch": "./node_modules/.bin/nodemon",
@@ -38,6 +38,7 @@
   "dependencies": {
     "@nevermined-io/nevermined-sdk-js": "0.21.1",
     "@types/jsonwebtoken": "^8.5.8",
+    "axios-retry": "^3.3.1",
     "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.16",
     "web3": "^1.7.4"

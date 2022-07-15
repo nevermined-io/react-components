@@ -13,7 +13,11 @@ import {
 import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
-import { Bytes } from '@ethersproject/bytes';
+
+export interface CatalogConfig extends Config {
+  filecoinUploadUri: string;
+  ipfsGatewayUri: string;
+}
 
 export interface NeverminedProviderContext {
   sdk: Nevermined;
@@ -24,12 +28,13 @@ export interface NeverminedProviderContext {
   assets: AssetsModule;
   account: AccountModule;
   events: EventsModule;
+  config: CatalogConfig;
 }
 
 export interface NeverminedProviderProps {
   children: any;
   verbose?: boolean;
-  config: Config;
+  config: CatalogConfig;
 }
 
 export interface OutputUseNeverminedService {
@@ -74,6 +79,7 @@ export interface UserProfileParams {
   creationDate: string;
   updateDate: string;
   additionalInformation: unknown;
+  asset_files: AssetFile[];
 }
 
 export interface AccountModule {
@@ -141,4 +147,37 @@ interface ChainNetwork {
 export interface ChainConfig {
   [network: string]: ChainNetwork | ((chainIdHex: string) => ChainNetwork);
   returnConfig: (chainIdHex: string) => ChainNetwork;
+}
+
+export enum FileType {
+  FilecoinID = 'Filecoin',
+  Local = 'Local'
+}
+
+export interface AssetFile {
+  type: FileType;
+  label: string;
+  name?: string;
+  size?: string;
+  content_type?: string;
+  file?: File;
+  filecoin_id?: string;
+}
+
+export interface AssetPublishParams {
+  [key: string]: any;
+  name: string;
+  author: string;
+  description: string;
+  type: string;
+  category: string;
+  price: number;
+  asset_files: AssetFile[];
+}
+
+export interface FileMetadata {
+  index: number;
+  contentType: string;
+  url: string;
+  contentLength: string;
 }
