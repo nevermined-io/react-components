@@ -221,7 +221,28 @@ export const useUserProfile = () => {
   };
 };
 
-export const useIsNFTHolder = (did: string): { ownNFT: boolean } => {
+export const useIsNFT1155Holder = (did: string): { ownNFT: boolean } => {
+  const { sdk } = useNevermined();
+  const { walletAddress } = useWallet();
+  const { walletAccount } = useGetAccount();
+  const [ownNFT, setOwnNFT] = useState<boolean>(false);
+
+  useEffect(() => {
+    (async () => {
+      if (walletAccount) {
+        const nft = await sdk.nfts.balance(did, walletAccount);
+        setOwnNFT(nft >= 0);
+      }
+    })();
+  }, [walletAddress]);
+
+  return {
+    ownNFT
+  };
+};
+
+
+export const useIsNFT721Holder = (did: string): { ownNFT: boolean } => {
   const { sdk } = useNevermined();
   const { walletAddress } = useWallet();
   const { walletAccount } = useGetAccount();
