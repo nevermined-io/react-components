@@ -221,22 +221,41 @@ export const useUserProfile = () => {
   };
 };
 
-export const useIsNFTHolder = (did: string): { ownNFT: boolean } => {
+export const userIsNFT1155Holder = (did: string): { ownNFT1155: boolean } => {
   const { sdk } = useNevermined();
   const { walletAddress } = useWallet();
   const { walletAccount } = useGetAccount();
-  const [ownNFT, setOwnNFT] = useState<boolean>(false);
+  const [ownNFT1155, setOwnNFT1155] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
       if (walletAccount) {
         const nft = await sdk.nfts.balance(did, walletAccount);
-        setOwnNFT(nft >= 0);
+        setOwnNFT1155(nft >= 0);
       }
     })();
   }, [walletAddress]);
 
   return {
-    ownNFT
+    ownNFT1155
+  };
+};
+
+export const userIsNFT721Holder = (did: string, nftTokenAddress: string): { ownNFT721: boolean } => {
+  const { sdk } = useNevermined();
+  const { walletAddress } = useWallet();
+  const [ownNFT721, setOwnNFT721] = useState<boolean>(false);
+
+  useEffect(() => {
+    (async () => {
+      if (walletAddress) {
+        const nftOwner = await sdk.nfts.ownerOf(did, nftTokenAddress);
+        setOwnNFT721(nftOwner === walletAddress);
+      }
+    })();
+  }, [walletAddress]);
+
+  return {
+    ownNFT721
   };
 };
