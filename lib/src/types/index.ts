@@ -149,19 +149,10 @@ export interface ChainConfig {
   returnConfig: (chainIdHex: string) => ChainNetwork;
 }
 
-export enum FileType {
-  FilecoinID = 'Filecoin',
-  Local = 'Local'
-}
-
 export interface AssetFile {
-  type: FileType;
+  [key: string]: any;
+  type: string;
   label: string;
-  name?: string;
-  size?: string;
-  content_type?: string;
-  file?: File;
-  filecoin_id?: string;
 }
 
 export interface AssetPublishParams {
