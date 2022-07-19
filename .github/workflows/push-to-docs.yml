@@ -10,5 +10,7 @@ jobs:
   push-to-docs:
     uses: nevermined-io/reusable-workflows/.github/workflows/push-to-docs.yml@main
     with:
-      path-to-push: external/components-catalog
+      path-to-push: docs/architecture/components/catalog
+      repo-to-push: nvm-docs
+      branch-to-clone: main
     secrets: inherit
