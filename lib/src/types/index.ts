@@ -93,7 +93,7 @@ export interface AssetsModule {
   resolve: (did: DID) => Promise<DDO | undefined>;
   mint: (did: any) => Promise<any>;
   nftDetails: (did: string) => Promise<NFTDetails>;
-  downloadNFT: (did: string) => Promise<void>;
+  downloadNFT: (did: string) => Promise<boolean>;
 }
 
 export interface SubscribeModule {

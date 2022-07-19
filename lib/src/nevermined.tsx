@@ -251,12 +251,13 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    downloadNFT: async (did: string): Promise<void> => {
+    downloadNFT: async (did: string): Promise<boolean> => {
       try {
         const account = await getCurrentAccount(sdk);
-        await sdk.nfts.access(did, account);
+        return sdk.nfts.access(did, account);
       } catch (error) {
         verbose && Logger.error(error);
+        return false;
       }
     }
   };
