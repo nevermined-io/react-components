@@ -24,7 +24,7 @@ import {
   NFTDetails,
   SubscribeModule
 } from './types';
-import { isEmptyObject } from './utils';
+import { isEmptyObject, getCurrentAccount } from './utils';
 import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token';
 
 export const initialState = {
@@ -244,11 +244,20 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     nftDetails: async (did: string): Promise<NFTDetails> => {
       try {
         if (isEmptyObject(sdk)) return {} as NFTDetails;
-        const details = sdk.nfts.details(did);
-        return details;
+        return sdk.nfts.details(did);
       } catch (error) {
         verbose && Logger.error(error);
         return {} as NFTDetails;
+      }
+    },
+
+    downloadNFT: async (did: string): Promise<boolean> => {
+      try {
+        const account = await getCurrentAccount(sdk);
+        return sdk.nfts.access(did, account);
+      } catch (error) {
+        verbose && Logger.error(error);
+        return false;
       }
     }
   };
