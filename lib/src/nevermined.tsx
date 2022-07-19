@@ -244,8 +244,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     nftDetails: async (did: string): Promise<NFTDetails> => {
       try {
         if (isEmptyObject(sdk)) return {} as NFTDetails;
-        const details = await sdk.nfts.details(did);
-        return details;
+        return sdk.nfts.details(did);
       } catch (error) {
         verbose && Logger.error(error);
         return {} as NFTDetails;
