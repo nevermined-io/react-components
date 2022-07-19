@@ -1,5 +1,5 @@
 {
-  "name": "@nevermined-io/providers-catalog",
+  "name": "catalog-providers",
   "version": "0.0.1",
   "private": false,
   "scripts": {

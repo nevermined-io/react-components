@@ -1,7 +1,7 @@
-import * as wallet from './services/wallet';
+import * as MetaMask from "./web3";
 
 export const Providers = {
-  ...wallet,
+    MetaMask,
 };
 
 export default Providers;
