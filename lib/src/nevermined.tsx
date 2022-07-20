@@ -313,7 +313,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     account,
     events,
     updateSDK,
-    config,
   };
 
   return <NeverminedContext.Provider value={IState}>{children}</NeverminedContext.Provider>;

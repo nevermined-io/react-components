@@ -28,7 +28,6 @@ export interface NeverminedProviderContext {
   assets: AssetsModule;
   account: AccountModule;
   events: EventsModule;
-  config: CatalogConfig;
 }
 
 export interface NeverminedProviderProps {

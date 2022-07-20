@@ -1,4 +1,4 @@
-import { DDO, MetaData, SearchQuery } from '@nevermined-io/nevermined-sdk-js';
+import { DDO, MetaData, SearchQuery, ClientError } from '@nevermined-io/nevermined-sdk-js';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React, { useContext, useEffect, useState, createContext } from 'react';
@@ -8,7 +8,6 @@ import {
   AssetPublishParams,
 } from '../types';
 import BigNumber from 'bignumber.js';
-import { useGetAccount } from './account'
 import { getCurrentAccount } from '../utils'
 
 export const useAssets = (
@@ -94,8 +93,7 @@ export const AssetPublishContext = createContext({} as AssetPublishProviderState
 export const AssetPublishProvider = ({ children }: { 
   children: React.ReactElement
 }) => {
-  const { sdk, account, config } = useNevermined();
-  const { walletAccount } = useGetAccount()
+  const { sdk, account } = useNevermined();
   const [errorAssetMessage, setAssetErrorMessage] = useState('');
   const [isPublished, setIsPublished] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -136,7 +134,7 @@ export const AssetPublishProvider = ({ children }: {
         await account.generateToken();
       }
 
-      const ddo = await sdk.nfts.create721(metadata, walletAccount, assetRewards, nftAddress);
+      const ddo = await sdk.nfts.create721(metadata, accountWallet, assetRewards, nftAddress);
       setIsProcessing(false);
       setIsPublished(true);
       setAssetMessage('The assets has been sucessfully published. DID: ' + ddo.id);
@@ -147,6 +145,7 @@ export const AssetPublishProvider = ({ children }: {
       setAssetErrorMessage('There was an error publishing the Asset');
       setAssetMessage('');
       setIsProcessing(false);
+      throw new ClientError(error.message, 'Catalog');
     }
   };
 
