@@ -1,6 +1,6 @@
 {
   "name": "catalog-providers",
-  "version": "0.0.1",
+  "version": "0.0.13",
   "private": false,
   "scripts": {
     "watch": "./node_modules/.bin/nodemon",
