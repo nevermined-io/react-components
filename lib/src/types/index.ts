@@ -14,11 +14,6 @@ import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 
-export interface CatalogConfig extends Config {
-  filecoinUploadUri: string;
-  ipfsGatewayUri: string;
-}
-
 export interface NeverminedProviderContext {
   sdk: Nevermined;
   sdkError: any;
@@ -33,7 +28,7 @@ export interface NeverminedProviderContext {
 export interface NeverminedProviderProps {
   children: any;
   verbose?: boolean;
-  config: CatalogConfig;
+  config: Config;
 }
 
 export interface OutputUseNeverminedService {
@@ -78,7 +73,6 @@ export interface UserProfileParams {
   creationDate: string;
   updateDate: string;
   additionalInformation: unknown;
-  asset_files: AssetFile[];
 }
 
 export interface AccountModule {
@@ -163,7 +157,7 @@ export interface AssetPublishParams {
   type: string;
   category: string;
   price: number;
-  asset_files: AssetFile[];
+  assetFiles: AssetFile[];
 }
 
 export interface FileMetadata {

@@ -105,7 +105,7 @@ export const AssetPublishProvider = ({ children }: {
     type: 'dataset',
     category: 'None',
     price: 0,
-    asset_files: []
+    assetFiles: []
   });
 
   const reset = (resetAssetPublish: AssetPublishParams) => {
