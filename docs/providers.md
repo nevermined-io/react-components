@@ -1,8 +1,8 @@
 ## PROVIDERS SECTIONS
 
 ---
-sidebar_position: 1
----
+
+## sidebar_position: 1
 
 # Getting Started
 
@@ -22,26 +22,27 @@ npm install --save @nevermined-io/catalog-providers
 ```
 
 ## How to integrate ?
+
 ```typescript
-import Providers from '@nevermined-io/catalog-providers';
-import App from 'app';
-import { Config } from '@nevermined-io/nevermined-sdk-js';
+import Providers from "@nevermined-io/catalog-providers";
+import App from "app";
+import { Config } from "@nevermined-io/nevermined-sdk-js";
 
 const appConfig: Config = {
-  nodeUri,
+    nodeUri,
 };
 
 ReactDOM.render(
-  <div>
-      <Providers.MetaMask.WalletProvider
-        chainConfig={chainConfig}
-        correctNetworkId={correctNetworkId} 
-        nodeUri={String(appConfig.nodeUri)}
-      >
-      <App />
-    </Providers.MetaMask.WalletProvider>
-  </div>,
-  document.getElementById('root') as HTMLElement
+    <div>
+        <Providers.MetaMask.WalletProvider
+            chainConfig={chainConfig}
+            correctNetworkId={correctNetworkId}
+            nodeUri={String(appConfig.nodeUri)}
+        >
+            <App />
+        </Providers.MetaMask.WalletProvider>
+    </div>,
+    document.getElementById("root") as HTMLElement
 );
 ```
 
@@ -49,14 +50,15 @@ ReactDOM.render(
 
 ```typescript
 const ConnectToMetaMask = () => {
-  const { loginMetamask, walletAddress } = Providers.MetaMask.useWallet();
+    const { loginMetamask, walletAddress } = Providers.MetaMask.useWallet();
 
-  return (
-    <>
-      <div> {walletAddress}</div>
-      {!walletAddress && <button onClick={loginMetamask}>Connect To MM</button>}
-    </>
-  );
+    return (
+        <>
+            <div> {walletAddress}</div>
+            {!walletAddress && (
+                <button onClick={loginMetamask}>Connect To MM</button>
+            )}
+        </>
+    );
 };
-
 ```
