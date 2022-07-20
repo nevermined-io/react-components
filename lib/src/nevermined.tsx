@@ -26,7 +26,6 @@ import {
   SubscribeModule,
 } from './types';
 import { isEmptyObject, getCurrentAccount, conductOrder } from './utils';
-import { isEmptyObject } from './utils';
 import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token';
 
 export const initialState = {
