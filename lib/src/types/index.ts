@@ -93,6 +93,7 @@ export interface AssetsModule {
   mint: (did: any) => Promise<any>;
   nftDetails: (did: string) => Promise<NFTDetails>;
   downloadNFT: (did: string) => Promise<boolean>;
+  downloadAsset: (did: string) => Promise<boolean>;
 }
 
 export interface SubscribeModule {
