@@ -9,6 +9,7 @@ import {
 } from '../types';
 import BigNumber from 'bignumber.js';
 import { useGetAccount } from './account'
+import { getCurrentAccount } from '../utils'
 
 export const useAssets = (
   q: SearchQuery
@@ -125,9 +126,9 @@ export const AssetPublishProvider = ({ children }: {
     try {
       setIsProcessing(true)
 
-      const user_address = walletAccount.getId()
+      const accountWallet = await getCurrentAccount(sdk);
 
-      const assetRewards = new AssetRewards(user_address, new BigNumber(assetPublish.price));
+      const assetRewards = new AssetRewards(accountWallet.getId(), new BigNumber(assetPublish.price));
       if (!account.isTokenValid()) {
         setAssetErrorMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
