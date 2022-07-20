@@ -118,7 +118,6 @@ const MintAsset = () => {
         await account.generateToken();
       }
       const response = await assets.mint(data);
-      console.log('response', response);
     } catch (error) {
       console.log('error', error);
     }
@@ -133,9 +132,19 @@ const MintAsset = () => {
   );
 };
 
+<<<<<<< HEAD
 const TransferAsset = () => {
   const { assets, account } = Catalog.useNevermined();
+||||||| parent of a2a1340 (test new providers package)
+const MMWallet = () => {
+  const response = Providers.MetaMask.useWallet();
+  console.log('response', response);
+=======
+const MMWallet = () => {
+  const { loginMetamask, walletAddress } = Providers.MetaMask.useWallet();
+>>>>>>> a2a1340 (test new providers package)
 
+<<<<<<< HEAD
   const transfer = async () => {
     try {
       if (!account.isTokenValid()) {
@@ -160,6 +169,16 @@ const TransferAsset = () => {
       </button>
     </>
   );
+||||||| parent of a2a1340 (test new providers package)
+  return <div>12</div>;
+=======
+  return (
+    <>
+      <div> {walletAddress}</div>
+      {!walletAddress && <button onClick={loginMetamask}>Connect To MM</button>}
+    </>
+  );
+>>>>>>> a2a1340 (test new providers package)
 };
 
 const App = (props: any) => {

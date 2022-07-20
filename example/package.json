@@ -40,6 +40,12 @@
     "bem-helpers": "^1.1.0",
     "bignumber.js": "^9.0.2",
     "bip39": "^3.0.4",
+<<<<<<< HEAD
+||||||| parent of a2a1340 (test new providers package)
+    "catalog-providers": "^0.0.1",
+=======
+    "catalog-providers": "^0.0.13",
+>>>>>>> a2a1340 (test new providers package)
     "classnames": "^2.3.1",
     "lodash.uniqby": "^4.7.0",
     "node-fetch": "^3.2.0",
