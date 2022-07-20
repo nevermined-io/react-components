@@ -23,12 +23,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Catalog = void 0;
-const nevermined = __importStar(require("./nevermined"));
-const assetService = __importStar(require("./services/asset"));
-const accountService = __importStar(require("./services/account"));
-const eventService = __importStar(require("./services/event"));
-const subscribeService = __importStar(require("./services/subscribe"));
-const marketplaceTokenUtils = __importStar(require("./utils/marketplace_token"));
-exports.Catalog = Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, nevermined), assetService), accountService), eventService), subscribeService), marketplaceTokenUtils);
-exports.default = exports.Catalog;
+exports.Providers = void 0;
+const MetaMask = __importStar(require("./web3"));
+exports.Providers = {
+    MetaMask,
+};
+exports.default = exports.Providers;
