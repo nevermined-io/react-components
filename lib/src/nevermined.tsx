@@ -228,17 +228,17 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    transfer: async ({ did, amount }: { did: string; amount: number }) => {
+    transfer: async ({ did, amount }: { did: string; amount: number }): Promise<boolean> => {
       try {
         if (!config.gatewayAddress || !config.gatewayUri) {
           Logger.log(`gatewayAddress or gatewayUri is not set. abort.`);
-          return;
+          return false;
         }
         const transferEndpoint = `${config.gatewayUri}/api/v1/gateway/services/nft-transfer`;
         const [newOwner] = await sdk.accounts.list();
         if (!newOwner) {
           Logger.log(`Users need to be connected to perform a transfer. abort.`);
-          return;
+          return false;
         }
         const ddo: DDO = await sdk.assets.resolve(String(did));
         const currentOwner = await sdk.assets.owner(ddo.id); // Get current owner
@@ -251,7 +251,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         await new Promise((r) => setTimeout(r, 3000)); // await two seconds to allow the transaction to be processed
         if (!agreementId) {
           Logger.log(`Could not approve spending from new owner wallet. abort.`);
-          return;
+          return false;
         }
         Logger.log(`Obtained agreement ID ${agreementId}`);
         const isTransferSuccessful = await sdk.utils.fetch.post(
@@ -266,10 +266,10 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         if (isTransferSuccessful) {
           Logger.log(`Transferred ${amount} NFT with did ${ddo.id} to ${newOwner.getId()}`);
           return true;
-        } else {
-          Logger.log(`Something went wrong! Please try again.`);
-          return false;
-        }
+        } 
+
+        Logger.log(`Something went wrong! Please try again.`);
+        return false;
       } catch (e) {
         Logger.error(e);
         return false;
