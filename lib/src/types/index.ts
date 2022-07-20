@@ -13,7 +13,6 @@ import {
 import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
-import { Bytes } from '@ethersproject/bytes';
 
 export interface NeverminedProviderContext {
   sdk: Nevermined;
@@ -142,4 +141,28 @@ interface ChainNetwork {
 export interface ChainConfig {
   [network: string]: ChainNetwork | ((chainIdHex: string) => ChainNetwork);
   returnConfig: (chainIdHex: string) => ChainNetwork;
+}
+
+export interface AssetFile {
+  [key: string]: any;
+  type: string;
+  label: string;
+}
+
+export interface AssetPublishParams {
+  [key: string]: any;
+  name: string;
+  author: string;
+  description: string;
+  type: string;
+  category: string;
+  price: number;
+  assetFiles: AssetFile[];
+}
+
+export interface FileMetadata {
+  index: number;
+  contentType: string;
+  url: string;
+  contentLength: string;
 }

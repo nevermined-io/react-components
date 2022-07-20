@@ -22,7 +22,7 @@ import {
   NeverminedProviderContext,
   NeverminedProviderProps,
   NFTDetails,
-  SubscribeModule
+  SubscribeModule,
 } from './types';
 import { isEmptyObject, getCurrentAccount } from './utils';
 import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token';
@@ -312,7 +312,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     assets,
     account,
     events,
-    updateSDK
+    updateSDK,
   };
 
   return <NeverminedContext.Provider value={IState}>{children}</NeverminedContext.Provider>;
