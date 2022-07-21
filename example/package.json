@@ -32,7 +32,7 @@
     ]
   },
   "dependencies": {
-    "hello-catalog": "0.0.82",
+    "@nevermined-io/components-catalog": "0.0.83",
     "@nevermined-io/nevermined-sdk-js": "^0.20.3",
     "@truffle/hdwallet-provider": "^2.0.0",
     "axios": "^0.24.0",
