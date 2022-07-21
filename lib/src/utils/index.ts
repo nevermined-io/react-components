@@ -2,13 +2,6 @@ import { Account, DDO, Nevermined, Logger } from '@nevermined-io/nevermined-sdk-
 
 export const isEmptyObject = (i: any) => !i || Object.keys(i).length < 1;
 
-export const convertHextoIntString = (hex: string) => {
-  const removedAddressFormat = hex.replace('0x', '');
-  const intString = parseInt(removedAddressFormat, 16);
-
-  return intString.toString();
-};
-
 export const getCurrentAccount = async (sdk: Nevermined) => {
   let accounts: Account[] = [];
   if (sdk.accounts) {

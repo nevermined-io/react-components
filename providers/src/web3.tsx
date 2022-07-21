@@ -1,8 +1,37 @@
-import React, { useState, createContext, useEffect, useRef, useContext, RefObject } from 'react';
-import { Logger } from '@nevermined-io/nevermined-sdk-js';
-import { ChainConfig } from '../types';
-import { convertHextoIntString } from '../utils';
-import Web3 from 'web3';
+import React, {
+    useState,
+    createContext,
+    useEffect,
+    useRef,
+    useContext,
+    RefObject,
+} from "react";
+import Web3 from "web3";
+
+const convertHextoIntString = (hex: string) => {
+    const removedAddressFormat = hex.replace("0x", "");
+    const intString = parseInt(removedAddressFormat, 16);
+
+    return intString.toString();
+};
+
+export interface ChainNetwork {
+    chainId: string;
+    chainName: string;
+    nativeCurrency: {
+        name: string;
+        symbol: string;
+        decimals: number;
+    };
+    rpcUrls: string[];
+    blockExplorerUrls: string[];
+    iconUrls: string[];
+}
+
+export interface ChainConfig {
+    [network: string]: ChainNetwork | ((chainIdHex: string) => ChainNetwork);
+    returnConfig: (chainIdHex: string) => ChainNetwork;
+}
 
 export interface WalletProviderState {
     getProvider: () => Web3;
@@ -10,7 +39,7 @@ export interface WalletProviderState {
     checkIsLogged: () => Promise<boolean>;
     isAvailable: () => boolean;
     promptSwitchAccounts: () => Promise<void>;
-    switchChainsOrRegisterSupportedChain: () => Promise<void>
+    switchChainsOrRegisterSupportedChain: () => Promise<void>;
     walletAddress: string;
     loginMetamask: () => Promise<void>;
     isChainCorrect: boolean;
@@ -18,62 +47,74 @@ export interface WalletProviderState {
 
 export const WalletContext = createContext({} as WalletProviderState);
 
-export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfig }: { 
-    children: React.ReactElement, nodeUri: string, correctNetworkId: string, chainConfig: ChainConfig 
+export const WalletProvider = ({
+    children,
+    nodeUri,
+    correctNetworkId,
+    chainConfig,
+}: {
+    children: React.ReactElement;
+    nodeUri: string;
+    correctNetworkId: string;
+    chainConfig: ChainConfig;
 }) => {
     const correctChainId = convertHextoIntString(correctNetworkId);
     const w3 = useRef({} as Web3);
-    const [walletAddress, setWalletAddress] = useState<string>('');
-    const [acceptedChainId, setAcceptedChainId] = useState('');
-    const [acceptedChainIdHex, setAcceptedChainIdHex] = useState('');
+    const [walletAddress, setWalletAddress] = useState<string>("");
+    const [acceptedChainId, setAcceptedChainId] = useState("");
+    const [acceptedChainIdHex, setAcceptedChainIdHex] = useState("");
     const [isChainCorrect, setIsChainCorrect] = useState(true);
 
     const checkIsNotChainCorrect = (chainHexId: string) => {
         return !Object.keys(chainConfig).some((env: string) => {
-            if(env === 'returnConfig') {
+            if (env === "returnConfig") {
                 return false;
             }
-    
+
             return (chainConfig as any)[env].chainId === chainHexId;
-        })
-    }
+        });
+    };
 
     const checkChain = async (chainHexId: string) => {
-        if(checkIsNotChainCorrect(chainHexId)) {
+        if (checkIsNotChainCorrect(chainHexId)) {
             setAcceptedChainId(correctChainId);
             setAcceptedChainIdHex(correctNetworkId);
-            setIsChainCorrect(false)
+            setIsChainCorrect(false);
         } else {
             setAcceptedChainId(convertHextoIntString(chainHexId));
             setAcceptedChainIdHex(chainHexId);
         }
-    }
+    };
 
     useEffect(() => {
-        if(!isChainCorrect) switchChainsOrRegisterSupportedChain()
-    }, [isChainCorrect])
+        if (!isChainCorrect) switchChainsOrRegisterSupportedChain();
+    }, [isChainCorrect]);
 
     useEffect(() => {
         (async () => {
-            const chainIdHex = await window.ethereum.request?.({ method: 'eth_chainId' });
+            const chainIdHex = await window.ethereum.request?.({
+                method: "eth_chainId",
+            });
             const chainId = convertHextoIntString(chainIdHex);
             setAcceptedChainId(chainId);
             checkChain(chainIdHex);
-        })()
+        })();
 
-        window.ethereum.on('chainChanged', (chainHexId: string) => {
+        window.ethereum.on("chainChanged", (chainHexId: string) => {
             checkChain(chainHexId);
         });
     }, []);
 
     useEffect(() => {
         const registerOnAccounsChangedListener = async (): Promise<void> => {
-            window.ethereum.on('accountsChanged', (newAccount: string[]) => {
+            window.ethereum.on("accountsChanged", (newAccount: string[]) => {
                 if (newAccount && newAccount.length > 0) {
-                    setWalletAddress(Web3.utils.toChecksumAddress(newAccount[0]));
+                    setWalletAddress(
+                        Web3.utils.toChecksumAddress(newAccount[0])
+                    );
                 } else {
-                    setWalletAddress('');
-                    console.log('No Account found!');
+                    setWalletAddress("");
+                    console.log("No Account found!");
                 }
             });
         };
@@ -83,7 +124,9 @@ export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfi
 
     const updateWalletAddress = async (): Promise<void> => {
         const accounts = await w3.current?.eth?.getAccounts();
-        setWalletAddress(accounts?.length ? Web3.utils.toChecksumAddress(accounts[0]) : '');
+        setWalletAddress(
+            accounts?.length ? Web3.utils.toChecksumAddress(accounts[0]) : ""
+        );
     };
 
     useEffect(() => {
@@ -97,21 +140,23 @@ export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfi
             else if (window.web3) {
                 web3 = new Web3(window.web3.currentProvider);
             } else {
-                console.log('No Web3, defaulting to HTTPProvider');
-                web3 = new Web3(new Web3.providers.HttpProvider(String(nodeUri)));
+                console.log("No Web3, defaulting to HTTPProvider");
+                web3 = new Web3(
+                    new Web3.providers.HttpProvider(String(nodeUri))
+                );
             }
             w3.current = web3;
             updateWalletAddress();
-        })()
+        })();
     }, []);
 
     const switchChainsOrRegisterSupportedChain = async (): Promise<void> => {
-        if(!acceptedChainIdHex) {
+        if (!acceptedChainIdHex) {
             return;
         }
         try {
             await window.ethereum.request?.({
-                method: 'wallet_switchEthereumChain',
+                method: "wallet_switchEthereumChain",
                 params: [
                     {
                         chainId: acceptedChainIdHex,
@@ -119,23 +164,26 @@ export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfi
                 ],
             });
 
-            setIsChainCorrect(true)
+            setIsChainCorrect(true);
         } catch (switchError) {
             if ((switchError as any).code === 4902) {
                 try {
-                    const currentChainConfig = chainConfig.returnConfig(acceptedChainIdHex);
+                    const currentChainConfig =
+                        chainConfig.returnConfig(acceptedChainIdHex);
                     const configParam = await window.ethereum.request?.({
-                        method: 'wallet_addEthereumChain',
+                        method: "wallet_addEthereumChain",
                         params: [currentChainConfig],
                     });
                     if (!configParam) {
-                        console.log(`Chain ${acceptedChainId} added successfully!`);
+                        console.log(
+                            `Chain ${acceptedChainId} added successfully!`
+                        );
                     }
                 } catch (addError) {
-                    Logger.error(addError);
+                    console.error(addError);
                 }
             }
-            Logger.error(switchError);
+            console.error(switchError);
         }
     };
 
@@ -145,7 +193,7 @@ export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfi
 
     const promptSwitchAccounts = async () => {
         await window.ethereum.request?.({
-            method: 'wallet_requestPermissions',
+            method: "wallet_requestPermissions",
             params: [
                 {
                     eth_accounts: {},
@@ -163,7 +211,7 @@ export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfi
     const startLogin = async (): Promise<string[]> => {
         try {
             const response = await window.ethereum.request?.({
-                method: 'eth_requestAccounts',
+                method: "eth_requestAccounts",
             });
             setWalletAddress(Web3.utils.toChecksumAddress(response[0]));
             return response;
@@ -176,12 +224,12 @@ export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfi
         try {
             await startLogin();
         } catch (error) {
-            Logger.error(error);
+            console.error(error);
         }
     };
 
     const logout = (): void => {
-        setWalletAddress('');
+        setWalletAddress("");
     };
 
     const getProvider = (): Web3 => {
@@ -200,8 +248,11 @@ export const WalletProvider = ({ children, nodeUri, correctNetworkId, chainConfi
         isChainCorrect,
     };
 
-    return (<WalletContext.Provider value={IState}>{children}</WalletContext.Provider>);
+    return (
+        <WalletContext.Provider value={IState}>
+            {children}
+        </WalletContext.Provider>
+    );
 };
 
 export const useWallet = (): WalletProviderState => useContext(WalletContext);
-

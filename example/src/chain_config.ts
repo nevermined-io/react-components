@@ -4,7 +4,7 @@ import { acceptedChainId } from 'config';
 const acceptedChainIdHex = zeroX((+acceptedChainId).toString(16));
 const spreeChainId = zeroX((8996).toString(16));
 const polygonLocalnetChainId = zeroX((8997).toString(16));
-const mumbaiChainId = zeroX((80001).toString(16));
+export const mumbaiChainId = zeroX((80001).toString(16));
 const mainnetChainId = zeroX((137).toString(16));
 
 const ChainConfig = {

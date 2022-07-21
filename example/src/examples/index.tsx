@@ -1,9 +1,10 @@
 import BigNumber from 'bignumber.js';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React from 'react';
-import { DDO, MetaData } from '@nevermined-io/nevermined-sdk-js';
-import Catalog from 'hello-catalog';
-import { AssetState, MintNFTInput } from 'hello-catalog/dist/node/types';
+import { MetaData } from '@nevermined-io/nevermined-sdk-js';
+import Catalog from '@nevermined-io/components-catalog';
+import Providers from '@nevermined-io/providers-catalog';
+import { AssetState, MintNFTInput } from '@nevermined-io/components-catalog/dist/node/types';
 
 const SDKInstance = () => {
   const { sdk, isLoadingSDK } = Catalog.useNevermined();
@@ -118,7 +119,6 @@ const MintAsset = () => {
         await account.generateToken();
       }
       const response = await assets.mint(data);
-      console.log('response', response);
     } catch (error) {
       console.log('error', error);
     }
@@ -158,6 +158,16 @@ const TransferAsset = () => {
       <button onClick={transfer} disabled={!Object.keys(assets).length}>
         transfer
       </button>
+    </>
+  );
+};
+
+const MMWallet = () => {
+  const { loginMetamask, walletAddress } = Providers.MetaMask.useWallet();
+  return (
+    <>
+      <div> {walletAddress}</div>
+      {!walletAddress && <button onClick={loginMetamask}>Connect To MM</button>}
     </>
   );
 };

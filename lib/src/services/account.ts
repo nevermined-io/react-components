@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { NeverminedContext } from '../nevermined';
 import { useNevermined } from '../nevermined';
-import { useWallet } from './wallet';
 import { UserProfileParams } from '../types';
 import { saveMarketplaceApiTokenToLocalStorage } from '../utils/marketplace_token';
 import { Account } from '@nevermined-io/nevermined-sdk-js';
@@ -58,33 +57,8 @@ export const useAccountCollection = (
   return { isLoading, accountCollection };
 };
 
-export const useGetAccount = (): { walletAccount: Account } => {
-  const { walletAddress } = useWallet();
-  const { sdk } = useNevermined();
-  const [walletAccount, setWalletAccount] = useState<Account>({} as Account);
-
-  useEffect(() => {
-    let accounts: Account[] = [];
-    (async () => {
-      if (sdk.accounts) {
-        accounts = await sdk.accounts.list();
-        if (!accounts?.length) {
-          accounts = await sdk.accounts.requestList();
-        }
-
-        setWalletAccount(accounts[0]);
-      }
-    })();
-  }, [walletAddress]);
-
-  return {
-    walletAccount
-  };
-};
-
-export const useUserProfile = () => {
+export const useUserProfile = (walletAddress: string) => {
   const { sdk, account } = useNevermined();
-  const { walletAddress } = useWallet();
   const [inputError, setInputError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -221,14 +195,16 @@ export const useUserProfile = () => {
   };
 };
 
-export const userIsNFT1155Holder = (did: string): { ownNFT1155: boolean } => {
+export const userIsNFT1155Holder = (
+  did: string,
+  walletAddress: string
+): { ownNFT1155: boolean } => {
   const { sdk } = useNevermined();
-  const { walletAddress } = useWallet();
-  const { walletAccount } = useGetAccount();
   const [ownNFT1155, setOwnNFT1155] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
+      const walletAccount = new Account(walletAddress);
       if (walletAccount) {
         const nft = await sdk.nfts.balance(did, walletAccount);
         setOwnNFT1155(nft >= 0);
@@ -241,9 +217,12 @@ export const userIsNFT1155Holder = (did: string): { ownNFT1155: boolean } => {
   };
 };
 
-export const userIsNFT721Holder = (did: string, nftTokenAddress: string): { ownNFT721: boolean } => {
+export const userIsNFT721Holder = (
+  did: string,
+  nftTokenAddress: string,
+  walletAddress: string
+): { ownNFT721: boolean } => {
   const { sdk } = useNevermined();
-  const { walletAddress } = useWallet();
   const [ownNFT721, setOwnNFT721] = useState<boolean>(false);
 
   useEffect(() => {

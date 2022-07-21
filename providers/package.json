@@ -1,6 +1,6 @@
 {
-  "name": "@nevermined-io/components-catalog",
-  "version": "0.0.85",
+  "name": "@nevermined-io/catalog-providers",
+  "version": "0.0.13",
   "private": false,
   "scripts": {
     "watch": "./node_modules/.bin/nodemon",
@@ -36,9 +36,6 @@
     "react": "*"
   },
   "dependencies": {
-    "@nevermined-io/nevermined-sdk-js": "0.21.1",
-    "@types/jsonwebtoken": "^8.5.8",
-    "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.16",
     "web3": "^1.7.4"
   },
