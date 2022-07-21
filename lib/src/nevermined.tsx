@@ -305,6 +305,26 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         verbose && Logger.error(error);
         return false;
       }
+    },
+
+    downloadAsset: async (did: string): Promise<boolean> => {
+      try {
+        const account = await getCurrentAccount(sdk);
+        return sdk.assets.download(did, account);
+      } catch (error) {
+        verbose && Logger.error(error);
+        return false;
+      }
+    },
+
+    consumeAsset: async (did: string, agreementId: string): Promise<boolean> => {
+      try {
+        const account = await getCurrentAccount(sdk);
+        return sdk.assets.consume(agreementId, did, account);
+      } catch (error) {
+        verbose && Logger.error(error);
+        return false;
+      }
     }
   };
 
