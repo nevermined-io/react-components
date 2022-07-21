@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@nevermined-io/components-catalog": "0.0.83",
+    "@nevermined-io/providers-catalog": "0.0.1",
     "@nevermined-io/nevermined-sdk-js": "^0.20.3",
     "@truffle/hdwallet-provider": "^2.0.0",
     "axios": "^0.24.0",
@@ -40,12 +41,6 @@
     "bem-helpers": "^1.1.0",
     "bignumber.js": "^9.0.2",
     "bip39": "^3.0.4",
-<<<<<<< HEAD
-||||||| parent of a2a1340 (test new providers package)
-    "catalog-providers": "^0.0.1",
-=======
-    "catalog-providers": "^0.0.13",
->>>>>>> a2a1340 (test new providers package)
     "classnames": "^2.3.1",
     "lodash.uniqby": "^4.7.0",
     "node-fetch": "^3.2.0",
