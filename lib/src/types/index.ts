@@ -90,6 +90,7 @@ export interface AssetsModule {
   getSingle: (did: DID) => Promise<DDO>;
   query: (q: SearchQuery) => Promise<QueryResult>;
   resolve: (did: DID) => Promise<DDO | undefined>;
+  transfer: ({ did, amount }: { did: string; amount: number }) => Promise<boolean>;
   mint: (did: any) => Promise<any>;
   nftDetails: (did: string) => Promise<NFTDetails>;
   downloadNFT: (did: string) => Promise<boolean>;
