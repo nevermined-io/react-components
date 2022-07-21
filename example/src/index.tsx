@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Catalog from '@nevermined-io/components-catalog';
+import Catalog from 'hello-catalog';
 import { appConfig } from './config';
 import Example from 'examples';
 
