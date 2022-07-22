@@ -21,6 +21,8 @@ jobs:
       - run: cd lib && yarn install --ignore-engines
       - run: cd lib && yarn build:tsc
       - run: cd lib && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
       # Release @nevermined-io/catalog-providers
       - run: cd providers && yarn install --ignore-engines
       - run: cd providers && yarn build:tsc
