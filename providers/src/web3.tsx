@@ -4,7 +4,6 @@ import React, {
     useEffect,
     useRef,
     useContext,
-    RefObject,
 } from "react";
 import Web3 from "web3";
 
