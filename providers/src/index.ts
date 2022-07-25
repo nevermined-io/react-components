@@ -1,1 +1,1 @@
-export * as MetaMask from "./web3";
+export * as MetaMask from "./metamask";

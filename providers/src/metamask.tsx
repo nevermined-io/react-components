@@ -5,7 +5,9 @@ import React, {
     useRef,
     useContext,
 } from "react";
-import Web3 from "web3";
+import { ethers } from "ethers";
+
+export type MetamaskProvider = ethers.providers.JsonRpcProvider | ethers.providers.Web3Provider
 
 const convertHextoIntString = (hex: string) => {
     const removedAddressFormat = hex.replace("0x", "");
@@ -33,7 +35,7 @@ export interface ChainConfig {
 }
 
 export interface WalletProviderState {
-    getProvider: () => Web3;
+    getProvider: () => MetamaskProvider;
     logout: () => void;
     checkIsLogged: () => Promise<boolean>;
     isAvailable: () => boolean;
@@ -58,7 +60,7 @@ export const WalletProvider = ({
     chainConfig: ChainConfig;
 }) => {
     const correctChainId = convertHextoIntString(correctNetworkId);
-    const w3 = useRef({} as Web3);
+    const eths = useRef({} as MetamaskProvider);
     const [walletAddress, setWalletAddress] = useState<string>("");
     const [acceptedChainId, setAcceptedChainId] = useState("");
     const [acceptedChainIdHex, setAcceptedChainIdHex] = useState("");
@@ -109,7 +111,7 @@ export const WalletProvider = ({
             window.ethereum.on("accountsChanged", (newAccount: string[]) => {
                 if (newAccount && newAccount.length > 0) {
                     setWalletAddress(
-                        Web3.utils.toChecksumAddress(newAccount[0])
+                        ethers.utils.getAddress(newAccount[0])
                     );
                 } else {
                     setWalletAddress("");
@@ -122,29 +124,27 @@ export const WalletProvider = ({
     }, []);
 
     const updateWalletAddress = async (): Promise<void> => {
-        const accounts = await w3.current?.eth?.getAccounts();
+        const accounts = await eths.current?.listAccounts();
         setWalletAddress(
-            accounts?.length ? Web3.utils.toChecksumAddress(accounts[0]) : ""
+            accounts?.length ? ethers.utils.getAddress(accounts[0]) : ""
         );
     };
 
     useEffect(() => {
         (() => {
-            let web3 = {} as Web3;
+            let provider = {} as MetamaskProvider
             // Modern dapp browsers
             if (window.ethereum) {
-                web3 = new Web3(window.ethereum);
+                provider = new ethers.providers.Web3Provider(window.ethereum);
             }
             // Legacy dapp browsers
             else if (window.web3) {
-                web3 = new Web3(window.web3.currentProvider);
+                provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
             } else {
                 console.log("No Web3, defaulting to HTTPProvider");
-                web3 = new Web3(
-                    new Web3.providers.HttpProvider(String(nodeUri))
-                );
+                provider = new ethers.providers.JsonRpcProvider(nodeUri);
             }
-            w3.current = web3;
+            eths.current = provider;
             updateWalletAddress();
         })();
     }, []);
@@ -187,7 +187,7 @@ export const WalletProvider = ({
     };
 
     const isAvailable = (): boolean => {
-        return w3.current !== null;
+        return eths.current !== null;
     };
 
     const promptSwitchAccounts = async () => {
@@ -202,8 +202,8 @@ export const WalletProvider = ({
     };
 
     const checkIsLogged = async (): Promise<boolean> => {
-        if (!isAvailable() && !w3.current?.eth?.getAccounts) return false;
-        const accounts = await w3.current?.eth?.getAccounts();
+        if (!isAvailable() && !eths.current?.listAccounts) return false;
+        const accounts = await eths.current?.listAccounts();
         return Boolean(accounts?.length);
     };
 
@@ -212,7 +212,7 @@ export const WalletProvider = ({
             const response = await window.ethereum.request?.({
                 method: "eth_requestAccounts",
             });
-            setWalletAddress(Web3.utils.toChecksumAddress(response[0]));
+            setWalletAddress(ethers.utils.getAddress(response[0]));
             return response;
         } catch (error) {
             return await Promise.reject(error);
@@ -231,8 +231,8 @@ export const WalletProvider = ({
         setWalletAddress("");
     };
 
-    const getProvider = (): Web3 => {
-        return w3.current;
+    const getProvider = (): MetamaskProvider => {
+        return eths.current;
     };
 
     const IState = {
