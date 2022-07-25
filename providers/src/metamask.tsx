@@ -139,7 +139,7 @@ export const WalletProvider = ({
             }
             // Legacy dapp browsers
             else if (window.web3) {
-                provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
+                provider = new ethers.providers.Web3Provider(window.web3);
             } else {
                 console.log("No Web3, defaulting to HTTPProvider");
                 provider = new ethers.providers.JsonRpcProvider(nodeUri);
