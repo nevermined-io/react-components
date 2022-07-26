@@ -145,9 +145,14 @@ export const WalletProvider = ({
                 provider = new ethers.providers.JsonRpcProvider(nodeUri);
             }
             eths.current = provider;
-            updateWalletAddress();
         })();
     }, []);
+
+    useEffect(() => {
+        if(!eths.current?.listAccounts) return
+        
+        updateWalletAddress();
+    }, [eths.current?.listAccounts])
 
     const switchChainsOrRegisterSupportedChain = async (): Promise<void> => {
         if (!acceptedChainIdHex) {
@@ -202,7 +207,7 @@ export const WalletProvider = ({
     };
 
     const checkIsLogged = async (): Promise<boolean> => {
-        if (!isAvailable() && !eths.current?.listAccounts) return false;
+        if (!isAvailable() || !eths.current?.listAccounts) return false;
         const accounts = await eths.current?.listAccounts();
         return Boolean(accounts?.length);
     };
