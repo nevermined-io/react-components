@@ -1,6 +1,6 @@
 {
   "name": "@nevermined-io/catalog-providers",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "private": false,
   "scripts": {
     "watch": "./node_modules/.bin/nodemon",
@@ -37,8 +37,7 @@
   },
   "dependencies": {
     "ethers": "^5.6.9",
-    "nodemon": "^2.0.16",
-    "web3": "^1.7.4"
+    "nodemon": "^2.0.16"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
