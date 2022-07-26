@@ -1,75 +1,118 @@
-import { EventResult } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
+import { Nevermined, subgraphs } from '@nevermined-io/nevermined-sdk-js';
+import { EventOptions, EventResult } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { useContext, useEffect, useState } from 'react';
 import { NeverminedContext } from '../nevermined';
+import { AssetRegisterEvent, FullfilledOrders } from '../types';
 
-export const usePaymentEvents = () => {
-  const { sdk } = useContext(NeverminedContext);
-  const [paymentEvents, setPaymentEvents] = useState([] as EventResult[]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const getPayments = async () => {
-      if (sdk && sdk.keeper) {
-        try {
-          setIsLoading(true);
-          const lockEventData =
-            await sdk.keeper.conditions.lockPaymentCondition.events.getEventData({
-              filterSubgraph: {},
-              methodName: 'getFulfilleds',
-              result: {
-                id: true,
-                _did: true,
-                _agreementId: true,
-                _amounts: true,
-                _receivers: true
-              }
-            });
-          setPaymentEvents(lockEventData);
-        } catch (error) {
-          console.error(error);
-        }
-      }
-      setIsLoading(false);
+const getTransfers = async (sdk: Nevermined, receiver: string): Promise<EventResult> => {
+  try {
+    const resultStruct = {
+      id: true,
+      _did: true,
+      _agreementId: true,
+      _receiver: true
     };
-    getPayments();
-  }, [sdk]);
-
-  return { paymentEvents, isLoading };
+    const methodName = 'getFulfilleds';
+    const condition = {
+      where: {
+        _receiver: receiver
+      }
+    };
+    const data = await sdk.keeper.conditions.transferNftCondition.events.getEventData({
+      filterSubgraph: condition,
+      methodName,
+      result: resultStruct
+    });
+    return data;
+  } catch (error) {
+    console.error(error);
+    return {} as EventResult;
+  }
 };
 
-export const useUserTransferEvents = (id: string) => {
-  const { sdk } = useContext(NeverminedContext);
-  const [transferEvents, setTransferEvents] = useState([] as EventResult[]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const getTransfers = async () => {
-      if (sdk && sdk.keeper && id) {
-        try {
-          setIsLoading(true);
-          const data = await sdk.keeper.conditions.transferNftCondition.events.getEventData({
-            filterSubgraph: {
-              where: {
-                _receiver: id
-              }
-            },
-            methodName: 'getFulfilleds',
-            result: {
-              id: true,
-              _did: true,
-              _agreementId: true,
-              _receiver: true
-            }
-          });
-          setTransferEvents(data);
-        } catch (error) {
-          console.error(error);
-        }
-        setIsLoading(false);
+export const getUserFulfilledEvents = async (
+  sdk: Nevermined,
+  account: string
+): Promise<FullfilledOrders[]> => {
+  try {
+    const condition = {
+      where: {
+        _grantee: account
       }
     };
-    getTransfers();
-  }, [sdk]);
+    const resultStruct = {
+      _documentId: true
+    };
+    const methodName = 'getFulfilleds';
+    const fullfilled = await sdk.keeper.conditions.accessCondition.events.getPastEvents({
+      methodName,
+      filterSubgraph: condition,
+      result: resultStruct
+    });
+    return fullfilled;
+  } catch (error) {
+    console.log('Error loading Asset Publish Event');
+    return {} as EventResult;
+  }
+};
 
-  return { isLoading, transferEvents };
+export const getUserRegisterEvents = async (
+  sdk: Nevermined,
+  owner: string
+): Promise<EventResult> => {
+  try {
+    const methodName = 'getDIDAttributeRegistereds';
+    const condition = {
+      where: {
+        _owner: owner
+      }
+    };
+    const resultStruct = {
+      _did: true,
+      _owner: true,
+      _lastUpdatedBy: true,
+      _blockNumberUpdated: true
+    };
+    const registered = await sdk.keeper.didRegistry.events.getPastEvents({
+      methodName,
+      filterSubgraph: condition,
+      result: resultStruct
+    });
+
+    return registered;
+  } catch (error) {
+    console.log('Error loading Asset Publish Event');
+    return {} as EventResult;
+  }
+};
+
+// Subgraphs
+export const getAssetRegisterEvent = async (
+  asset: string,
+  graphUrl: string
+): Promise<AssetRegisterEvent> => {
+  try {
+    const condition = {
+      where: {
+        _did: asset
+      }
+    };
+    const resultStruct = {
+      _did: true,
+      _owner: true,
+      _lastUpdatedBy: true,
+      _blockNumberUpdated: true
+    };
+    const registerEvent: AssetRegisterEvent[] =
+      await subgraphs.DIDRegistry.getDIDAttributeRegistereds(
+        `${graphUrl}/DIDRegistry`,
+        condition,
+        //@ts-ignore
+        resultStruct
+      );
+    return registerEvent[0]; // Should return only one event
+  } catch (error) {
+    console.log('Error loading Asset Publish Event');
+    return {} as AssetRegisterEvent;
+  }
 };
