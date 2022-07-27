@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { NeverminedContext } from '../nevermined';
 import { FullfilledOrders, RegisterEvent, Transfer } from '../types';
 
-const getTransfers = async (sdk: Nevermined, receiver: string): Promise<Transfer[]> => {
+export const getTransfers = async (sdk: Nevermined, receiver: string): Promise<Transfer[]> => {
   try {
     const resultStruct = {
       id: true,
