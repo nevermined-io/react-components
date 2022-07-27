@@ -25,7 +25,7 @@ export const getTransfers = async (sdk: Nevermined, receiver: string): Promise<T
     });
     return data;
   } catch (error) {
-    return {} as EventResult;
+    return [];
   }
 };
 
@@ -50,7 +50,7 @@ export const getUserFulfilledEvents = async (
     });
     return result;
   } catch (error) {
-    return {} as EventResult;
+    return [];
   }
 };
 
@@ -79,21 +79,21 @@ export const getUserRegisterEvents = async (
 
     return result;
   } catch (error) {
-    return {} as EventResult;
+    return [];
   }
 };
 
 export const getAssetRegisterEvent = async (
   asset: string,
   graphUrl: string
-): Promise<RegisterEvent> => {
+): Promise<RegisterEvent[]> => {
   try {
     const condition = {
       where: {
         _did: asset
       }
     };
-    const registerEvent: RegisterEvent[] = await subgraphs.DIDRegistry.getDIDAttributeRegistereds(
+    const registerEvents: RegisterEvent[] = await subgraphs.DIDRegistry.getDIDAttributeRegistereds(
       `${graphUrl}/DIDRegistry`,
       condition,
       {
@@ -103,9 +103,9 @@ export const getAssetRegisterEvent = async (
         _blockNumberUpdated: true
       }
     );
-    return registerEvent[0]; // Should return only one event
+    return registerEvents; // Should have length 1
   } catch (error) {
-    return {} as RegisterEvent;
+    return [];
   }
 };
 

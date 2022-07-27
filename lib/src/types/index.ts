@@ -179,9 +179,8 @@ export interface RegisterEvent {
 }
 
 export interface Transfer {
-      id: string,
-      _did: string,
-      _agreementId: string,
-      _receiver: string
-
+  id: string;
+  _did: string;
+  _agreementId: string;
+  _receiver: string;
 }
