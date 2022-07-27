@@ -1,4 +1,4 @@
-import { DDO, MetaData, SearchQuery, ClientError } from '@nevermined-io/nevermined-sdk-js';
+import { DDO, MetaData, SearchQuery, ClientError, Logger } from '@nevermined-io/nevermined-sdk-js';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React, { useContext, useEffect, useState, createContext } from 'react';
@@ -27,7 +27,8 @@ export const useAssets = (
       const queryResponse: QueryResult = await assets.query(q);
       setResult(queryResponse);
       setIsLoading(false);
-    } catch (error) {
+    } catch (error: any) {
+      Logger.error(error.message)
       setIsLoading(false);
     }
   };
@@ -62,7 +63,7 @@ export const useAsset = (did: string): AssetState => {
           isLoading: false
         } as AssetState);
       } catch (e) {
-        console.error(e as Error);
+        Logger.error(e as Error);
       }
     };
     getData();
@@ -137,11 +138,11 @@ export const AssetPublishProvider = ({ children }: {
       const ddo = await sdk.nfts.create721(metadata, accountWallet, assetRewards, nftAddress);
       setIsProcessing(false);
       setIsPublished(true);
-      setAssetMessage('The assets has been sucessfully published. DID: ' + ddo.id);
+      setAssetMessage('The assets has been sucessfully published');
       setAssetErrorMessage('');
       return ddo;
     } catch (error: any) {
-      console.error(error.message);
+      Logger.error(error.message);
       setAssetErrorMessage('There was an error publishing the Asset');
       setAssetMessage('');
       setIsProcessing(false);

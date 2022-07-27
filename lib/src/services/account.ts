@@ -3,7 +3,7 @@ import { NeverminedContext } from '../nevermined';
 import { useNevermined } from '../nevermined';
 import { UserProfileParams } from '../types';
 import { saveMarketplaceApiTokenToLocalStorage } from '../utils/marketplace_token';
-import { Account } from '@nevermined-io/nevermined-sdk-js';
+import { Account, Logger } from '@nevermined-io/nevermined-sdk-js';
 
 export const useAccountReleases = (
   id: string,
@@ -106,7 +106,8 @@ export const useUserProfile = (walletAddress: string) => {
       setIsAddressAdded(true);
       setSuccessMessage('Address is added successfully');
     } catch (error: any) {
-      setErrorMessage(error.message);
+      Logger.error(error.message);
+      setErrorMessage('Error in adding new address wallet');
     }
   };
 
@@ -123,7 +124,8 @@ export const useUserProfile = (walletAddress: string) => {
       setSuccessMessage('Your profile is updated successfully');
       setInputError('');
     } catch (error: any) {
-      setErrorMessage(error.message);
+      Logger.error(error.message);
+      setErrorMessage('Error in updating user profile');
     }
   };
 
@@ -174,6 +176,7 @@ export const useUserProfile = (walletAddress: string) => {
             setUserId(userProfileData.userId);
           }, 1000);
         } else {
+          Logger.error(error.message);
           setErrorMessage('Error getting user profile');
         }
       }
