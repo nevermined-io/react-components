@@ -4,6 +4,7 @@ import * as accountService from './services/account';
 import * as eventService from './services/event';
 import * as subscribeService from './services/subscribe';
 import * as marketplaceTokenUtils from './utils/marketplace_token';
+export * from './types';
 
 export const Catalog = {
   ...nevermined,
