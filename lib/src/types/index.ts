@@ -171,10 +171,17 @@ export interface FullfilledOrders {
   _documentId: string;
 }
 
-export interface AssetRegisterEvent {
+export interface RegisterEvent {
   _did: string;
   _owner: string;
   _lastUpdatedBy: string;
   _blockNumberUpdated: any; //Wei
 }
 
+export interface Transfer {
+      id: string,
+      _did: string,
+      _agreementId: string,
+      _receiver: string
+
+}
