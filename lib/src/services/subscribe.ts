@@ -1,4 +1,3 @@
-import { Nevermined } from '@nevermined-io/nevermined-sdk-js';
 import {
   ContractEventSubscription,
   EventResult

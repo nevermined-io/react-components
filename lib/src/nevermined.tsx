@@ -3,7 +3,6 @@ import {
   Config,
   DDO,
   Logger,
-  MetaData,
   Nevermined,
   SearchQuery
 } from '@nevermined-io/nevermined-sdk-js';
@@ -98,7 +97,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     isTokenValid: (): boolean => isTokenValid(),
     generateToken: async (): Promise<MarketplaceAPIToken> => {
       const tokenData = await newMarketplaceApiToken(sdk);
-      const { data, success } = await initializeNevermined({
+      const { data } = await initializeNevermined({
         ...config,
         marketplaceAuthToken: tokenData.token
       });
@@ -181,8 +180,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       try {
         if (isEmptyObject(sdk)) return {} as DDO;
         const ddo: DDO = await sdk.assets.resolve(String(did));
-        const metaData: MetaData = ddo.findServiceByType('metadata').attributes;
-        const nftDetails = await sdk.nfts.details(String(did));
         return ddo;
       } catch (e) {
         verbose && Logger.error(error);

@@ -1,5 +1,5 @@
 import { Nevermined } from '@nevermined-io/nevermined-sdk-js';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { MarketplaceAPIToken } from '../types';
 
 export const MARKETPLACE_API_TOKEN = 'marketplaceApiToken';
@@ -37,8 +37,7 @@ export const isTokenValid = () => {
     const { token } = fetchMarketplaceApiTokenFromLocalStorage();
     if (token && jwt.decode(token)) {
       const decodedToken = jwt.decode(token);
-      //@ts-ignore
-      const expiry = decodedToken?.exp;
+      const expiry = (decodedToken as JwtPayload)?.exp;
       if (expiry) {
         const now = new Date();
         return now.getTime() < Number(expiry) * 1000;
