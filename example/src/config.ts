@@ -1,6 +1,6 @@
 import { Config } from '@nevermined-io/nevermined-sdk-js';
 import Web3 from 'web3';
-import Catalog from 'hello-catalog';
+import Catalog from '@nevermined-io/catalog-core';
 
 export const serviceUri =
   process.env.REACT_APP_SERVICE_URI ||
