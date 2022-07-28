@@ -84,6 +84,9 @@ export interface AssetPublishProviderState {
   setAssetErrorMessage: React.Dispatch<React.SetStateAction<string>>,
   handleChange: (value: string, input: string) => void,
   reset: (resetAssetPublish: AssetPublishParams) => void,
+  onAssetPublish: ({ metadata }: {
+    metadata: MetaData,
+  }) => Promise<DDO | undefined>,
   onAsset721Publish: ({ nftAddress, metadata }: {
     nftAddress: string;
     metadata: MetaData,
@@ -126,6 +129,35 @@ export const AssetPublishProvider = ({ children }: {
 
   const handleChange = (value: string, input: string) => {
     setAssetPublish({ ...assetPublish, [input]: value });
+  };
+
+  const onAssetPublish = async ({ metadata }: { metadata: MetaData }) => {
+    try {
+      setIsProcessing(true)
+
+      const accountWallet = await getCurrentAccount(sdk);
+
+      const assetRewards = new AssetRewards(accountWallet.getId(), new BigNumber(assetPublish.price));
+      if (!account.isTokenValid()) {
+        setAssetErrorMessage(
+          'Your login is expired. Please first sign with your wallet and after try again'
+        );
+        await account.generateToken();
+      }
+
+      const ddo = await sdk.assets.create(metadata, accountWallet, assetRewards);
+      setIsProcessing(false);
+      setIsPublished(true);
+      setAssetMessage('The asset has been sucessfully published');
+      setAssetErrorMessage('');
+      return ddo;
+    } catch (error: any) {
+      Logger.error(error.message);
+      setAssetErrorMessage('There was an error publishing the asset');
+      setAssetMessage('');
+      setIsProcessing(false);
+      throw new ClientError(error.message, 'Catalog');
+    }
   };
 
   const onAsset721Publish = async ({ nftAddress, metadata }: { nftAddress: string, metadata: MetaData }) => {
@@ -200,6 +232,7 @@ export const AssetPublishProvider = ({ children }: {
     setAssetMessage,
     setAssetErrorMessage,
     handleChange,
+    onAssetPublish,
     onAsset721Publish,
     onAsset1155Publish,
     reset,
