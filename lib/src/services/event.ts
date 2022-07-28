@@ -1,4 +1,4 @@
-import { Nevermined, subgraphs } from '@nevermined-io/nevermined-sdk-js';
+import { Logger, Nevermined, subgraphs } from '@nevermined-io/nevermined-sdk-js';
 import { EventOptions, EventResult } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { useContext, useEffect, useState } from 'react';
 import { NeverminedContext } from '../nevermined';
@@ -25,6 +25,8 @@ export const getTransfers = async (sdk: Nevermined, receiver: string): Promise<T
     });
     return data;
   } catch (error) {
+      Logger.warn("Something went wrong@getTransfers");
+      Logger.debug(error);
     return [];
   }
 };
@@ -50,6 +52,8 @@ export const getUserFulfilledEvents = async (
     });
     return result;
   } catch (error) {
+      Logger.warn("Something went wrong@getUserFulfilledEvents");
+      Logger.debug(error);
     return [];
   }
 };
@@ -79,6 +83,8 @@ export const getUserRegisterEvents = async (
 
     return result;
   } catch (error) {
+      Logger.warn("Something went wrong@getUserRegisterEvents");
+      Logger.debug(error);
     return [];
   }
 };
@@ -105,6 +111,8 @@ export const getAssetRegisterEvent = async (
     );
     return registerEvents; // Should have length 1
   } catch (error) {
+      Logger.warn("Something went wrong@getAssetRegisterEvent");
+      Logger.debug(error);
     return [];
   }
 };
