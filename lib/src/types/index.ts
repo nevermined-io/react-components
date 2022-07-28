@@ -14,6 +14,8 @@ import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 
+export { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
+
 export interface NeverminedProviderContext {
   sdk: Nevermined;
   sdkError: any;

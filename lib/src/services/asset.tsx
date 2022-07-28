@@ -6,6 +6,7 @@ import { NeverminedContext, useNevermined } from '../nevermined';
 import {
   AssetState,
   AssetPublishParams,
+  RoyaltyKind
 } from '../types';
 import BigNumber from 'bignumber.js';
 import { getCurrentAccount } from '../utils'
@@ -83,9 +84,15 @@ export interface AssetPublishProviderState {
   setAssetErrorMessage: React.Dispatch<React.SetStateAction<string>>,
   handleChange: (value: string, input: string) => void,
   reset: (resetAssetPublish: AssetPublishParams) => void,
-  onAssetPublish: ({ nftAddress, metadata }: {
+  onAsset721Publish: ({ nftAddress, metadata }: {
     nftAddress: string;
     metadata: MetaData,
+  }) => Promise<DDO | undefined>,
+  onAsset1155Publish: ({ metadata, cap, royalties, royaltyKind }: {
+    metadata: MetaData,
+    cap: number,
+    royalties: number,
+    royaltyKind: RoyaltyKind 
   }) => Promise<DDO | undefined>
 }
 
@@ -121,7 +128,7 @@ export const AssetPublishProvider = ({ children }: {
     setAssetPublish({ ...assetPublish, [input]: value });
   };
 
-  const onAssetPublish = async ({ nftAddress, metadata }: { nftAddress: string, metadata: MetaData }) => {
+  const onAsset721Publish = async ({ nftAddress, metadata }: { nftAddress: string, metadata: MetaData }) => {
     try {
       setIsProcessing(true)
 
@@ -138,12 +145,45 @@ export const AssetPublishProvider = ({ children }: {
       const ddo = await sdk.nfts.create721(metadata, accountWallet, assetRewards, nftAddress);
       setIsProcessing(false);
       setIsPublished(true);
-      setAssetMessage('The assets has been sucessfully published');
+      setAssetMessage('The asset NFT 721 has been sucessfully published');
       setAssetErrorMessage('');
       return ddo;
     } catch (error: any) {
       Logger.error(error.message);
-      setAssetErrorMessage('There was an error publishing the Asset');
+      setAssetErrorMessage('There was an error publishing the asset NFT 721');
+      setAssetMessage('');
+      setIsProcessing(false);
+      throw new ClientError(error.message, 'Catalog');
+    }
+  };
+
+  const onAsset1155Publish = async ({ metadata, cap, royalties, royaltyKind }: { 
+    metadata: MetaData,
+    cap: number,
+    royalties: number,
+    royaltyKind: RoyaltyKind }) => {
+    try {
+      setIsProcessing(true)
+
+      const accountWallet = await getCurrentAccount(sdk);
+
+      const assetRewards = new AssetRewards(accountWallet.getId(), new BigNumber(assetPublish.price));
+      if (!account.isTokenValid()) {
+        setAssetErrorMessage(
+          'Your login is expired. Please first sign with your wallet and after try again'
+        );
+        await account.generateToken();
+      }
+
+      const ddo = await sdk.nfts.createWithRoyalties(metadata, accountWallet, cap, royalties, royaltyKind, assetRewards);
+      setIsProcessing(false);
+      setIsPublished(true);
+      setAssetMessage('The asset NFT 1155 has been sucessfully published');
+      setAssetErrorMessage('');
+      return ddo;
+    } catch (error: any) {
+      Logger.error(error.message);
+      setAssetErrorMessage('There was an error publishing the asset NFT 1155');
       setAssetMessage('');
       setIsProcessing(false);
       throw new ClientError(error.message, 'Catalog');
@@ -160,7 +200,8 @@ export const AssetPublishProvider = ({ children }: {
     setAssetMessage,
     setAssetErrorMessage,
     handleChange,
-    onAssetPublish,
+    onAsset721Publish,
+    onAsset1155Publish,
     reset,
   };
 
