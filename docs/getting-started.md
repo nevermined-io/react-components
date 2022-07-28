@@ -14,9 +14,9 @@ It requires [Node JS](https://nodejs.org/) v14 or higher. You can find online in
 ## How to install ?
 
 ```
-yarn add @nevermined-io/components-catalog
+yarn add @nevermined-io/catalog-core
 or
-npm install --save @nevermined-io/components-catalog
+npm install --save @nevermined-io/catalog-core
 ```
 
 ## How to integrate ?
