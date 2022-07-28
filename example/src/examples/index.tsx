@@ -2,9 +2,9 @@ import BigNumber from 'bignumber.js';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React from 'react';
 import { MetaData } from '@nevermined-io/nevermined-sdk-js';
-import Catalog from '@nevermined-io/components-catalog';
-import Providers from '@nevermined-io/providers-catalog';
-import { AssetState, MintNFTInput } from '@nevermined-io/components-catalog/dist/node/types';
+import Catalog from '@nevermined-io/catalog-core';
+import { MetaMask } from '@nevermined-io/catalog-providers';
+import { AssetState, MintNFTInput } from '@nevermined-io/catalog-core/dist/node/types';
 
 const SDKInstance = () => {
   const { sdk, isLoadingSDK } = Catalog.useNevermined();
@@ -163,7 +163,7 @@ const TransferAsset = () => {
 };
 
 const MMWallet = () => {
-  const { loginMetamask, walletAddress } = Providers.MetaMask.useWallet();
+  const { loginMetamask, walletAddress } = MetaMask.useWallet();
   return (
     <>
       <div> {walletAddress}</div>
@@ -179,6 +179,7 @@ const App = (props: any) => {
       <MintAsset />
       {/**<MultipleAssets />**/}
       <SingleAsset />
+      <MMWallet />
     </>
   );
 };

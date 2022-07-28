@@ -1,30 +1,28 @@
 import {
-  Account,
-  Config,
-  DDO,
-  Logger,
-  Nevermined,
-  SearchQuery
+    Account,
+    Config,
+    DDO,
+    Logger,
+    Nevermined,
+    SearchQuery
 } from '@nevermined-io/nevermined-sdk-js';
 import {
-  ContractEventSubscription,
-  EventResult
+    ContractEventSubscription,
+    EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import {
-  AccountModule,
-  AssetsModule,
-  EventsModule,
-  GenericOutput,
-  MarketplaceAPIToken,
-  MintNFTInput,
-  NeverminedProviderContext,
-  NeverminedProviderProps,
-  NFTDetails,
-  SubscribeModule,
+    AccountModule,
+    AssetsModule, GenericOutput,
+    MarketplaceAPIToken,
+    MintNFTInput,
+    NeverminedProviderContext,
+    NeverminedProviderProps,
+    NFTDetails,
+    SubscribeModule
 } from './types';
-import { isEmptyObject, getCurrentAccount, conductOrder } from './utils';
+import { conductOrder, getCurrentAccount, isEmptyObject } from './utils';
 import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token';
 
 export const initialState = {
@@ -140,37 +138,12 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
             _did: true
           }
         });
-        if (!query || query.length == 0) return [];
+        if (!query || !query.length) return [];
         const dids = [...new Set(query.map((item) => item._did))]; //unique items
         return dids;
       } catch (error) {
         verbose && Logger.error(error);
         return [];
-      }
-    }
-  };
-
-  const events: EventsModule = {
-    fetchAccountTransferEvents: async (address: string): Promise<EventResult> => {
-      try {
-        const data: any[] = await sdk.keeper.conditions.transferNftCondition.events.getEventData({
-          filterSubgraph: {
-            where: {
-              _receiver: address
-            }
-          },
-          methodName: 'getFulfilleds',
-          result: {
-            id: true,
-            _did: true,
-            _agreementId: true,
-            _receiver: true
-          }
-        });
-        return data;
-      } catch (error) {
-        verbose && Logger.error(error);
-        return [] as any[];
       }
     }
   };
@@ -374,7 +347,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     subscribe,
     assets,
     account: accountModule,
-    events,
     updateSDK,
   };
 

@@ -24,7 +24,6 @@ export interface NeverminedProviderContext {
   subscribe: SubscribeModule;
   assets: AssetsModule;
   account: AccountModule;
-  events: EventsModule;
 }
 
 export interface NeverminedProviderProps {
@@ -82,10 +81,6 @@ export interface AccountModule {
   getCollection: (address: string) => Promise<DID[]>;
   generateToken: () => Promise<MarketplaceAPIToken>;
   isTokenValid: () => boolean;
-}
-
-export interface EventsModule {
-  fetchAccountTransferEvents: (address: string) => Promise<EventResult>;
 }
 
 export interface AssetsModule {
@@ -170,4 +165,22 @@ export interface FileMetadata {
   contentType: string;
   url: string;
   contentLength: string;
+}
+
+export interface FullfilledOrders {
+  _documentId: string;
+}
+
+export interface RegisterEvent {
+  _did: string;
+  _owner: string;
+  _lastUpdatedBy: string;
+  _blockNumberUpdated: any; //Wei
+}
+
+export interface Transfer {
+  id: string;
+  _did: string;
+  _agreementId: string;
+  _receiver: string;
 }
