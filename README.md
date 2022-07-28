@@ -7,14 +7,14 @@ Steps to integrate:
 
 #### 1.
 ```typescript
-yarn add @nevermined-io/components-catalog
+yarn add @nevermined-io/catalog-core
 or
-npm install --save @nevermined-io/components-catalog
+npm install --save @nevermined-io/catalog-core
 ```
 
 #### 2.
 ```typescript
-import Catalog from '@nevermined-io/components-catalog';
+import Catalog from '@nevermined-io/catalog-core';
 import App from 'app';
 import { Config } from '@nevermined-io/nevermined-sdk-js';
 
