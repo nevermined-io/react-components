@@ -9,7 +9,7 @@ on:
       - "v*.*"
 
 jobs:
-  publish-npm:
+  publish-npm-catalog-core:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,13 +17,19 @@ jobs:
         with:
           node-version: "17.x"
           registry-url: https://registry.npmjs.org/
-      # Release @nevermined-io/catalog-core
       - run: cd lib && yarn install --ignore-engines
       - run: cd lib && yarn build:tsc
       - run: cd lib && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-      # Release @nevermined-io/catalog-providers
+  publish-npm-catalog-providers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "17.x"
+          registry-url: https://registry.npmjs.org/
       - run: cd providers && yarn install --ignore-engines
       - run: cd providers && yarn build:tsc
       - run: cd providers && npm publish --access public
