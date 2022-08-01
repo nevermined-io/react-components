@@ -28,9 +28,6 @@ const setup = (children: React.ReactElement) => render(
 
 describe('Nevermined context', () => {
   const testingUtils = generateTestingUtils({ providerType: "MetaMask" });
-  beforeAll(() => {
-    (global.window as any).ethereum = testingUtils.getProvider();
-  })
 
   afterEach(() => {
     testingUtils.clearAllMocks();
