@@ -2584,23 +2584,14 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@nevermined-io/contracts@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/@nevermined-io/contracts/-/contracts-2.0.0.tgz"
-  integrity sha512-lwHmUP/Gn4Fao+Jvb3RVyGGu6O/2vFoeH9UGi9TtSjWvml76QjkQw6Qz77RYBgI5guy/1OipKDgwzJpJnSBWkg==
+"@nevermined-io/nevermined-sdk-js@^0.22.2":
+  version "0.22.2"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.22.2.tgz#54c95ebe09b7083d73996468f3b1997d41f2ac3f"
+  integrity sha512-wYrbZUL90rq/fr7LYd7cvIsswO88RJB4ARnenWnqBkueSGPDETsA/xMMQoPcYMk6m9nGekXZTMvdqRNo6Ypocw==
   dependencies:
-    "@openzeppelin/contracts-upgradeable" "^4.6.0"
-
-"@nevermined-io/nevermined-sdk-js@0.22.0":
-  version "0.22.0"
-  resolved "https://registry.npmjs.org/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.22.0.tgz"
-  integrity sha512-I+Qt2AwgkMXWWMmb3RVfT5yrLyjKsdHYPFu1MkVwcAT4OF5y0FvhlHa3BJgaL59bNC/X82wZowylwc54EP1lyQ==
-  dependencies:
-    "@nevermined-io/contracts" "^2.0.0"
     "@nevermined-io/secret-store-client" "^0.0.16"
     "@nevermined-io/subgraphs" "0.4.1"
     assert "^2.0.0"
-    bignumber.js "^9.0.2"
     codegen-graph-ts "npm:@nevermined-io/codegen-graph-ts@0.1.4"
     crypto-browserify "^3.12.0"
     deprecated-decorator "^0.1.6"
@@ -2654,11 +2645,6 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
-
-"@openzeppelin/contracts-upgradeable@^4.6.0":
-  version "4.6.0"
-  resolved "https://registry.npmjs.org/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.6.0.tgz"
-  integrity sha512-5OnVuO4HlkjSCJO165a4i2Pu1zQGzMs//o54LPrwUgxvEO2P3ax1QuaSI0cEHHTveA77guS0PnNugpR2JMsPfA==
 
 "@rushstack/eslint-patch@^1.1.0":
   version "1.1.4"
@@ -3661,11 +3647,6 @@ big.js@^6.1.1:
   version "6.2.1"
   resolved "https://registry.npmjs.org/big.js/-/big.js-6.2.1.tgz"
   integrity sha512-bCtHMwL9LeDIozFn+oNhhFoq+yQ3BNdnsLSASUxLciOb1vgvpHsIO1dsENiGMgbb4SkP5TrzWzRiLddn8ahVOQ==
-
-bignumber.js@^9.0.2:
-  version "9.0.2"
-  resolved "https://registry.npmjs.org/bignumber.js/-/bignumber.js-9.0.2.tgz"
-  integrity sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==
 
 binary-extensions@^2.0.0:
   version "2.2.0"

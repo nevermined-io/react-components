@@ -3,13 +3,9 @@ import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React, { useContext, useEffect, useState, createContext } from 'react';
 import { NeverminedContext, useNevermined } from '../nevermined';
-import {
-  AssetState,
-  AssetPublishParams,
-  RoyaltyKind
-} from '../types';
-import BigNumber from 'bignumber.js';
-import { getCurrentAccount } from '../utils'
+import { AssetState, AssetPublishParams, RoyaltyKind } from '../types';
+import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
+import { getCurrentAccount } from '../utils';
 
 export const useAssets = (
   q: SearchQuery
@@ -29,7 +25,7 @@ export const useAssets = (
       setResult(queryResponse);
       setIsLoading(false);
     } catch (error: any) {
-      Logger.error(error.message)
+      Logger.error(error.message);
       setIsLoading(false);
     }
   };
@@ -74,36 +70,40 @@ export const useAsset = (did: string): AssetState => {
 };
 
 export interface AssetPublishProviderState {
-  errorAssetMessage: string,
-  assetMessage: string,
-  isPublished: boolean,
-  isProcessing: boolean,
-  assetPublish: AssetPublishParams,
-  setAssetPublish: React.Dispatch<React.SetStateAction<AssetPublishParams>>,
-  setAssetMessage: React.Dispatch<React.SetStateAction<string>>,
-  setAssetErrorMessage: React.Dispatch<React.SetStateAction<string>>,
-  handleChange: (value: string, input: string) => void,
-  reset: (resetAssetPublish: AssetPublishParams) => void,
-  onAssetPublish: ({ metadata }: {
-    metadata: MetaData,
-  }) => Promise<DDO | undefined>,
-  onAsset721Publish: ({ nftAddress, metadata }: {
+  errorAssetMessage: string;
+  assetMessage: string;
+  isPublished: boolean;
+  isProcessing: boolean;
+  assetPublish: AssetPublishParams;
+  setAssetPublish: React.Dispatch<React.SetStateAction<AssetPublishParams>>;
+  setAssetMessage: React.Dispatch<React.SetStateAction<string>>;
+  setAssetErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  handleChange: (value: string, input: string) => void;
+  reset: (resetAssetPublish: AssetPublishParams) => void;
+  onAssetPublish: ({ metadata }: { metadata: MetaData }) => Promise<DDO | undefined>;
+  onAsset721Publish: ({
+    nftAddress,
+    metadata
+  }: {
     nftAddress: string;
-    metadata: MetaData,
-  }) => Promise<DDO | undefined>,
-  onAsset1155Publish: ({ metadata, cap, royalties, royaltyKind }: {
-    metadata: MetaData,
-    cap: number,
-    royalties: number,
-    royaltyKind: RoyaltyKind 
-  }) => Promise<DDO | undefined>
+    metadata: MetaData;
+  }) => Promise<DDO | undefined>;
+  onAsset1155Publish: ({
+    metadata,
+    cap,
+    royalties,
+    royaltyKind
+  }: {
+    metadata: MetaData;
+    cap: number;
+    royalties: number;
+    royaltyKind: RoyaltyKind;
+  }) => Promise<DDO | undefined>;
 }
 
 export const AssetPublishContext = createContext({} as AssetPublishProviderState);
 
-export const AssetPublishProvider = ({ children }: { 
-  children: React.ReactElement
-}) => {
+export const AssetPublishProvider = ({ children }: { children: React.ReactElement }) => {
   const { sdk, account } = useNevermined();
   const [errorAssetMessage, setAssetErrorMessage] = useState('');
   const [isPublished, setIsPublished] = useState(false);
@@ -133,11 +133,14 @@ export const AssetPublishProvider = ({ children }: {
 
   const onAssetPublish = async ({ metadata }: { metadata: MetaData }) => {
     try {
-      setIsProcessing(true)
+      setIsProcessing(true);
 
       const accountWallet = await getCurrentAccount(sdk);
 
-      const assetRewards = new AssetRewards(accountWallet.getId(), new BigNumber(assetPublish.price));
+      const assetRewards = new AssetRewards(
+        accountWallet.getId(),
+        BigNumber.from(assetPublish.price)
+      );
       if (!account.isTokenValid()) {
         setAssetErrorMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
@@ -160,13 +163,22 @@ export const AssetPublishProvider = ({ children }: {
     }
   };
 
-  const onAsset721Publish = async ({ nftAddress, metadata }: { nftAddress: string, metadata: MetaData }) => {
+  const onAsset721Publish = async ({
+    nftAddress,
+    metadata
+  }: {
+    nftAddress: string;
+    metadata: MetaData;
+  }) => {
     try {
-      setIsProcessing(true)
+      setIsProcessing(true);
 
       const accountWallet = await getCurrentAccount(sdk);
 
-      const assetRewards = new AssetRewards(accountWallet.getId(), new BigNumber(assetPublish.price));
+      const assetRewards = new AssetRewards(
+        accountWallet.getId(),
+        BigNumber.from(assetPublish.price)
+      );
       if (!account.isTokenValid()) {
         setAssetErrorMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
@@ -189,17 +201,26 @@ export const AssetPublishProvider = ({ children }: {
     }
   };
 
-  const onAsset1155Publish = async ({ metadata, cap, royalties, royaltyKind }: { 
-    metadata: MetaData,
-    cap: number,
-    royalties: number,
-    royaltyKind: RoyaltyKind }) => {
+  const onAsset1155Publish = async ({
+    metadata,
+    cap,
+    royalties,
+    royaltyKind
+  }: {
+    metadata: MetaData;
+    cap: number;
+    royalties: number;
+    royaltyKind: RoyaltyKind;
+  }) => {
     try {
-      setIsProcessing(true)
+      setIsProcessing(true);
 
       const accountWallet = await getCurrentAccount(sdk);
 
-      const assetRewards = new AssetRewards(accountWallet.getId(), new BigNumber(assetPublish.price));
+      const assetRewards = new AssetRewards(
+        accountWallet.getId(),
+        BigNumber.from(assetPublish.price)
+      );
       if (!account.isTokenValid()) {
         setAssetErrorMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
@@ -207,7 +228,14 @@ export const AssetPublishProvider = ({ children }: {
         await account.generateToken();
       }
 
-      const ddo = await sdk.nfts.createWithRoyalties(metadata, accountWallet, cap, royalties, royaltyKind, assetRewards);
+      const ddo = await sdk.nfts.createWithRoyalties(
+        metadata,
+        accountWallet,
+        cap,
+        royalties,
+        royaltyKind,
+        assetRewards
+      );
       setIsProcessing(false);
       setIsPublished(true);
       setAssetMessage('The asset NFT 1155 has been sucessfully published');
@@ -235,10 +263,10 @@ export const AssetPublishProvider = ({ children }: {
     onAssetPublish,
     onAsset721Publish,
     onAsset1155Publish,
-    reset,
+    reset
   };
 
-  return (<AssetPublishContext.Provider value={IState}>{children}</AssetPublishContext.Provider>)
+  return <AssetPublishContext.Provider value={IState}>{children}</AssetPublishContext.Provider>;
 };
 
 export const useAssetPublish = (): AssetPublishProviderState => useContext(AssetPublishContext);
