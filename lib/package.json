@@ -36,7 +36,7 @@
     "react": "*"
   },
   "dependencies": {
-    "@nevermined-io/nevermined-sdk-js": "0.22.0",
+    "@nevermined-io/nevermined-sdk-js": "^0.22.2",
     "@types/jsonwebtoken": "^8.5.8",
     "ethers": "^5.6.9",
     "jsonwebtoken": "^8.5.1",
