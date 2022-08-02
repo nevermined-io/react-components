@@ -283,21 +283,10 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         const account = await getCurrentAccount(sdk);
         if ((await sdk.assets.owner(did)) === account.getId()) {
           return sdk.assets.download(did, account);
-        } else {
-          Logger.log(`Creating service agreement to download asset ${did}`);
-          const agreementId = await sdk.assets.order(did, 'access', account);
-          Logger.log(`Service agreement: ${agreementId}`)
-          return sdk.assets.consume(agreementId, did, account);
         }
-      } catch (error) {
-        verbose && Logger.error(error);
-        return false;
-      }
-    },
-
-    consumeAsset: async (did: string, agreementId: string): Promise<boolean> => {
-      try {
-        const account = await getCurrentAccount(sdk);
+        Logger.log(`Creating service agreement to download asset ${did}`);
+        const agreementId = await sdk.assets.order(did, 'access', account);
+        Logger.log(`Service agreement: ${agreementId}`);
         return sdk.assets.consume(agreementId, did, account);
       } catch (error) {
         verbose && Logger.error(error);
