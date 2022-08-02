@@ -1,26 +1,27 @@
 import {
-    Account,
-    Config,
-    DDO,
-    Logger,
-    Nevermined,
-    SearchQuery
+  Account,
+  Config,
+  DDO,
+  Logger,
+  Nevermined,
+  SearchQuery
 } from '@nevermined-io/nevermined-sdk-js';
 import {
-    ContractEventSubscription,
-    EventResult
+  ContractEventSubscription,
+  EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import {
-    AccountModule,
-    AssetsModule, GenericOutput,
-    MarketplaceAPIToken,
-    MintNFTInput,
-    NeverminedProviderContext,
-    NeverminedProviderProps,
-    NFTDetails,
-    SubscribeModule
+  AccountModule,
+  AssetsModule,
+  GenericOutput,
+  MarketplaceAPIToken,
+  MintNFTInput,
+  NeverminedProviderContext,
+  NeverminedProviderProps,
+  NFTDetails,
+  SubscribeModule
 } from './types';
 import { conductOrder, getCurrentAccount, isEmptyObject } from './utils';
 import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token';
@@ -236,7 +237,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         if (isTransferSuccessful) {
           Logger.log(`Transferred ${amount} NFT with did ${ddo.id} to ${newOwner.getId()}`);
           return true;
-        } 
+        }
 
         Logger.log(`Something went wrong! Please try again.`);
         return false;
@@ -280,16 +281,12 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     downloadAsset: async (did: string): Promise<boolean> => {
       try {
         const account = await getCurrentAccount(sdk);
-        return sdk.assets.download(did, account);
-      } catch (error) {
-        verbose && Logger.error(error);
-        return false;
-      }
-    },
-
-    consumeAsset: async (did: string, agreementId: string): Promise<boolean> => {
-      try {
-        const account = await getCurrentAccount(sdk);
+        if ((await sdk.assets.owner(did)) === account.getId()) {
+          return sdk.assets.download(did, account);
+        }
+        Logger.log(`Creating service agreement to download asset ${did}`);
+        const agreementId = await sdk.assets.order(did, 'access', account);
+        Logger.log(`Service agreement: ${agreementId}`);
         return sdk.assets.consume(agreementId, did, account);
       } catch (error) {
         verbose && Logger.error(error);
@@ -347,7 +344,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     subscribe,
     assets,
     account: accountModule,
-    updateSDK,
+    updateSDK
   };
 
   return <NeverminedContext.Provider value={IState}>{children}</NeverminedContext.Provider>;
