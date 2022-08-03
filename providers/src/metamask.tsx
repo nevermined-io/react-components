@@ -6,6 +6,7 @@ import React, {
     useContext,
 } from "react";
 import { ethers } from "ethers";
+import DefaultChainConfig from "./chain-config"
 
 export type MetamaskProvider = ethers.providers.JsonRpcProvider | ethers.providers.Web3Provider
 
@@ -52,12 +53,12 @@ export const WalletProvider = ({
     children,
     nodeUri,
     correctNetworkId,
-    chainConfig,
+    externalChainConfig,
 }: {
     children: React.ReactElement;
     nodeUri: string;
     correctNetworkId: string;
-    chainConfig: ChainConfig;
+    externalChainConfig?: ChainConfig;
 }) => {
     const correctChainId = convertHextoIntString(correctNetworkId);
     const eths = useRef({} as MetamaskProvider);
@@ -65,6 +66,7 @@ export const WalletProvider = ({
     const [acceptedChainId, setAcceptedChainId] = useState("");
     const [acceptedChainIdHex, setAcceptedChainIdHex] = useState("");
     const [isChainCorrect, setIsChainCorrect] = useState(true);
+    const chainConfig: ChainConfig = externalChainConfig || DefaultChainConfig;
 
     const checkIsNotChainCorrect = (chainHexId: string) => {
         return !Object.keys(chainConfig).some((env: string) => {
@@ -72,7 +74,7 @@ export const WalletProvider = ({
                 return false;
             }
 
-            return (chainConfig as any)[env].chainId === chainHexId;
+            return (chainConfig[env] as ChainNetwork).chainId === chainHexId;
         });
     };
 
