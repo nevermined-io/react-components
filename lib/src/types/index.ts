@@ -13,6 +13,7 @@ import {
 import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
+import { BigNumber } from 'ethers';
 
 export { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
 
@@ -79,7 +80,7 @@ export interface UserProfileParams {
 export interface CustomErc20Token {
   symbol: string;
   name: string;
-  balance: number;
+  balance: BigNumber;
   decimals: number;
 }
 
