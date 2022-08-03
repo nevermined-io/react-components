@@ -5,7 +5,7 @@ import { MetaMask } from '../src';
 import { ChainConfig } from './chainConfig';
 
 const setup = () => render(
-    <MetaMask.WalletProvider chainConfig={ChainConfig} correctNetworkId='0x13881' nodeUri='http://localhost:8545'>
+    <MetaMask.WalletProvider externalChainConfig={ChainConfig} correctNetworkId='0x13881' nodeUri='http://localhost:8545'>
       <div>Hello metamask</div>
     </MetaMask.WalletProvider>
 )
