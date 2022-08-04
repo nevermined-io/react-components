@@ -274,7 +274,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         purchased.map((asset) => sdk.assets.resolve(asset.documentId))
       );
 
-      const asset = purchasedDDO.find(p => p.id === did);
+      const asset = purchasedDDO.filter(p => p).find(p => p.id === did);
 
       if(asset) {
         return getAgreementId(sdk, 'accessTemplate', did, account.getId());

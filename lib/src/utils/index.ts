@@ -78,18 +78,14 @@ export const getAgreementId = async (
   did: string,
   account: string
 ) => {
-  const agreement = await sdk.keeper.templates[template].events.getPastEvents({
-    methodName: 'AgreementCreated',
-    filterSubgraph: {
-      where: {
-        _did: did,
-        _accessConsumer: account
-      }
-    },
+  const agreements = await sdk.keeper.templates[template].events.getPastEvents({
+    methodName: 'agreementCreateds',
     result: {
-      _agreementId: true
+      _agreementId: true,
+      _creator: true,
+      _did: true
     }
   });
 
-  return agreement[0]._agreementId;
+  return agreements.find((a) => a._did === did && a._creator === account)?._agreementId;
 };
