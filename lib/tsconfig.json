@@ -20,6 +20,6 @@
     "downlevelIteration": true,
     "sourceMap": false
   },
-  "include": ["src/"],
+  "include": ["src/", "tests"],
   "exclude": ["node_modules", "**/*.spec.ts", "**/*.spec.tsx"]
 }

@@ -95,12 +95,16 @@ export const WalletProvider = ({
 
     useEffect(() => {
         (async () => {
-            const chainIdHex = await window.ethereum.request?.({
-                method: "eth_chainId",
-            });
-            const chainId = convertHextoIntString(chainIdHex);
-            setAcceptedChainId(chainId);
-            checkChain(chainIdHex);
+            try {
+                const chainIdHex = await window.ethereum.request?.({
+                    method: "eth_chainId",
+                });
+                const chainId = convertHextoIntString(chainIdHex);
+                setAcceptedChainId(chainId);
+                checkChain(chainIdHex);
+            } catch (error: any) {
+                console.error(error.message)
+            }
         })();
 
         window.ethereum.on("chainChanged", (chainHexId: string) => {
