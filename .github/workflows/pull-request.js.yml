@@ -20,6 +20,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: cd lib && yarn install --ignore-engines
       - run: cd lib && yarn ts:lint
+      - run: cd lib && yarn test
       - run: cd lib && yarn build:tsc
   pull-request-catalog-providers: 
     runs-on: ubuntu-latest
@@ -31,6 +32,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: cd providers && yarn install --ignore-engines
       - run: cd providers && yarn ts:lint
+      - run: cd providers && yarn test
       - run: cd providers && yarn build:tsc
 
 
