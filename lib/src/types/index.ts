@@ -13,6 +13,7 @@ import {
 import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
+import { BigNumber } from 'ethers';
 
 export { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
 
@@ -76,6 +77,13 @@ export interface UserProfileParams {
   additionalInformation: unknown;
 }
 
+export interface CustomErc20Token {
+  symbol: string;
+  name: string;
+  balance: BigNumber;
+  decimals: number;
+}
+
 export interface AccountModule {
   getReleases: (address: string) => Promise<DID[]>;
   getCollection: (address: string) => Promise<DID[]>;
@@ -90,8 +98,12 @@ export interface AssetsModule {
   transfer: ({ did, amount }: { did: string; amount: number }) => Promise<boolean>;
   mint: (did: any) => Promise<any>;
   nftDetails: (did: string) => Promise<NFTDetails>;
+  orderAsset: (did: string) => Promise<string>;
+  orderNFT721: (did: string, nftTokenAddress: string) => Promise<string>;
+  orderNFT1155: (did: string) => Promise<string>;
   downloadNFT: (did: string) => Promise<boolean>;
-  downloadAsset: (did: string) => Promise<boolean>;
+  getCustomErc20Token: (customErc20TokenAddress: string) => Promise<CustomErc20Token>;
+  downloadAsset: (did: string, agreementId: string) => Promise<boolean>;
 }
 
 export interface SubscribeModule {

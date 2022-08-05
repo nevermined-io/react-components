@@ -1,6 +1,6 @@
 {
   "name": "@nevermined-io/catalog-core",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "private": false,
   "scripts": {
     "watch": "./node_modules/.bin/nodemon",
@@ -36,7 +36,7 @@
     "react": "*"
   },
   "dependencies": {
-    "@nevermined-io/nevermined-sdk-js": "^0.22.2",
+    "@nevermined-io/nevermined-sdk-js": "^0.22.3",
     "@types/jsonwebtoken": "^8.5.8",
     "ethers": "^5.6.9",
     "jsonwebtoken": "^8.5.1",
@@ -48,6 +48,7 @@
     "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
+    "@faker-js/faker": "^7.3.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@trust/webcrypto": "^0.9.2",
