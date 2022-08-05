@@ -323,7 +323,9 @@ export const nevermined = {
     assets: {
       resolve: async () => ddo,
       owner: async () => '0xdF1B443A155b07D2b2cAeA2d99715dC84E812EE2',
-      order: async () => agreementId
+      order: async () => agreementId,
+      download: async () => true,
+      consume: async () => true
     },
     accounts: {
       list: async () => [
@@ -333,11 +335,11 @@ export const nevermined = {
       ]
     },
     nfts: {
-      ownerOf: () => walletAddress,
-      balance: () => 1,
-      order721: () => agreementId,
-      order: () => agreementId,
-      access: () => true
+      ownerOf: async () => walletAddress,
+      balance: async () => 1,
+      order721: async () => agreementId,
+      order: async () => agreementId,
+      access: async () => true
     },
     keeper: {
       conditions: {
@@ -386,6 +388,14 @@ export const nevermined = {
           }
         }
       }
+    },
+    contracts: {
+      loadErc20: async () => ({
+        name: async () => 'Nevermined',
+        symbol: async () => 'NVM',
+        decimals: async () => 18,
+        balanceOf: async () => 1500000000000000000
+      })
     }
   })
 };
