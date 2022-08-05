@@ -63,4 +63,5 @@ yarn-error.log*
 .github
 src
 test
+tests
 public
