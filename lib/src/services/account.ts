@@ -97,7 +97,7 @@ export const useUserProfile = (walletAddress: string) => {
         accountToAdd = accounts?.find((a) => a.getId() === newAddress);
       }
 
-      const credential = await sdk.utils.jwt.generateClientAssertion(accountToAdd);
+      const credential = await sdk.utils.jwt.generateClientAssertion(accountToAdd as Account);
       const token = await sdk.marketplace.addNewAddress(credential);
 
       saveMarketplaceApiTokenToLocalStorage({ token });
