@@ -5,6 +5,7 @@ import { appConfig } from './config';
 import { agreementId, ddo, walletAddress, nevermined, nftTokenAddress } from './mockups';
 import Catalog from '../src';
 import { DDO } from '@nevermined-io/nevermined-sdk-js';
+import fs from 'fs';
 
 jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
   ...jest.requireActual('@nevermined-io/nevermined-sdk-js'),
@@ -570,4 +571,45 @@ describe('Nevermined assets', () => {
       });
     });
   });
+
+  it('should upload an asset to filecoin', async() => {
+    const path = '/tmp/test.txt';
+
+    const { result } = renderHook(
+      () => {
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const [filecoinUrl, setFileCoinUrl] = useState('');
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+          (async () => {
+            try {
+              const file = fs.openSync(path, 'w');
+              fs.writeSync(file, 'Hello, Nevermined');
+              const response = await assets.uploadAssetToFilecoin(path);
+              setFileCoinUrl(response.url)
+            } catch (error: any) {
+              console.error(error.message);
+            }
+          })();
+        }, [isLoadingSDK]);
+
+        return filecoinUrl;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(async () => {
+      expect(result.current).toBe('cid://bafkqaesimvwgy3zmebhgk5tfojwws3tfmqqq');
+    });
+
+    fs.unlinkSync(path);
+  })
 });
