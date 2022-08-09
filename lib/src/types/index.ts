@@ -104,6 +104,7 @@ export interface AssetsModule {
   downloadNFT: (did: string) => Promise<boolean>;
   getCustomErc20Token: (customErc20TokenAddress: string) => Promise<CustomErc20Token>;
   downloadAsset: (did: string, agreementId: string) => Promise<boolean>;
+  uploadAssetToFilecoin: (path: string, isEncrypted?: boolean) => Promise<{url: string, password: string}>;
 }
 
 export interface SubscribeModule {

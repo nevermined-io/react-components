@@ -12,6 +12,7 @@ import {
   EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
+import fs from 'fs'
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import {
   AccountModule,
@@ -362,6 +363,13 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         decimals: await customErc20Token.decimals(),
         balance: await customErc20Token.balanceOf(account.getId())
       };
+    },
+
+    uploadAssetToFilecoin: async(path: string, isEncrypted = false) => {
+      const steam = fs.createReadStream(path);
+      const response = await sdk.files.uploadFilecoin(steam, isEncrypted)
+
+      return response;
     }
   };
 
