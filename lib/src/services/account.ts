@@ -198,6 +198,15 @@ export const useUserProfile = (walletAddress: string) => {
   };
 };
 
+/**
+ * This method validates if a user is a NFT (ERC-1155 based) holder for a specific `tokenId`.
+ * For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
+ * of a NFT (limitted by the NFT cap).
+ * 
+ * @param did The unique identifier of the NFT within a NFT ERC-1155 contract
+ * @param walletAddress The public address of the user
+ * @returns true if the user owns at least one edition of the NFT
+ */
 export const userIsNFT1155Holder = (
   did: string,
   walletAddress: string
@@ -220,6 +229,19 @@ export const userIsNFT1155Holder = (
   };
 };
 
+
+// TODO: fix a bug related to how this is calculated
+// See: https://github.com/nevermined-io/components-catalog/issues/128
+
+/**
+ * This method validates if a user is a NFT (ERC-721 based) holder for a specific NFT contract address.
+ * For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
+ * of a NFT (limitted by the NFT cap).
+ * 
+ * @param nftAddress The contract address of the ERC-721 NFT contract
+ * @param walletAddress The public address of the user
+ * @returns true if the user holds the NFT
+ */
 export const userIsNFT721Holder = (
   did: string,
   nftTokenAddress: string,

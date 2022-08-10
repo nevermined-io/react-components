@@ -8,10 +8,7 @@ The Catalog simplifies the creation of web applications for React developers. Th
 
 ## Components
 
-### Register a new asset
-
-
-
+**Complete this via TS DOC generation**
 
 
 
