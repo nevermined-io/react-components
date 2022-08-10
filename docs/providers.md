@@ -1,12 +1,10 @@
-## PROVIDERS SECTIONS
-
+---
+sidebar_position: 6
 ---
 
-## sidebar_position: 2
+# Catalog Providers
 
-# Getting Started
-
-This section provides information about how to get started with the Nevermined providers package.
+The Catalog exposes a package facilitating the interaction with Web3 providers like Metamask.
 
 ## Pre-requisites
 

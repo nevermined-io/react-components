@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 ---
 
 # Getting Started
@@ -13,13 +13,14 @@ It requires [Node JS](https://nodejs.org/) v14 or higher. You can find online in
 
 ## How to install ?
 
-```
+```bash
 yarn add @nevermined-io/catalog-core
 or
 npm install --save @nevermined-io/catalog-core
 ```
 
 ## How to integrate ?
+
 ```typescript
 import Catalog from '@nevermined-io/components-catalog';
 import App from 'app';
