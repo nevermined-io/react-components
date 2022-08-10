@@ -397,11 +397,5 @@ export const nevermined = {
         balanceOf: async () => 1500000000000000000
       })
     },
-    files: {
-      uploadFilecoin: (_url: string, isEncrypted: boolean) => ({
-        url: 'cid://bafkqaesimvwgy3zmebhgk5tfojwws3tfmqqq',
-        password: isEncrypted ? 'nvmtest' : '',
-      })
-    }
   })
 };

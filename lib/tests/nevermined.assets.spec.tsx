@@ -5,12 +5,21 @@ import { appConfig } from './config';
 import { agreementId, ddo, walletAddress, nevermined, nftTokenAddress } from './mockups';
 import Catalog from '../src';
 import { DDO } from '@nevermined-io/nevermined-sdk-js';
-import fs from 'fs';
 
 jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
   ...jest.requireActual('@nevermined-io/nevermined-sdk-js'),
   Nevermined: jest.requireActual('./mockups').nevermined
 }));
+
+jest.mock('axios', () => ({
+  post: () => ({
+    data: {
+      url: 'cid://bafkqaesimvwgy3zmebhgk5tfojwws3tfmqqq'
+    }
+  })
+}));
+
+jest.mock('axios-retry', () => () => undefined);
 
 const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
   <Catalog.NeverminedProvider config={appConfig}>{children}</Catalog.NeverminedProvider>
@@ -573,8 +582,6 @@ describe('Nevermined assets', () => {
   });
 
   it('should upload an asset to filecoin', async() => {
-    const path = '/tmp/test.txt';
-
     const { result } = renderHook(
       () => {
         const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
@@ -589,10 +596,14 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const file = fs.openSync(path, 'w');
-              fs.writeSync(file, 'Hello, Nevermined');
-              const response = await assets.uploadAssetToFilecoin(path);
-              setFileCoinUrl(response.url)
+              const blob = new Blob(['Hello! Nevermined'], {
+                type: 'text'
+              });
+
+              const file = new File([blob], 'Nevermined test')
+
+              const response = await assets.uploadAssetToFilecoin(file, 'cid://');
+              setFileCoinUrl(response)
             } catch (error: any) {
               console.error(error.message);
             }
@@ -609,7 +620,5 @@ describe('Nevermined assets', () => {
     await waitFor(async () => {
       expect(result.current).toBe('cid://bafkqaesimvwgy3zmebhgk5tfojwws3tfmqqq');
     });
-
-    fs.unlinkSync(path);
   })
 });

@@ -1,4 +1,6 @@
-import { Account, DDO, Nevermined, Logger } from '@nevermined-io/nevermined-sdk-js';
+import { Account, DDO, Nevermined, Logger, ClientError } from '@nevermined-io/nevermined-sdk-js';
+import axios from 'axios'
+import axiosRetry from 'axios-retry'
 
 interface FullfilledOrders {
   documentId: string;
@@ -89,3 +91,28 @@ export const getAgreementId = async (
 
   return agreements.find((a) => a._did === did && a._creator === account)?._agreementId;
 };
+
+export const handlePostRequest = async (url: string, formData: FormData, retries = 3) => {
+  axiosRetry(axios, {
+    retries: retries,
+    shouldResetTimeout: true,
+    retryDelay: (retryCount) => {
+      console.log(`retry attempt: ${retryCount}`)
+      return retryCount * 2000
+    },
+    retryCondition: () => true
+  })
+
+  try {
+    const response = await axios.post(url, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    return response?.data
+  } catch (e) {
+    Logger.error(e)
+    throw new ClientError((e as any).message, 'Catalog');
+  }
+}

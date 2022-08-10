@@ -12,7 +12,6 @@ import {
   EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
-import fs from 'fs'
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import {
   AccountModule,
@@ -30,7 +29,8 @@ import {
   getCurrentAccount,
   isEmptyObject,
   loadFullfilledEvents,
-  getAgreementId
+  getAgreementId,
+  handlePostRequest
 } from './utils';
 import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token';
 
@@ -365,11 +365,15 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       };
     },
 
-    uploadAssetToFilecoin: async(path: string, isEncrypted = false) => {
-      const steam = fs.createReadStream(path);
-      const response = await sdk.files.uploadFilecoin(steam, isEncrypted)
+    uploadAssetToFilecoin: async(file: File, filecoinUrl: string) => {
+      const form = new FormData();
+      form.append('file', file);
 
-      return response;
+      const gatewayUploadUrl = `${config.gatewayUri}${filecoinUrl}`;
+
+      const response = await handlePostRequest(gatewayUploadUrl, form);
+
+      return response.url;
     }
   };
 
