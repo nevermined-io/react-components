@@ -131,6 +131,15 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     setAssetPublish({ ...assetPublish, [input]: value });
   };
 
+  /**
+   * Nevermined is a network where users register digital assets and attach to 
+   * them services (like data sharing, nfts minting, etc).
+   * With this method a user can register an asset in Nevermined giving a piece of metadata. 
+   * This will return the DDO created (including the unique identifier of the asset - aka DID).
+   * 
+   * @param metadata The metadata object describing the asset 
+   * @returns The DDO object including the asset metadata and the DID
+   */
   const onAssetPublish = async ({ metadata }: { metadata: MetaData }) => {
     try {
       setIsProcessing(true);
@@ -163,6 +172,17 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     }
   };
 
+  /**
+   * In Nevermined is possible to register a digital asset that allow users pay for having a 
+   * NFT (ERC-721). This typically allows content creators to provide access to exclusive 
+   * contents for NFT holders.
+   * It will create a new digital asset associated to a ERC-721 NFT contract 
+   * (given the `nftAddress` parameter)
+   * 
+   * @param nftAddress The contract address of the ERC-721 NFT
+   * @param metadata The metadata object describing the asset 
+   * @returns The DDO object including the asset metadata and the DID
+   */
   const onAsset721Publish = async ({
     nftAddress,
     metadata
@@ -201,6 +221,20 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     }
   };
 
+  /**
+   * In Nevermined is possible to register a digital asset that allow users pay for having a 
+   * NFT (ERC-1155). This typically allows content creators to provide access to exclusive 
+   * contents for NFT holders.
+   * ERC-1155 NFTs are semi-fungible, meaning that a NFT can have multiple editions.
+   * 
+   * This method will create a new digital asset associated to a ERC-1155 NFT contract. 
+   * 
+   * @param metadata The metadata object describing the asset
+   * @param cap The maximum number of editions that can be minted. If `0` means there is no limit (uncapped) 
+   * @param royalties The amount of royalties paid back to the original creator in the secondary market
+   * @param royaltyKind The royalties scheme that can be used
+   * @returns The DDO object including the asset metadata and the DID
+   */  
   const onAsset1155Publish = async ({
     metadata,
     cap,
