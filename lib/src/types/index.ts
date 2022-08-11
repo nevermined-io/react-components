@@ -203,4 +203,4 @@ export interface SubscriptionActions {
   buySubscription: (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: number, nftType: NftTypes) => Promise<boolean>;
 }
 
-export type nftType = NftTypes;
+export type { NftTypes } from '@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway';
