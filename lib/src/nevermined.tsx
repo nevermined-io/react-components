@@ -22,6 +22,7 @@ import {
   NeverminedProviderContext,
   NeverminedProviderProps,
   NFTDetails,
+  NftTypes,
   SubscribeModule
 } from './types';
 import {
@@ -365,7 +366,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       };
     },
 
-    uploadAssetToFilecoin: async(file: File, filecoinUrl: string) => {
+    uploadAssetToFilecoin: async (file: File, filecoinUrl: string) => {
       const form = new FormData();
       form.append('file', file);
 
@@ -419,6 +420,26 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     }
   };
 
+  const subscription = {
+    buySubscription: async (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: number, nftType: NftTypes): Promise<boolean> => {
+      try {
+        const agreementId = await sdk.nfts.order721(subscriptionDid, buyer);
+        return sdk.nfts.transferForDelegate(
+          agreementId,
+          nftHolder,
+          buyer.getId(),
+          nftAmount,
+          nftType
+        )
+
+      } catch (error) {
+        verbose && Logger.error(error);
+        return false;
+      }
+    },
+  };
+
+
   const IState = {
     sdk,
     isLoadingSDK: isLoading,
@@ -426,7 +447,8 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     subscribe,
     assets,
     account: accountModule,
-    updateSDK
+    updateSDK,
+    subscription
   };
 
   return <NeverminedContext.Provider value={IState}>{children}</NeverminedContext.Provider>;
