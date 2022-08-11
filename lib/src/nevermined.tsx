@@ -11,7 +11,6 @@ import {
   ContractEventSubscription,
   EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
-import { NftTypes } from '@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import {
@@ -23,6 +22,7 @@ import {
   NeverminedProviderContext,
   NeverminedProviderProps,
   NFTDetails,
+  NftTypes,
   SubscribeModule
 } from './types';
 import {
