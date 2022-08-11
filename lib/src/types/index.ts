@@ -10,6 +10,7 @@ import {
   ContractEventSubscription,
   EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
+import { NftTypes } from '@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway';
 import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
@@ -25,6 +26,7 @@ export interface NeverminedProviderContext {
   subscribe: SubscribeModule;
   assets: AssetsModule;
   account: AccountModule;
+  subscription: SubscriptionActions
 }
 
 export interface NeverminedProviderProps {
@@ -195,4 +197,8 @@ export interface Transfer {
   _did: string;
   _agreementId: string;
   _receiver: string;
+}
+
+export interface SubscriptionActions {
+  buySubscription: (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: number, nftType: NftTypes) => Promise<boolean>;
 }
