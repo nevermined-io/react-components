@@ -202,3 +202,5 @@ export interface Transfer {
 export interface SubscriptionActions {
   buySubscription: (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: number, nftType: NftTypes) => Promise<boolean>;
 }
+
+export type nftType = NftTypes;
