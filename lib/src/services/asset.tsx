@@ -175,10 +175,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
 
       const accountWallet = await getCurrentAccount(sdk);
 
-      const assetRewards = new AssetRewards(
-        accountWallet.getId(),
-        BigNumber.from(assetPublish.price)
-      );
       if (!account.isTokenValid()) {
         setAssetErrorMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
