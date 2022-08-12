@@ -195,18 +195,30 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
 
       const accountWallet = await getCurrentAccount(sdk);
 
-      const assetRewards = new AssetRewards(
-        accountWallet.getId(),
-        BigNumber.from(assetPublish.price)
-      );
       if (!account.isTokenValid()) {
         setAssetErrorMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
         );
         await account.generateToken();
       }
+    
+      const ddo = await sdk.assets.createNft721(
+        metadata,
+        accountWallet,
+        new AssetRewards(),
+        'PSK-RSA',
+        nftAddress,
+        undefined,
+        false,
+        undefined,
+        0,
+        undefined,
+        undefined,
+        ['nft721-access'],
+        false,
+        0
+    )
 
-      const ddo = await sdk.nfts.create721(metadata, accountWallet, assetRewards, nftAddress);
       setIsProcessing(false);
       setIsPublished(true);
       setAssetMessage('The asset NFT 721 has been sucessfully published');
