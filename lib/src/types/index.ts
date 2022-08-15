@@ -91,6 +91,8 @@ export interface AccountModule {
   getCollection: (address: string) => Promise<DID[]>;
   generateToken: () => Promise<MarketplaceAPIToken>;
   isTokenValid: () => boolean;
+  isNFT1155Holder: (did: string, walletAddress: string) => Promise<boolean>;
+  isNFT721Holder: (did: string, nftTokenAddress: string, walletAddress: string) => Promise<boolean>;
 }
 
 export interface AssetsModule {

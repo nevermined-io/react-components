@@ -5,7 +5,7 @@ import {
   Logger,
   Nevermined,
   SearchQuery,
-  ClientError
+  ClientError,
 } from '@nevermined-io/nevermined-sdk-js';
 import {
   ContractEventSubscription,
@@ -23,7 +23,7 @@ import {
   NeverminedProviderProps,
   NFTDetails,
   NftTypes,
-  SubscribeModule
+  SubscribeModule,
 } from './types';
 import {
   conductOrder,
@@ -34,6 +34,7 @@ import {
   handlePostRequest
 } from './utils';
 import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token';
+import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
 
 export const initialState = {
   sdk: {} as Nevermined
@@ -155,7 +156,56 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         verbose && Logger.error(error);
         return [];
       }
-    }
+    },
+
+        /**
+     * This method validates if a user is a NFT (ERC-1155 based) holder for a specific `tokenId`.
+     * For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
+     * of a NFT (limitted by the NFT cap).
+     * 
+     * @param did The unique identifier of the NFT within a NFT ERC-1155 contract
+     * @param walletAddress The public address of the user
+     * @returns true if the user owns at least one edition of the NFT
+     */
+    isNFT1155Holder: async (
+      did: string,
+      walletAddress: string
+    ): Promise<boolean> => {
+      const walletAccount = new Account(walletAddress); 
+      if (walletAccount) {
+        const balance = await sdk.nfts.balance(did, walletAccount);
+        const nftBalance =  BigNumber.from(balance).toNumber()
+        return nftBalance > 0
+            
+      }
+      return false;
+    },
+
+
+    // TODO: fix a bug related to how this is calculated
+    // See: https://github.com/nevermined-io/components-catalog/issues/128
+
+    /**
+     * This method validates if a user is a NFT (ERC-721 based) holder for a specific NFT contract address.
+     * For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
+     * of a NFT (limitted by the NFT cap).
+     * 
+     * @param nftAddress The contract address of the ERC-721 NFT contract
+     * @param walletAddress The public address of the user
+     * @returns true if the user holds the NFT
+     */
+    isNFT721Holder: async (
+      did: string,
+      nftTokenAddress: string,
+      walletAddress: string
+    ): Promise<boolean> => {
+      if (walletAddress) {
+        const nftOwner = await sdk.nfts.ownerOf(did, nftTokenAddress);
+        return nftOwner === walletAddress;
+      }
+      
+      return false;
+    },
   };
 
   const assets: AssetsModule = {
@@ -186,9 +236,25 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         if (isEmptyObject(sdk)) return undefined;
         const [publisherAddress] = await sdk.accounts.list();
         if (!publisherAddress) {
-          Logger.log('No account was found!');
+          Logger.error('No account was found!');
           return;
         }
+
+        if (!config.gatewayAddress) {
+          Logger.error('Gateway address from config is required to mint NFT1155 asset');
+          return
+        }
+
+        const transferNftCondition = sdk.keeper.conditions.transferNftCondition;
+
+        const transferNftConditionContractReceipt = await sdk.nfts.setApprovalForAll(transferNftCondition.address, true, publisherAddress);
+
+        Logger.log(`Contract Receipt for approved transfer NFT: ${transferNftConditionContractReceipt}`);
+
+        const gateawayContractReceipt = await sdk.nfts.setApprovalForAll(config.gatewayAddress, true, publisherAddress);
+
+        Logger.log(`Contract Receipt for approved gateway: ${gateawayContractReceipt}`);
+
         const minted: DDO = await sdk.nfts.create(
           input.metadata,
           publisherAddress,
@@ -299,7 +365,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
       const balance = await sdk.nfts.balance(did, account);
 
-      if (balance > 0) {
+      if (BigNumber.from(balance).toNumber() > 0) {
         return getAgreementId(sdk, 'nftAccessTemplate', did, account.getId());
       }
 
@@ -423,7 +489,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   const subscription = {
     buySubscription: async (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: number, nftType: NftTypes): Promise<boolean> => {
       try {
-        const agreementId = await sdk.nfts.order721(subscriptionDid, buyer);
+        const agreementId = nftType === 721 ? await sdk.nfts.order721(subscriptionDid, buyer): await sdk.nfts.order(subscriptionDid, nftAmount, buyer);
         return sdk.nfts.transferForDelegate(
           agreementId,
           nftHolder,
@@ -437,6 +503,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         return false;
       }
     },
+    
   };
 
 
