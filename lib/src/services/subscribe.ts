@@ -5,7 +5,32 @@ import {
 import { useContext, useEffect, useState } from 'react';
 import { NeverminedContext } from '../nevermined';
 
-export const useSubscribeToPaymentEvents = () => () => {
+/**
+ * Subscribe to payment events
+ *
+ * @example
+ * ```typescript
+ * const MyComponent = () => {
+ *  const { paymentEvents } = useSubscribeToPeymentEvents();
+ *
+ *  return (
+ *   <>
+ *      {paymentEvents.map((p) => {
+ *          return (
+ *              <div>
+ *                  <div>{p.id}</div>
+ *                  <div>{p._did}</div>
+ *                  <div>{p._agreementId}</div>
+ *                  <div>{p._receivers}</div>
+ *              </div>
+ *          )
+ *      })}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
+export const useSubscribeToPaymentEvents = (): { paymentEvents: EventResult[] } => {
   const { sdk } = useContext(NeverminedContext);
   const [paymentSubscription, setPaymentSubscription] = useState<ContractEventSubscription>();
   const [paymentEvents, setPaymentEvents] = useState([] as EventResult[]);
@@ -33,10 +58,35 @@ export const useSubscribeToPaymentEvents = () => () => {
     return () => paymentSubscription?.unsubscribe();
   }, [sdk]);
 
-  return { paymentEvents, paymentSubscription };
+  return { paymentEvents };
 };
 
-export const useSubscribeToTransferEvents = () => () => {
+/**
+ * Subscribe to nft transfer events
+ *
+ * @example
+ * ```typescript
+ * const MyComponent = () => {
+ *  const { transferEvents } = useSubscribeToTransferEvents();
+ *
+ *  return (
+ *   <>
+ *      {transferEvents.map((p) => {
+ *          return (
+ *              <div>
+ *                  <div>{p.id}</div>
+ *                  <div>{p._did}</div>
+ *                  <div>{p._agreementId}</div>
+ *                  <div>{p._receivers}</div>
+ *              </div>
+ *          )
+ *      })}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
+export const useSubscribeToTransferEvents = (): { transferEvents: EventResult[] } => {
   const { sdk } = useContext(NeverminedContext);
   const [transferSubscription, setTransferSubscription] = useState<ContractEventSubscription>();
   const [transferEvents, setTransferEvents] = useState([] as EventResult[]);
@@ -65,5 +115,5 @@ export const useSubscribeToTransferEvents = () => () => {
     return () => transferSubscription?.unsubscribe();
   }, [sdk]);
 
-  return { transferEvents, transferSubscription };
+  return { transferEvents };
 };
