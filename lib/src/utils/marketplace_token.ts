@@ -4,10 +4,16 @@ import { MarketplaceAPIToken } from '../types';
 
 export const MARKETPLACE_API_TOKEN = 'marketplaceApiToken';
 
+/*
+ * Save MP token to local storage
+ */
 export const saveMarketplaceApiTokenToLocalStorage = (i: MarketplaceAPIToken): void => {
   localStorage.setItem(MARKETPLACE_API_TOKEN, JSON.stringify({ token: i.token }));
 };
 
+/*
+ * get MP token to local storage
+ */
 export const fetchMarketplaceApiTokenFromLocalStorage = (): MarketplaceAPIToken => {
   const marketplaceApiTokenItem: string | null = localStorage.getItem('marketplaceApiToken');
   if (marketplaceApiTokenItem) {
@@ -19,6 +25,9 @@ export const fetchMarketplaceApiTokenFromLocalStorage = (): MarketplaceAPIToken 
   }
 };
 
+/*
+ * Generate new MP API token
+ */
 export const newMarketplaceApiToken = async (sdk: Nevermined): Promise<MarketplaceAPIToken> => {
   try {
     const [account] = await sdk.accounts.list();
@@ -32,6 +41,10 @@ export const newMarketplaceApiToken = async (sdk: Nevermined): Promise<Marketpla
   }
 };
 
+
+/*
+ * Check if MP Token is valid
+ */
 export const isTokenValid = () => {
   try {
     const { token } = fetchMarketplaceApiTokenFromLocalStorage();
