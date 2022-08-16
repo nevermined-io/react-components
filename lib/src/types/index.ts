@@ -144,7 +144,9 @@ export interface MintNFTInput {
   erc20TokenAddress?: string;
   /** If assets are minted in the creation process */
   preMint?: boolean;
-  /**  */
+  /**  url to set at publishing time that resolves to the metadata of the nft as expected by opensea
+   * @url https://docs.opensea.io/docs/metadata-standards
+   */
   nftMetadata?: string;
   /** Trasaction number of the asset creation */
   txParams?: TxParameters;
