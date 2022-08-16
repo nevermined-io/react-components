@@ -161,7 +161,11 @@ const App = () => {
   const metadata: MetaData = {
     main: {
       name: '',
-      files: [],
+      files: [{
+        index: 0,
+        contentType: 'application/json',
+        url: 'https://github.com/nevermined-io/docs/blob/master/docs/architecture/specs/metadata/examples/ddo-example.json'
+      }],
       type: 'dataset',
       author: '',
       license: '',
