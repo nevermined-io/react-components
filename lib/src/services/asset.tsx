@@ -7,6 +7,28 @@ import { AssetState, AssetPublishParams, RoyaltyKind } from '../types';
 import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
 import { getCurrentAccount } from '../utils';
 
+/**
+ * Get all assets
+ * @param q - assets query
+ * @example
+ * ```typescript
+ * const MyComponent = () => {
+ *  const {  result, isLoading } = Catalog.useAssets();
+ *
+ *  return (
+ *   <>
+ *      {result.results.map((d: DDO) => {
+ *          return (
+ *              <div>
+ *              {JSON.stringify(d)}
+ *              </div>
+ *          )
+ *      })}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
 export const useAssets = (
   q: SearchQuery
 ): {
@@ -41,6 +63,23 @@ export const useAssets = (
   };
 };
 
+/**
+ * Get single asset
+ * @param did - asset did
+ * @example
+ * ```typescript
+ * const MyComponent = () => {
+ *  const did = "did";
+ *  const { ddo } = Catalog.useAsset(did);
+ *
+ *  return (
+ *   <>
+ *     {JSON.stringify(ddo)}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
 export const useAsset = (did: string): AssetState => {
   const { assets } = useContext(NeverminedContext);
   const [state, setState] = useState<AssetState>({} as AssetState);
@@ -103,6 +142,10 @@ export interface AssetPublishProviderState {
 
 export const AssetPublishContext = createContext({} as AssetPublishProviderState);
 
+/**
+ * Asset publishing helper
+ *
+ */
 export const AssetPublishProvider = ({ children }: { children: React.ReactElement }) => {
   const { sdk, account } = useNevermined();
   const [errorAssetMessage, setAssetErrorMessage] = useState('');
