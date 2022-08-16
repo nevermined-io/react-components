@@ -69,6 +69,56 @@ export const initializeNevermined = async (
   }
 };
 
+/**
+ * Nevermined Provider to get the core Catalog functionalities as context
+ * 
+ * @param config - The config needed to build Nevermined SDK
+ * @param verbose - Show Catalog logs in console logs if it sets to `true`
+ * 
+ * @example
+ * Initialize NeverminedProvider:
+ * ```typescript
+ * import React from 'react';
+ * import ReactDOM from 'react-dom';
+ * import Catalog from 'test-catalog-core';
+ * import { appConfig } from './config';
+ * import Example from 'examples';
+ * import { MetaMask } from '@nevermined-io/catalog-providers';
+ * import chainConfig, { mumbaiChainId } from './chain_config';
+ * 
+ * 
+ * ReactDOM.render(
+ *   <div>
+ *     <Catalog.NeverminedProvider config={appConfig} verbose={true}>
+ *       <MetaMask.WalletProvider
+ *         externalChainConfig={chainConfig}
+ *         correctNetworkId={mumbaiChainId}
+ *         nodeUri={String(appConfig.nodeUri)}
+ *       >
+ *         <Example />
+ *       </MetaMask.WalletProvider>
+ *     </Catalog.NeverminedProvider>
+ *   </div>,
+ *   document.getElementById('root') as HTMLElement
+ * );
+ * ```
+ * Once it is intialized then we can execute the hook inside components
+ * 
+ * ```
+ * const SDKInstance = () => {
+ *  const { sdk, isLoadingSDK } = Catalog.useNevermined();
+ *
+ *  return (
+ *    <>
+ *      <div>Is Loading SDK</div>
+ *      <div>{isLoadingSDK ? 'Yes' : 'No'}</div>
+ *      <div>Is SDK Avaialable:</div>
+ *      <div>{sdk && Object.keys(sdk).length > 0 ? 'Yes' : 'No'}</div>
+ *    </>
+ *  );
+ *};
+ * ```
+ */
 export const NeverminedProvider = ({ children, config, verbose }: NeverminedProviderProps) => {
   const [{ sdk }, dispatch] = useReducer(neverminedReducer, initialState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -94,6 +144,36 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     loadNevermined();
   }, [config]);
 
+  /**
+   * Rebuild Nevermined sdk with new config values
+   * @param newConfig - Config object to rebuild Nevermined SDK
+   * 
+   * @example
+   * Update Nevermined sdk again:
+   * ```
+   * const Example = (props: ExampleProps) => {
+   *  const { updateSDK, isLoadingSDK } = Catalog.useNevermined();
+   * 
+   *  const reloadSdk = async() => {
+   *     const config = {
+   *         web3Provider: window.ethereum,
+   *         nodeUri: network,
+   *         marketplaceUri,
+   *         gatewayUri,
+   *         faucetUri,
+   *         gatewayAddress,
+   *         secretStoreUri,
+   *         verbose,
+   *         marketplaceAuthToken: Catalog.fetchMarketplaceApiTokenFromLocalStorage().token || '',
+   *         artifactsFolder,
+   *         graphHttpUri: graphUrl
+   *     }
+   *
+   *     updateSDK(config)
+   *   } 
+   * } 
+   * ```
+   */
   const updateSDK = async (newConfig: Config): Promise<boolean> => {
     const newSDK = await initializeNevermined({ ...config, ...newConfig });
     if (newSDK.success) {
@@ -102,8 +182,52 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     return newSDK.success;
   };
 
-  const accountModule: AccountModule = {
+  /**
+   * `account` contain all the functionalities to handle authentications and
+   * collections belonged to an account
+   * 
+   * @example
+   * Authorization example:
+   * ```
+   * const Example = (props: ExampleProps) => {
+   *  const { assets, account, isLoadingSDK } = Catalog.useNevermined();
+   *  
+   *  const buy = async () => {
+   *    if (!account.isTokenValid()) {
+   *      await account.generateToken();
+   *    }
+   *  
+   *    (...)
+   *  };
+   * }
+   * ```
+   * 
+   * Check NFT1155 holder example
+   * ```
+   * const Example = (props: ExampleProps) => {
+   *  const { account, isLoadingSDK } = Catalog.useNevermined();
+   *  const [ownNFT1155, setOwnNFT1155] = useState(false);
+   *  
+   *  useEffect(() => {
+   *    (async () => {
+   *      const response = await account.isNFT1155Holder(ddo.id, walletAddress);
+   *      setOwnNFT1155(response);
+   *    })()
+   *  }, [walletAddress])
+   *  
+   * }
+   * ```
+   */
+  const account: AccountModule = {
+    /**
+     * check if the token for Marketplace API is valid
+     * @returns if token is valid it will return true
+     */
     isTokenValid: (): boolean => isTokenValid(),
+    /**
+     * Generate a token for authentication in the Marketplace API
+     * @returns The new generated token
+     */
     generateToken: async (): Promise<MarketplaceAPIToken> => {
       const tokenData = await newMarketplaceApiToken(sdk);
       const { data } = await initializeNevermined({
@@ -113,6 +237,11 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       dispatch({ type: 'SET_SDK', payload: { sdk: data } });
       return tokenData;
     },
+    /**
+     * Get all the assets published from the address passed by argument
+     * @param address The address owner of the assets that we want to get
+     * @returns List of assets which was published by the address given
+     */
     getReleases: async (address: string): Promise<string[]> => {
       try {
         const query: { _did: string }[] = await sdk.keeper.didRegistry.events.getPastEvents({
@@ -133,6 +262,12 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         return [];
       }
     },
+
+    /**
+     * Get the assets bought by the address given
+     * @param address The address which bought the assets returned
+     * @returns List of assets which was bought by the address given as argument
+     */
     getCollection: async (address: string): Promise<string[]> => {
       try {
         const query: {
@@ -158,7 +293,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-        /**
+    /**
      * This method validates if a user is a NFT (ERC-1155 based) holder for a specific `tokenId`.
      * For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
      * of a NFT (limitted by the NFT cap).
@@ -180,10 +315,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
       return false;
     },
-
-
-    // TODO: fix a bug related to how this is calculated
-    // See: https://github.com/nevermined-io/components-catalog/issues/128
 
     /**
      * This method validates if a user is a NFT (ERC-721 based) holder for a specific NFT contract address.
@@ -208,6 +339,10 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     },
   };
 
+  /**
+   * `assets` contain all the functionalities to handle assets for example get, 
+   * mint, transfer, order or download asset asset
+   */
   const assets: AssetsModule = {
     getSingle: async (did: string): Promise<DDO> => {
       try {
@@ -220,6 +355,11 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
+    /**
+     * 
+     * @param q Query to custom the search: order result, filtering, etc...
+     * @returns List of assets according with the query given
+     */
     query: async (q: SearchQuery): Promise<QueryResult> => {
       try {
         if (isEmptyObject(sdk)) return {} as QueryResult;
@@ -231,6 +371,11 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
+    /**
+     * Mint an asset
+     * @param input Object input with all the data required to mint an asset
+     * @returns If the asset was minted successfuly the function will return `true`
+     */
     mint: async (input: MintNFTInput): Promise<DDO | undefined> => {
       try {
         if (isEmptyObject(sdk)) return undefined;
@@ -274,6 +419,13 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
+    /**
+     * Transfer the ownership of the asset to other account
+     * @param assetInfo
+     * @param assetInfo.did The id of the asset
+     * @param assetInfo.amount The amount of asset to transfer 
+     * @returns Return true if asset was transferred successfuly
+     */
     transfer: async ({ did, amount }: { did: string; amount: number }): Promise<boolean> => {
       try {
         if (!config.gatewayAddress || !config.gatewayUri) {
@@ -513,7 +665,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     sdkError: error,
     subscribe,
     assets,
-    account: accountModule,
+    account,
     updateSDK,
     subscription
   };
