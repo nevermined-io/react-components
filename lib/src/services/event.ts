@@ -1,6 +1,45 @@
 import { Logger, Nevermined, subgraphs } from '@nevermined-io/nevermined-sdk-js';
 import { FullfilledOrders, RegisterEvent, Transfer } from '../types';
 
+/**
+ * Get transfers recieved by address
+ * @param sdk - Nevermined instance
+ * @param receiver - transfers receiver address
+ *
+ * @example
+ * ```typescript
+ * import Catalog from "@nevermined-io/catalog-core";
+ * import { useState } from "react";
+ *
+ * const MyComponent = () => {
+ *  const [transfers, setTransfers] = useState<Transfer[]>([]);
+ *  const { getTransfers } = Catalog;
+ *  const { sdk } = Catalog.useNevermined();
+ *
+ *  useEffect(() => {
+ *      const handler = async () => {
+ *           const t: Transfer[] = await getTransfers(sdk, receiverAddress)          
+ *           setTransfers(t)
+ *      }
+ *  }, [receiverAddress, sdk]);
+ *
+ *  return (
+ *   <>
+ *      {transfers.map((p) => {
+ *          return (
+ *              <div>
+ *                  <div>{p.id}</div>
+ *                  <div>{p._did}</div>
+ *                  <div>{p._agreementId}</div>
+ *                  <div>{p._receiver}</div>
+ *              </div>
+ *          )
+ *      })}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
 export const getTransfers = async (sdk: Nevermined, receiver: string): Promise<Transfer[]> => {
   try {
     const resultStruct = {
@@ -28,6 +67,43 @@ export const getTransfers = async (sdk: Nevermined, receiver: string): Promise<T
   }
 };
 
+/**
+ * Get fullfilled events by user address
+ * @param sdk - Nevermined instance
+ * @param account - user address
+ *
+ * @example
+ * ```typescript
+ * import Catalog from "@nevermined-io/catalog-core";
+ * import { useState } from "react";
+ *
+ * const MyComponent = () => {
+ *  const [events, setEvents] = useState<Transfer[]>([]);
+ *  const { getUserFulfilledEvents } = Catalog;
+ *  const { sdk } = Catalog.useNevermined();
+ *
+ *  useEffect(() => {
+ *      const handler = async () => {
+ *           const t: Transfer[] = await getUserFulfilledEvents(sdk, receiverAddress)          
+ *           setTransfers(t)
+ *      }
+ *  }, [setEvents, sdk]);
+ *
+ *  return (
+ *   <>
+ *      {events.map((p) => {
+ *          return (
+ *              <div>
+ *                  <div>{p.id}</div>
+ *                  <div>{p._documentId}</div>
+ *              </div>
+ *          )
+ *      })}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
 export const getUserFulfilledEvents = async (
   sdk: Nevermined,
   account: string
@@ -39,7 +115,8 @@ export const getUserFulfilledEvents = async (
       }
     };
     const resultStruct = {
-      _documentId: true
+      _documentId: true,
+      id: true
     };
     const methodName = 'getFulfilleds';
     const result = await sdk.keeper.conditions.accessCondition.events.getPastEvents({
@@ -55,6 +132,46 @@ export const getUserFulfilledEvents = async (
   }
 };
 
+/**
+ * Get events registered by user
+ * @param sdk - Nevermined instance
+ * @param owner - user address of events publisher
+ *
+ * @example
+ * ```typescript
+ * import Catalog from "@nevermined-io/catalog-core";
+ * import { useState } from "react";
+ *
+ * const MyComponent = () => {
+ *  const [events, setEvents] = useState<Transfer[]>([]);
+ *  const { getUserRegisterEvents } = Catalog;
+ *  const { sdk } = Catalog.useNevermined();
+ *
+ *  useEffect(() => {
+ *      const handler = async () => {
+ *           const t: Transfer[] = await getUserRegisterEvents(sdk, receiverAddress)          
+ *           setTransfers(t)
+ *      }
+ *  }, [setEvents, sdk]);
+ *
+ *  return (
+ *   <>
+ *      {events.map((p) => {
+ *          return (
+ *              <div>
+ *                  <div>{p.id}</div>
+ *                  <div>{p._did}</div>
+ *                  <div>{p._owner}</div>
+ *                  <div>{p._lastUpdatedBy}</div>
+ *                  <div>{p._blockNumberUpdated}</div>
+ *              </div>
+ *          )
+ *      })}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
 export const getUserRegisterEvents = async (
   sdk: Nevermined,
   owner: string
@@ -86,14 +203,53 @@ export const getUserRegisterEvents = async (
   }
 };
 
+/**
+ * Get asset register event
+ * @param did - assets did
+ * @param graphurl 
+ *
+ * @example
+ * ```typescript
+ * import Catalog from "@nevermined-io/catalog-core";
+ * import { useState } from "react";
+ *
+ * const MyComponent = () => {
+ *  const [events, setEvents] = useState<Transfer[]>([]);
+ *  const { getAssetRegisterEvent } = Catalog;
+ *  const { sdk } = Catalog.useNevermined();
+ *
+ *  useEffect(() => {
+ *      const handler = async () => {
+ *           const t: Transfer[] = await getAssetRegisterEvent(sdk, receiverAddress)          
+ *           setTransfers(t)
+ *      }
+ *  }, [setEvents, sdk]);
+ *
+ *  return (
+ *   <>
+ *      {events.map((p) => {
+ *          return (
+ *              <div>
+ *                  <div>{p._did}</div>
+ *                  <div>{p._owner}</div>
+ *                  <div>{p._lastUpdatedBy}</div>
+ *                  <div>{p._blockNumberUpdated}</div>
+ *              </div>
+ *          )
+ *      })}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
 export const getAssetRegisterEvent = async (
-  asset: string,
+  did: string,
   graphUrl: string
 ): Promise<RegisterEvent[]> => {
   try {
     const condition = {
       where: {
-        _did: asset
+        _did: did
       }
     };
     const registerEvents: RegisterEvent[] = await subgraphs.DIDRegistry.getDIDAttributeRegistereds(
