@@ -32,7 +32,7 @@
     ]
   },
   "dependencies": {
-    "test-catalog-core": "0.0.8",
+    "@nevermined-io/catalog-core": "0.0.24",
     "@nevermined-io/catalog-providers": "0.0.22",
     "@nevermined-io/nevermined-sdk-js": "^0.22.5",
     "axios": "^0.24.0",

@@ -474,6 +474,11 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
+    /**
+     * Get the entire object of the asset
+     * @param did id of the asset
+     * @returns Asset object
+     */
     resolve: async (did: string): Promise<DDO | undefined> => {
       try {
         if (isEmptyObject(sdk)) return undefined;
@@ -485,6 +490,11 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
+    /**
+     * 
+     * @param did 
+     * @returns 
+     */
     orderAsset: async (did: string): Promise<string> => {
       const account = await getCurrentAccount(sdk);
 

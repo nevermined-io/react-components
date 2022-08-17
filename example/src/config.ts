@@ -1,5 +1,5 @@
 import { Config } from '@nevermined-io/nevermined-sdk-js';
-import Catalog from 'test-catalog-core';
+import Catalog from '@nevermined-io/catalog-core';
 import { ethers } from 'ethers';
 
 export const gatewayAddress =

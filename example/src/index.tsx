@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Catalog from 'test-catalog-core';
+import Catalog from '@nevermined-io/catalog-core';
 import { appConfig } from './config';
 import Example from 'examples';
 import { MetaMask } from '@nevermined-io/catalog-providers';

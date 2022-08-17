@@ -2,8 +2,8 @@ import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/Asse
 import React, { useEffect, useState } from 'react';
 import { MetaData, Logger, DDO } from '@nevermined-io/nevermined-sdk-js';
 import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
-import Catalog, { MintNFTInput } from 'test-catalog-core';
-import {getCurrentAccount} from 'test-catalog-core/dist/node/utils'
+import Catalog, { MintNFTInput } from '@nevermined-io/catalog-core';
+import {getCurrentAccount} from '@nevermined-io/catalog-core/dist/node/utils'
 import { MetaMask } from '@nevermined-io/catalog-providers';
 
 const SDKInstance = () => {
