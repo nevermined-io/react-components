@@ -6,11 +6,12 @@ import Example from 'examples';
 import { MetaMask } from '@nevermined-io/catalog-providers';
 import chainConfig, { mumbaiChainId } from './chain_config';
 
+
 ReactDOM.render(
   <div>
     <Catalog.NeverminedProvider config={appConfig} verbose={true}>
       <MetaMask.WalletProvider
-        chainConfig={chainConfig}
+        externalChainConfig={chainConfig}
         correctNetworkId={mumbaiChainId}
         nodeUri={String(appConfig.nodeUri)}
       >
