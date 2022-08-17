@@ -16,7 +16,13 @@ import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import { BigNumber } from 'ethers';
 
+
 export { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
+export type {
+  ContractEventSubscription,
+  EventResult
+} from '@nevermined-io/nevermined-sdk-js/dist/node/events';
+
 
 export interface NeverminedProviderContext {
   sdk: Nevermined;

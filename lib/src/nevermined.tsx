@@ -7,15 +7,13 @@ import {
   SearchQuery,
   ClientError,
 } from '@nevermined-io/nevermined-sdk-js';
-import {
-  ContractEventSubscription,
-  EventResult
-} from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import {
   AccountModule,
   AssetsModule,
+  ContractEventSubscription,
+  EventResult,
   GenericOutput,
   MarketplaceAPIToken,
   MintNFTInput,
