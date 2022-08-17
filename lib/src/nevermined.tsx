@@ -490,11 +490,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    /**
-     * 
-     * @param did 
-     * @returns 
-     */
     orderAsset: async (did: string): Promise<string> => {
       const account = await getCurrentAccount(sdk);
 

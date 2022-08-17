@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { MetaData, Logger, DDO } from '@nevermined-io/nevermined-sdk-js';
 import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
 import Catalog, { MintNFTInput } from '@nevermined-io/catalog-core';
-import {getCurrentAccount} from '@nevermined-io/catalog-core/dist/node/utils'
+import { getCurrentAccount } from '@nevermined-io/catalog-core'
 import { MetaMask } from '@nevermined-io/catalog-providers';
 
 const SDKInstance = () => {
@@ -102,15 +102,14 @@ const BuyAsset = ({ddo}: {ddo: DDO}) => {
   const { walletAddress } = MetaMask.useWallet();
   const [ownNFT1155, setOwnNFT1155] = useState(false);
   const [isBought, setIsBought] = useState(false);
-  const owner = ddo.proof.creator;
+  const [owner, setOwner] = useState('');
   
   useEffect(() => {
     (async () => {
-      const response = await account.isNFT1155Holder(ddo.id, walletAddress);
-      setOwnNFT1155(response);
+      setOwnNFT1155(await account.isNFT1155Holder(ddo.id, walletAddress));
+      setOwner(await sdk.assets.owner(ddo.id))
     })()
   }, [walletAddress, isBought])
-
 
   const buy = async () => {
     if (!account.isTokenValid()) {
@@ -210,7 +209,7 @@ const App = () => {
         </>
       )}
       <MMWallet />
-      {ddo?.proof?.creator && 
+      {ddo?.id && 
         <>
           <SingleAsset ddo={ddo}/>
           <BuyAsset ddo={ddo}/>
