@@ -18,6 +18,15 @@ import { BigNumber } from 'ethers';
 
 export { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
 
+/**
+ * Values returns from the main NVM context
+ * Can be consumed after wrapping your project with the catalog(see setup steps)
+ * 
+ * example:
+ *
+ * option 1: const { sdk, sdkError, isLoadingSdk, ...others } = useContext(Catalog.NeverminedContext)
+ * option 2: const { sdk, sdkError, isLoadingSdk, ...others } = Catalog.useNevermined()
+ */
 export interface NeverminedProviderContext {
   sdk: Nevermined;
   sdkError: any;
@@ -26,19 +35,28 @@ export interface NeverminedProviderContext {
   subscribe: SubscribeModule;
   assets: AssetsModule;
   account: AccountModule;
-  subscription: SubscriptionActions
+  subscription: SubscriptionActions;
 }
 
+/**
+ * Values needed in order to initialize Catalog.
+ * @param children - React component
+ * @param verbose - show logs for debug/info
+ * @param config -  nevermined Config
+ *
+ * const MyIndex = () => {
+ *      ...
+ *      return (
+ *      <Catalog.NeverminedProvider config={config} verbose={verbose}>
+ *       ..children
+ *      </Catalog.NeverminedProvider>
+ *      )
+ * }
+ */
 export interface NeverminedProviderProps {
   children: any;
   verbose?: boolean;
   config: Config;
-}
-
-export interface OutputUseNeverminedService {
-  sdk: Nevermined;
-  isLoading: boolean;
-  error: any;
 }
 
 export interface GenericOutput<T, E> {
@@ -50,10 +68,10 @@ export interface GenericOutput<T, E> {
 export type DID = string;
 
 export interface NFTDetails {
-  owner: any;
-  lastChecksum: any;
-  url: any;
-  lastUpdatedBy: any;
+  owner: string;
+  lastChecksum: string;
+  url: string;
+  lastUpdatedBy: string;
   blockNumberUpdated: number;
   providers: any;
   nftSupply: number;
@@ -61,7 +79,7 @@ export interface NFTDetails {
   royalties: number;
 }
 
-export enum State {
+export enum UserProfileState {
   Disabled = 'disabled',
   Unconfirmed = 'unconfirmed',
   Confirmed = 'confirmed'
@@ -70,7 +88,7 @@ export enum State {
 export interface UserProfileParams {
   userId: string;
   isListed: boolean;
-  state: State;
+  state: UserProfileState;
   nickname: string;
   name: string;
   email: string;
@@ -86,6 +104,10 @@ export interface CustomErc20Token {
   decimals: number;
 }
 
+/**
+ * AccountModule is exposed by the main context
+ * under 'account' object
+ */
 export interface AccountModule {
   getReleases: (address: string) => Promise<DID[]>;
   getCollection: (address: string) => Promise<DID[]>;
@@ -93,6 +115,10 @@ export interface AccountModule {
   isTokenValid: () => boolean;
 }
 
+/**
+ * AssetsModule is exposed by the main context
+ * under 'assets' object
+ */
 export interface AssetsModule {
   getSingle: (did: DID) => Promise<DDO>;
   query: (q: SearchQuery) => Promise<QueryResult>;
@@ -109,11 +135,19 @@ export interface AssetsModule {
   uploadAssetToFilecoin: (File: File, filecoinUrl: string) => Promise<string>;
 }
 
+/**
+ * SubscribeModule is exposed by the main context
+ * under 'subscribe' object
+ */
 export interface SubscribeModule {
   paymentEvents: (cb: (events: EventResult[]) => void) => ContractEventSubscription;
   transferEvents: (cb: (events: EventResult[]) => void) => ContractEventSubscription;
 }
 
+
+/**
+ * Response from "useAsset"
+ */
 export interface AssetState {
   ddo: DDO;
   metadata: MetaData;
@@ -200,7 +234,13 @@ export interface Transfer {
 }
 
 export interface SubscriptionActions {
-  buySubscription: (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: number, nftType: NftTypes) => Promise<boolean>;
+  buySubscription: (
+    subscriptionDid: string,
+    buyer: Account,
+    nftHolder: string,
+    nftAmount: number,
+    nftType: NftTypes
+  ) => Promise<boolean>;
 }
 
 export type { NftTypes } from '@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway';
