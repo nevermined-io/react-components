@@ -929,7 +929,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         return agreementId 
       } catch (error) {
         verbose && Logger.error(error);
-        let errorMessage:string = "Error buying the subscription: "
+        let errorMessage = "Error buying the subscription: "
         if (error instanceof Error) {
           errorMessage = errorMessage.concat(errorMessage)          
         }
