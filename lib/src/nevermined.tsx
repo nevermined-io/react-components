@@ -915,7 +915,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       let agreementId = ''
       try {
         agreementId = nftType === 721 ? await sdk.nfts.order721(subscriptionDid, buyer): await sdk.nfts.order(subscriptionDid, nftAmount, buyer);
-        const transferResult =  sdk.nfts.transferForDelegate(
+        sdk.nfts.transferForDelegate(
           agreementId,
           nftHolder,
           buyer.getId(),
