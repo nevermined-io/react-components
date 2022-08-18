@@ -2,7 +2,7 @@ import { Logger, Nevermined, subgraphs } from '@nevermined-io/nevermined-sdk-js'
 import { FullfilledOrders, RegisterEvent, Transfer } from '../types';
 
 /**
- * Get transfers recieved by address
+ * Get recieved transfers  by address
  * @param sdk - Nevermined instance
  * @param receiver - transfers receiver address
  *
@@ -68,7 +68,7 @@ export const getTransfers = async (sdk: Nevermined, receiver: string): Promise<T
 };
 
 /**
- * Get fullfilled events by user address
+ * Get fullfilled nft transfer events by user address
  * @param sdk - Nevermined instance
  * @param account - user address
  *
@@ -133,7 +133,7 @@ export const getUserFulfilledEvents = async (
 };
 
 /**
- * Get events registered by user
+ * Get nft creating events registered by user
  * @param sdk - Nevermined instance
  * @param owner - user address of events publisher
  *
@@ -204,7 +204,7 @@ export const getUserRegisterEvents = async (
 };
 
 /**
- * Get asset register event
+ * Get asset registering event
  * @param did - assets did
  * @param graphurl 
  *
