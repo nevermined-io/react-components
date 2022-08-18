@@ -4,11 +4,33 @@ import { useNevermined } from '../nevermined';
 import { UserProfileParams } from '../types';
 import { saveMarketplaceApiTokenToLocalStorage } from '../utils/marketplace_token';
 import { Account, Logger } from '@nevermined-io/nevermined-sdk-js';
-import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber'
+import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
 
+/**
+ * Get account releases(mints)
+ * @param id - user address
+ *
+ * @example
+ * ```typescript
+ * const MyComponent = () => {
+ *  const { isLoading, accountReleases  } = Catalog.useAccountReleases();
+ *
+ *  return (
+ *   <>
+ *      {accountReleases.map((a) => {
+ *          return (
+ *              <div>
+ *                  <div>{a}</div>
+ *              </div>
+ *          )
+ *      })}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
 export const useAccountReleases = (
-  id: string,
-  format?: (dids: string[]) => any
+  id: string
 ): { isLoading: boolean; accountReleases: string[] } => {
   const [accountReleases, setAccountReleases] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -19,11 +41,7 @@ export const useAccountReleases = (
       setIsLoading(true);
       const data = await account.getReleases(id);
       setAccountReleases(data);
-      if (format) {
-        setAccountReleases(format(data));
-      } else {
-        setAccountReleases(data);
-      }
+      setAccountReleases(data);
       setIsLoading(false);
     };
     loadReleases();
@@ -32,9 +50,31 @@ export const useAccountReleases = (
   return { isLoading, accountReleases };
 };
 
+/**
+ * Get account owned nfts
+ * @param id - user address
+ *
+ * @example
+ * ```typescript
+ * const MyComponent = () => {
+ *  const { isLoading, accountCollection  } = Catalog.useAccountCollection(userAddr);
+ *
+ *  return (
+ *   <>
+ *      {accountCollection.map((a) => {
+ *          return (
+ *              <div>
+ *                  <div>{a}</div>
+ *              </div>
+ *          )
+ *      })}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
 export const useAccountCollection = (
-  id: string,
-  format: (dids: string[]) => any
+  id: string
 ): { isLoading: boolean; accountCollection: string[] } => {
   const { sdk, account } = useContext(NeverminedContext);
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -45,11 +85,7 @@ export const useAccountCollection = (
       if (!id || !sdk.utils) return;
       setLoading(true);
       const data = await account.getCollection(id);
-      if (format) {
-        setAccountCollection(format(data));
-      } else {
-        setAccountCollection(data);
-      }
+      setAccountCollection(data);
       setLoading(false);
     };
     loadCollection();
@@ -203,7 +239,7 @@ export const useUserProfile = (walletAddress: string) => {
  * This method validates if a user is a NFT (ERC-1155 based) holder for a specific `tokenId`.
  * For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
  * of a NFT (limitted by the NFT cap).
- * 
+ *
  * @param did The unique identifier of the NFT within a NFT ERC-1155 contract
  * @param walletAddress The public address of the user
  * @returns true if the user owns at least one edition of the NFT
@@ -216,15 +252,15 @@ export const userIsNFT1155Holder = (
   const [ownNFT1155, setOwnNFT1155] = useState<boolean>(false);
 
   useEffect(() => {
-    if(isLoadingSDK) {
-      return
+    if (isLoadingSDK) {
+      return;
     }
 
     (async () => {
       const walletAccount = new Account(walletAddress);
       if (walletAccount) {
         const balance = await sdk.nfts.balance(did, walletAccount);
-        const nftBalance =  BigNumber.from(balance).toNumber()
+        const nftBalance = BigNumber.from(balance).toNumber();
         setOwnNFT1155(nftBalance > 0);
       }
     })();
@@ -235,7 +271,6 @@ export const userIsNFT1155Holder = (
   };
 };
 
-
 // TODO: fix a bug related to how this is calculated
 // See: https://github.com/nevermined-io/components-catalog/issues/128
 
@@ -243,7 +278,7 @@ export const userIsNFT1155Holder = (
  * This method validates if a user is a NFT (ERC-721 based) holder for a specific NFT contract address.
  * For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
  * of a NFT (limitted by the NFT cap).
- * 
+ *
  * @param nftAddress The contract address of the ERC-721 NFT contract
  * @param walletAddress The public address of the user
  * @returns true if the user holds the NFT
