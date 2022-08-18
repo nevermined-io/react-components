@@ -16,7 +16,13 @@ import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import { BigNumber } from 'ethers';
 
+
 export { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
+export type {
+  ContractEventSubscription,
+  EventResult
+} from '@nevermined-io/nevermined-sdk-js/dist/node/events';
+
 
 /**
  * Values returns from the main NVM context
@@ -113,6 +119,8 @@ export interface AccountModule {
   getCollection: (address: string) => Promise<DID[]>;
   generateToken: () => Promise<MarketplaceAPIToken>;
   isTokenValid: () => boolean;
+  isNFT1155Holder: (did: string, walletAddress: string) => Promise<boolean>;
+  isNFT721Holder: (did: string, nftTokenAddress: string, walletAddress: string) => Promise<boolean>;
 }
 
 /**
@@ -156,16 +164,31 @@ export interface AssetState {
   nftDetails: NFTDetails;
 }
 
+/**
+ * Mint NFT input interface
+ */
 export interface MintNFTInput {
+  /**MetaData object which contain all the parameters that describes the asset */
   metadata: MetaData;
+  /**The Publisher account of the asset */
   publisher: Account;
+  /** The maximum of assets that can be minted */
   cap: number;
+  /** The profit that the publisher get for every sale */
   royalties: number;
+  /** The price of the asset */
   assetRewards: AssetRewards;
+  /** The amount of NFTs that an address needs to hold in order to access the DID's protected assets. Leave it undefined and it will default to 1. */
   nftAmount?: number;
+  /** The erc20 token address which the buyer will pay the price */
   erc20TokenAddress?: string;
+  /** If assets are minted in the creation process */
   preMint?: boolean;
+  /**  url to set at publishing time that resolves to the metadata of the nft as expected by opensea
+   * @url https://docs.opensea.io/docs/metadata-standards
+   */
   nftMetadata?: string;
+  /** Trasaction number of the asset creation */
   txParams?: TxParameters;
 }
 

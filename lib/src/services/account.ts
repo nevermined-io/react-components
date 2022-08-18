@@ -4,6 +4,7 @@ import { useNevermined } from '../nevermined';
 import { UserProfileParams } from '../types';
 import { saveMarketplaceApiTokenToLocalStorage } from '../utils/marketplace_token';
 import { Account, Logger } from '@nevermined-io/nevermined-sdk-js';
+import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber'
 
 export const useAccountReleases = (
   id: string,
@@ -211,18 +212,23 @@ export const userIsNFT1155Holder = (
   did: string,
   walletAddress: string
 ): { ownNFT1155: boolean } => {
-  const { sdk } = useNevermined();
+  const { sdk, isLoadingSDK } = useNevermined();
   const [ownNFT1155, setOwnNFT1155] = useState<boolean>(false);
 
   useEffect(() => {
+    if(isLoadingSDK) {
+      return
+    }
+
     (async () => {
       const walletAccount = new Account(walletAddress);
       if (walletAccount) {
-        const nft = await sdk.nfts.balance(did, walletAccount);
-        setOwnNFT1155(nft >= 0);
+        const balance = await sdk.nfts.balance(did, walletAccount);
+        const nftBalance =  BigNumber.from(balance).toNumber()
+        setOwnNFT1155(nftBalance > 0);
       }
     })();
-  }, [walletAddress]);
+  }, [walletAddress, isLoadingSDK]);
 
   return {
     ownNFT1155
