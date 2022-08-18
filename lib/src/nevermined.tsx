@@ -33,7 +33,6 @@ import {
 } from './utils';
 import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token';
 import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
-import { AgreementStoreManager } from '@nevermined-io/nevermined-sdk-js/dist/node/subgraphs';
 
 export const initialState = {
   sdk: {} as Nevermined
