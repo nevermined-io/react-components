@@ -33,6 +33,7 @@ import {
 } from './utils';
 import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token';
 import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
+import { AgreementStoreManager } from '@nevermined-io/nevermined-sdk-js/dist/node/subgraphs';
 
 export const initialState = {
   sdk: {} as Nevermined
@@ -895,7 +896,11 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
    * }
    * ```
    */
+  
+
   const subscription = {
+
+  
     /**
      * Order a NFT asset and transfer and delegate it to the subscription buyer
      * @param subscriptionDid Id of the NFT to subscribe
@@ -903,22 +908,33 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
      * @param nftHolder The owner of the NFT asset
      * @param nftAmount The amount of NFT asset to buy
      * @param nftType NFT asset type which can be 721 or 1155
-     * @returns It is true if the subscription was successfully completed
+     * @returns string that contains the id of the agreement
+     * @throws Error when there is an exception ordering the nft or the transferForDelegate method returns false
      */
-    buySubscription: async (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: number, nftType: NftTypes): Promise<boolean> => {
+    buySubscription: async (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: number, nftType: NftTypes): Promise<string> => {
+      
+      let agreementId = ''
       try {
-        const agreementId = nftType === 721 ? await sdk.nfts.order721(subscriptionDid, buyer): await sdk.nfts.order(subscriptionDid, nftAmount, buyer);
-        return sdk.nfts.transferForDelegate(
+        agreementId = nftType === 721 ? await sdk.nfts.order721(subscriptionDid, buyer): await sdk.nfts.order(subscriptionDid, nftAmount, buyer);
+        const transferResult =  sdk.nfts.transferForDelegate(
           agreementId,
           nftHolder,
           buyer.getId(),
           nftAmount,
           nftType
+        ).then((result: boolean) => {
+            if (!result)
+              throw new Error("Error delegating the NFT of the subscription with agreement " + agreementId)
+          }
         )
-
+        return agreementId 
       } catch (error) {
         verbose && Logger.error(error);
-        return false;
+        let errorMessage:string = "Error buying the subscription: "
+        if (error instanceof Error) {
+          errorMessage = errorMessage.concat(errorMessage)          
+        }
+        throw new Error (errorMessage)
       }
     },
     

@@ -223,7 +223,7 @@ export interface Transfer {
 }
 
 export interface SubscriptionActions {
-  buySubscription: (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: number, nftType: NftTypes) => Promise<boolean>;
+  buySubscription: (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: number, nftType: NftTypes) => Promise<string>;
 }
 
 export type { NftTypes } from '@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway';
