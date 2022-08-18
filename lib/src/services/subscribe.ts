@@ -11,7 +11,7 @@ import { NeverminedContext } from '../nevermined';
  * @example
  * ```typescript
  * const MyComponent = () => {
- *  const { paymentEvents } = useSubscribeToPeymentEvents();
+ *  const { paymentEvents } = useSubscribeToPaymentEvents();
  *
  *  return (
  *   <>
