@@ -11,6 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:  
       - uses: actions/checkout@v3
+      - name: Generate core documentation
+        run: |
+          cd lib
+          yarn install --ignore-engines
+          yarn docs
       - name: Install envsubst
         run: |
           sudo apt update
@@ -32,9 +37,4 @@ jobs:
           env > env.file
           chmod +x push-to-docs.sh
           ./push-to-docs.sh
-      - name: Generate core documentation
-        run: |
-          cd lib
-          yarn install --ignore-engines
-          yarn docs
   
