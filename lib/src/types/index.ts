@@ -913,7 +913,7 @@ export interface SubscriptionActions {
     nftHolder: string,
     nftAmount: number,
     nftType: NftTypes
-  ) => Promise<boolean>;
+  ) => Promise<string>;
 }
 
 export type { NftTypes } from '@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway';

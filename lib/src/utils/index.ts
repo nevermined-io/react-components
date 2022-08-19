@@ -6,8 +6,16 @@ interface FullfilledOrders {
   documentId: string;
 }
 
+
+/*
+ * Checks if object is empty
+ */
 export const isEmptyObject = (i: any) => !i || Object.keys(i).length < 1;
 
+
+/*
+ * Returns current account registered in SDK
+ */
 export const getCurrentAccount = async (sdk: Nevermined) => {
   let accounts: Account[] = [];
   if (sdk.accounts) {
