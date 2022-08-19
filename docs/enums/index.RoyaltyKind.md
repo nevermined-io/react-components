@@ -1,14 +1,16 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / RoyaltyKind
+[@nevermined-io/catalog-core](../README.md) / [Modules](../modules.md) / [index](../modules/index.md) / RoyaltyKind
 
 # Enumeration: RoyaltyKind
+
+[index](../modules/index.md).RoyaltyKind
 
 ## Table of contents
 
 ### Enumeration Members
 
-- [Curve](RoyaltyKind.md#curve)
-- [Legacy](RoyaltyKind.md#legacy)
-- [Standard](RoyaltyKind.md#standard)
+- [Curve](index.RoyaltyKind.md#curve)
+- [Legacy](index.RoyaltyKind.md#legacy)
+- [Standard](index.RoyaltyKind.md#standard)
 
 ## Enumeration Members
 

@@ -15,6 +15,7 @@ import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import { BigNumber } from 'ethers';
+import { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
 
 
 export { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
@@ -696,7 +697,7 @@ export interface MintNFTInput {
   /** If assets are minted in the creation process */
   preMint?: boolean;
   /**  url to set at publishing time that resolves to the metadata of the nft as expected by opensea
-   * @url https://docs.opensea.io/docs/metadata-standards
+   * @see {@link https://docs.opensea.io/docs/metadata-standards}
    */
   nftMetadata?: string;
   /** Trasaction number of the asset creation */
@@ -751,67 +752,67 @@ interface ChainNetwork {
  * Config example:
  * ```ts
  * import { zeroX } from '@nevermined-io/nevermined-sdk-js/dist/node/utils';
- *import { acceptedChainId } from 'config';
- *
- *const acceptedChainIdHex = zeroX((+acceptedChainId).toString(16));
- *const spreeChainId = zeroX((8996).toString(16));
- *const polygonLocalnetChainId = zeroX((8997).toString(16));
- *export const mumbaiChainId = zeroX((80001).toString(16));
- *const mainnetChainId = zeroX((137).toString(16));
- *
- *const ChainConfig = {
- *  development: {
- *    chainId: acceptedChainIdHex === spreeChainId ? spreeChainId : polygonLocalnetChainId,
- *    chainName: 'Localhost development',
- *    nativeCurrency: {
- *      name: 'Ethereum',
- *      symbol: 'ETH',
- *      decimals: 18
- *    },
- *    rpcUrls: ['http://localhost:8545'],
- *    blockExplorerUrls: [''],
- *    iconUrls: ['https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png']
- *  },
- *  mumbai: {
- *    chainId: mumbaiChainId,
- *    chainName: 'Polygon Testnet Mumbai',
- *    nativeCurrency: {
- *      name: 'Matic',
- *      symbol: 'MATIC',
- *      decimals: 18
- *    },
- *    rpcUrls: [
- *      'https://matic-mumbai.chainstacklabs.com',
- *      'https://rpc-endpoints.superfluid.dev/mumbai'
- *    ],
- *    blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
- *    iconUrls: ['https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png']
- *  },
- *  mainnet: {
- *    chainId: mainnetChainId,
- *    chainName: 'Polygon Mainnet',
- *    nativeCurrency: {
- *      name: 'Matic',
- *      symbol: 'MATIC',
- *      decimals: 18
- *    },
- *    rpcUrls: ['https://polygon-rpc.com'],
- *    blockExplorerUrls: ['https://polygonscan.com/'],
- *    iconUrls: ['https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png']
- *  },
- *  returnConfig: (chainIdHex: string) => {
- *    if (chainIdHex === spreeChainId || chainIdHex === polygonLocalnetChainId) {
- *      return ChainConfig.development;
- *    }
- *    if (chainIdHex === mumbaiChainId) {
- *      return ChainConfig.mumbai;
- *    }
- *    if (chainIdHex === mainnetChainId) {
- *      return ChainConfig.mainnet;
- *    }
- *    return ChainConfig.development;
- *  }
- *};
+ * import { acceptedChainId } from 'config';
+ * 
+ * const acceptedChainIdHex = zeroX((+acceptedChainId).toString(16));
+ * const spreeChainId = zeroX((8996).toString(16));
+ * const polygonLocalnetChainId = zeroX((8997).toString(16));
+ * export const mumbaiChainId = zeroX((80001).toString(16));
+ * const mainnetChainId = zeroX((137).toString(16));
+ * 
+ * const ChainConfig = {
+ *   development: {
+ *     chainId: acceptedChainIdHex === spreeChainId ? spreeChainId : polygonLocalnetChainId,
+ *     chainName: 'Localhost development',
+ *     nativeCurrency: {
+ *       name: 'Ethereum',
+ *       symbol: 'ETH',
+ *       decimals: 18
+ *     },
+ *     rpcUrls: ['http://localhost:8545'],
+ *     blockExplorerUrls: [''],
+ *     iconUrls: ['https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png']
+ *   },
+ *   mumbai: {
+ *     chainId: mumbaiChainId,
+ *     chainName: 'Polygon Testnet Mumbai',
+ *     nativeCurrency: {
+ *       name: 'Matic',
+ *       symbol: 'MATIC',
+ *       decimals: 18
+ *     },
+ *     rpcUrls: [
+ *       'https://matic-mumbai.chainstacklabs.com',
+ *       'https://rpc-endpoints.superfluid.dev/mumbai'
+ *     ],
+ *     blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
+ *     iconUrls: ['https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png']
+ *   },
+ *   mainnet: {
+ *     chainId: mainnetChainId,
+ *     chainName: 'Polygon Mainnet',
+ *     nativeCurrency: {
+ *       name: 'Matic',
+ *       symbol: 'MATIC',
+ *       decimals: 18
+ *     },
+ *     rpcUrls: ['https://polygon-rpc.com'],
+ *     blockExplorerUrls: ['https://polygonscan.com/'],
+ *     iconUrls: ['https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png']
+ *   },
+ *   returnConfig: (chainIdHex: string) => {
+ *     if (chainIdHex === spreeChainId || chainIdHex === polygonLocalnetChainId) {
+ *       return ChainConfig.development;
+ *     }
+ *     if (chainIdHex === mumbaiChainId) {
+ *       return ChainConfig.mumbai;
+ *     }
+ *     if (chainIdHex === mainnetChainId) {
+ *       return ChainConfig.mainnet;
+ *     }
+ *     return ChainConfig.development;
+ *   }
+ * };
  * ```
  */
 export interface ChainConfig {
@@ -914,6 +915,77 @@ export interface SubscriptionActions {
     nftAmount: number,
     nftType: NftTypes
   ) => Promise<string>;
+}
+
+/**
+ * Provider with all the functionalities to publish assets (no-nft, nft721, nft1155)
+ * 
+ * Here is an example how to implement it
+ * @see {@link https://github.com/nevermined-io/defi-marketplace/tree/main/client/src/%2Bassets/user-publish-steps}
+ */
+export interface AssetPublishProviderState {
+  /** Handle error publish asset message */
+  errorAssetMessage: string;
+  /** Handle publish asset message */
+  assetMessage: string;
+  /** If the asset was published correctly */
+  isPublished: boolean;
+  /** If the asset is publishing*/
+  isProcessing: boolean;
+  /** All the parameters needed to publish an asset */
+  assetPublish: AssetPublishParams;
+  /** Set parameters needed to publish an asset */
+  setAssetPublish: React.Dispatch<React.SetStateAction<AssetPublishParams>>;
+  /** Set asset message */
+  setAssetMessage: React.Dispatch<React.SetStateAction<string>>;
+  /** Set error asset message */
+  setAssetErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  /** Update asset parameters when some input changes
+   * @param value Parameter value
+   * @param input Input where come the changes which match with the parameters
+   */
+  handleChange: (value: string, input: string) => void;
+  /** Reset all the parameters of the asset
+   * @param resetAssetPublish Initial parameters used for reset
+   */
+  reset: (resetAssetPublish: AssetPublishParams) => void;
+  /** Publish no-nft asset
+   * @param asset
+   * @param asset.metadata The description of the asset
+   * @returns Asset object
+   */
+  onAssetPublish: ({ metadata }: { metadata: MetaData }) => Promise<DDO | undefined>;
+  /** Publish a nft721 asset
+   * @param asset
+   * @param asset.nftAddress nft721 token address to publish
+   * @param asset.metadata The description of the asset
+   * @returns Asset object
+   */
+  onAsset721Publish: ({
+    nftAddress,
+    metadata
+  }: {
+    nftAddress: string;
+    metadata: MetaData;
+  }) => Promise<DDO | undefined>;
+  /** Publish a nft1155 asset
+   * @param asset
+   * @param asset.metadata The description of the asset
+   * @param asset.cap Amount of asset that is possible to mint
+   * @param asset.royaltyKind Set how the owner will receive rewards for each sale
+   * @returns Asset object
+   */
+  onAsset1155Publish: ({
+    metadata,
+    cap,
+    royalties,
+    royaltyKind
+  }: {
+    metadata: MetaData;
+    cap: number;
+    royalties: number;
+    royaltyKind: RoyaltyKind;
+  }) => Promise<DDO | undefined>;
 }
 
 export type { NftTypes } from '@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway';

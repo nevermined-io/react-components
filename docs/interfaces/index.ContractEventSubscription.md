@@ -1,12 +1,14 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / ContractEventSubscription
+[@nevermined-io/catalog-core](../README.md) / [Modules](../modules.md) / [index](../modules/index.md) / ContractEventSubscription
 
 # Interface: ContractEventSubscription
+
+[index](../modules/index.md).ContractEventSubscription
 
 ## Table of contents
 
 ### Properties
 
-- [unsubscribe](ContractEventSubscription.md#unsubscribe)
+- [unsubscribe](index.ContractEventSubscription.md#unsubscribe)
 
 ## Properties
 

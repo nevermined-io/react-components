@@ -1,6 +1,8 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / NeverminedProviderProps
+[@nevermined-io/catalog-core](../README.md) / [Modules](../modules.md) / [index](../modules/index.md) / NeverminedProviderProps
 
 # Interface: NeverminedProviderProps
+
+[index](../modules/index.md).NeverminedProviderProps
 
 Nevermined Provider to get the core Catalog functionalities as context
 
@@ -60,9 +62,9 @@ const SDKInstance = () => {
 
 ### Properties
 
-- [children](NeverminedProviderProps.md#children)
-- [config](NeverminedProviderProps.md#config)
-- [verbose](NeverminedProviderProps.md#verbose)
+- [children](index.NeverminedProviderProps.md#children)
+- [config](index.NeverminedProviderProps.md#config)
+- [verbose](index.NeverminedProviderProps.md#verbose)
 
 ## Properties
 
@@ -72,7 +74,7 @@ const SDKInstance = () => {
 
 #### Defined in
 
-[src/types/index.ts:364](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L364)
+[src/types/index.ts:369](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L369)
 
 ___
 
@@ -82,7 +84,7 @@ ___
 
 #### Defined in
 
-[src/types/index.ts:366](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L366)
+[src/types/index.ts:371](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L371)
 
 ___
 
@@ -92,4 +94,4 @@ ___
 
 #### Defined in
 
-[src/types/index.ts:365](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L365)
+[src/types/index.ts:370](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L370)

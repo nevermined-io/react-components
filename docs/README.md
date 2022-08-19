@@ -1,4 +1,4 @@
-@nevermined-io/catalog-core / [Exports](modules.md)
+@nevermined-io/catalog-core / [Modules](modules.md)
 
 ### Example
 

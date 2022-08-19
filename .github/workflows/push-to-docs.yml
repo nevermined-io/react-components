@@ -32,4 +32,9 @@ jobs:
           env > env.file
           chmod +x push-to-docs.sh
           ./push-to-docs.sh
+      - name: Generate core documentation
+        run: |
+          cd lib
+          yarn install --ignore-engines
+          yarn docs
   

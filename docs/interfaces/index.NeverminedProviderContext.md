@@ -1,6 +1,8 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / NeverminedProviderContext
+[@nevermined-io/catalog-core](../README.md) / [Modules](../modules.md) / [index](../modules/index.md) / NeverminedProviderContext
 
 # Interface: NeverminedProviderContext
+
+[index](../modules/index.md).NeverminedProviderContext
 
 Values returns from the main NVM context
 Can be consumed after wrapping your project with the catalog(see setup steps)
@@ -14,20 +16,20 @@ option 2: const { sdk, sdkError, isLoadingSdk, ...others } = Catalog.useNevermin
 
 ### Properties
 
-- [account](NeverminedProviderContext.md#account)
-- [assets](NeverminedProviderContext.md#assets)
-- [isLoadingSDK](NeverminedProviderContext.md#isloadingsdk)
-- [sdk](NeverminedProviderContext.md#sdk)
-- [sdkError](NeverminedProviderContext.md#sdkerror)
-- [subscribe](NeverminedProviderContext.md#subscribe)
-- [subscription](NeverminedProviderContext.md#subscription)
-- [updateSDK](NeverminedProviderContext.md#updatesdk)
+- [account](index.NeverminedProviderContext.md#account)
+- [assets](index.NeverminedProviderContext.md#assets)
+- [isLoadingSDK](index.NeverminedProviderContext.md#isloadingsdk)
+- [sdk](index.NeverminedProviderContext.md#sdk)
+- [sdkError](index.NeverminedProviderContext.md#sdkerror)
+- [subscribe](index.NeverminedProviderContext.md#subscribe)
+- [subscription](index.NeverminedProviderContext.md#subscription)
+- [updateSDK](index.NeverminedProviderContext.md#updatesdk)
 
 ## Properties
 
 ### account
 
-• **account**: [`AccountModule`](AccountModule.md)
+• **account**: [`AccountModule`](index.AccountModule.md)
 
 `account` contains all the functionalities to handle authentications and
 collections belonged to an account
@@ -67,13 +69,13 @@ const Example = (props: ExampleProps) => {
 
 #### Defined in
 
-[src/types/index.ts:255](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L255)
+[src/types/index.ts:260](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L260)
 
 ___
 
 ### assets
 
-• **assets**: [`AssetsModule`](AssetsModule.md)
+• **assets**: [`AssetsModule`](index.AssetsModule.md)
 
 `assets` contains all the functionalities to handle assets for example get, 
 mint, transfer, order or download asset asset
@@ -174,7 +176,7 @@ const Example = () => {
 
 #### Defined in
 
-[src/types/index.ts:218](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L218)
+[src/types/index.ts:223](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L223)
 
 ___
 
@@ -182,9 +184,11 @@ ___
 
 • **isLoadingSDK**: `boolean`
 
+True if sdk is loading
+
 #### Defined in
 
-[src/types/index.ts:39](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L39)
+[src/types/index.ts:44](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L44)
 
 ___
 
@@ -192,9 +196,11 @@ ___
 
 • **sdk**: `Nevermined`
 
+Nevermined sdk instance which has all the core functionalities
+
 #### Defined in
 
-[src/types/index.ts:37](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L37)
+[src/types/index.ts:40](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L40)
 
 ___
 
@@ -202,15 +208,17 @@ ___
 
 • **sdkError**: `any`
 
+Error message from sdk
+
 #### Defined in
 
-[src/types/index.ts:38](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L38)
+[src/types/index.ts:42](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L42)
 
 ___
 
 ### subscribe
 
-• **subscribe**: [`SubscribeModule`](SubscribeModule.md)
+• **subscribe**: [`SubscribeModule`](index.SubscribeModule.md)
 
 `subscribe` contains all the functionalities to handle events
 
@@ -262,13 +270,13 @@ const Example = () => {
 
 #### Defined in
 
-[src/types/index.ts:119](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L119)
+[src/types/index.ts:124](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L124)
 
 ___
 
 ### subscription
 
-• **subscription**: [`SubscriptionActions`](SubscriptionActions.md)
+• **subscription**: [`SubscriptionActions`](index.SubscriptionActions.md)
 
 `subscription` contains all the functionalities to handle asset subscritions by payment
 
@@ -325,7 +333,7 @@ const BuyAsset = ({ddo}: {ddo: DDO}) => {
 
 #### Defined in
 
-[src/types/index.ts:309](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L309)
+[src/types/index.ts:314](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L314)
 
 ___
 
@@ -378,4 +386,4 @@ const Example = (props: ExampleProps) => {
 
 #### Defined in
 
-[src/types/index.ts:70](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L70)
+[src/types/index.ts:75](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L75)

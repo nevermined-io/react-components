@@ -1,6 +1,8 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / AccountModule
+[@nevermined-io/catalog-core](../README.md) / [Modules](../modules.md) / [index](../modules/index.md) / AccountModule
 
 # Interface: AccountModule
+
+[index](../modules/index.md).AccountModule
 
 AccountModule is exposed by the main context
 under 'account' object
@@ -9,34 +11,34 @@ under 'account' object
 
 ### Properties
 
-- [generateToken](AccountModule.md#generatetoken)
-- [getCollection](AccountModule.md#getcollection)
-- [getReleases](AccountModule.md#getreleases)
-- [isNFT1155Holder](AccountModule.md#isnft1155holder)
-- [isNFT721Holder](AccountModule.md#isnft721holder)
-- [isTokenValid](AccountModule.md#istokenvalid)
+- [generateToken](index.AccountModule.md#generatetoken)
+- [getCollection](index.AccountModule.md#getcollection)
+- [getReleases](index.AccountModule.md#getreleases)
+- [isNFT1155Holder](index.AccountModule.md#isnft1155holder)
+- [isNFT721Holder](index.AccountModule.md#isnft721holder)
+- [isTokenValid](index.AccountModule.md#istokenvalid)
 
 ## Properties
 
 ### generateToken
 
-• **generateToken**: () => `Promise`<[`MarketplaceAPIToken`](MarketplaceAPIToken.md)\>
+• **generateToken**: () => `Promise`<[`MarketplaceAPIToken`](index.MarketplaceAPIToken.md)\>
 
 #### Type declaration
 
-▸ (): `Promise`<[`MarketplaceAPIToken`](MarketplaceAPIToken.md)\>
+▸ (): `Promise`<[`MarketplaceAPIToken`](index.MarketplaceAPIToken.md)\>
 
 Generate a token for authentication in the Marketplace API
 
 ##### Returns
 
-`Promise`<[`MarketplaceAPIToken`](MarketplaceAPIToken.md)\>
+`Promise`<[`MarketplaceAPIToken`](index.MarketplaceAPIToken.md)\>
 
 The new generated token
 
 #### Defined in
 
-[src/types/index.ts:435](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L435)
+[src/types/index.ts:477](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L477)
 
 ___
 
@@ -64,7 +66,7 @@ List of assets which was bought by the address given as argument
 
 #### Defined in
 
-[src/types/index.ts:430](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L430)
+[src/types/index.ts:472](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L472)
 
 ___
 
@@ -92,7 +94,7 @@ List of assets which was published by the address given
 
 #### Defined in
 
-[src/types/index.ts:424](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L424)
+[src/types/index.ts:466](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L466)
 
 ___
 
@@ -123,7 +125,7 @@ true if the user owns at least one edition of the NFT
 
 #### Defined in
 
-[src/types/index.ts:450](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L450)
+[src/types/index.ts:492](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L492)
 
 ___
 
@@ -155,7 +157,7 @@ true if the user holds the NFT
 
 #### Defined in
 
-[src/types/index.ts:460](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L460)
+[src/types/index.ts:502](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L502)
 
 ___
 
@@ -177,4 +179,4 @@ if token is valid it will return true
 
 #### Defined in
 
-[src/types/index.ts:440](https://github.com/nevermined-io/components-catalog/blob/122c81c/lib/src/types/index.ts#L440)
+[src/types/index.ts:482](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L482)
