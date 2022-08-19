@@ -108,4 +108,4 @@ Return the network confing by giving chain Id in Hexadecimal
 
 #### Defined in
 
-[src/types/index.ts:822](https://github.com/nevermined-io/components-catalog/blob/41297c1/lib/src/types/index.ts#L822)
+[src/types/index.ts:822](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L822)
