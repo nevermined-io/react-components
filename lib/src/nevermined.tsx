@@ -913,28 +913,26 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     buySubscription: async (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: number, nftType: NftTypes): Promise<string> => {
       
       let agreementId = ''
+      let transferResult = false
       try {
         agreementId = nftType === 721 ? await sdk.nfts.order721(subscriptionDid, buyer): await sdk.nfts.order(subscriptionDid, nftAmount, buyer);
-        sdk.nfts.transferForDelegate(
+        transferResult = await sdk.nfts.transferForDelegate(
           agreementId,
           nftHolder,
           buyer.getId(),
           nftAmount,
           nftType
-        ).then((result: boolean) => {
-            if (!result)
-              throw new Error("Error delegating the NFT of the subscription with agreement " + agreementId)
-          }
         )
-        return agreementId 
       } catch (error) {
         verbose && Logger.error(error);
-        let errorMessage = "Error buying the subscription: "
-        if (error instanceof Error) {
-          errorMessage = errorMessage.concat(errorMessage)          
-        }
-        throw new Error (errorMessage)
+        throw error
       }
+
+      if (!transferResult)
+        throw new Error("Error delegating the NFT of the subscription with agreement " + agreementId)
+        
+      return agreementId 
+      
     },
     
   };
