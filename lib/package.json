@@ -11,7 +11,7 @@
     "test": "jest",
     "eject": "react-scripts eject",
     "ts:lint": "npx eslint . --ext .ts,.tsx",
-    "docs": "npx typedoc"
+    "docs": "npx typedoc && cp -r ./temp-docs/* ./docs"
   },
   "main": "./dist/node/index.js",
   "types": "./dist/node/index.d.ts",
