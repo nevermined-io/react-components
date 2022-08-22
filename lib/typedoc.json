@@ -1,0 +1,12 @@
+{
+    "$schema": "https://typedoc.org/schema.json",
+    "entryPoints": [
+     "./src/index.ts",
+     "./src/services/account.ts",
+     "./src/services/asset.tsx",
+     "./src/services/event.ts",
+     "./src/services/subscribe.ts"
+    ],
+    "plugin": ["typedoc-plugin-markdown"],
+    "out": "../temp-docs"
+}

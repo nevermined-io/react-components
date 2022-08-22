@@ -3,7 +3,7 @@ import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React, { useContext, useEffect, useState, createContext } from 'react';
 import { NeverminedContext, useNevermined } from '../nevermined';
-import { AssetState, AssetPublishParams, RoyaltyKind } from '../types';
+import { AssetState, AssetPublishParams, RoyaltyKind, AssetPublishProviderState } from '../types';
 import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
 import { getCurrentAccount } from '../utils';
 
@@ -108,43 +108,10 @@ export const useAsset = (did: string): AssetState => {
   return { ...state };
 };
 
-export interface AssetPublishProviderState {
-  errorAssetMessage: string;
-  assetMessage: string;
-  isPublished: boolean;
-  isProcessing: boolean;
-  assetPublish: AssetPublishParams;
-  setAssetPublish: React.Dispatch<React.SetStateAction<AssetPublishParams>>;
-  setAssetMessage: React.Dispatch<React.SetStateAction<string>>;
-  setAssetErrorMessage: React.Dispatch<React.SetStateAction<string>>;
-  handleChange: (value: string, input: string) => void;
-  reset: (resetAssetPublish: AssetPublishParams) => void;
-  onAssetPublish: ({ metadata }: { metadata: MetaData }) => Promise<DDO | undefined>;
-  onAsset721Publish: ({
-    nftAddress,
-    metadata
-  }: {
-    nftAddress: string;
-    metadata: MetaData;
-  }) => Promise<DDO | undefined>;
-  onAsset1155Publish: ({
-    metadata,
-    cap,
-    royalties,
-    royaltyKind
-  }: {
-    metadata: MetaData;
-    cap: number;
-    royalties: number;
-    royaltyKind: RoyaltyKind;
-  }) => Promise<DDO | undefined>;
-}
-
 export const AssetPublishContext = createContext({} as AssetPublishProviderState);
 
 /**
  * Asset publishing helper
- *
  */
 export const AssetPublishProvider = ({ children }: { children: React.ReactElement }) => {
   const { sdk, account } = useNevermined();

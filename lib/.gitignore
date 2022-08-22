@@ -67,3 +67,5 @@ dist/
 
 # cypress videos
 cypress/videos
+
+temp-docs
