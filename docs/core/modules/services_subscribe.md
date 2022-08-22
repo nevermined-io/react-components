@@ -50,7 +50,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/subscribe.ts:33](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/subscribe.ts#L33)
+[src/services/subscribe.ts:33](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/services/subscribe.ts#L33)
 
 ___
 
@@ -93,4 +93,4 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/subscribe.ts:89](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/subscribe.ts#L89)
+[src/services/subscribe.ts:89](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/services/subscribe.ts#L89)

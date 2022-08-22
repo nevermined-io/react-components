@@ -23,7 +23,7 @@
 
 #### Defined in
 
-[src/services/asset.tsx:111](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/asset.tsx#L111)
+[src/services/asset.tsx:111](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/services/asset.tsx#L111)
 
 ## Functions
 
@@ -46,7 +46,7 @@ Asset publishing helper
 
 #### Defined in
 
-[src/services/asset.tsx:116](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/asset.tsx#L116)
+[src/services/asset.tsx:116](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/services/asset.tsx#L116)
 
 ___
 
@@ -83,7 +83,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/asset.tsx:83](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/asset.tsx#L83)
+[src/services/asset.tsx:83](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/services/asset.tsx#L83)
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-[src/services/asset.tsx:328](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/asset.tsx#L328)
+[src/services/asset.tsx:328](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/services/asset.tsx#L328)
 
 ___
 
@@ -144,4 +144,4 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/asset.tsx:32](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/asset.tsx#L32)
+[src/services/asset.tsx:32](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/services/asset.tsx#L32)

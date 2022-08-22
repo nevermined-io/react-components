@@ -30,7 +30,7 @@ The block number from blockchain where the asset was updated
 
 #### Defined in
 
-[src/types/index.ts:402](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L402)
+[src/types/index.ts:402](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L402)
 
 ___
 
@@ -42,7 +42,7 @@ The last checksum generated to verify the sources
 
 #### Defined in
 
-[src/types/index.ts:396](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L396)
+[src/types/index.ts:396](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L396)
 
 ___
 
@@ -54,7 +54,7 @@ The modification of the asset
 
 #### Defined in
 
-[src/types/index.ts:400](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L400)
+[src/types/index.ts:400](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L400)
 
 ___
 
@@ -66,7 +66,7 @@ The amount limit of nft which can be minted
 
 #### Defined in
 
-[src/types/index.ts:408](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L408)
+[src/types/index.ts:408](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L408)
 
 ___
 
@@ -78,7 +78,7 @@ The amount of ntfs that are in circulation
 
 #### Defined in
 
-[src/types/index.ts:406](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L406)
+[src/types/index.ts:406](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L406)
 
 ___
 
@@ -90,7 +90,7 @@ The owner of the asset
 
 #### Defined in
 
-[src/types/index.ts:394](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L394)
+[src/types/index.ts:394](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L394)
 
 ___
 
@@ -102,7 +102,7 @@ Which services provide the asset
 
 #### Defined in
 
-[src/types/index.ts:404](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L404)
+[src/types/index.ts:404](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L404)
 
 ___
 
@@ -114,7 +114,7 @@ The rewards that the owner can get for every sale
 
 #### Defined in
 
-[src/types/index.ts:410](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L410)
+[src/types/index.ts:410](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L410)
 
 ___
 
@@ -126,4 +126,4 @@ Url where is located the asset
 
 #### Defined in
 
-[src/types/index.ts:398](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L398)
+[src/types/index.ts:398](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L398)
