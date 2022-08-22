@@ -17,38 +17,179 @@ const convertHextoIntString = (hex: string) => {
     return intString.toString();
 };
 
-export interface ChainNetwork {
+/**
+ * Config network to connect with dapp
+ */
+ interface ChainNetwork {
+    /** Chain id of the network */
     chainId: string;
+    /** Chain name of the network */
     chainName: string;
+    /** Native currency of the network
+     * @example
+     * Ethereum blockchain -> Ethereum currency
+     */
     nativeCurrency: {
-        name: string;
-        symbol: string;
-        decimals: number;
+      /** Name of the token */
+      name: string;
+      /** Nick of the token
+       * @example
+       * Ethereum -> ETH
+       */
+      symbol: string;
+      /** Decimals of the token */
+      decimals: number;
     };
+    /** RPC url to request to the network blockchain */
     rpcUrls: string[];
+    /** Url to explore the transactions from specific network */
     blockExplorerUrls: string[];
+    /** The icon which represent the network */
     iconUrls: string[];
-}
-
-export interface ChainConfig {
+  }
+  
+  /**
+   * Config with all the networks which can be connect by the dapp
+   * 
+   * @example
+   * Config example:
+   * ```ts
+   * import { zeroX } from '@nevermined-io/catalog-core';
+   * import { acceptedChainId } from 'config';
+   * 
+   * const acceptedChainIdHex = zeroX((+acceptedChainId).toString(16));
+   * const spreeChainId = zeroX((8996).toString(16));
+   * const polygonLocalnetChainId = zeroX((8997).toString(16));
+   * export const mumbaiChainId = zeroX((80001).toString(16));
+   * const mainnetChainId = zeroX((137).toString(16));
+   * 
+   * const ChainConfig = {
+   *   development: {
+   *     chainId: acceptedChainIdHex === spreeChainId ? spreeChainId : polygonLocalnetChainId,
+   *     chainName: 'Localhost development',
+   *     nativeCurrency: {
+   *       name: 'Ethereum',
+   *       symbol: 'ETH',
+   *       decimals: 18
+   *     },
+   *     rpcUrls: ['http://localhost:8545'],
+   *     blockExplorerUrls: [''],
+   *     iconUrls: ['https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png']
+   *   },
+   *   mumbai: {
+   *     chainId: mumbaiChainId,
+   *     chainName: 'Polygon Testnet Mumbai',
+   *     nativeCurrency: {
+   *       name: 'Matic',
+   *       symbol: 'MATIC',
+   *       decimals: 18
+   *     },
+   *     rpcUrls: [
+   *       'https://matic-mumbai.chainstacklabs.com',
+   *       'https://rpc-endpoints.superfluid.dev/mumbai'
+   *     ],
+   *     blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
+   *     iconUrls: ['https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png']
+   *   },
+   *   mainnet: {
+   *     chainId: mainnetChainId,
+   *     chainName: 'Polygon Mainnet',
+   *     nativeCurrency: {
+   *       name: 'Matic',
+   *       symbol: 'MATIC',
+   *       decimals: 18
+   *     },
+   *     rpcUrls: ['https://polygon-rpc.com'],
+   *     blockExplorerUrls: ['https://polygonscan.com/'],
+   *     iconUrls: ['https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png']
+   *   },
+   *   returnConfig: (chainIdHex: string) => {
+   *     if (chainIdHex === spreeChainId || chainIdHex === polygonLocalnetChainId) {
+   *       return ChainConfig.development;
+   *     }
+   *     if (chainIdHex === mumbaiChainId) {
+   *       return ChainConfig.mumbai;
+   *     }
+   *     if (chainIdHex === mainnetChainId) {
+   *       return ChainConfig.mainnet;
+   *     }
+   *     return ChainConfig.development;
+   *   }
+   * };
+   * ```
+   */
+  export interface ChainConfig {
+    /** Networks settings */
     [network: string]: ChainNetwork | ((chainIdHex: string) => ChainNetwork);
+    /** Return the network confing by giving chain Id in Hexadecimal */
     returnConfig: (chainIdHex: string) => ChainNetwork;
-}
-
+  }
+  
+/**
+ * Provider with all the functionalities to manage Metamask wallet
+ */
 export interface WalletProviderState {
+    /** Metamask provider for example web3 or ethers */
     getProvider: () => MetamaskProvider;
+    /** Logout from the wallet */
     logout: () => void;
+    /** Check if the user is logged in the Metamask wallet */
     checkIsLogged: () => Promise<boolean>;
+    /** If Metamask wallet is installed and available in the browser */
     isAvailable: () => boolean;
+    /** Switch between Metamask accounts */
     promptSwitchAccounts: () => Promise<void>;
+    /** Check if the switched chain is supported
+     * and in case that not it suggests to change to the default chain
+     * also if a chain is not registered in Metamask it ask for register it */
     switchChainsOrRegisterSupportedChain: () => Promise<void>;
+    /** The address of the wallet account */
     walletAddress: string;
+    /** Login in Metamask */
     loginMetamask: () => Promise<void>;
+    /** If chain is supported between available networks */
     isChainCorrect: boolean;
 }
 
 export const WalletContext = createContext({} as WalletProviderState);
 
+/**
+ * Wallet provider for Metamask with all the functionalities to handle the wallet in dapp 
+ * @param config
+ * @param config.nodeUri Blockchain node url to connect
+ * @param config.correctNetworkId Id of the default blockchain network in Hexadecimal
+ * @param config.externalChainConfig Config with all the available chains that can be use in the dapp
+ * @returns All the functionalities to handle the wallet in dapp
+ * 
+ * @example
+ * Start Metamask provider example:
+ * 
+ * ```tsx
+ * import React from 'react';
+ * import ReactDOM from 'react-dom';
+ * import Catalog from '@nevermined-io/catalog-core';
+ * import { appConfig } from './config';
+ * import Example from 'examples';
+ * import { MetaMask } from '@nevermined-io/catalog-providers';
+ * import chainConfig, { mumbaiChainId } from './chain_config';
+ * 
+ * 
+ * ReactDOM.render(
+ *   <div>
+ *     <Catalog.NeverminedProvider config={appConfig} verbose={true}>
+ *       <MetaMask.WalletProvider
+ *         externalChainConfig={chainConfig}
+ *         correctNetworkId={mumbaiChainId}
+ *         nodeUri={String(appConfig.nodeUri)}
+ *       >
+ *         <Example />
+ *       </MetaMask.WalletProvider>
+ *     </Catalog.NeverminedProvider>
+ *   </div>,
+ *   document.getElementById('root') as HTMLElement
+ * );
+ * ```
+ */
 export const WalletProvider = ({
     children,
     nodeUri,
