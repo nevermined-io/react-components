@@ -103,7 +103,7 @@ export const useAccountCollection = (
  * 
  * @example
  * Profile dashboard example:
- * ```ts
+ * ```tsx
  * import React, { useEffect, useRef } from 'react'
  * import Catalog from '@nevermined-io/catalog-core'
  * import { MetaMask } from '@nevermined-io/catalog-providers'

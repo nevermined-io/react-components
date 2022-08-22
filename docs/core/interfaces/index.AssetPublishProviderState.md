@@ -40,7 +40,7 @@ Handle publish asset message
 
 #### Defined in
 
-[src/types/index.ts:930](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L930)
+[src/types/index.ts:822](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L822)
 
 ___
 
@@ -52,7 +52,7 @@ All the parameters needed to publish an asset
 
 #### Defined in
 
-[src/types/index.ts:936](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L936)
+[src/types/index.ts:828](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L828)
 
 ___
 
@@ -64,7 +64,7 @@ Handle error publish asset message
 
 #### Defined in
 
-[src/types/index.ts:928](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L928)
+[src/types/index.ts:820](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L820)
 
 ___
 
@@ -91,7 +91,7 @@ Update asset parameters when some input changes
 
 #### Defined in
 
-[src/types/index.ts:947](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L947)
+[src/types/index.ts:839](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L839)
 
 ___
 
@@ -103,7 +103,7 @@ If the asset is publishing
 
 #### Defined in
 
-[src/types/index.ts:934](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L934)
+[src/types/index.ts:826](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L826)
 
 ___
 
@@ -115,7 +115,7 @@ If the asset was published correctly
 
 #### Defined in
 
-[src/types/index.ts:932](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L932)
+[src/types/index.ts:824](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L824)
 
 ___
 
@@ -147,7 +147,7 @@ Asset object
 
 #### Defined in
 
-[src/types/index.ts:978](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L978)
+[src/types/index.ts:870](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L870)
 
 ___
 
@@ -177,7 +177,7 @@ Asset object
 
 #### Defined in
 
-[src/types/index.ts:964](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L964)
+[src/types/index.ts:856](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L856)
 
 ___
 
@@ -206,7 +206,7 @@ Asset object
 
 #### Defined in
 
-[src/types/index.ts:957](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L957)
+[src/types/index.ts:849](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L849)
 
 ___
 
@@ -232,7 +232,7 @@ Reset all the parameters of the asset
 
 #### Defined in
 
-[src/types/index.ts:951](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L951)
+[src/types/index.ts:843](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L843)
 
 ___
 
@@ -244,7 +244,7 @@ Set error asset message
 
 #### Defined in
 
-[src/types/index.ts:942](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L942)
+[src/types/index.ts:834](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L834)
 
 ___
 
@@ -256,7 +256,7 @@ Set asset message
 
 #### Defined in
 
-[src/types/index.ts:940](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L940)
+[src/types/index.ts:832](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L832)
 
 ___
 
@@ -268,4 +268,4 @@ Set parameters needed to publish an asset
 
 #### Defined in
 
-[src/types/index.ts:938](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L938)
+[src/types/index.ts:830](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L830)

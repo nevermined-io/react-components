@@ -11,9 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:  
       - uses: actions/checkout@v3
-      - name: Generate core documentation
+      - name: Generate documentation for the Catalog core
         run: |
           cd lib
+          yarn install --ignore-engines
+          yarn docs
+      - name: Generate documentation for the Catalog providers
+        run: |
+          cd providers
           yarn install --ignore-engines
           yarn docs
       - name: Install envsubst

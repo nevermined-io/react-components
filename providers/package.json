@@ -10,7 +10,8 @@
     "clean": "rm -rf dist",
     "test": "jest",
     "eject": "react-scripts eject",
-    "ts:lint": "npx eslint . --ext .ts,.tsx"
+    "ts:lint": "npx eslint . --ext .ts,.tsx",
+    "docs": "npx typedoc && mkdir -p ../docs/providers && cp -r ../temp-docs/* ../docs/providers && rm -rf ../temp-docs"
   },
   "main": "./dist/node/index.js",
   "types": "./dist/node/index.d.ts",
@@ -45,7 +46,7 @@
     "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
-    "@nevermined-io/nevermined-sdk-js": "^0.22.5",
+    "@nevermined-io/nevermined-sdk-js": "^0.23.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@types/jest": "^27.0.3",
@@ -68,6 +69,8 @@
     "ts-jest": "^28.0.7",
     "ts-node": "^10.8.0",
     "ts-node-dev": "^2.0.0",
+    "typedoc": "^0.23.10",
+    "typedoc-plugin-markdown": "^3.13.4",
     "typescript": "^4.6.2"
   }
 }

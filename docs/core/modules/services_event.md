@@ -21,7 +21,7 @@ Get asset registering event
 
 **`Example`**
 
-```typescript
+```tsx
 import Catalog from "@nevermined-io/catalog-core";
 import { useState } from "react";
 
@@ -67,7 +67,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:245](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/services/event.ts#L245)
+[src/services/event.ts:245](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/event.ts#L245)
 
 ___
 
@@ -79,7 +79,7 @@ Get recieved transfers  by address
 
 **`Example`**
 
-```typescript
+```tsx
 import Catalog from "@nevermined-io/catalog-core";
 import { useState } from "react";
 
@@ -125,7 +125,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:43](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/services/event.ts#L43)
+[src/services/event.ts:43](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/event.ts#L43)
 
 ___
 
@@ -137,7 +137,7 @@ Get fullfilled nft transfer events by user address
 
 **`Example`**
 
-```typescript
+```tsx
 import Catalog from "@nevermined-io/catalog-core";
 import { useState } from "react";
 
@@ -181,7 +181,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:107](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/services/event.ts#L107)
+[src/services/event.ts:107](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/event.ts#L107)
 
 ___
 
@@ -193,7 +193,7 @@ Get nft creating events registered by user
 
 **`Example`**
 
-```typescript
+```tsx
 import Catalog from "@nevermined-io/catalog-core";
 import { useState } from "react";
 
@@ -240,4 +240,4 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:175](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/services/event.ts#L175)
+[src/services/event.ts:175](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/event.ts#L175)

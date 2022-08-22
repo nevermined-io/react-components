@@ -57,7 +57,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/account.ts:76](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/services/account.ts#L76)
+[src/services/account.ts:76](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/account.ts#L76)
 
 ___
 
@@ -104,7 +104,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/account.ts:32](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/services/account.ts#L32)
+[src/services/account.ts:32](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/account.ts#L32)
 
 ___
 
@@ -117,7 +117,7 @@ Custom hook to handle User Profile: login, profile description, add new accounts
 **`Example`**
 
 Profile dashboard example:
-```ts
+```tsx
 import React, { useEffect, useRef } from 'react'
 import Catalog from '@nevermined-io/catalog-core'
 import { MetaMask } from '@nevermined-io/catalog-providers'
@@ -326,7 +326,7 @@ export const UserProfile: NextPage = () => {
 
 #### Defined in
 
-[src/services/account.ts:287](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/services/account.ts#L287)
+[src/services/account.ts:287](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/account.ts#L287)
 
 ___
 
@@ -357,7 +357,7 @@ true if the user owns at least one edition of the NFT
 
 #### Defined in
 
-[src/services/account.ts:460](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/services/account.ts#L460)
+[src/services/account.ts:460](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/account.ts#L460)
 
 ___
 
@@ -389,4 +389,4 @@ true if the user holds the NFT
 
 #### Defined in
 
-[src/services/account.ts:499](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/services/account.ts#L499)
+[src/services/account.ts:499](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/account.ts#L499)

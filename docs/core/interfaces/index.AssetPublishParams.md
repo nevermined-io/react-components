@@ -32,7 +32,7 @@ Files to download after buy the asset
 
 #### Defined in
 
-[src/types/index.ts:852](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L852)
+[src/types/index.ts:744](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L744)
 
 ___
 
@@ -44,7 +44,7 @@ Who create the asset
 
 #### Defined in
 
-[src/types/index.ts:842](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L842)
+[src/types/index.ts:734](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L734)
 
 ___
 
@@ -56,7 +56,7 @@ The category that belong the asset
 
 #### Defined in
 
-[src/types/index.ts:848](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L848)
+[src/types/index.ts:740](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L740)
 
 ___
 
@@ -68,7 +68,7 @@ Description about what is the utility of the asset
 
 #### Defined in
 
-[src/types/index.ts:844](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L844)
+[src/types/index.ts:736](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L736)
 
 ___
 
@@ -80,7 +80,7 @@ Name of the asset
 
 #### Defined in
 
-[src/types/index.ts:840](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L840)
+[src/types/index.ts:732](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L732)
 
 ___
 
@@ -92,7 +92,7 @@ Price of the asset
 
 #### Defined in
 
-[src/types/index.ts:850](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L850)
+[src/types/index.ts:742](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L742)
 
 ___
 
@@ -104,4 +104,4 @@ The type of the asset
 
 #### Defined in
 
-[src/types/index.ts:846](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L846)
+[src/types/index.ts:738](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L738)

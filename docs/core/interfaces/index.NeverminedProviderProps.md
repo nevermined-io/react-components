@@ -17,7 +17,7 @@ Show Catalog logs in console logs if it sets to `true`
 **`Example`**
 
 Initialize NeverminedProvider:
-```ts
+```tsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Catalog from 'test-catalog-core';
@@ -74,7 +74,7 @@ const SDKInstance = () => {
 
 #### Defined in
 
-[src/types/index.ts:369](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L369)
+[src/types/index.ts:369](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L369)
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-[src/types/index.ts:371](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L371)
+[src/types/index.ts:371](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L371)
 
 ___
 
@@ -94,4 +94,4 @@ ___
 
 #### Defined in
 
-[src/types/index.ts:370](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L370)
+[src/types/index.ts:370](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L370)

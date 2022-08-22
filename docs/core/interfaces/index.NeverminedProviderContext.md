@@ -69,7 +69,7 @@ const Example = (props: ExampleProps) => {
 
 #### Defined in
 
-[src/types/index.ts:260](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L260)
+[src/types/index.ts:260](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L260)
 
 ___
 
@@ -84,7 +84,7 @@ mint, transfer, order or download asset asset
 
 Mint an asset example:
 
-```ts
+```tsx
 const Example = () => {
  const { isLoadingSDK, sdk, account, assets } = Catalog.useNevermined();
  const [ddo, setDDO] = useState<DDO>({} as DDO)
@@ -176,7 +176,7 @@ const Example = () => {
 
 #### Defined in
 
-[src/types/index.ts:223](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L223)
+[src/types/index.ts:223](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L223)
 
 ___
 
@@ -188,7 +188,7 @@ True if sdk is loading
 
 #### Defined in
 
-[src/types/index.ts:44](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L44)
+[src/types/index.ts:44](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L44)
 
 ___
 
@@ -200,7 +200,7 @@ Nevermined sdk instance which has all the core functionalities
 
 #### Defined in
 
-[src/types/index.ts:40](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L40)
+[src/types/index.ts:40](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L40)
 
 ___
 
@@ -212,7 +212,7 @@ Error message from sdk
 
 #### Defined in
 
-[src/types/index.ts:42](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L42)
+[src/types/index.ts:42](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L42)
 
 ___
 
@@ -226,7 +226,7 @@ ___
 
 Subcribe payment event:
 
-```ts
+```tsx
 const Example = () => {
  const { subscribe, subscription, account, isLoadingSDK} = Catalog.useNevermined();
  const { paymentEvent, setPaymentEvent } = useState<ContractEventSubscription>();
@@ -270,7 +270,7 @@ const Example = () => {
 
 #### Defined in
 
-[src/types/index.ts:124](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L124)
+[src/types/index.ts:124](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L124)
 
 ___
 
@@ -284,7 +284,7 @@ ___
 
 Buy subscription example
 
-```ts
+```tsx
 const BuyAsset = ({ddo}: {ddo: DDO}) => {
  const { assets, account, isLoadingSDK, subscription, sdk } = Catalog.useNevermined();
  const { walletAddress } = MetaMask.useWallet();
@@ -333,7 +333,7 @@ const BuyAsset = ({ddo}: {ddo: DDO}) => {
 
 #### Defined in
 
-[src/types/index.ts:314](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L314)
+[src/types/index.ts:314](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L314)
 
 ___
 
@@ -386,4 +386,4 @@ const Example = (props: ExampleProps) => {
 
 #### Defined in
 
-[src/types/index.ts:75](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L75)
+[src/types/index.ts:75](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L75)
