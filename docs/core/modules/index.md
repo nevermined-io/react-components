@@ -69,7 +69,7 @@ Id of the asset
 
 #### Defined in
 
-[src/types/index.ts:387](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L387)
+[src/types/index.ts:387](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L387)
 
 ___
 
@@ -128,11 +128,11 @@ node_modules/@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway.d.ts:6
 | `useSubscribeToTransferEvents` | () => { `transferEvents`: [`EventResult`](index.md#eventresult)[]  } |
 | `useUserProfile` | (`walletAddress`: `string`) => { `addresses`: `string`[] ; `errorMessage`: `string` ; `inputError`: `string` ; `isAddressAdded`: `boolean` ; `isUpdated`: `boolean` ; `newAddress`: `string` ; `onAddAddress`: () => `Promise`<`void`\> ; `onSubmitUserProfile`: () => `Promise`<`void`\> ; `setUserProfile`: `Dispatch`<`SetStateAction`<`Partial`<[`UserProfileParams`](../interfaces/index.UserProfileParams.md)\>\>\> ; `successMessage`: `string` ; `userProfile`: `Partial`<[`UserProfileParams`](../interfaces/index.UserProfileParams.md)\>  } |
 | `userIsNFT1155Holder` | (`did`: `string`, `walletAddress`: `string`) => { `ownNFT1155`: `boolean`  } |
-| `userIsNFT721Holder` | (`did`: `string`, `nftTokenAddress`: `string`, `walletAddress`: `string`) => { `ownNFT721`: `boolean`  } |
+| `userIsNFT721Holder` | (`did`: `string`, `nftTokenAddress`: `string`, `walletAddress`: `string`, `agreementId`: `string`) => { `ownNFT721`: `boolean`  } |
 
 #### Defined in
 
-[src/index.ts:10](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/index.ts#L10)
+[src/index.ts:10](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/index.ts#L10)
 
 ## Functions
 
@@ -155,7 +155,7 @@ node_modules/@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway.d.ts:6
 
 #### Defined in
 
-[src/utils/index.ts:85](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/utils/index.ts#L85)
+[src/utils/index.ts:85](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/utils/index.ts#L85)
 
 ___
 
@@ -175,7 +175,7 @@ ___
 
 #### Defined in
 
-[src/utils/index.ts:19](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/utils/index.ts#L19)
+[src/utils/index.ts:19](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/utils/index.ts#L19)
 
 ___
 

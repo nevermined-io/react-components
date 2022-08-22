@@ -25,7 +25,7 @@ Amount of tokens holded by the wallet account
 
 #### Defined in
 
-[src/types/index.ts:451](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L451)
+[src/types/index.ts:451](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L451)
 
 ___
 
@@ -37,7 +37,7 @@ Decimals of the token
 
 #### Defined in
 
-[src/types/index.ts:453](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L453)
+[src/types/index.ts:453](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L453)
 
 ___
 
@@ -49,7 +49,7 @@ Name of the token
 
 #### Defined in
 
-[src/types/index.ts:449](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L449)
+[src/types/index.ts:449](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L449)
 
 ___
 
@@ -67,4 +67,4 @@ Ethereum -> ETH
 
 #### Defined in
 
-[src/types/index.ts:447](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L447)
+[src/types/index.ts:447](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L447)
