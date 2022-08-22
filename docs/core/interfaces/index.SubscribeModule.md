@@ -10,7 +10,7 @@
 
 Subcribe payment event:
 
-```ts
+```tsx
 const Example = () => {
  const { subscribe, subscription, account, isLoadingSDK} = Catalog.useNevermined();
  const { paymentEvent, setPaymentEvent } = useState<ContractEventSubscription>();
@@ -85,7 +85,7 @@ return the `payment` event with a functionality to unsubscribe
 
 #### Defined in
 
-[src/types/index.ts:653](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L653)
+[src/types/index.ts:653](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L653)
 
 ___
 
@@ -113,4 +113,4 @@ return the `transfer` event with a functionality to unsubscribe
 
 #### Defined in
 
-[src/types/index.ts:659](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/types/index.ts#L659)
+[src/types/index.ts:659](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/types/index.ts#L659)

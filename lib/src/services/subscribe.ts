@@ -65,7 +65,7 @@ export const useSubscribeToPaymentEvents = (): { paymentEvents: EventResult[] } 
  * Subscribe to nft transfer events
  *
  * @example
- * ```typescript
+ * ```tsx
  * const MyComponent = () => {
  *  const { transferEvents } = useSubscribeToTransferEvents();
  *

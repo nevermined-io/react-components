@@ -50,7 +50,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/subscribe.ts:33](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/services/subscribe.ts#L33)
+[src/services/subscribe.ts:33](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/subscribe.ts#L33)
 
 ___
 
@@ -62,7 +62,7 @@ Subscribe to nft transfer events
 
 **`Example`**
 
-```typescript
+```tsx
 const MyComponent = () => {
  const { transferEvents } = useSubscribeToTransferEvents();
 
@@ -93,4 +93,4 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/subscribe.ts:89](https://github.com/nevermined-io/components-catalog/blob/885bfce/lib/src/services/subscribe.ts#L89)
+[src/services/subscribe.ts:89](https://github.com/nevermined-io/components-catalog/blob/f49140f/lib/src/services/subscribe.ts#L89)

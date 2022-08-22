@@ -7,7 +7,7 @@ import { FullfilledOrders, RegisterEvent, Transfer } from '../types';
  * @param receiver - transfers receiver address
  *
  * @example
- * ```typescript
+ * ```tsx
  * import Catalog from "@nevermined-io/catalog-core";
  * import { useState } from "react";
  *
@@ -73,7 +73,7 @@ export const getTransfers = async (sdk: Nevermined, receiver: string): Promise<T
  * @param account - user address
  *
  * @example
- * ```typescript
+ * ```tsx
  * import Catalog from "@nevermined-io/catalog-core";
  * import { useState } from "react";
  *
@@ -138,7 +138,7 @@ export const getUserFulfilledEvents = async (
  * @param owner - user address of events publisher
  *
  * @example
- * ```typescript
+ * ```tsx
  * import Catalog from "@nevermined-io/catalog-core";
  * import { useState } from "react";
  *
@@ -209,7 +209,7 @@ export const getUserRegisterEvents = async (
  * @param graphurl 
  *
  * @example
- * ```typescript
+ * ```tsx
  * import Catalog from "@nevermined-io/catalog-core";
  * import { useState } from "react";
  *

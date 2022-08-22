@@ -1,4 +1,4 @@
-```typescript
+```tsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Config, DDO } from '@nevermined-io/nevermined-sdk-js';
@@ -57,7 +57,7 @@ Implemented modules include subscribe, assets, account, and events. Each modules
 with the sdk and exposes the functionality through the context.
 For example:
 
-```typescript
+```tsx
   const SingleAssetView = () => {
       const { assets, sdk } = useContext(NeverminedContext);
       const did = '123';

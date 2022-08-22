@@ -11,7 +11,7 @@ import { getCurrentAccount } from '../utils';
  * Get all assets
  * @param q - assets query
  * @example
- * ```typescript
+ * ```tsx
  * const MyComponent = () => {
  *  const {  result, isLoading } = Catalog.useAssets();
  *
@@ -67,7 +67,7 @@ export const useAssets = (
  * Get single asset
  * @param did - asset did
  * @example
- * ```typescript
+ * ```tsx
  * const MyComponent = () => {
  *  const did = "did";
  *  const { ddo } = Catalog.useAsset(did);

@@ -79,7 +79,7 @@ export interface NeverminedProviderContext {
    * @example
    * Subcribe payment event:
    * 
-   * ```ts
+   * ```tsx
    * const Example = () => {
    *  const { subscribe, subscription, account, isLoadingSDK} = Catalog.useNevermined();
    *  const { paymentEvent, setPaymentEvent } = useState<ContractEventSubscription>();
@@ -129,7 +129,7 @@ export interface NeverminedProviderContext {
    * @example
    * Mint an asset example:
    * 
-   * ```ts
+   * ```tsx
    * const Example = () => {
    *  const { isLoadingSDK, sdk, account, assets } = Catalog.useNevermined();
    *  const [ddo, setDDO] = useState<DDO>({} as DDO)
@@ -264,7 +264,7 @@ export interface NeverminedProviderContext {
    * @example
    * Buy subscription example
    * 
-   * ```ts
+   * ```tsx
    * const BuyAsset = ({ddo}: {ddo: DDO}) => {
    *  const { assets, account, isLoadingSDK, subscription, sdk } = Catalog.useNevermined();
    *  const { walletAddress } = MetaMask.useWallet();
@@ -322,7 +322,7 @@ export interface NeverminedProviderContext {
  * 
  * @example
  * Initialize NeverminedProvider:
- * ```ts
+ * ```tsx
  * import React from 'react';
  * import ReactDOM from 'react-dom';
  * import Catalog from 'test-catalog-core';
@@ -602,7 +602,7 @@ export interface AssetsModule {
  * @example
  * Subcribe payment event:
  * 
- * ```ts
+ * ```tsx
  * const Example = () => {
  *  const { subscribe, subscription, account, isLoadingSDK} = Catalog.useNevermined();
  *  const { paymentEvent, setPaymentEvent } = useState<ContractEventSubscription>();
