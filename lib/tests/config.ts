@@ -1,5 +1,5 @@
 import { Config } from '@nevermined-io/nevermined-sdk-js';
-import Catalog from '../src';
+import { AuthToken } from '../src';
 
 const gatewayAddress = '0xe63a11dC61b117D9c2B1Ac8021d4cffEd8EC213b';
 const gatewayUri = 'https://gateway.autonomies.pre.nevermined.rocks';
@@ -13,7 +13,7 @@ export const appConfig: Config = {
   faucetUri,
   verbose: true,
   gatewayAddress,
-  marketplaceAuthToken: Catalog.fetchMarketplaceApiTokenFromLocalStorage().token,
+  marketplaceAuthToken: AuthToken.fetchMarketplaceApiTokenFromLocalStorage().token,
   marketplaceUri,
   artifactsFolder: `${rootUri}/contracts`
 };

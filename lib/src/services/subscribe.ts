@@ -3,7 +3,7 @@ import {
   EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { useContext, useEffect, useState } from 'react';
-import { NeverminedContext } from '../nevermined';
+import { NeverminedContext } from '../catalog';
 
 /**
  * Subscribe to payment events
