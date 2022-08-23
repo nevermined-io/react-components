@@ -38,7 +38,7 @@ The new generated token
 
 #### Defined in
 
-[src/types/index.ts:477](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L477)
+[src/types/index.ts:477](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L477)
 
 ___
 
@@ -66,7 +66,7 @@ List of assets which was bought by the address given as argument
 
 #### Defined in
 
-[src/types/index.ts:472](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L472)
+[src/types/index.ts:472](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L472)
 
 ___
 
@@ -94,7 +94,7 @@ List of assets which was published by the address given
 
 #### Defined in
 
-[src/types/index.ts:466](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L466)
+[src/types/index.ts:466](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L466)
 
 ___
 
@@ -125,17 +125,17 @@ true if the user owns at least one edition of the NFT
 
 #### Defined in
 
-[src/types/index.ts:492](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L492)
+[src/types/index.ts:492](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L492)
 
 ___
 
 ### isNFT721Holder
 
-• **isNFT721Holder**: (`did`: `string`, `nftTokenAddress`: `string`, `walletAddress`: `string`) => `Promise`<`boolean`\>
+• **isNFT721Holder**: (`did`: `string`, `nftTokenAddress`: `string`, `walletAddress`: `string`, `agreementId`: `string`) => `Promise`<`boolean`\>
 
 #### Type declaration
 
-▸ (`did`, `nftTokenAddress`, `walletAddress`): `Promise`<`boolean`\>
+▸ (`did`, `nftTokenAddress`, `walletAddress`, `agreementId`): `Promise`<`boolean`\>
 
 This method validates if a user is a NFT (ERC-721 based) holder for a specific NFT contract address.
 For ERC-721 tokens, we use the DID as tokenId. A user can between zero an multiple editions
@@ -148,6 +148,7 @@ of a NFT (limitted by the NFT cap).
 | `did` | `string` | - |
 | `nftTokenAddress` | `string` | - |
 | `walletAddress` | `string` | The public address of the user |
+| `agreementId` | `string` | Agreement id generated after order the NFT asset |
 
 ##### Returns
 
@@ -157,7 +158,7 @@ true if the user holds the NFT
 
 #### Defined in
 
-[src/types/index.ts:502](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L502)
+[src/types/index.ts:503](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L503)
 
 ___
 
@@ -179,4 +180,4 @@ if token is valid it will return true
 
 #### Defined in
 
-[src/types/index.ts:482](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L482)
+[src/types/index.ts:482](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L482)

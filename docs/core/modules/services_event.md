@@ -67,7 +67,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:245](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/services/event.ts#L245)
+[src/services/event.ts:245](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/event.ts#L245)
 
 ___
 
@@ -125,7 +125,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:43](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/services/event.ts#L43)
+[src/services/event.ts:43](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/event.ts#L43)
 
 ___
 
@@ -181,7 +181,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:107](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/services/event.ts#L107)
+[src/services/event.ts:107](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/event.ts#L107)
 
 ___
 
@@ -240,4 +240,4 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:175](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/services/event.ts#L175)
+[src/services/event.ts:175](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/event.ts#L175)
