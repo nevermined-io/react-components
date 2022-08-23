@@ -40,7 +40,7 @@ Handle publish asset message
 
 #### Defined in
 
-[src/types/index.ts:823](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L823)
+[src/types/index.ts:823](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L823)
 
 ___
 
@@ -52,7 +52,7 @@ All the parameters needed to publish an asset
 
 #### Defined in
 
-[src/types/index.ts:829](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L829)
+[src/types/index.ts:829](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L829)
 
 ___
 
@@ -64,7 +64,7 @@ Handle error publish asset message
 
 #### Defined in
 
-[src/types/index.ts:821](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L821)
+[src/types/index.ts:821](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L821)
 
 ___
 
@@ -91,7 +91,7 @@ Update asset parameters when some input changes
 
 #### Defined in
 
-[src/types/index.ts:840](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L840)
+[src/types/index.ts:840](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L840)
 
 ___
 
@@ -103,7 +103,7 @@ If the asset is publishing
 
 #### Defined in
 
-[src/types/index.ts:827](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L827)
+[src/types/index.ts:827](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L827)
 
 ___
 
@@ -115,7 +115,7 @@ If the asset was published correctly
 
 #### Defined in
 
-[src/types/index.ts:825](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L825)
+[src/types/index.ts:825](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L825)
 
 ___
 
@@ -147,7 +147,7 @@ Asset object
 
 #### Defined in
 
-[src/types/index.ts:871](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L871)
+[src/types/index.ts:871](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L871)
 
 ___
 
@@ -177,7 +177,7 @@ Asset object
 
 #### Defined in
 
-[src/types/index.ts:857](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L857)
+[src/types/index.ts:857](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L857)
 
 ___
 
@@ -206,7 +206,7 @@ Asset object
 
 #### Defined in
 
-[src/types/index.ts:850](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L850)
+[src/types/index.ts:850](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L850)
 
 ___
 
@@ -232,7 +232,7 @@ Reset all the parameters of the asset
 
 #### Defined in
 
-[src/types/index.ts:844](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L844)
+[src/types/index.ts:844](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L844)
 
 ___
 
@@ -244,7 +244,7 @@ Set error asset message
 
 #### Defined in
 
-[src/types/index.ts:835](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L835)
+[src/types/index.ts:835](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L835)
 
 ___
 
@@ -256,7 +256,7 @@ Set asset message
 
 #### Defined in
 
-[src/types/index.ts:833](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L833)
+[src/types/index.ts:833](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L833)
 
 ___
 
@@ -268,4 +268,4 @@ Set parameters needed to publish an asset
 
 #### Defined in
 
-[src/types/index.ts:831](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L831)
+[src/types/index.ts:831](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L831)

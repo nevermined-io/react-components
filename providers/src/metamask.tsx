@@ -54,7 +54,7 @@ const convertHextoIntString = (hex: string) => {
    * @example
    * Config example:
    * ```ts
-   * import { zeroX } from '@nevermined-io/catalog-core';
+   * import { zeroX } from '@nevermined-io/catalog-providers';
    * import { acceptedChainId } from 'config';
    * 
    * const acceptedChainIdHex = zeroX((+acceptedChainId).toString(16));
