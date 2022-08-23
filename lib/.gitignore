@@ -67,3 +67,6 @@ dist/
 
 # cypress videos
 cypress/videos
+
+# nevermined artifacts
+artifacts

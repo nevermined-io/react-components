@@ -10,7 +10,8 @@
     "clean": "rm -rf dist",
     "test": "jest test --watchAll",
     "eject": "react-scripts eject",
-    "ts:lint": "npx eslint . --ext .ts,.tsx"
+    "ts:lint": "npx eslint . --ext .ts,.tsx",
+    "artifacts:download": "./scripts/download-artifacts.sh"
   },
   "main": "./dist/node/index.js",
   "types": "./dist/node/index.d.ts",
