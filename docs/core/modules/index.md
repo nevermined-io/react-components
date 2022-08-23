@@ -69,7 +69,7 @@ Id of the asset
 
 #### Defined in
 
-[src/types/index.ts:387](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L387)
+[src/types/index.ts:387](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L387)
 
 ___
 
@@ -132,7 +132,7 @@ node_modules/@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway.d.ts:6
 
 #### Defined in
 
-[src/index.ts:10](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/index.ts#L10)
+[src/index.ts:10](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/index.ts#L10)
 
 ## Functions
 
@@ -155,7 +155,7 @@ node_modules/@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway.d.ts:6
 
 #### Defined in
 
-[src/utils/index.ts:85](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/utils/index.ts#L85)
+[src/utils/index.ts:85](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/utils/index.ts#L85)
 
 ___
 
@@ -175,7 +175,7 @@ ___
 
 #### Defined in
 
-[src/utils/index.ts:19](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/utils/index.ts#L19)
+[src/utils/index.ts:19](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/utils/index.ts#L19)
 
 ___
 

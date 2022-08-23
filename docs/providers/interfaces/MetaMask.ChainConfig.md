@@ -10,7 +10,7 @@ Config with all the networks which can be connect by the dapp
 
 Config example:
 ```ts
-import { zeroX } from '@nevermined-io/catalog-core';
+import { zeroX } from '@nevermined-io/catalog-providers';
 import { acceptedChainId } from 'config';
 
 const acceptedChainIdHex = zeroX((+acceptedChainId).toString(16));
@@ -108,4 +108,4 @@ Return the network confing by giving chain Id in Hexadecimal
 
 #### Defined in
 
-[metamask.tsx:125](https://github.com/nevermined-io/components-catalog/blob/f49140f/providers/src/metamask.tsx#L125)
+[metamask.tsx:125](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/providers/src/metamask.tsx#L125)

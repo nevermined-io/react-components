@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[src/types/index.ts:416](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L416)
+[src/types/index.ts:416](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L416)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[src/types/index.ts:414](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L414)
+[src/types/index.ts:414](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L414)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[src/types/index.ts:415](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L415)
+[src/types/index.ts:415](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L415)

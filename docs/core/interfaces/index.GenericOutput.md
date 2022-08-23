@@ -31,7 +31,7 @@ Data from the promise
 
 #### Defined in
 
-[src/types/index.ts:379](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L379)
+[src/types/index.ts:379](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L379)
 
 ___
 
@@ -43,7 +43,7 @@ If the promise throw an error
 
 #### Defined in
 
-[src/types/index.ts:381](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L381)
+[src/types/index.ts:381](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L381)
 
 ___
 
@@ -55,4 +55,4 @@ If the promise resolve was success
 
 #### Defined in
 
-[src/types/index.ts:383](https://github.com/nevermined-io/components-catalog/blob/76192a6/lib/src/types/index.ts#L383)
+[src/types/index.ts:383](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L383)
