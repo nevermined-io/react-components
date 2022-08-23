@@ -74,7 +74,7 @@ const SDKInstance = () => {
 
 #### Defined in
 
-[src/types/index.ts:369](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L369)
+[src/types/index.ts:369](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L369)
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-[src/types/index.ts:371](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L371)
+[src/types/index.ts:371](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L371)
 
 ___
 
@@ -94,4 +94,4 @@ ___
 
 #### Defined in
 
-[src/types/index.ts:370](https://github.com/nevermined-io/components-catalog/blob/ff8bd4a/lib/src/types/index.ts#L370)
+[src/types/index.ts:370](https://github.com/nevermined-io/components-catalog/blob/3ad5d63/lib/src/types/index.ts#L370)
