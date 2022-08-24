@@ -316,58 +316,13 @@ export interface NeverminedProviderContext {
 
 /**
  * Nevermined Provider to get the core Catalog functionalities as context
- * 
- * @param config - The config needed to build Nevermined SDK
- * @param verbose - Show Catalog logs in console logs if it sets to `true`
- * 
- * @example
- * Initialize NeverminedProvider:
- * ```tsx
- * import React from 'react';
- * import ReactDOM from 'react-dom';
- * import Catalog from 'test-catalog-core';
- * import { appConfig } from './config';
- * import Example from 'examples';
- * import { MetaMask } from '@nevermined-io/catalog-providers';
- * import chainConfig, { mumbaiChainId } from './chain_config';
- * 
- * 
- * ReactDOM.render(
- *   <div>
- *     <Catalog.NeverminedProvider config={appConfig} verbose={true}>
- *       <MetaMask.WalletProvider
- *         externalChainConfig={chainConfig}
- *         correctNetworkId={mumbaiChainId}
- *         nodeUri={String(appConfig.nodeUri)}
- *       >
- *         <Example />
- *       </MetaMask.WalletProvider>
- *     </Catalog.NeverminedProvider>
- *   </div>,
- *   document.getElementById('root') as HTMLElement
- * );
- * ```
- * Once it is intialized then we can execute the hook inside components
- * 
- * ```ts
- * const SDKInstance = () => {
- *  const { sdk, isLoadingSDK } = Catalog.useNevermined();
- *
- *  return (
- *    <>
- *      <div>Is Loading SDK</div>
- *      <div>{isLoadingSDK ? 'Yes' : 'No'}</div>
- *      <div>Is SDK Avaialable:</div>
- *      <div>{sdk && Object.keys(sdk).length > 0 ? 'Yes' : 'No'}</div>
- *    </>
- *  );
- *};
- * ```
- * 
  */
 export interface NeverminedProviderProps {
+  /** This provider require children elements */
   children: any;
+  /** The config needed to build Nevermined SDK */
   verbose?: boolean;
+  /** Show Catalog logs in console logs if it sets to `true` */
   config: Config;
 }
 
@@ -411,8 +366,11 @@ export interface NFTDetails {
 }
 
 export enum State {
+  /** Entity disable or not available */
   Disabled = 'disabled',
+  /** Entity not validated yet or incomplete */
   Unconfirmed = 'unconfirmed',
+  /** Entity created */
   Confirmed = 'confirmed'
 }
 
@@ -847,14 +805,14 @@ export interface AssetPublishProviderState {
    * @param asset.metadata The description of the asset
    * @returns Asset object
    */
-  onAssetPublish: ({ metadata }: { metadata: MetaData }) => Promise<DDO | undefined>;
+  publishAsset: ({ metadata }: { metadata: MetaData }) => Promise<DDO | undefined>;
   /** Publish a nft721 asset
    * @param asset
    * @param asset.nftAddress nft721 token address to publish
    * @param asset.metadata The description of the asset
    * @returns Asset object
    */
-  onAsset721Publish: ({
+  publishAsset721: ({
     nftAddress,
     metadata
   }: {
@@ -868,7 +826,7 @@ export interface AssetPublishProviderState {
    * @param asset.royaltyKind Set how the owner will receive rewards for each sale
    * @returns Asset object
    */
-  onAsset1155Publish: ({
+  publishAsset1155: ({
     metadata,
     cap,
     royalties,

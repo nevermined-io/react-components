@@ -1,18 +1,35 @@
-[@nevermined-io/catalog-core](../README.md) / [Modules](../modules.md) / [index](../modules/index.md) / NeverminedProviderProps
+[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / Catalog
 
-# Interface: NeverminedProviderProps
+# Namespace: Catalog
 
-[index](../modules/index.md).NeverminedProviderProps
+## Table of contents
+
+### Variables
+
+- [NeverminedContext](Catalog.md#neverminedcontext)
+
+### Functions
+
+- [NeverminedProvider](Catalog.md#neverminedprovider)
+- [useNevermined](Catalog.md#usenevermined)
+
+## Variables
+
+### NeverminedContext
+
+• `Const` **NeverminedContext**: `Context`<[`NeverminedProviderContext`](../interfaces/NeverminedProviderContext.md)\>
+
+#### Defined in
+
+src/catalog.tsx:557
+
+## Functions
+
+### NeverminedProvider
+
+▸ **NeverminedProvider**(`__namedParameters`): `Element`
 
 Nevermined Provider to get the core Catalog functionalities as context
-
-**`Param`**
-
-The config needed to build Nevermined SDK
-
-**`Param`**
-
-Show Catalog logs in console logs if it sets to `true`
 
 **`Example`**
 
@@ -58,40 +75,30 @@ const SDKInstance = () => {
 };
 ```
 
-## Table of contents
+#### Parameters
 
-### Properties
+| Name | Type |
+| :------ | :------ |
+| `__namedParameters` | [`NeverminedProviderProps`](../interfaces/NeverminedProviderProps.md) |
 
-- [children](index.NeverminedProviderProps.md#children)
-- [config](index.NeverminedProviderProps.md#config)
-- [verbose](index.NeverminedProviderProps.md#verbose)
+#### Returns
 
-## Properties
-
-### children
-
-• **children**: `any`
+`Element`
 
 #### Defined in
 
-[src/types/index.ts:369](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L369)
+src/catalog.tsx:120
 
 ___
 
-### config
+### useNevermined
 
-• **config**: `Config`
+▸ **useNevermined**(): [`NeverminedProviderContext`](../interfaces/NeverminedProviderContext.md)
 
-#### Defined in
+#### Returns
 
-[src/types/index.ts:371](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L371)
-
-___
-
-### verbose
-
-• `Optional` **verbose**: `boolean`
+[`NeverminedProviderContext`](../interfaces/NeverminedProviderContext.md)
 
 #### Defined in
 
-[src/types/index.ts:370](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L370)
+src/catalog.tsx:559

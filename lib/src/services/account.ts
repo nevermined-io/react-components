@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
-import { NeverminedContext } from '../nevermined';
-import { useNevermined } from '../nevermined';
+import { NeverminedContext } from '../catalog';
+import { useNevermined } from '../catalog';
 import { UserProfileParams } from '../types';
 import { saveMarketplaceApiTokenToLocalStorage } from '../utils/marketplace_token';
 import { Account, Logger } from '@nevermined-io/nevermined-sdk-js';
@@ -142,8 +142,8 @@ export const useAccountCollection = (
  *     userProfile,
  *     addresses,
  *     newAddress,
- *     onSubmitUserProfile,
- *     onAddAddress
+ *     submitUserProfile,
+ *     addAddress
  *   } = Catalog.useUserProfile(walletAddress)
  * 
  *   const popupRef = useRef<UiPopupHandlers>()
@@ -227,7 +227,7 @@ export const useAccountCollection = (
  *               ) : null}
  *             </div>
  *             <div className={b('profile-submit-container', ['submit'])}>
- *               <UiButton onClick={onSubmitUserProfile}>Update Profile</UiButton>
+ *               <UiButton onClick={submitUserProfile}>Update Profile</UiButton>
  *             </div>
  *           </div>
  *         </UiForm>
@@ -260,7 +260,7 @@ export const useAccountCollection = (
  *               <UiFormItem
  *                 label="Add new address"
  *                 value={newAddress}
- *                 onClick={onAddAddress}
+ *                 onClick={addAddress}
  *                 disabled={true}
  *               />
  *             </UiFormGroup>
@@ -304,9 +304,9 @@ export const useUserProfile = (walletAddress: string): {
   /** Set parameters to user profile */
   setUserProfile: React.Dispatch<React.SetStateAction<Partial<UserProfileParams>>>,
   /** Add new address */
-  onAddAddress: () => Promise<void>,
+  addAddress: () => Promise<void>,
   /** Submit user profile */
-  onSubmitUserProfile: () => Promise<void>
+  submitUserProfile: () => Promise<void>
 } => {
   const { sdk, account } = useNevermined();
   const [inputError, setInputError] = useState('');
@@ -337,7 +337,7 @@ export const useUserProfile = (walletAddress: string): {
     }
   };
 
-  const onAddAddress = async () => {
+  const addAddress = async () => {
     try {
       let accounts = await sdk.accounts.list();
       let accountToAdd = accounts?.find((a) => a.getId() === newAddress);
@@ -361,7 +361,7 @@ export const useUserProfile = (walletAddress: string): {
     }
   };
 
-  const onSubmitUserProfile = async () => {
+  const submitUserProfile = async () => {
     try {
       await checkAuth();
 
@@ -443,8 +443,8 @@ export const useUserProfile = (walletAddress: string): {
     addresses,
     newAddress,
     setUserProfile,
-    onAddAddress,
-    onSubmitUserProfile
+    addAddress,
+    submitUserProfile
   };
 };
 

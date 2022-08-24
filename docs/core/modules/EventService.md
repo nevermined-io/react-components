@@ -1,21 +1,21 @@
-[@nevermined-io/catalog-core](../README.md) / [Modules](../modules.md) / services/event
+[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / EventService
 
-# Module: services/event
+# Namespace: EventService
 
 ## Table of contents
 
 ### Functions
 
-- [getAssetRegisterEvent](services_event.md#getassetregisterevent)
-- [getTransfers](services_event.md#gettransfers)
-- [getUserFulfilledEvents](services_event.md#getuserfulfilledevents)
-- [getUserRegisterEvents](services_event.md#getuserregisterevents)
+- [getAssetRegisterEvent](EventService.md#getassetregisterevent)
+- [getTransfers](EventService.md#gettransfers)
+- [getUserFulfilledEvents](EventService.md#getuserfulfilledevents)
+- [getUserRegisterEvents](EventService.md#getuserregisterevents)
 
 ## Functions
 
 ### getAssetRegisterEvent
 
-▸ **getAssetRegisterEvent**(`did`, `graphUrl`): `Promise`<[`RegisterEvent`](../interfaces/index.RegisterEvent.md)[]\>
+▸ **getAssetRegisterEvent**(`did`, `graphUrl`): `Promise`<[`RegisterEvent`](../interfaces/RegisterEvent.md)[]\>
 
 Get asset registering event
 
@@ -63,17 +63,17 @@ const MyComponent = () => {
 
 #### Returns
 
-`Promise`<[`RegisterEvent`](../interfaces/index.RegisterEvent.md)[]\>
+`Promise`<[`RegisterEvent`](../interfaces/RegisterEvent.md)[]\>
 
 #### Defined in
 
-[src/services/event.ts:245](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/event.ts#L245)
+[src/services/event.ts:245](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/event.ts#L245)
 
 ___
 
 ### getTransfers
 
-▸ **getTransfers**(`sdk`, `receiver`): `Promise`<[`Transfer`](../interfaces/index.Transfer.md)[]\>
+▸ **getTransfers**(`sdk`, `receiver`): `Promise`<[`Transfer`](../interfaces/Transfer.md)[]\>
 
 Get recieved transfers  by address
 
@@ -121,17 +121,17 @@ const MyComponent = () => {
 
 #### Returns
 
-`Promise`<[`Transfer`](../interfaces/index.Transfer.md)[]\>
+`Promise`<[`Transfer`](../interfaces/Transfer.md)[]\>
 
 #### Defined in
 
-[src/services/event.ts:43](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/event.ts#L43)
+[src/services/event.ts:43](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/event.ts#L43)
 
 ___
 
 ### getUserFulfilledEvents
 
-▸ **getUserFulfilledEvents**(`sdk`, `account`): `Promise`<[`FullfilledOrders`](../interfaces/index.FullfilledOrders.md)[]\>
+▸ **getUserFulfilledEvents**(`sdk`, `account`): `Promise`<[`FullfilledOrders`](../interfaces/FullfilledOrders.md)[]\>
 
 Get fullfilled nft transfer events by user address
 
@@ -177,17 +177,17 @@ const MyComponent = () => {
 
 #### Returns
 
-`Promise`<[`FullfilledOrders`](../interfaces/index.FullfilledOrders.md)[]\>
+`Promise`<[`FullfilledOrders`](../interfaces/FullfilledOrders.md)[]\>
 
 #### Defined in
 
-[src/services/event.ts:107](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/event.ts#L107)
+[src/services/event.ts:107](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/event.ts#L107)
 
 ___
 
 ### getUserRegisterEvents
 
-▸ **getUserRegisterEvents**(`sdk`, `owner`): `Promise`<[`RegisterEvent`](../interfaces/index.RegisterEvent.md)[]\>
+▸ **getUserRegisterEvents**(`sdk`, `owner`): `Promise`<[`RegisterEvent`](../interfaces/RegisterEvent.md)[]\>
 
 Get nft creating events registered by user
 
@@ -236,8 +236,8 @@ const MyComponent = () => {
 
 #### Returns
 
-`Promise`<[`RegisterEvent`](../interfaces/index.RegisterEvent.md)[]\>
+`Promise`<[`RegisterEvent`](../interfaces/RegisterEvent.md)[]\>
 
 #### Defined in
 
-[src/services/event.ts:175](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/event.ts#L175)
+[src/services/event.ts:175](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/event.ts#L175)

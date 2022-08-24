@@ -2,7 +2,7 @@ import { DDO, MetaData, SearchQuery, ClientError, Logger } from '@nevermined-io/
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React, { useContext, useEffect, useState, createContext } from 'react';
-import { NeverminedContext, useNevermined } from '../nevermined';
+import { NeverminedContext, useNevermined } from '../catalog';
 import { AssetState, AssetPublishParams, RoyaltyKind, AssetPublishProviderState } from '../types';
 import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
 import { getCurrentAccount } from '../utils';
@@ -32,7 +32,9 @@ import { getCurrentAccount } from '../utils';
 export const useAssets = (
   q: SearchQuery
 ): {
+  /** Result based in the query search requested */
   result: QueryResult;
+  /** If the query is still processing */
   isLoading: boolean;
 } => {
   const { assets, sdk } = useContext(NeverminedContext);
@@ -150,7 +152,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param metadata The metadata object describing the asset 
    * @returns The DDO object including the asset metadata and the DID
    */
-  const onAssetPublish = async ({ metadata }: { metadata: MetaData }) => {
+  const publishAsset = async ({ metadata }: { metadata: MetaData }) => {
     try {
       setIsProcessing(true);
 
@@ -193,7 +195,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param metadata The metadata object describing the asset 
    * @returns The DDO object including the asset metadata and the DID
    */
-  const onAsset721Publish = async ({
+  const publishAsset721 = async ({
     nftAddress,
     metadata
   }: {
@@ -257,7 +259,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param royaltyKind The royalties scheme that can be used
    * @returns The DDO object including the asset metadata and the DID
    */  
-  const onAsset1155Publish = async ({
+  const publishAsset1155 = async ({
     metadata,
     cap,
     royalties,
@@ -316,9 +318,9 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     setAssetMessage,
     setAssetErrorMessage,
     handleChange,
-    onAssetPublish,
-    onAsset721Publish,
-    onAsset1155Publish,
+    publishAsset,
+    publishAsset721,
+    publishAsset1155,
     reset
   };
 

@@ -1,16 +1,16 @@
-[@nevermined-io/catalog-core](../README.md) / [Modules](../modules.md) / services/account
+[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / AccountService
 
-# Module: services/account
+# Namespace: AccountService
 
 ## Table of contents
 
 ### Functions
 
-- [useAccountCollection](services_account.md#useaccountcollection)
-- [useAccountReleases](services_account.md#useaccountreleases)
-- [useUserProfile](services_account.md#useuserprofile)
-- [userIsNFT1155Holder](services_account.md#userisnft1155holder)
-- [userIsNFT721Holder](services_account.md#userisnft721holder)
+- [useAccountCollection](AccountService.md#useaccountcollection)
+- [useAccountReleases](AccountService.md#useaccountreleases)
+- [useUserProfile](AccountService.md#useuserprofile)
+- [userIsNFT1155Holder](AccountService.md#userisnft1155holder)
+- [userIsNFT721Holder](AccountService.md#userisnft721holder)
 
 ## Functions
 
@@ -57,7 +57,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/account.ts:76](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/account.ts#L76)
+[src/services/account.ts:76](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/account.ts#L76)
 
 ___
 
@@ -104,7 +104,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/account.ts:32](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/account.ts#L32)
+[src/services/account.ts:32](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/account.ts#L32)
 
 ___
 
@@ -156,8 +156,8 @@ export const UserProfile: NextPage = () => {
     userProfile,
     addresses,
     newAddress,
-    onSubmitUserProfile,
-    onAddAddress
+    submitUserProfile,
+    addAddress
   } = Catalog.useUserProfile(walletAddress)
 
   const popupRef = useRef<UiPopupHandlers>()
@@ -241,7 +241,7 @@ export const UserProfile: NextPage = () => {
               ) : null}
             </div>
             <div className={b('profile-submit-container', ['submit'])}>
-              <UiButton onClick={onSubmitUserProfile}>Update Profile</UiButton>
+              <UiButton onClick={submitUserProfile}>Update Profile</UiButton>
             </div>
           </div>
         </UiForm>
@@ -274,7 +274,7 @@ export const UserProfile: NextPage = () => {
               <UiFormItem
                 label="Add new address"
                 value={newAddress}
-                onClick={onAddAddress}
+                onClick={addAddress}
                 disabled={true}
               />
             </UiFormGroup>
@@ -312,21 +312,21 @@ export const UserProfile: NextPage = () => {
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
+| `addAddress` | () => `Promise`<`void`\> | Add new address |
 | `addresses` | `string`[] | Addresses wallet accounts included in the user profile |
 | `errorMessage` | `string` | Error messages that come from sdk |
 | `inputError` | `string` | Input error message |
 | `isAddressAdded` | `boolean` | If new address is added |
 | `isUpdated` | `boolean` | If profile is updated |
 | `newAddress` | `string` | New address to add in the user profile |
-| `onAddAddress` | () => `Promise`<`void`\> | Add new address |
-| `onSubmitUserProfile` | () => `Promise`<`void`\> | Submit user profile |
-| `setUserProfile` | `Dispatch`<`SetStateAction`<`Partial`<[`UserProfileParams`](../interfaces/index.UserProfileParams.md)\>\>\> | Set parameters to user profile |
+| `setUserProfile` | `Dispatch`<`SetStateAction`<`Partial`<[`UserProfileParams`](../interfaces/UserProfileParams.md)\>\>\> | Set parameters to user profile |
+| `submitUserProfile` | () => `Promise`<`void`\> | Submit user profile |
 | `successMessage` | `string` | Success messages |
-| `userProfile` | `Partial`<[`UserProfileParams`](../interfaces/index.UserProfileParams.md)\> | User profile parameters |
+| `userProfile` | `Partial`<[`UserProfileParams`](../interfaces/UserProfileParams.md)\> | User profile parameters |
 
 #### Defined in
 
-[src/services/account.ts:287](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/account.ts#L287)
+[src/services/account.ts:287](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/account.ts#L287)
 
 ___
 
@@ -357,7 +357,7 @@ true if the user owns at least one edition of the NFT
 
 #### Defined in
 
-[src/services/account.ts:460](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/account.ts#L460)
+[src/services/account.ts:460](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/account.ts#L460)
 
 ___
 
@@ -390,4 +390,4 @@ true if the user holds the NFT
 
 #### Defined in
 
-[src/services/account.ts:500](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/account.ts#L500)
+[src/services/account.ts:500](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/account.ts#L500)

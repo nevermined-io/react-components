@@ -34,11 +34,11 @@ import {
 import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token';
 import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
 
-export const initialState = {
+const initialState = {
   sdk: {} as Nevermined
 };
 
-export const neverminedReducer = (
+const neverminedReducer = (
   state: { sdk: Nevermined },
   action: { type: 'SET_SDK'; payload: { sdk: Nevermined } }
 ) => {
@@ -50,7 +50,7 @@ export const neverminedReducer = (
   }
 };
 
-export const initializeNevermined = async (
+const initializeNevermined = async (
   config: Config
 ): Promise<GenericOutput<Nevermined, any>> => {
   try {
@@ -67,6 +67,56 @@ export const initializeNevermined = async (
   }
 };
 
+/**
+ * Nevermined Provider to get the core Catalog functionalities as context
+ * 
+ * @param config - 
+ * @param verbose - Show Catalog logs in console logs if it sets to `true`
+ * 
+ * @example
+ * Initialize NeverminedProvider:
+ * ```tsx
+ * import React from 'react';
+ * import ReactDOM from 'react-dom';
+ * import Catalog from 'test-catalog-core';
+ * import { appConfig } from './config';
+ * import Example from 'examples';
+ * import { MetaMask } from '@nevermined-io/catalog-providers';
+ * import chainConfig, { mumbaiChainId } from './chain_config';
+ * 
+ * 
+ * ReactDOM.render(
+ *   <div>
+ *     <Catalog.NeverminedProvider config={appConfig} verbose={true}>
+ *       <MetaMask.WalletProvider
+ *         externalChainConfig={chainConfig}
+ *         correctNetworkId={mumbaiChainId}
+ *         nodeUri={String(appConfig.nodeUri)}
+ *       >
+ *         <Example />
+ *       </MetaMask.WalletProvider>
+ *     </Catalog.NeverminedProvider>
+ *   </div>,
+ *   document.getElementById('root') as HTMLElement
+ * );
+ * ```
+ * Once it is intialized then we can execute the hook inside components
+ * 
+ * ```ts
+ * const SDKInstance = () => {
+ *  const { sdk, isLoadingSDK } = Catalog.useNevermined();
+ *
+ *  return (
+ *    <>
+ *      <div>Is Loading SDK</div>
+ *      <div>{isLoadingSDK ? 'Yes' : 'No'}</div>
+ *      <div>Is SDK Avaialable:</div>
+ *      <div>{sdk && Object.keys(sdk).length > 0 ? 'Yes' : 'No'}</div>
+ *    </>
+ *  );
+ *};
+ * ```
+ */
 export const NeverminedProvider = ({ children, config, verbose }: NeverminedProviderProps) => {
   const [{ sdk }, dispatch] = useReducer(neverminedReducer, initialState);
   const [isLoading, setIsLoading] = useState<boolean>(true);

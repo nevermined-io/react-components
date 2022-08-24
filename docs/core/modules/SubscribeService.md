@@ -1,13 +1,13 @@
-[@nevermined-io/catalog-core](../README.md) / [Modules](../modules.md) / services/subscribe
+[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / SubscribeService
 
-# Module: services/subscribe
+# Namespace: SubscribeService
 
 ## Table of contents
 
 ### Functions
 
-- [useSubscribeToPaymentEvents](services_subscribe.md#usesubscribetopaymentevents)
-- [useSubscribeToTransferEvents](services_subscribe.md#usesubscribetotransferevents)
+- [useSubscribeToPaymentEvents](SubscribeService.md#usesubscribetopaymentevents)
+- [useSubscribeToTransferEvents](SubscribeService.md#usesubscribetotransferevents)
 
 ## Functions
 
@@ -46,11 +46,11 @@ const MyComponent = () => {
 
 | Name | Type |
 | :------ | :------ |
-| `paymentEvents` | [`EventResult`](index.md#eventresult)[] |
+| `paymentEvents` | [`EventResult`](../modules.md#eventresult)[] |
 
 #### Defined in
 
-[src/services/subscribe.ts:33](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/subscribe.ts#L33)
+[src/services/subscribe.ts:33](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/subscribe.ts#L33)
 
 ___
 
@@ -89,8 +89,8 @@ const MyComponent = () => {
 
 | Name | Type |
 | :------ | :------ |
-| `transferEvents` | [`EventResult`](index.md#eventresult)[] |
+| `transferEvents` | [`EventResult`](../modules.md#eventresult)[] |
 
 #### Defined in
 
-[src/services/subscribe.ts:89](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/services/subscribe.ts#L89)
+[src/services/subscribe.ts:89](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/subscribe.ts#L89)

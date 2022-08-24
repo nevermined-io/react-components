@@ -1,20 +1,18 @@
-[@nevermined-io/catalog-core](../README.md) / [Modules](../modules.md) / [index](../modules/index.md) / SubscriptionActions
+[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / SubscriptionActions
 
 # Interface: SubscriptionActions
-
-[index](../modules/index.md).SubscriptionActions
 
 ## Table of contents
 
 ### Properties
 
-- [buySubscription](index.SubscriptionActions.md#buysubscription)
+- [buySubscription](SubscriptionActions.md#buysubscription)
 
 ## Properties
 
 ### buySubscription
 
-• **buySubscription**: (`subscriptionDid`: `string`, `buyer`: `default`, `nftHolder`: `string`, `nftAmount`: `number`, `nftType`: [`NftTypes`](../modules/index.md#nfttypes)) => `Promise`<`string`\>
+• **buySubscription**: (`subscriptionDid`: `string`, `buyer`: `default`, `nftHolder`: `string`, `nftAmount`: `number`, `nftType`: [`NftTypes`](../modules.md#nfttypes)) => `Promise`<`string`\>
 
 #### Type declaration
 
@@ -30,7 +28,7 @@ Order a NFT asset and transfer and delegate it to the subscription buyer
 | `buyer` | `default` | The account who buy the subscription of the NFT asset |
 | `nftHolder` | `string` | The owner of the NFT asset |
 | `nftAmount` | `number` | The amount of NFT asset to buy |
-| `nftType` | [`NftTypes`](../modules/index.md#nfttypes) | NFT asset type which can be 721 or 1155 |
+| `nftType` | [`NftTypes`](../modules.md#nfttypes) | NFT asset type which can be 721 or 1155 |
 
 ##### Returns
 
@@ -40,4 +38,4 @@ It is true if the subscription was successfully completed
 
 #### Defined in
 
-[src/types/index.ts:804](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L804)
+[src/types/index.ts:762](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/types/index.ts#L762)

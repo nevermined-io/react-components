@@ -1,8 +1,6 @@
-[@nevermined-io/catalog-core](../README.md) / [Modules](../modules.md) / [index](../modules/index.md) / SubscribeModule
+[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / SubscribeModule
 
 # Interface: SubscribeModule
-
-[index](../modules/index.md).SubscribeModule
 
 `subscribe` contains all the functionalities to handle events
 
@@ -56,18 +54,18 @@ const Example = () => {
 
 ### Properties
 
-- [paymentEvents](index.SubscribeModule.md#paymentevents)
-- [transferEvents](index.SubscribeModule.md#transferevents)
+- [paymentEvents](SubscribeModule.md#paymentevents)
+- [transferEvents](SubscribeModule.md#transferevents)
 
 ## Properties
 
 ### paymentEvents
 
-• **paymentEvents**: (`cb`: (`events`: [`EventResult`](../modules/index.md#eventresult)[]) => `void`) => [`ContractEventSubscription`](index.ContractEventSubscription.md)
+• **paymentEvents**: (`cb`: (`events`: [`EventResult`](../modules.md#eventresult)[]) => `void`) => [`ContractEventSubscription`](ContractEventSubscription.md)
 
 #### Type declaration
 
-▸ (`cb`): [`ContractEventSubscription`](index.ContractEventSubscription.md)
+▸ (`cb`): [`ContractEventSubscription`](ContractEventSubscription.md)
 
 Subscribe a `payment` event and execute callbacks once that this event is listened
 
@@ -75,27 +73,27 @@ Subscribe a `payment` event and execute callbacks once that this event is listen
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `cb` | (`events`: [`EventResult`](../modules/index.md#eventresult)[]) => `void` | Callback event |
+| `cb` | (`events`: [`EventResult`](../modules.md#eventresult)[]) => `void` | Callback event |
 
 ##### Returns
 
-[`ContractEventSubscription`](index.ContractEventSubscription.md)
+[`ContractEventSubscription`](ContractEventSubscription.md)
 
 return the `payment` event with a functionality to unsubscribe
 
 #### Defined in
 
-[src/types/index.ts:654](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L654)
+[src/types/index.ts:612](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/types/index.ts#L612)
 
 ___
 
 ### transferEvents
 
-• **transferEvents**: (`cb`: (`events`: [`EventResult`](../modules/index.md#eventresult)[]) => `void`) => [`ContractEventSubscription`](index.ContractEventSubscription.md)
+• **transferEvents**: (`cb`: (`events`: [`EventResult`](../modules.md#eventresult)[]) => `void`) => [`ContractEventSubscription`](ContractEventSubscription.md)
 
 #### Type declaration
 
-▸ (`cb`): [`ContractEventSubscription`](index.ContractEventSubscription.md)
+▸ (`cb`): [`ContractEventSubscription`](ContractEventSubscription.md)
 
 Subscribe a `transfer` event and execute callbacks once that this event is listened
 
@@ -103,14 +101,14 @@ Subscribe a `transfer` event and execute callbacks once that this event is liste
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `cb` | (`events`: [`EventResult`](../modules/index.md#eventresult)[]) => `void` | Callback to execute |
+| `cb` | (`events`: [`EventResult`](../modules.md#eventresult)[]) => `void` | Callback to execute |
 
 ##### Returns
 
-[`ContractEventSubscription`](index.ContractEventSubscription.md)
+[`ContractEventSubscription`](ContractEventSubscription.md)
 
 return the `transfer` event with a functionality to unsubscribe
 
 #### Defined in
 
-[src/types/index.ts:660](https://github.com/nevermined-io/components-catalog/blob/5f3fec0/lib/src/types/index.ts#L660)
+[src/types/index.ts:618](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/types/index.ts#L618)
