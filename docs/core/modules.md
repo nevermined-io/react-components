@@ -65,7 +65,7 @@ Id of the asset
 
 #### Defined in
 
-[src/types/index.ts:342](https://github.com/nevermined-io/components-catalog/blob/f400cb9/lib/src/types/index.ts#L342)
+[src/types/index.ts:342](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L342)
 
 ___
 
@@ -112,7 +112,7 @@ Agreement id generated after order an asset
 
 #### Defined in
 
-[src/utils/index.ts:111](https://github.com/nevermined-io/components-catalog/blob/f400cb9/lib/src/utils/index.ts#L111)
+[src/utils/index.ts:111](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/utils/index.ts#L111)
 
 ___
 
@@ -134,7 +134,7 @@ Returns current account registered in SDK
 
 #### Defined in
 
-[src/utils/index.ts:22](https://github.com/nevermined-io/components-catalog/blob/f400cb9/lib/src/utils/index.ts#L22)
+[src/utils/index.ts:22](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/utils/index.ts#L22)
 
 ___
 
