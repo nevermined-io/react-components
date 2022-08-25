@@ -13,7 +13,7 @@ import { getCurrentAccount } from '../utils';
  * @example
  * ```tsx
  * const MyComponent = () => {
- *  const {  result, isLoading } = Catalog.useAssets();
+ *  const {  result, isLoading } = AssetService.useAssets();
  *
  *  return (
  *   <>
@@ -72,7 +72,7 @@ export const useAssets = (
  * ```tsx
  * const MyComponent = () => {
  *  const did = "did";
- *  const { ddo } = Catalog.useAsset(did);
+ *  const { ddo } = AssetService.useAsset(did);
  *
  *  return (
  *   <>
@@ -113,7 +113,10 @@ export const useAsset = (did: string): AssetState => {
 export const AssetPublishContext = createContext({} as AssetPublishProviderState);
 
 /**
- * Asset publishing helper
+ * Provider with all the functionalities to publish assets (no-nft, nft721, nft1155)
+ * 
+ * Here is an example how to implement it
+ * @see {@link https://github.com/nevermined-io/defi-marketplace/tree/main/client/src/%2Bassets/user-publish-steps}
  */
 export const AssetPublishProvider = ({ children }: { children: React.ReactElement }) => {
   const { sdk, account } = useNevermined();

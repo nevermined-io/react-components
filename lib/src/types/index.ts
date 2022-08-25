@@ -770,9 +770,6 @@ export interface SubscriptionActions {
 
 /**
  * Provider with all the functionalities to publish assets (no-nft, nft721, nft1155)
- * 
- * Here is an example how to implement it
- * @see {@link https://github.com/nevermined-io/defi-marketplace/tree/main/client/src/%2Bassets/user-publish-steps}
  */
 export interface AssetPublishProviderState {
   /** Handle error publish asset message */

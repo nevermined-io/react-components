@@ -4,7 +4,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Config, DDO } from '@nevermined-io/nevermined-sdk-js';
-import Catalog from '@nevermined-io/catalog-core';
+import { Catalog, AssetService } from '@nevermined-io/catalog-core';
 import App from 'app';
 
 export const appConfig: Config = {
@@ -33,7 +33,7 @@ const query = {
 
 const App = () => {
   const { sdk } = Catalog.useNevermined();
-  const response = Catalog.useAssets(query);
+  const response = AssetService.useAssets(query);
   console.log(response);
 
   return (

@@ -1926,7 +1926,7 @@
     ethers "^5.6.9"
     nodemon "^2.0.16"
 
-"@nevermined-io/nevermined-sdk-js@^0.23.1", "@nevermined-io/nevermined-sdk-js@^0.23.2":
+"@nevermined-io/nevermined-sdk-js@^0.23.1":
   version "0.23.2"
   resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.23.2.tgz#5318aacefda1e7fc38246a947153df5bc3cb61e8"
   integrity sha512-i+yfYsnOQ7sjnS0V4iT6DWy6BmJeHnHD5JszdALo+nhQwMlYsfitUlS1V5rKDCvMJ0HK0YGIhTHnRcZRvcnbzg==

@@ -8,17 +8,16 @@ import { FullfilledOrders, RegisterEvent, Transfer } from '../types';
  *
  * @example
  * ```tsx
- * import Catalog from "@nevermined-io/catalog-core";
+ * import { Catalog, EventService } from "@nevermined-io/catalog-core";
  * import { useState } from "react";
  *
  * const MyComponent = () => {
  *  const [transfers, setTransfers] = useState<Transfer[]>([]);
- *  const { getTransfers } = Catalog;
  *  const { sdk } = Catalog.useNevermined();
  *
  *  useEffect(() => {
  *      const handler = async () => {
- *           const t: Transfer[] = await getTransfers(sdk, receiverAddress)          
+ *           const t: Transfer[] = await EventService.getTransfers(sdk, receiverAddress)          
  *           setTransfers(t)
  *      }
  *  }, [receiverAddress, sdk]);
@@ -139,17 +138,16 @@ export const getUserFulfilledEvents = async (
  *
  * @example
  * ```tsx
- * import Catalog from "@nevermined-io/catalog-core";
+ * import { Catalog, EventService } from "@nevermined-io/catalog-core";
  * import { useState } from "react";
  *
  * const MyComponent = () => {
  *  const [events, setEvents] = useState<Transfer[]>([]);
- *  const { getUserRegisterEvents } = Catalog;
  *  const { sdk } = Catalog.useNevermined();
  *
  *  useEffect(() => {
  *      const handler = async () => {
- *           const t: Transfer[] = await getUserRegisterEvents(sdk, receiverAddress)          
+ *           const t: Transfer[] = await EventService.getUserRegisterEvents(sdk, receiverAddress)          
  *           setTransfers(t)
  *      }
  *  }, [setEvents, sdk]);
@@ -210,17 +208,16 @@ export const getUserRegisterEvents = async (
  *
  * @example
  * ```tsx
- * import Catalog from "@nevermined-io/catalog-core";
+ * import { Catalog, EventService } from "@nevermined-io/catalog-core";
  * import { useState } from "react";
  *
  * const MyComponent = () => {
  *  const [events, setEvents] = useState<Transfer[]>([]);
- *  const { getAssetRegisterEvent } = Catalog;
  *  const { sdk } = Catalog.useNevermined();
  *
  *  useEffect(() => {
  *      const handler = async () => {
- *           const t: Transfer[] = await getAssetRegisterEvent(sdk, receiverAddress)          
+ *           const t: Transfer[] = await EventService.getAssetRegisterEvent(sdk, receiverAddress)          
  *           setTransfers(t)
  *      }
  *  }, [setEvents, sdk]);
