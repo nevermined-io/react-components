@@ -32,8 +32,8 @@
     ]
   },
   "dependencies": {
-    "@nevermined-io/catalog-core": "0.0.30",
-    "@nevermined-io/catalog-providers": "0.0.30",
+    "@nevermined-io/catalog-core": "0.0.31",
+    "@nevermined-io/catalog-providers": "0.0.31",
     "axios": "^0.24.0",
     "babel-eslint": "^10.1.0",
     "bignumber.js": "^9.0.2",

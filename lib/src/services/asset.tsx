@@ -198,7 +198,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param metadata The metadata object describing the asset 
    * @returns The DDO object including the asset metadata and the DID
    */
-  const publishAsset721 = async ({
+  const publishNFT721 = async ({
     nftAddress,
     metadata
   }: {
@@ -262,7 +262,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param royaltyKind The royalties scheme that can be used
    * @returns The DDO object including the asset metadata and the DID
    */  
-  const publishAsset1155 = async ({
+  const publishNFT1155 = async ({
     metadata,
     cap,
     royalties,
@@ -322,8 +322,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     setAssetErrorMessage,
     handleChange,
     publishAsset,
-    publishAsset721,
-    publishAsset1155,
+    publishNFT721,
+    publishNFT1155,
     reset
   };
 

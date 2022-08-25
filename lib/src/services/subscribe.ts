@@ -29,6 +29,7 @@ import { NeverminedContext } from '../catalog';
  *  )
  * }
  * ```
+ * @returns Array of events with method `unsubscribe` in order to stop listening specific event
  */
 export const useSubscribeToPaymentEvents = (): { paymentEvents: EventResult[] } => {
   const { sdk } = useContext(NeverminedContext);
@@ -85,6 +86,7 @@ export const useSubscribeToPaymentEvents = (): { paymentEvents: EventResult[] } 
  *  )
  * }
  * ```
+ * @returns Array of events with method `unsubscribe` in order to stop listening specific event
  */
 export const useSubscribeToTransferEvents = (): { transferEvents: EventResult[] } => {
   const { sdk } = useContext(NeverminedContext);

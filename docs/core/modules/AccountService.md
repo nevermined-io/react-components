@@ -24,7 +24,7 @@ Get account owned nfts
 
 ```typescript
 const MyComponent = () => {
- const { isLoading, accountCollection  } = Catalog.useAccountCollection(userAddr);
+ const { isLoading, accountCollection  } = AccountService.useAccountCollection(userAddr);
 
  return (
   <>
@@ -57,7 +57,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/account.ts:76](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/account.ts#L76)
+[src/services/account.ts:76](https://github.com/nevermined-io/components-catalog/blob/f400cb9/lib/src/services/account.ts#L76)
 
 ___
 
@@ -71,7 +71,7 @@ Get account releases(mints)
 
 ```typescript
 const MyComponent = () => {
- const { isLoading, accountReleases  } = Catalog.useAccountReleases();
+ const { isLoading, accountReleases  } = AccountService.useAccountReleases();
 
  return (
   <>
@@ -104,7 +104,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/account.ts:32](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/account.ts#L32)
+[src/services/account.ts:32](https://github.com/nevermined-io/components-catalog/blob/f400cb9/lib/src/services/account.ts#L32)
 
 ___
 
@@ -119,7 +119,7 @@ Custom hook to handle User Profile: login, profile description, add new accounts
 Profile dashboard example:
 ```tsx
 import React, { useEffect, useRef } from 'react'
-import Catalog from '@nevermined-io/catalog-core'
+import { AccountService } from '@nevermined-io/catalog-core'
 import { MetaMask } from '@nevermined-io/catalog-providers'
 import {
   UiForm,
@@ -158,7 +158,7 @@ export const UserProfile: NextPage = () => {
     newAddress,
     submitUserProfile,
     addAddress
-  } = Catalog.useUserProfile(walletAddress)
+  } = AccountService.useUserProfile(walletAddress)
 
   const popupRef = useRef<UiPopupHandlers>()
 
@@ -326,7 +326,7 @@ export const UserProfile: NextPage = () => {
 
 #### Defined in
 
-[src/services/account.ts:287](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/account.ts#L287)
+[src/services/account.ts:287](https://github.com/nevermined-io/components-catalog/blob/f400cb9/lib/src/services/account.ts#L287)
 
 ___
 
@@ -357,7 +357,7 @@ true if the user owns at least one edition of the NFT
 
 #### Defined in
 
-[src/services/account.ts:460](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/account.ts#L460)
+[src/services/account.ts:460](https://github.com/nevermined-io/components-catalog/blob/f400cb9/lib/src/services/account.ts#L460)
 
 ___
 
@@ -390,4 +390,4 @@ true if the user holds the NFT
 
 #### Defined in
 
-[src/services/account.ts:500](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/account.ts#L500)
+[src/services/account.ts:500](https://github.com/nevermined-io/components-catalog/blob/f400cb9/lib/src/services/account.ts#L500)

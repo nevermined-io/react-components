@@ -1,47 +1,63 @@
-### Example
+---
+sidebar_position: 1
+title: Getting started
+---
+
+# Getting started
+
+**Catalog core** includes all the Nevermined functionalities splitted in the `Catalog provider` and `Services`.
+
+### Catalog provider
+
+Catalog provider loads the **Nevermined sdk** in the context of a **React application** and provides some parametes
+and objects to handle it:
+
+* account - contains all the functionalities to handle authentications and collections belonged to an account
+* assets - contains all the functionalities to handle assets for example get, mint, transfer, order or download asset
+* subscribe - contains all the functionalities to handle events
+* subscription - contains all the functionalities to handle asset subscritions by payment
+
+### Services
+
+The Services includes custom react hooks and providers to cover specific scenarios avoiding to the developer thinking in the logic to implement it and make possible for them focus just in the view in a react application. Currently the services is splitted in 4 groups:
+
+* AccountService - custom hooks and provider to handle user accounts and profiles
+* AssetService - custom hooks to handle assets
+* EventService - custom hooks to operate with events
+* SubscribeService - custom hooks to handle event listeners
+
+## Pre-requisites
+
+The Nevermined Components Catalog is a package built with React and Typescript.
+It requires [Node JS](https://nodejs.org/) v14 or higher. You can find online instructions about [How to install Node JS](https://nodejs.dev/learn/how-to-install-nodejs).
+
+## How to install ?
+
+```bash
+yarn add @nevermined-io/catalog-core
+or
+npm install --save @nevermined-io/catalog-core
+```
+
+## How to integrate ?
 
 ```typescript
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Config, DDO } from '@nevermined-io/nevermined-sdk-js';
-import { Catalog, AssetService } from '@nevermined-io/catalog-core';
+import { Catalog, AssetService } from '@nevermined-io/components-catalog';
 import App from 'app';
+import { Config } from '@nevermined-io/nevermined-sdk-js';
 
-export const appConfig: Config = {
+const appConfig: Config = {
   web3Provider: new Web3(window.ethereum),
   nodeUri,
   gatewayUri,
   faucetUri,
-  verbose: true,
+  verbose,
   gatewayAddress,
-  secretStoreUri: '',
-  graphHttpUri: '',
-  marketplaceAuthToken: '',
+  secretStoreUri,
+  graphHttpUri,
+  marketplaceAuthToken,
   marketplaceUri,
-  artifactsFolder: `${rootUri}/contracts`
-};
-
-
-const query = {
-  offset: 2, // limit response to 2 items
-  page: 1,
-  query: {},
-  sort: {
-    created: -1
-  }
-};
-
-const App = () => {
-  const { sdk } = Catalog.useNevermined();
-  const response = AssetService.useAssets(query);
-  console.log(response);
-
-  return (
-    <>
-      <div>Is SDK Avaialable:</div>
-      <div>{Object.keys(sdk).length > 0 ? 'Yes' : 'No'}</div>
-    </>
-  );
+  artifactsFolder
 };
 
 ReactDOM.render(
@@ -54,19 +70,21 @@ ReactDOM.render(
 );
 ```
 
-The NVM context exposes different modules that each compose multiple functions.
-Implemented modules include subscribe, assets, account, and events. Each modules interact directly
-with the sdk and exposes the functionality through the context.
-For example:
+## How to use ?
 
 ```typescript
-  const SingleAssetView = () => {
-      const { assets, sdk } = useContext(NeverminedContext);
-      const did = '123';
-      const { ddo, metadata, error, isLoading, nftDetails } = assets.useAsset(did);
+const SingleAsset = () => {
+  const did = 'did:nv:f8a00...';
+  const assetData: AssetState = AssetService.useAsset(did);
 
-      return (
-        ...
-      )
-  }
+  return (
+    <>
+      <div>Asset {did}:</div>
+      <div>{JSON.stringify(assetData.ddo)}</div>
+    </>
+  );
+};
+
 ```
+
+For a full [example](https://github.com/nevermined-io/components-catalog/tree/main/example).

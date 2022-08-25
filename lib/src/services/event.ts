@@ -1,10 +1,11 @@
 import { Logger, Nevermined, subgraphs } from '@nevermined-io/nevermined-sdk-js';
-import { FullfilledOrders, RegisterEvent, Transfer } from '../types';
+import { FullfilledOrders, RegisterEvent, Transfer, TransferNFTConditionMethod, NftTypes  } from '../types';
 
 /**
- * Get recieved transfers  by address
- * @param sdk - Nevermined instance
- * @param receiver - transfers receiver address
+ * Get recieved transfers by address and nft type
+ * @param sdk Nevermined instance
+ * @param receiver Transfers receiver address
+ * @param nftType Choose the NFT type. Default value 1155
  *
  * @example
  * ```tsx
@@ -39,7 +40,7 @@ import { FullfilledOrders, RegisterEvent, Transfer } from '../types';
  * }
  * ```
  */
-export const getTransfers = async (sdk: Nevermined, receiver: string): Promise<Transfer[]> => {
+export const getTransfers = async (sdk: Nevermined, receiver: string, nftType: NftTypes = 1155): Promise<Transfer[]> => {
   try {
     const resultStruct = {
       id: true,
@@ -53,10 +54,14 @@ export const getTransfers = async (sdk: Nevermined, receiver: string): Promise<T
         _receiver: receiver
       }
     };
-    const data: Transfer[] = await sdk.keeper.conditions.transferNftCondition.events.getEventData({
-      filterSubgraph: condition,
-      methodName,
-      result: resultStruct
+    const data: Transfer[] = await sdk
+      .keeper
+      .conditions[nftType === 721 ? TransferNFTConditionMethod.nft721 : TransferNFTConditionMethod.nft1155]
+      .events
+      .getEventData({
+        filterSubgraph: condition,
+        methodName,
+        result: resultStruct
     });
     return data;
   } catch (error) {
@@ -65,6 +70,7 @@ export const getTransfers = async (sdk: Nevermined, receiver: string): Promise<T
     return [];
   }
 };
+
 
 /**
  * Get fullfilled nft transfer events by user address
