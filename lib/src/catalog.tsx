@@ -220,14 +220,14 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     },
 
     isNFT721Holder: async (
-      did: string,
-      nftTokenAddress: string,
-      walletAddress: string,
-      agreementId: string
+      nftAddress: string,
+      walletAddress: string
     ): Promise<boolean> => {
       if (walletAddress) {
-        const nftOwner = await sdk.nfts.ownerOf(did, nftTokenAddress, agreementId);
-        return nftOwner === walletAddress;
+        const walletAccount = new Account(walletAddress); 
+        const nft721 = await sdk.contracts.loadNft721(nftAddress)
+        const balance = await nft721.balanceOf(walletAccount)
+        return balance.gt(0)
       }
       
       return false;

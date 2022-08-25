@@ -128,7 +128,7 @@ node_modules/@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway.d.ts:6
 | `useSubscribeToTransferEvents` | () => { `transferEvents`: [`EventResult`](index.md#eventresult)[]  } |
 | `useUserProfile` | (`walletAddress`: `string`) => { `addresses`: `string`[] ; `errorMessage`: `string` ; `inputError`: `string` ; `isAddressAdded`: `boolean` ; `isUpdated`: `boolean` ; `newAddress`: `string` ; `onAddAddress`: () => `Promise`<`void`\> ; `onSubmitUserProfile`: () => `Promise`<`void`\> ; `setUserProfile`: `Dispatch`<`SetStateAction`<`Partial`<[`UserProfileParams`](../interfaces/index.UserProfileParams.md)\>\>\> ; `successMessage`: `string` ; `userProfile`: `Partial`<[`UserProfileParams`](../interfaces/index.UserProfileParams.md)\>  } |
 | `userIsNFT1155Holder` | (`did`: `string`, `walletAddress`: `string`) => { `ownNFT1155`: `boolean`  } |
-| `userIsNFT721Holder` | (`did`: `string`, `nftTokenAddress`: `string`, `walletAddress`: `string`, `agreementId`: `string`) => { `ownNFT721`: `boolean`  } |
+| `userIsNFT721Holder` | (`nftAddress`: `string`, `walletAddress`: `string`) => { `ownNFT721`: `boolean`  } |
 
 #### Defined in
 
