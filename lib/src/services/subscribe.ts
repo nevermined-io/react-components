@@ -11,7 +11,7 @@ import { NeverminedContext } from '../catalog';
  * @example
  * ```typescript
  * const MyComponent = () => {
- *  const { paymentEvents } = useSubscribeToPaymentEvents();
+ *  const { paymentEvents } = SubscribeService.useSubscribeToPaymentEvents();
  *
  *  return (
  *   <>
@@ -29,6 +29,7 @@ import { NeverminedContext } from '../catalog';
  *  )
  * }
  * ```
+ * @returns Array of events with method `unsubscribe` in order to stop listening specific event
  */
 export const useSubscribeToPaymentEvents = (): { paymentEvents: EventResult[] } => {
   const { sdk } = useContext(NeverminedContext);
@@ -67,7 +68,7 @@ export const useSubscribeToPaymentEvents = (): { paymentEvents: EventResult[] } 
  * @example
  * ```tsx
  * const MyComponent = () => {
- *  const { transferEvents } = useSubscribeToTransferEvents();
+ *  const { transferEvents } = SubscribeService.useSubscribeToTransferEvents();
  *
  *  return (
  *   <>
@@ -85,6 +86,7 @@ export const useSubscribeToPaymentEvents = (): { paymentEvents: EventResult[] } 
  *  )
  * }
  * ```
+ * @returns Array of events with method `unsubscribe` in order to stop listening specific event
  */
 export const useSubscribeToTransferEvents = (): { transferEvents: EventResult[] } => {
   const { sdk } = useContext(NeverminedContext);

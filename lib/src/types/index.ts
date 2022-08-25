@@ -124,7 +124,7 @@ export interface NeverminedProviderContext {
   subscribe: SubscribeModule;
   /**
    * `assets` contains all the functionalities to handle assets for example get, 
-   * mint, transfer, order or download asset asset
+   * mint, transfer, order or download asset
    * 
    * @example
    * Mint an asset example:
@@ -372,6 +372,11 @@ export enum State {
   Unconfirmed = 'unconfirmed',
   /** Entity created */
   Confirmed = 'confirmed'
+}
+
+export enum TransferNFTConditionMethod {
+  nft1155 = "transferNftCondition",
+  nft721 = "transferNft721Condition"
 }
 
 /** User profile parameters based of the user profile entity */
@@ -770,9 +775,6 @@ export interface SubscriptionActions {
 
 /**
  * Provider with all the functionalities to publish assets (no-nft, nft721, nft1155)
- * 
- * Here is an example how to implement it
- * @see {@link https://github.com/nevermined-io/defi-marketplace/tree/main/client/src/%2Bassets/user-publish-steps}
  */
 export interface AssetPublishProviderState {
   /** Handle error publish asset message */
@@ -812,7 +814,7 @@ export interface AssetPublishProviderState {
    * @param asset.metadata The description of the asset
    * @returns Asset object
    */
-  publishAsset721: ({
+  publishNFT721: ({
     nftAddress,
     metadata
   }: {
@@ -826,7 +828,7 @@ export interface AssetPublishProviderState {
    * @param asset.royaltyKind Set how the owner will receive rewards for each sale
    * @returns Asset object
    */
-  publishAsset1155: ({
+  publishNFT1155: ({
     metadata,
     cap,
     royalties,

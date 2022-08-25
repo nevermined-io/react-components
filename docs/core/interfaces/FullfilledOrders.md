@@ -20,4 +20,4 @@ Document id of the event
 
 #### Defined in
 
-[src/types/index.ts:723](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/types/index.ts#L723)
+[src/types/index.ts:728](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L728)

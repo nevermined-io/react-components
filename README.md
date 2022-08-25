@@ -55,7 +55,7 @@ npm install --save @nevermined-io/catalog-core
 ### Second: Integrate it in your code
 
 ```typescript
-import Catalog from '@nevermined-io/catalog-core';
+import { Catalog } from '@nevermined-io/catalog-core';
 import App from 'app';
 import { Config } from '@nevermined-io/nevermined-sdk-js';
 
@@ -87,7 +87,7 @@ You are ready to use the catalog in your app.
 ```typescript
 const SingleAsset = () => {
   const did = 'did:nv:f8a00...';
-  const assetData: AssetState = Catalog.useAsset(did);
+  const assetData: AssetState = AssetService.useAsset(did);
 
   return (
     <>

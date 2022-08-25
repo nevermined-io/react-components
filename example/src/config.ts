@@ -1,5 +1,5 @@
 import { Config } from '@nevermined-io/nevermined-sdk-js';
-import Catalog from '@nevermined-io/catalog-core';
+import { AuthToken } from '@nevermined-io/catalog-core';
 import { ethers } from 'ethers';
 
 export const gatewayAddress =
@@ -19,7 +19,7 @@ export const appConfig: Config = {
   faucetUri,
   verbose: true,
   gatewayAddress,
-  marketplaceAuthToken: Catalog.fetchMarketplaceApiTokenFromLocalStorage().token,
+  marketplaceAuthToken: AuthToken.fetchMarketplaceApiTokenFromLocalStorage().token,
   marketplaceUri,
   artifactsFolder: `${rootUri}/contracts`
 };
