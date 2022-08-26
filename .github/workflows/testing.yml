@@ -27,7 +27,7 @@ jobs:
       - name: Integration tests
         env:
           INFURA_TOKEN: ${{ secrets.INFURA_TOKEN}}
-        run: cd lib && ./scripts/download-artifacts.sh && yarn test:integrations
+        run: cd lib && yarn artifacts:download && yarn test:integrations
       - name: Build
         run: cd lib && yarn build:tsc
   pull-request-catalog-providers: 
