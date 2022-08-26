@@ -9,16 +9,7 @@ export const gatewayUri = 'https://gateway.autonomies.pre.nevermined.rocks';
 export const faucetUri = 'https://faucet.autonomies.staging.nevermined.rocks';
 export const marketplaceUri = 'https://marketplace-api.autonomies.pre.nevermined.rocks';
 
-// const config = {
-//   web3Provider: {},
-//   gatewayUri,
-//   faucetUri,
-//   verbose: true,
-//   gatewayAddress,
-//   marketplaceAuthToken: '',
-//   marketplaceUri,
-//   artifactsFolder: `./contracts`
-// };
+const config = { artifactsFolder: './artifacts', ...appConfig }
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 testingUtils.mockConnectedWallet(['0xf61B443A155b07D2b2cAeA2d99715dC84E839EEf'], {
@@ -32,7 +23,7 @@ describe('SDK Integration', () => {
 
   it('initialize sdk successfully', async () => {
     appConfig.web3Provider = testingUtils.getProvider();
-    const response = await initializeNevermined(appConfig);
+    const response = await initializeNevermined(config);
     expect(response.success).toEqual(true);
   });
 });
