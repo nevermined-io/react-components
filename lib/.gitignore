@@ -70,5 +70,5 @@ cypress/videos
 
 temp-docs
 
-# nevermined artifacts
-artifacts
+# artifacts for integration
+integration-tests/artifacts

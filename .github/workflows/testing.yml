@@ -18,10 +18,18 @@ jobs:
         with:
           node-version: "17.x"
           registry-url: https://registry.npmjs.org/
-      - run: cd lib && yarn install --ignore-engines
-      - run: cd lib && yarn ts:lint
-      - run: cd lib && yarn test
-      - run: cd lib && yarn build:tsc
+      - name: Install packages
+        run: cd lib && yarn install --ignore-engines
+      - name: Linter
+        run: cd lib && yarn ts:lint
+      - name: Unit tests
+        run: cd lib && yarn test:unit
+      - name: Integration tests
+        env:
+          INFURA_TOKEN: ${{ secrets.INFURA_TOKEN}}
+        run: cd lib && ./scripts/download-artifacts.sh && yarn test:integrations
+      - name: Build
+        run: cd lib && yarn build:tsc
   pull-request-catalog-providers: 
     runs-on: ubuntu-latest
     steps:
@@ -30,9 +38,13 @@ jobs:
         with:
           node-version: "17.x"
           registry-url: https://registry.npmjs.org/
-      - run: cd providers && yarn install --ignore-engines
-      - run: cd providers && yarn ts:lint
-      - run: cd providers && yarn test
-      - run: cd providers && yarn build:tsc
+      - name: Install packages
+        run: cd providers && yarn install --ignore-engines
+      - name: Linter
+        run: cd providers && yarn ts:lint
+      - name: Unit tests
+        run: cd providers && yarn test
+      - name: Build
+        run: cd providers && yarn build:tsc
 
 
