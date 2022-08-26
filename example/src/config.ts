@@ -1,30 +1,25 @@
 import { Config } from '@nevermined-io/nevermined-sdk-js';
-import Web3 from 'web3';
-import Catalog from '@nevermined-io/catalog-core';
+import { AuthToken } from '@nevermined-io/catalog-core';
+import { ethers } from 'ethers';
 
-export const serviceUri =
-  process.env.REACT_APP_SERVICE_URI ||
-  'https://autonomies-backend.autonomies.staging.nevermined.rocks';
-export const metadataUri =
-  process.env.REACT_APP_METADATA_URI || 'https://metadata.autonomies.staging.nevermined.rocks'; // 'http://localhost:5000'
 export const gatewayAddress =
-  process.env.REACT_APP_GATEWAY_ADDRESS || '0xe63a11dC61b117D9c2B1Ac8021d4cffEd8EC213b';
+  process.env.REACT_APP_GATEWAY_ADDRESS || '0x5838B5512cF9f12FE9f2beccB20eb47211F9B0bc';
 export const gatewayUri =
-  process.env.REACT_APP_GATEWAY_URI || 'https://gateway.autonomies.pre.nevermined.rocks';
+  process.env.REACT_APP_GATEWAY_URI || 'https://defi.v2.gateway.mumbai.nevermined.rocks';
 export const faucetUri =
-  process.env.REACT_APP_FAUCET_URI || 'https://faucet.autonomies.staging.nevermined.rocks';
+  process.env.REACT_APP_FAUCET_URI || 'https://faucet.rinkeby.nevermined.rocks';
 export const acceptedChainId = process.env.REACT_APP_ACCEPTED_CHAIN_ID || '80001'; // for Mumbai
 export const rootUri = process.env.REACT_APP_ROOT_URI || 'http://localhost:3445';
-export const marketplaceUri = 'https://marketplace-api.autonomies.pre.nevermined.rocks';
+export const marketplaceUri = 'https://defi.v2.marketplace-api.mumbai.nevermined.rocks';
 
 export const appConfig: Config = {
   //@ts-ignore
-  web3Provider: new Web3(window.ethereum),
+  web3Provider: typeof window !== 'undefined' ? window.ethereum : new ethers.providers.JsonRpcProvider(nodeUri),
   gatewayUri,
   faucetUri,
   verbose: true,
   gatewayAddress,
-  marketplaceAuthToken: Catalog.fetchMarketplaceApiTokenFromLocalStorage().token,
+  marketplaceAuthToken: AuthToken.fetchMarketplaceApiTokenFromLocalStorage().token,
   marketplaceUri,
   artifactsFolder: `${rootUri}/contracts`
 };

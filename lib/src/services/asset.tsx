@@ -2,15 +2,39 @@ import { DDO, MetaData, SearchQuery, ClientError, Logger } from '@nevermined-io/
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React, { useContext, useEffect, useState, createContext } from 'react';
-import { NeverminedContext, useNevermined } from '../nevermined';
-import { AssetState, AssetPublishParams, RoyaltyKind } from '../types';
+import { NeverminedContext, useNevermined } from '../catalog';
+import { AssetState, AssetPublishParams, RoyaltyKind, AssetPublishProviderState } from '../types';
 import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
 import { getCurrentAccount } from '../utils';
 
+/**
+ * Get all assets
+ * @param q - assets query
+ * @example
+ * ```tsx
+ * const MyComponent = () => {
+ *  const {  result, isLoading } = AssetService.useAssets();
+ *
+ *  return (
+ *   <>
+ *      {result.results.map((d: DDO) => {
+ *          return (
+ *              <div>
+ *              {JSON.stringify(d)}
+ *              </div>
+ *          )
+ *      })}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
 export const useAssets = (
   q: SearchQuery
 ): {
+  /** Result based in the query search requested */
   result: QueryResult;
+  /** If the query is still processing */
   isLoading: boolean;
 } => {
   const { assets, sdk } = useContext(NeverminedContext);
@@ -41,6 +65,23 @@ export const useAssets = (
   };
 };
 
+/**
+ * Get single asset
+ * @param did - asset did
+ * @example
+ * ```tsx
+ * const MyComponent = () => {
+ *  const did = "did";
+ *  const { ddo } = AssetService.useAsset(did);
+ *
+ *  return (
+ *   <>
+ *     {JSON.stringify(ddo)}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
 export const useAsset = (did: string): AssetState => {
   const { assets } = useContext(NeverminedContext);
   const [state, setState] = useState<AssetState>({} as AssetState);
@@ -69,40 +110,14 @@ export const useAsset = (did: string): AssetState => {
   return { ...state };
 };
 
-export interface AssetPublishProviderState {
-  errorAssetMessage: string;
-  assetMessage: string;
-  isPublished: boolean;
-  isProcessing: boolean;
-  assetPublish: AssetPublishParams;
-  setAssetPublish: React.Dispatch<React.SetStateAction<AssetPublishParams>>;
-  setAssetMessage: React.Dispatch<React.SetStateAction<string>>;
-  setAssetErrorMessage: React.Dispatch<React.SetStateAction<string>>;
-  handleChange: (value: string, input: string) => void;
-  reset: (resetAssetPublish: AssetPublishParams) => void;
-  onAssetPublish: ({ metadata }: { metadata: MetaData }) => Promise<DDO | undefined>;
-  onAsset721Publish: ({
-    nftAddress,
-    metadata
-  }: {
-    nftAddress: string;
-    metadata: MetaData;
-  }) => Promise<DDO | undefined>;
-  onAsset1155Publish: ({
-    metadata,
-    cap,
-    royalties,
-    royaltyKind
-  }: {
-    metadata: MetaData;
-    cap: number;
-    royalties: number;
-    royaltyKind: RoyaltyKind;
-  }) => Promise<DDO | undefined>;
-}
-
 export const AssetPublishContext = createContext({} as AssetPublishProviderState);
 
+/**
+ * Provider with all the functionalities to publish assets (no-nft, nft721, nft1155)
+ * 
+ * Here is an example how to implement it
+ * @see {@link https://github.com/nevermined-io/defi-marketplace/tree/main/client/src/%2Bassets/user-publish-steps}
+ */
 export const AssetPublishProvider = ({ children }: { children: React.ReactElement }) => {
   const { sdk, account } = useNevermined();
   const [errorAssetMessage, setAssetErrorMessage] = useState('');
@@ -140,7 +155,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param metadata The metadata object describing the asset 
    * @returns The DDO object including the asset metadata and the DID
    */
-  const onAssetPublish = async ({ metadata }: { metadata: MetaData }) => {
+  const publishAsset = async ({ metadata }: { metadata: MetaData }) => {
     try {
       setIsProcessing(true);
 
@@ -183,7 +198,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param metadata The metadata object describing the asset 
    * @returns The DDO object including the asset metadata and the DID
    */
-  const onAsset721Publish = async ({
+  const publishNFT721 = async ({
     nftAddress,
     metadata
   }: {
@@ -247,7 +262,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param royaltyKind The royalties scheme that can be used
    * @returns The DDO object including the asset metadata and the DID
    */  
-  const onAsset1155Publish = async ({
+  const publishNFT1155 = async ({
     metadata,
     cap,
     royalties,
@@ -306,9 +321,9 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     setAssetMessage,
     setAssetErrorMessage,
     handleChange,
-    onAssetPublish,
-    onAsset721Publish,
-    onAsset1155Publish,
+    publishAsset,
+    publishNFT721,
+    publishNFT1155,
     reset
   };
 

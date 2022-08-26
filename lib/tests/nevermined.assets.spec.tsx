@@ -3,7 +3,7 @@ import { render, screen, renderHook, waitFor } from '@testing-library/react';
 import { generateTestingUtils } from 'eth-testing';
 import { appConfig } from './config';
 import { agreementId, ddo, walletAddress, nevermined, nftTokenAddress } from './mockups';
-import Catalog from '../src';
+import { Catalog } from '../src';
 import { DDO } from '@nevermined-io/nevermined-sdk-js';
 
 jest.mock('@nevermined-io/nevermined-sdk-js', () => ({

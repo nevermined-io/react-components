@@ -1,7 +1,46 @@
 import { Logger, Nevermined, subgraphs } from '@nevermined-io/nevermined-sdk-js';
-import { FullfilledOrders, RegisterEvent, Transfer } from '../types';
+import { FullfilledOrders, RegisterEvent, Transfer, TransferNFTConditionMethod, NftTypes  } from '../types';
 
-export const getTransfers = async (sdk: Nevermined, receiver: string): Promise<Transfer[]> => {
+/**
+ * Get recieved transfers by address and nft type
+ * @param sdk Nevermined instance
+ * @param receiver Transfers receiver address
+ * @param nftType Choose the NFT type. Default value 1155
+ *
+ * @example
+ * ```tsx
+ * import { Catalog, EventService } from "@nevermined-io/catalog-core";
+ * import { useState } from "react";
+ *
+ * const MyComponent = () => {
+ *  const [transfers, setTransfers] = useState<Transfer[]>([]);
+ *  const { sdk } = Catalog.useNevermined();
+ *
+ *  useEffect(() => {
+ *      const handler = async () => {
+ *           const t: Transfer[] = await EventService.getTransfers(sdk, receiverAddress)          
+ *           setTransfers(t)
+ *      }
+ *  }, [receiverAddress, sdk]);
+ *
+ *  return (
+ *   <>
+ *      {transfers.map((p) => {
+ *          return (
+ *              <div>
+ *                  <div>{p.id}</div>
+ *                  <div>{p._did}</div>
+ *                  <div>{p._agreementId}</div>
+ *                  <div>{p._receiver}</div>
+ *              </div>
+ *          )
+ *      })}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
+export const getTransfers = async (sdk: Nevermined, receiver: string, nftType: NftTypes = 1155): Promise<Transfer[]> => {
   try {
     const resultStruct = {
       id: true,
@@ -15,10 +54,14 @@ export const getTransfers = async (sdk: Nevermined, receiver: string): Promise<T
         _receiver: receiver
       }
     };
-    const data: Transfer[] = await sdk.keeper.conditions.transferNftCondition.events.getEventData({
-      filterSubgraph: condition,
-      methodName,
-      result: resultStruct
+    const data: Transfer[] = await sdk
+      .keeper
+      .conditions[nftType === 721 ? TransferNFTConditionMethod.nft721 : TransferNFTConditionMethod.nft1155]
+      .events
+      .getEventData({
+        filterSubgraph: condition,
+        methodName,
+        result: resultStruct
     });
     return data;
   } catch (error) {
@@ -28,6 +71,44 @@ export const getTransfers = async (sdk: Nevermined, receiver: string): Promise<T
   }
 };
 
+
+/**
+ * Get fullfilled nft transfer events by user address
+ * @param sdk - Nevermined instance
+ * @param account - user address
+ *
+ * @example
+ * ```tsx
+ * import Catalog from "@nevermined-io/catalog-core";
+ * import { useState } from "react";
+ *
+ * const MyComponent = () => {
+ *  const [events, setEvents] = useState<Transfer[]>([]);
+ *  const { getUserFulfilledEvents } = Catalog;
+ *  const { sdk } = Catalog.useNevermined();
+ *
+ *  useEffect(() => {
+ *      const handler = async () => {
+ *           const t: Transfer[] = await getUserFulfilledEvents(sdk, receiverAddress)          
+ *           setTransfers(t)
+ *      }
+ *  }, [setEvents, sdk]);
+ *
+ *  return (
+ *   <>
+ *      {events.map((p) => {
+ *          return (
+ *              <div>
+ *                  <div>{p.id}</div>
+ *                  <div>{p._documentId}</div>
+ *              </div>
+ *          )
+ *      })}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
 export const getUserFulfilledEvents = async (
   sdk: Nevermined,
   account: string
@@ -39,7 +120,8 @@ export const getUserFulfilledEvents = async (
       }
     };
     const resultStruct = {
-      _documentId: true
+      _documentId: true,
+      id: true
     };
     const methodName = 'getFulfilleds';
     const result = await sdk.keeper.conditions.accessCondition.events.getPastEvents({
@@ -55,6 +137,45 @@ export const getUserFulfilledEvents = async (
   }
 };
 
+/**
+ * Get nft creating events registered by user
+ * @param sdk - Nevermined instance
+ * @param owner - user address of events publisher
+ *
+ * @example
+ * ```tsx
+ * import { Catalog, EventService } from "@nevermined-io/catalog-core";
+ * import { useState } from "react";
+ *
+ * const MyComponent = () => {
+ *  const [events, setEvents] = useState<Transfer[]>([]);
+ *  const { sdk } = Catalog.useNevermined();
+ *
+ *  useEffect(() => {
+ *      const handler = async () => {
+ *           const t: Transfer[] = await EventService.getUserRegisterEvents(sdk, receiverAddress)          
+ *           setTransfers(t)
+ *      }
+ *  }, [setEvents, sdk]);
+ *
+ *  return (
+ *   <>
+ *      {events.map((p) => {
+ *          return (
+ *              <div>
+ *                  <div>{p.id}</div>
+ *                  <div>{p._did}</div>
+ *                  <div>{p._owner}</div>
+ *                  <div>{p._lastUpdatedBy}</div>
+ *                  <div>{p._blockNumberUpdated}</div>
+ *              </div>
+ *          )
+ *      })}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
 export const getUserRegisterEvents = async (
   sdk: Nevermined,
   owner: string
@@ -86,14 +207,52 @@ export const getUserRegisterEvents = async (
   }
 };
 
+/**
+ * Get asset registering event
+ * @param did - assets did
+ * @param graphurl 
+ *
+ * @example
+ * ```tsx
+ * import { Catalog, EventService } from "@nevermined-io/catalog-core";
+ * import { useState } from "react";
+ *
+ * const MyComponent = () => {
+ *  const [events, setEvents] = useState<Transfer[]>([]);
+ *  const { sdk } = Catalog.useNevermined();
+ *
+ *  useEffect(() => {
+ *      const handler = async () => {
+ *           const t: Transfer[] = await EventService.getAssetRegisterEvent(sdk, receiverAddress)          
+ *           setTransfers(t)
+ *      }
+ *  }, [setEvents, sdk]);
+ *
+ *  return (
+ *   <>
+ *      {events.map((p) => {
+ *          return (
+ *              <div>
+ *                  <div>{p._did}</div>
+ *                  <div>{p._owner}</div>
+ *                  <div>{p._lastUpdatedBy}</div>
+ *                  <div>{p._blockNumberUpdated}</div>
+ *              </div>
+ *          )
+ *      })}
+ *   </>
+ *  )
+ * }
+ * ```
+ */
 export const getAssetRegisterEvent = async (
-  asset: string,
+  did: string,
   graphUrl: string
 ): Promise<RegisterEvent[]> => {
   try {
     const condition = {
       where: {
-        _did: asset
+        _did: did
       }
     };
     const registerEvents: RegisterEvent[] = await subgraphs.DIDRegistry.getDIDAttributeRegistereds(

@@ -5,17 +5,15 @@ import {
   Logger,
   Nevermined,
   SearchQuery,
-  ClientError
+  ClientError,
 } from '@nevermined-io/nevermined-sdk-js';
-import {
-  ContractEventSubscription,
-  EventResult
-} from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
 import {
   AccountModule,
   AssetsModule,
+  ContractEventSubscription,
+  EventResult,
   GenericOutput,
   MarketplaceAPIToken,
   MintNFTInput,
@@ -23,7 +21,7 @@ import {
   NeverminedProviderProps,
   NFTDetails,
   NftTypes,
-  SubscribeModule
+  SubscribeModule,
 } from './types';
 import {
   conductOrder,
@@ -34,12 +32,13 @@ import {
   handlePostRequest
 } from './utils';
 import { isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token';
+import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
 
-export const initialState = {
+const initialState = {
   sdk: {} as Nevermined
 };
 
-export const neverminedReducer = (
+const neverminedReducer = (
   state: { sdk: Nevermined },
   action: { type: 'SET_SDK'; payload: { sdk: Nevermined } }
 ) => {
@@ -51,7 +50,7 @@ export const neverminedReducer = (
   }
 };
 
-export const initializeNevermined = async (
+const initializeNevermined = async (
   config: Config
 ): Promise<GenericOutput<Nevermined, any>> => {
   try {
@@ -68,14 +67,61 @@ export const initializeNevermined = async (
   }
 };
 
+/**
+ * Nevermined Provider to get the core Catalog functionalities as context
+ * 
+ * @param config - 
+ * @param verbose - Show Catalog logs in console logs if it sets to `true`
+ * 
+ * @example
+ * Initialize NeverminedProvider:
+ * ```tsx
+ * import React from 'react';
+ * import ReactDOM from 'react-dom';
+ * import { Catalog } from 'test-catalog-core';
+ * import { appConfig } from './config';
+ * import Example from 'examples';
+ * import { MetaMask } from '@nevermined-io/catalog-providers';
+ * import chainConfig, { mumbaiChainId } from './chain_config';
+ * 
+ * 
+ * ReactDOM.render(
+ *   <div>
+ *     <Catalog.NeverminedProvider config={appConfig} verbose={true}>
+ *       <MetaMask.WalletProvider
+ *         externalChainConfig={chainConfig}
+ *         correctNetworkId={mumbaiChainId}
+ *         nodeUri={String(appConfig.nodeUri)}
+ *       >
+ *         <Example />
+ *       </MetaMask.WalletProvider>
+ *     </Catalog.NeverminedProvider>
+ *   </div>,
+ *   document.getElementById('root') as HTMLElement
+ * );
+ * ```
+ * Once it is intialized then we can execute the hook inside components
+ * 
+ * ```ts
+ * const SDKInstance = () => {
+ *  const { sdk, isLoadingSDK } = Catalog.useNevermined();
+ *
+ *  return (
+ *    <>
+ *      <div>Is Loading SDK</div>
+ *      <div>{isLoadingSDK ? 'Yes' : 'No'}</div>
+ *      <div>Is SDK Avaialable:</div>
+ *      <div>{sdk && Object.keys(sdk).length > 0 ? 'Yes' : 'No'}</div>
+ *    </>
+ *  );
+ *};
+ * ```
+ */
 export const NeverminedProvider = ({ children, config, verbose }: NeverminedProviderProps) => {
   const [{ sdk }, dispatch] = useReducer(neverminedReducer, initialState);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>(undefined);
 
-  // Invoked on start to initialise the SDK
-  // if you want to change the sdk based on user interaction
-  // you can use UpdateSDK functin exported from this provider
   useEffect(() => {
     const loadNevermined = async (): Promise<void> => {
       if (!config.web3Provider) {
@@ -101,7 +147,8 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     return newSDK.success;
   };
 
-  const accountModule: AccountModule = {
+  
+  const account: AccountModule = {
     isTokenValid: (): boolean => isTokenValid(),
     generateToken: async (): Promise<MarketplaceAPIToken> => {
       const tokenData = await newMarketplaceApiToken(sdk);
@@ -132,6 +179,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         return [];
       }
     },
+
     getCollection: async (address: string): Promise<string[]> => {
       try {
         const query: {
@@ -155,7 +203,35 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         verbose && Logger.error(error);
         return [];
       }
-    }
+    },
+    
+    isNFT1155Holder: async (
+      did: string,
+      walletAddress: string
+    ): Promise<boolean> => {
+      const walletAccount = new Account(walletAddress); 
+      if (walletAccount) {
+        const balance = await sdk.nfts.balance(did, walletAccount);
+        const nftBalance =  BigNumber.from(balance).toNumber()
+        return nftBalance > 0
+            
+      }
+      return false;
+    },
+
+    isNFT721Holder: async (
+      did: string,
+      nftTokenAddress: string,
+      walletAddress: string,
+      agreementId: string
+    ): Promise<boolean> => {
+      if (walletAddress) {
+        const nftOwner = await sdk.nfts.ownerOf(did, nftTokenAddress, agreementId);
+        return nftOwner === walletAddress;
+      }
+      
+      return false;
+    },
   };
 
   const assets: AssetsModule = {
@@ -186,9 +262,25 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         if (isEmptyObject(sdk)) return undefined;
         const [publisherAddress] = await sdk.accounts.list();
         if (!publisherAddress) {
-          Logger.log('No account was found!');
+          Logger.error('No account was found!');
           return;
         }
+
+        if (!config.gatewayAddress) {
+          Logger.error('Gateway address from config is required to mint NFT1155 asset');
+          return
+        }
+
+        const transferNftCondition = sdk.keeper.conditions.transferNftCondition;
+
+        const transferNftConditionContractReceipt = await sdk.nfts.setApprovalForAll(transferNftCondition.address, true, publisherAddress);
+
+        Logger.log(`Contract Receipt for approved transfer NFT: ${transferNftConditionContractReceipt}`);
+
+        const gateawayContractReceipt = await sdk.nfts.setApprovalForAll(config.gatewayAddress, true, publisherAddress);
+
+        Logger.log(`Contract Receipt for approved gateway: ${gateawayContractReceipt}`);
+
         const minted: DDO = await sdk.nfts.create(
           input.metadata,
           publisherAddress,
@@ -299,7 +391,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
       const balance = await sdk.nfts.balance(did, account);
 
-      if (balance > 0) {
+      if (BigNumber.from(balance).toNumber() > 0) {
         return getAgreementId(sdk, 'nftAccessTemplate', did, account.getId());
       }
 
@@ -421,22 +513,30 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   };
 
   const subscription = {
-    buySubscription: async (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: number, nftType: NftTypes): Promise<boolean> => {
+    buySubscription: async (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: number, nftType: NftTypes): Promise<string> => {
+      let agreementId;
+      let transferResult;
       try {
-        const agreementId = await sdk.nfts.order721(subscriptionDid, buyer);
-        return sdk.nfts.transferForDelegate(
+        agreementId = nftType === 721 ? await sdk.nfts.order721(subscriptionDid, buyer): await sdk.nfts.order(subscriptionDid, nftAmount, buyer);
+        transferResult = await sdk.nfts.transferForDelegate(
           agreementId,
           nftHolder,
           buyer.getId(),
           nftAmount,
           nftType
-        )
-
+        );
       } catch (error) {
         verbose && Logger.error(error);
-        return false;
+        throw error
       }
+
+      if (!transferResult)
+        throw new Error("Error delegating the NFT of the subscription with agreement " + agreementId)
+        
+      return agreementId 
+      
     },
+    
   };
 
 
@@ -446,7 +546,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     sdkError: error,
     subscribe,
     assets,
-    account: accountModule,
+    account,
     updateSDK,
     subscription
   };
