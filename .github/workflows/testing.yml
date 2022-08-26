@@ -26,7 +26,7 @@ jobs:
         run: cd lib && yarn test:unit
       - name: Integration tests
         env:
-          INFURA_TOKEN: ${{ secrets.INFURA_TOKEN}}
+          INFURA_TOKEN: ${{ secrets.INFURA_TOKEN }}
         run: cd lib && yarn artifacts:download && yarn test:integrations
       - name: Build
         run: cd lib && yarn build:tsc
