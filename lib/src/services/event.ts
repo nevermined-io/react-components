@@ -60,6 +60,8 @@ export const getTransfers = async (sdk: Nevermined, receiver: string, nftType: N
       .events
       .getEventData({
         filterSubgraph: condition,
+        filterJsonRpc: { _receiver: receiver },
+        eventName: 'Fulfilled',
         methodName,
         result: resultStruct
     });
@@ -111,7 +113,7 @@ export const getTransfers = async (sdk: Nevermined, receiver: string, nftType: N
  */
 export const getUserFulfilledEvents = async (
   sdk: Nevermined,
-  account: string
+  account: string,
 ): Promise<FullfilledOrders[]> => {
   try {
     const condition = {
@@ -124,9 +126,11 @@ export const getUserFulfilledEvents = async (
       id: true
     };
     const methodName = 'getFulfilleds';
-    const result = await sdk.keeper.conditions.accessCondition.events.getPastEvents({
+    const result = await sdk.keeper.conditions.nftAccessCondition.events.getPastEvents({
       methodName,
+      eventName: 'Fulfilled',
       filterSubgraph: condition,
+      filterJsonRpc: { _grantee: account },
       result: resultStruct
     });
     return result;
@@ -195,7 +199,9 @@ export const getUserRegisterEvents = async (
     };
     const result: RegisterEvent[] = await sdk.keeper.didRegistry.events.getPastEvents({
       methodName,
+      eventName: 'DIDAttributeRegistered',
       filterSubgraph: condition,
+      filterJsonRpc: { _owner: owner },
       result: resultStruct
     });
 
