@@ -69,3 +69,6 @@ dist/
 cypress/videos
 
 temp-docs
+
+# artifacts for integration
+integration-tests/artifacts

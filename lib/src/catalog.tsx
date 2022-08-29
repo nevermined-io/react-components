@@ -50,7 +50,7 @@ const neverminedReducer = (
   }
 };
 
-const initializeNevermined = async (
+export const initializeNevermined = async (
   config: Config
 ): Promise<GenericOutput<Nevermined, any>> => {
   try {
