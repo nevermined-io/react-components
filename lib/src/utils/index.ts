@@ -128,12 +128,10 @@ export const getAgreementId = async (
     filterJsonRpc: {},
     result: {
       _agreementId: true,
-      _creator: true,
-      _did: true
     }
   });
 
-  return agreements[0];
+  return agreements[0]?._agreementId;
 };
 
 /**

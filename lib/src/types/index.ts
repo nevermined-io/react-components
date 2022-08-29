@@ -618,9 +618,10 @@ export interface SubscribeModule {
   /**
    * Subscribe a `transfer` event and execute callbacks once that this event is listened
    * @param cb Callback to execute
+   * @param nftType NFT asset type which can be 721 or 1155
    * @returns return the `transfer` event with a functionality to unsubscribe 
    */
-  transferEvents: (cb: (events: EventResult[]) => void) => ContractEventSubscription;
+  transferEvents: (cb: (events: EventResult[]) => void, nftType: NftTypes) => ContractEventSubscription;
 }
 
 
