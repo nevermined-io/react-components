@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  unit-tests:
+  unit-test-with-build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,18 +27,14 @@ jobs:
         run: cd ${{ matrix.module }} && yarn ts:lint
       - name: Unit tests
         run: cd ${{ matrix.module }} && yarn test:unit
+      - name: Build
+        run: cd ${{ matrix.module }} && yarn build:tsc
   integration-tests:
     runs-on: ubuntu-latest
     steps:
+      - name: Install packages
+        run: cd lib && yarn install --ignore-engines
       - name: Integration tests
         env:
           INFURA_TOKEN: ${{ secrets.INFURA_TOKEN }}
         run: cd lib && yarn artifacts:download && yarn test:integrations
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        module: ['lib', 'providers']
-    steps:
-      - name: Build
-        run: cd ${{ matrix.module }} && yarn build:tsc
