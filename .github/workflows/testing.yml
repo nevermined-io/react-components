@@ -12,7 +12,7 @@ on:
 jobs:
   pull-request:
     runs-on: ubuntu-latest
-    stategy:
+    strategy:
       matrix:
         module: ['lib', 'providers']
     steps:
