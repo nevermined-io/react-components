@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  pull-request:
+  unit-tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -26,11 +26,19 @@ jobs:
       - name: Linter
         run: cd ${{ matrix.module }} && yarn ts:lint
       - name: Unit tests
-        run: cd {{ matrix.module }} && yarn test:unit
+        run: cd ${{ matrix.module }} && yarn test:unit
+  integration-tests:
+    runs-on: ubuntu-latest
+    steps:
       - name: Integration tests
         env:
           INFURA_TOKEN: ${{ secrets.INFURA_TOKEN }}
         run: cd lib && yarn artifacts:download && yarn test:integrations
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: ['lib', 'providers']
+    steps:
       - name: Build
-        run: cd lib && yarn build:tsc
-
+        run: cd ${{ matrix.module }} && yarn build:tsc
