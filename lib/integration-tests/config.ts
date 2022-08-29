@@ -12,6 +12,7 @@ const nodeUri = process.env.NODE_URI || `https://polygon-mumbai.g.alchemy.com/v2
 const graphHttpUri = process.env.GRAPH_HTTP_URI ||  'https://api.thegraph.com/subgraphs/name/nevermined-io/common';
 
 export const walletAddress = process.env.WALLET_ADDRESS || '0xF91d149BE554304DDD391937f9DcF57341cFAf02';
+export const did = process.env.DID || '0x1643dfa34b8693abd5c0e9947bcd32b68f7e1f2b763744e1f7c2ba32fb84e46a';
 
 Logger.setLevel(3)
 

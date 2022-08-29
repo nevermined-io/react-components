@@ -1,5 +1,5 @@
 import { Logger, Nevermined, subgraphs } from '@nevermined-io/nevermined-sdk-js';
-import { FullfilledOrders, RegisterEvent, Transfer, TransferNFTConditionMethod, NftTypes  } from '../types';
+import { FulfilledOrders, RegisterEvent, Transfer, TransferNFTConditionMethod, NftTypes  } from '../types';
 
 /**
  * Get recieved transfers by address and nft type
@@ -114,7 +114,7 @@ export const getTransfers = async (sdk: Nevermined, receiver: string, nftType: N
 export const getUserFulfilledEvents = async (
   sdk: Nevermined,
   account: string,
-): Promise<FullfilledOrders[]> => {
+): Promise<FulfilledOrders[]> => {
   try {
     const condition = {
       where: {
@@ -262,7 +262,7 @@ export const getAssetRegisterEvent = async (
       }
     };
     const registerEvents: RegisterEvent[] = await subgraphs.DIDRegistry.getDIDAttributeRegistereds(
-      `${graphUrl}/DIDRegistry`,
+      `${graphUrl}didregistry`,
       condition,
       {
         _did: true,

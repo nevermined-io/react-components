@@ -22,12 +22,13 @@ import {
   NFTDetails,
   NftTypes,
   SubscribeModule,
+  TransferNFTConditionMethod,
 } from './types';
 import {
   conductOrder,
   getCurrentAccount,
   isEmptyObject,
-  loadFullfilledEvents,
+  loadFulfilledEvents,
   getAgreementId,
   handlePostRequest
 } from './utils';
@@ -371,7 +372,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         );
       }
 
-      const purchased = await loadFullfilledEvents(sdk, account.getId());
+      const purchased = await loadFulfilledEvents(sdk, account.getId(), 'accessCondition');
 
       const purchasedDDO = await Promise.all(
         purchased.map((asset) => sdk.assets.resolve(asset.documentId))
@@ -380,7 +381,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       const asset = purchasedDDO.filter((p) => p).find((p) => p.id === did);
 
       if (asset) {
-        return getAgreementId(sdk, 'accessTemplate', did, account.getId());
+        return getAgreementId(sdk, 'accessTemplate', did);
       }
 
       return sdk.assets.order(did, 'access', account);
@@ -392,7 +393,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       const balance = await sdk.nfts.balance(did, account);
 
       if (BigNumber.from(balance).toNumber() > 0) {
-        return getAgreementId(sdk, 'nftAccessTemplate', did, account.getId());
+        return getAgreementId(sdk, 'nftAccessTemplate', did);
       }
 
       return sdk.nfts.order(did, amount, account);
@@ -404,7 +405,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       const holder = await sdk.nfts.ownerOf(did, nftTokenAddress);
 
       if (holder === account.getId()) {
-        return getAgreementId(sdk, 'nft721AccessTemplate', did, account.getId());
+        return getAgreementId(sdk, 'nft721AccessTemplate', did);
       }
 
       return sdk.nfts.order721(did, account);
@@ -475,6 +476,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       try {
         const config = {
           filterSubgraph: {},
+          eventName: 'Fulfilled',
           methodName: 'getFulfilleds',
           result: {
             id: true,
@@ -491,20 +493,21 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    transferEvents: (cb: (events: EventResult[]) => void): ContractEventSubscription => {
+    transferEvents: (cb: (events: EventResult[]) => void, nftType: NftTypes = 1155): ContractEventSubscription => {
       try {
         const config = {
           filterSubgraph: {},
           methodName: 'getFulfilleds',
+          eventName: 'Fulfilled',
           result: {
             id: true,
             _did: true,
             _agreementId: true,
-            _amounts: true,
-            _receivers: true
+            _amount: true,
+            _receiver: true
           }
         };
-        return sdk.keeper.conditions.transferNftCondition.events.subscribe(cb, config);
+        return sdk.keeper.conditions[nftType === 721 ? TransferNFTConditionMethod.nft721 : TransferNFTConditionMethod.nft1155].events.subscribe(cb, config);
       } catch (error) {
         verbose && Logger.error(error);
         return {} as ContractEventSubscription;

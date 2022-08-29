@@ -723,7 +723,7 @@ export interface FileMetadata {
 /**
  * Events full filled
  */
-export interface FullfilledOrders {
+export interface FulfilledOrders {
   /** Document id of the event */
   _documentId: string;
 }

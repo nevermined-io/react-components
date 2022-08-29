@@ -2,7 +2,7 @@ import { Account, DDO, Nevermined, Logger, ClientError } from '@nevermined-io/ne
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
 
-interface FullfilledOrders {
+interface FulfilledOrders {
   documentId: string;
 }
 
@@ -32,6 +32,8 @@ export const getCurrentAccount = async (sdk: Nevermined) => {
 };
 
 type Template = 'accessTemplate' | 'nft721AccessTemplate' | 'nftAccessTemplate';
+
+type Condition = 'accessCondition' | 'nftAccessCondition';
 
 /** 
  * Order transfer asset to a new owner
@@ -81,23 +83,26 @@ export const conductOrder = async ({
  * @param account Account user connected currently
  * @returns Array of object with the document id of each fullfilled events
  */
-export const loadFullfilledEvents = async (
+export const loadFulfilledEvents = async (
   sdk: Nevermined,
-  account: string
-): Promise<FullfilledOrders[]> => {
-  const fullfilled = await sdk.keeper.conditions.accessCondition.events.getPastEvents({
+  account: string,
+  condition: Condition,
+): Promise<FulfilledOrders[]> => {
+  const fulfilled = await sdk.keeper.conditions[condition].events.getPastEvents({
     methodName: 'getFulfilleds',
+    eventName: 'Fulfilled',
     filterSubgraph: {
       where: {
         _grantee: account
       }
     },
+    filterJsonRpc: { _grantee: account },
     result: {
       _documentId: true
     }
   });
 
-  return fullfilled.map((doc) => ({ documentId: doc._documentId }));
+  return fulfilled.map((doc) => ({ documentId: doc._documentId }));
 };
 
 /**
@@ -105,17 +110,22 @@ export const loadFullfilledEvents = async (
  * @param sdk Instance of SDK object
  * @param template The template to use according of type of asset
  * @param did The id of the asset
- * @param account Account user connected currently
  * @returns Agreement id generated after order an asset
  */
 export const getAgreementId = async (
   sdk: Nevermined,
   template: Template,
   did: string,
-  account: string
 ) => {
   const agreements = await sdk.keeper.templates[template].events.getPastEvents({
-    methodName: 'agreementCreateds',
+    methodName: 'getAgreementCreateds',
+    eventName: 'AgreementCreated',
+    filterSubgraph: {
+      where: {
+        _did: did,
+      }
+    },
+    filterJsonRpc: {},
     result: {
       _agreementId: true,
       _creator: true,
@@ -123,7 +133,7 @@ export const getAgreementId = async (
     }
   });
 
-  return agreements.find((a) => a._did === did && a._creator === account)?._agreementId;
+  return agreements[0];
 };
 
 /**
