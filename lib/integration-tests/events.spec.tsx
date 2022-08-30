@@ -132,7 +132,7 @@ describe('Events Integration', () => {
 
           (async () => {
             try {
-              const result = await EventService.getAssetRegisterEvent(did, `${appConfig.graphHttpUri}mumbaiv2`);
+              const result = await EventService.getAssetRegisterEvent(sdk, did);
               setEvents([...result]);
             } catch (error: any) {
               console.error(error.message);

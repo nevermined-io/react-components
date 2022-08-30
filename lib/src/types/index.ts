@@ -722,7 +722,7 @@ export interface FileMetadata {
 }
 
 /**
- * Events full filled
+ * Events fulfilled
  */
 export interface FulfilledOrders {
   /** Document id of the event */

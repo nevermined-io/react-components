@@ -1,4 +1,4 @@
-import { Logger, Nevermined, subgraphs } from '@nevermined-io/nevermined-sdk-js';
+import { Logger, Nevermined } from '@nevermined-io/nevermined-sdk-js';
 import { FulfilledOrders, RegisterEvent, Transfer, TransferNFTConditionMethod, NftTypes  } from '../types';
 
 /**
@@ -215,8 +215,8 @@ export const getUserRegisterEvents = async (
 
 /**
  * Get asset registering event
+ * @param sdk - Nevermined instance
  * @param did - assets did
- * @param graphurl 
  *
  * @example
  * ```tsx
@@ -252,8 +252,9 @@ export const getUserRegisterEvents = async (
  * ```
  */
 export const getAssetRegisterEvent = async (
+  sdk: Nevermined,
   did: string,
-  graphUrl: string
+
 ): Promise<RegisterEvent[]> => {
   try {
     const condition = {
@@ -261,14 +262,20 @@ export const getAssetRegisterEvent = async (
         _did: did
       }
     };
-    const registerEvents: RegisterEvent[] = await subgraphs.DIDRegistry.getDIDAttributeRegistereds(
-      `${graphUrl}didregistry`,
-      condition,
+    const methodName = 'getDIDAttributeRegistereds';
+    const resultStruct = {
+      _did: true,
+      _owner: true,
+      _lastUpdatedBy: true,
+      _blockNumberUpdated: true
+    }
+    const registerEvents: RegisterEvent[] = await sdk.keeper.didRegistry.events.getPastEvents(
       {
-        _did: true,
-        _owner: true,
-        _lastUpdatedBy: true,
-        _blockNumberUpdated: true
+        methodName,
+        eventName: 'DIDAttributeRegistered',
+        filterSubgraph: condition,
+        filterJsonRpc: { _did: did },
+        result: resultStruct
       }
     );
     return registerEvents; // Should have length 1

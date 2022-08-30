@@ -2,11 +2,6 @@ import { Account, DDO, Nevermined, Logger, ClientError } from '@nevermined-io/ne
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
 
-interface FulfilledOrders {
-  documentId: string;
-}
-
-
 /**
  * Checks if object is empty
  * @param i Object to check
@@ -87,7 +82,7 @@ export const loadFulfilledEvents = async (
   sdk: Nevermined,
   account: string,
   condition: Condition,
-): Promise<FulfilledOrders[]> => {
+): Promise<{ documentId: string }[]> => {
   const fulfilled = await sdk.keeper.conditions[condition].events.getPastEvents({
     methodName: 'getFulfilleds',
     eventName: 'Fulfilled',

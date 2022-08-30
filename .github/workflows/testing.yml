@@ -13,6 +13,7 @@ jobs:
   unit-test-with-build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         module: ['lib', 'providers']
     steps:
