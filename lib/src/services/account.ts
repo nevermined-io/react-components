@@ -13,7 +13,7 @@ import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumbe
  * @example
  * ```typescript
  * const MyComponent = () => {
- *  const { isLoading, accountReleases  } = Catalog.useAccountReleases();
+ *  const { isLoading, accountReleases  } = AccountService.useAccountReleases();
  *
  *  return (
  *   <>
@@ -57,7 +57,7 @@ export const useAccountReleases = (
  * @example
  * ```typescript
  * const MyComponent = () => {
- *  const { isLoading, accountCollection  } = Catalog.useAccountCollection(userAddr);
+ *  const { isLoading, accountCollection  } = AccountService.useAccountCollection(userAddr);
  *
  *  return (
  *   <>
@@ -105,7 +105,7 @@ export const useAccountCollection = (
  * Profile dashboard example:
  * ```tsx
  * import React, { useEffect, useRef } from 'react'
- * import Catalog from '@nevermined-io/catalog-core'
+ * import { AccountService } from '@nevermined-io/catalog-core'
  * import { MetaMask } from '@nevermined-io/catalog-providers'
  * import {
  *   UiForm,
@@ -144,7 +144,7 @@ export const useAccountCollection = (
  *     newAddress,
  *     submitUserProfile,
  *     addAddress
- *   } = Catalog.useUserProfile(walletAddress)
+ *   } = AccountService.useUserProfile(walletAddress)
  * 
  *   const popupRef = useRef<UiPopupHandlers>()
  * 

@@ -23,7 +23,7 @@
 
 #### Defined in
 
-[src/services/asset.tsx:113](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/asset.tsx#L113)
+[src/services/asset.tsx:113](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/asset.tsx#L113)
 
 ## Functions
 
@@ -31,7 +31,13 @@
 
 ▸ **AssetPublishProvider**(`__namedParameters`): `Element`
 
-Asset publishing helper
+Provider with all the functionalities to publish assets (no-nft, nft721, nft1155)
+
+Here is an example how to implement it
+
+**`See`**
+
+[https://github.com/nevermined-io/defi-marketplace/tree/main/client/src/%2Bassets/user-publish-steps](https://github.com/nevermined-io/defi-marketplace/tree/main/client/src/%2Bassets/user-publish-steps)
 
 #### Parameters
 
@@ -46,7 +52,7 @@ Asset publishing helper
 
 #### Defined in
 
-[src/services/asset.tsx:118](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/asset.tsx#L118)
+[src/services/asset.tsx:121](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/asset.tsx#L121)
 
 ___
 
@@ -61,7 +67,7 @@ Get single asset
 ```tsx
 const MyComponent = () => {
  const did = "did";
- const { ddo } = Catalog.useAsset(did);
+ const { ddo } = AssetService.useAsset(did);
 
  return (
   <>
@@ -83,7 +89,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/asset.tsx:85](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/asset.tsx#L85)
+[src/services/asset.tsx:85](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/asset.tsx#L85)
 
 ___
 
@@ -97,7 +103,7 @@ ___
 
 #### Defined in
 
-[src/services/asset.tsx:330](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/asset.tsx#L330)
+[src/services/asset.tsx:333](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/asset.tsx#L333)
 
 ___
 
@@ -111,7 +117,7 @@ Get all assets
 
 ```tsx
 const MyComponent = () => {
- const {  result, isLoading } = Catalog.useAssets();
+ const {  result, isLoading } = AssetService.useAssets();
 
  return (
   <>
@@ -144,4 +150,4 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/asset.tsx:32](https://github.com/nevermined-io/components-catalog/blob/9dc93ea/lib/src/services/asset.tsx#L32)
+[src/services/asset.tsx:32](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/asset.tsx#L32)

@@ -1,5 +1,5 @@
 import { Config } from '@nevermined-io/nevermined-sdk-js';
-import Catalog from '@nevermined-io/catalog-core';
+import { AuthToken } from '@nevermined-io/catalog-core';
 import { ethers } from 'ethers';
 
 export const gatewayAddress =
@@ -11,6 +11,7 @@ export const faucetUri =
 export const acceptedChainId = process.env.REACT_APP_ACCEPTED_CHAIN_ID || '80001'; // for Mumbai
 export const rootUri = process.env.REACT_APP_ROOT_URI || 'http://localhost:3445';
 export const marketplaceUri = 'https://defi.v2.marketplace-api.mumbai.nevermined.rocks';
+const graphHttpUri = process.env.GRAPH_HTTP_URI ||  'https://api.thegraph.com/subgraphs/name/nevermined-io/common';
 
 export const appConfig: Config = {
   //@ts-ignore
@@ -19,7 +20,8 @@ export const appConfig: Config = {
   faucetUri,
   verbose: true,
   gatewayAddress,
-  marketplaceAuthToken: Catalog.fetchMarketplaceApiTokenFromLocalStorage().token,
+  graphHttpUri,
+  marketplaceAuthToken: AuthToken.fetchMarketplaceApiTokenFromLocalStorage().token,
   marketplaceUri,
   artifactsFolder: `${rootUri}/contracts`
 };

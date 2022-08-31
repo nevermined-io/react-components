@@ -5,4 +5,4 @@ export * as EventService from './services/event';
 export * as SubscribeService from './services/subscribe';
 export * as AuthToken from './utils/marketplace_token';
 export * from './types';
-export { getAgreementId, getCurrentAccount } from './utils/index';
+export * from './utils/index';

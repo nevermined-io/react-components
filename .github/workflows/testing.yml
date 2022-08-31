@@ -10,7 +10,27 @@ on:
     branches: [ "main" ]
 
 jobs:
-  pull-request-catalog-core:
+  unit-test-with-build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ['lib', 'providers']
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "17.x"
+          registry-url: https://registry.npmjs.org/
+      - name: Install packages
+        run: cd ${{ matrix.module }} && yarn install --ignore-engines
+      - name: Linter
+        run: cd ${{ matrix.module }} && yarn ts:lint
+      - name: Unit tests
+        run: cd ${{ matrix.module }} && yarn test:unit
+      - name: Build
+        run: cd ${{ matrix.module }} && yarn build:tsc
+  integration-tests-core:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,21 +38,9 @@ jobs:
         with:
           node-version: "17.x"
           registry-url: https://registry.npmjs.org/
-      - run: cd lib && yarn install --ignore-engines
-      - run: cd lib && yarn ts:lint
-      - run: cd lib && yarn test
-      - run: cd lib && yarn build:tsc
-  pull-request-catalog-providers: 
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: "17.x"
-          registry-url: https://registry.npmjs.org/
-      - run: cd providers && yarn install --ignore-engines
-      - run: cd providers && yarn ts:lint
-      - run: cd providers && yarn test
-      - run: cd providers && yarn build:tsc
-
-
+      - name: Install packages
+        run: cd lib && yarn install --ignore-engines
+      - name: Integration tests
+        env:
+          INFURA_TOKEN: ${{ secrets.INFURA_TOKEN }}
+        run: cd lib && yarn artifacts:download && yarn test:integrations

@@ -124,7 +124,7 @@ export interface NeverminedProviderContext {
   subscribe: SubscribeModule;
   /**
    * `assets` contains all the functionalities to handle assets for example get, 
-   * mint, transfer, order or download asset asset
+   * mint, transfer, order or download asset
    * 
    * @example
    * Mint an asset example:
@@ -374,6 +374,11 @@ export enum State {
   Confirmed = 'confirmed'
 }
 
+export enum TransferNFTConditionMethod {
+  nft1155 = "transferNftCondition",
+  nft721 = "transferNft721Condition"
+}
+
 /** User profile parameters based of the user profile entity */
 export interface UserProfileParams {
   /** Id of the user */
@@ -612,9 +617,10 @@ export interface SubscribeModule {
   /**
    * Subscribe a `transfer` event and execute callbacks once that this event is listened
    * @param cb Callback to execute
+   * @param nftType NFT asset type which can be 721 or 1155
    * @returns return the `transfer` event with a functionality to unsubscribe 
    */
-  transferEvents: (cb: (events: EventResult[]) => void) => ContractEventSubscription;
+  transferEvents: (cb: (events: EventResult[]) => void, nftType?: NftTypes) => ContractEventSubscription;
 }
 
 
@@ -715,9 +721,9 @@ export interface FileMetadata {
 }
 
 /**
- * Events full filled
+ * Events fulfilled
  */
-export interface FullfilledOrders {
+export interface FulfilledOrders {
   /** Document id of the event */
   _documentId: string;
 }
@@ -769,9 +775,6 @@ export interface SubscriptionActions {
 
 /**
  * Provider with all the functionalities to publish assets (no-nft, nft721, nft1155)
- * 
- * Here is an example how to implement it
- * @see {@link https://github.com/nevermined-io/defi-marketplace/tree/main/client/src/%2Bassets/user-publish-steps}
  */
 export interface AssetPublishProviderState {
   /** Handle error publish asset message */
@@ -811,7 +814,7 @@ export interface AssetPublishProviderState {
    * @param asset.metadata The description of the asset
    * @returns Asset object
    */
-  publishAsset721: ({
+  publishNFT721: ({
     nftAddress,
     metadata
   }: {
@@ -825,7 +828,7 @@ export interface AssetPublishProviderState {
    * @param asset.royaltyKind Set how the owner will receive rewards for each sale
    * @returns Asset object
    */
-  publishAsset1155: ({
+  publishNFT1155: ({
     metadata,
     cap,
     royalties,
