@@ -494,23 +494,22 @@ export const userIsNFT1155Holder = (
  *
  * @param nftAddress The contract address of the ERC-721 NFT contract
  * @param walletAddress The public address of the user
- * @param agreementId Agreement id generated after order the NFT asset
  * @returns true if the user holds the NFT
  */
 export const userIsNFT721Holder = (
-  did: string,
-  nftTokenAddress: string,
-  walletAddress: string,
-  agreementId: string,
+  nftAddress: string,
+  walletAddress: string
 ): { ownNFT721: boolean } => {
   const { sdk } = useNevermined();
   const [ownNFT721, setOwnNFT721] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
-      if (walletAddress) {
-        const nftOwner = await sdk.nfts.ownerOf(did, nftTokenAddress, agreementId);
-        setOwnNFT721(nftOwner === walletAddress);
+      const walletAccount = new Account(walletAddress);
+      if (walletAccount) {     
+        const nft721 = await sdk.contracts.loadNft721(nftAddress)
+        const balance = await nft721.balanceOf(walletAccount)
+        setOwnNFT721(balance.gt(0))
       }
     })();
   }, [walletAddress]);

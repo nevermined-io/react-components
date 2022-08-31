@@ -363,7 +363,7 @@ ___
 
 ### userIsNFT721Holder
 
-▸ **userIsNFT721Holder**(`did`, `nftTokenAddress`, `walletAddress`, `agreementId`): `Object`
+▸ **userIsNFT721Holder**( `nftAddress`, `walletAddress`): `Object`
 
 This method validates if a user is a NFT (ERC-721 based) holder for a specific NFT contract address.
 For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
@@ -373,10 +373,8 @@ of a NFT (limitted by the NFT cap).
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `did` | `string` | - |
-| `nftTokenAddress` | `string` | - |
+| `nftAddress` | `string` | - |
 | `walletAddress` | `string` | The public address of the user |
-| `agreementId` | `string` | Agreement id generated after order the NFT asset |
 
 #### Returns
 

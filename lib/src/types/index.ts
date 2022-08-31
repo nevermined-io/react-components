@@ -460,10 +460,9 @@ export interface AccountModule {
    * 
    * @param nftAddress The contract address of the ERC-721 NFT contract
    * @param walletAddress The public address of the user
-   * @param agreementId Agreement id generated after order the NFT asset
    * @returns true if the user holds the NFT
    */
-  isNFT721Holder: (did: string, nftTokenAddress: string, walletAddress: string, agreementId: string) => Promise<boolean>;
+  isNFT721Holder: (nftAddress: string, walletAddress: string) => Promise<boolean>;
 }
 
 /**
