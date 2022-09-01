@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-providers](../README.md) / [Exports](../modules.md) / [MetaMask](../modules/MetaMask.md) / WalletProviderState
-
 # Interface: WalletProviderState
 
 [MetaMask](../modules/MetaMask.md).WalletProviderState
@@ -38,7 +36,7 @@ Check if the user is logged in the Metamask wallet
 
 #### Defined in
 
-[metamask.tsx:137](https://github.com/nevermined-io/components-catalog/blob/f400cb9/providers/src/metamask.tsx#L137)
+[metamask.tsx:137](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/metamask.tsx#L137)
 
 ___
 
@@ -58,7 +56,7 @@ Metamask provider for example web3 or ethers
 
 #### Defined in
 
-[metamask.tsx:133](https://github.com/nevermined-io/components-catalog/blob/f400cb9/providers/src/metamask.tsx#L133)
+[metamask.tsx:133](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/metamask.tsx#L133)
 
 ___
 
@@ -78,7 +76,7 @@ If Metamask wallet is installed and available in the browser
 
 #### Defined in
 
-[metamask.tsx:139](https://github.com/nevermined-io/components-catalog/blob/f400cb9/providers/src/metamask.tsx#L139)
+[metamask.tsx:139](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/metamask.tsx#L139)
 
 ___
 
@@ -90,7 +88,7 @@ If chain is supported between available networks
 
 #### Defined in
 
-[metamask.tsx:151](https://github.com/nevermined-io/components-catalog/blob/f400cb9/providers/src/metamask.tsx#L151)
+[metamask.tsx:151](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/metamask.tsx#L151)
 
 ___
 
@@ -110,7 +108,7 @@ Login in Metamask
 
 #### Defined in
 
-[metamask.tsx:149](https://github.com/nevermined-io/components-catalog/blob/f400cb9/providers/src/metamask.tsx#L149)
+[metamask.tsx:149](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/metamask.tsx#L149)
 
 ___
 
@@ -130,7 +128,7 @@ Logout from the wallet
 
 #### Defined in
 
-[metamask.tsx:135](https://github.com/nevermined-io/components-catalog/blob/f400cb9/providers/src/metamask.tsx#L135)
+[metamask.tsx:135](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/metamask.tsx#L135)
 
 ___
 
@@ -150,7 +148,7 @@ Switch between Metamask accounts
 
 #### Defined in
 
-[metamask.tsx:141](https://github.com/nevermined-io/components-catalog/blob/f400cb9/providers/src/metamask.tsx#L141)
+[metamask.tsx:141](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/metamask.tsx#L141)
 
 ___
 
@@ -172,7 +170,7 @@ also if a chain is not registered in Metamask it ask for register it
 
 #### Defined in
 
-[metamask.tsx:145](https://github.com/nevermined-io/components-catalog/blob/f400cb9/providers/src/metamask.tsx#L145)
+[metamask.tsx:145](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/metamask.tsx#L145)
 
 ___
 
@@ -184,4 +182,4 @@ The address of the wallet account
 
 #### Defined in
 
-[metamask.tsx:147](https://github.com/nevermined-io/components-catalog/blob/f400cb9/providers/src/metamask.tsx#L147)
+[metamask.tsx:147](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/metamask.tsx#L147)

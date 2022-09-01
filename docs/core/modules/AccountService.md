@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / AccountService
-
 # Namespace: AccountService
 
 ## Table of contents
@@ -57,7 +55,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/account.ts:76](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/account.ts#L76)
+[src/services/account.ts:76](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/account.ts#L76)
 
 ___
 
@@ -104,7 +102,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/account.ts:32](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/account.ts#L32)
+[src/services/account.ts:32](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/account.ts#L32)
 
 ___
 
@@ -326,7 +324,7 @@ export const UserProfile: NextPage = () => {
 
 #### Defined in
 
-[src/services/account.ts:287](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/account.ts#L287)
+[src/services/account.ts:287](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/account.ts#L287)
 
 ___
 
@@ -357,13 +355,13 @@ true if the user owns at least one edition of the NFT
 
 #### Defined in
 
-[src/services/account.ts:460](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/account.ts#L460)
+[src/services/account.ts:460](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/account.ts#L460)
 
 ___
 
 ### userIsNFT721Holder
 
-▸ **userIsNFT721Holder**( `nftAddress`, `walletAddress`): `Object`
+▸ **userIsNFT721Holder**(`nftAddress`, `walletAddress`): `Object`
 
 This method validates if a user is a NFT (ERC-721 based) holder for a specific NFT contract address.
 For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
@@ -373,7 +371,7 @@ of a NFT (limitted by the NFT cap).
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `nftAddress` | `string` | - |
+| `nftAddress` | `string` | The contract address of the ERC-721 NFT contract |
 | `walletAddress` | `string` | The public address of the user |
 
 #### Returns
@@ -388,4 +386,4 @@ true if the user holds the NFT
 
 #### Defined in
 
-[src/services/account.ts:500](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/account.ts#L500)
+[src/services/account.ts:499](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/account.ts#L499)

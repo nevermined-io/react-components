@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / SubscribeService
-
 # Namespace: SubscribeService
 
 ## Table of contents
@@ -52,13 +50,13 @@ Array of events with method `unsubscribe` in order to stop listening specific ev
 
 #### Defined in
 
-[src/services/subscribe.ts:34](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/subscribe.ts#L34)
+[src/services/subscribe.ts:35](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/subscribe.ts#L35)
 
 ___
 
 ### useSubscribeToTransferEvents
 
-▸ **useSubscribeToTransferEvents**(): `Object`
+▸ **useSubscribeToTransferEvents**(`nftType?`): `Object`
 
 Subscribe to nft transfer events
 
@@ -85,6 +83,12 @@ const MyComponent = () => {
 }
 ```
 
+#### Parameters
+
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `nftType` | [`NftTypes`](../modules.md#nfttypes) | `1155` |
+
 #### Returns
 
 `Object`
@@ -97,4 +101,4 @@ Array of events with method `unsubscribe` in order to stop listening specific ev
 
 #### Defined in
 
-[src/services/subscribe.ts:91](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/subscribe.ts#L91)
+[src/services/subscribe.ts:93](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/subscribe.ts#L93)

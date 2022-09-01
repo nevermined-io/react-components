@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / ContractEventSubscription
-
 # Interface: ContractEventSubscription
 
 ## Table of contents

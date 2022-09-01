@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / State
-
 # Enumeration: State
 
 ## Table of contents
@@ -20,7 +18,7 @@ Entity created
 
 #### Defined in
 
-[src/types/index.ts:374](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L374)
+[src/types/index.ts:374](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L374)
 
 ___
 
@@ -32,7 +30,7 @@ Entity disable or not available
 
 #### Defined in
 
-[src/types/index.ts:370](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L370)
+[src/types/index.ts:370](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L370)
 
 ___
 
@@ -44,4 +42,4 @@ Entity not validated yet or incomplete
 
 #### Defined in
 
-[src/types/index.ts:372](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L372)
+[src/types/index.ts:372](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L372)

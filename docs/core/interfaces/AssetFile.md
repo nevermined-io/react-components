@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / AssetFile
-
 # Interface: AssetFile
 
 The asset file detail
@@ -25,7 +23,7 @@ File title
 
 #### Defined in
 
-[src/types/index.ts:688](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L688)
+[src/types/index.ts:688](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L688)
 
 ___
 
@@ -37,4 +35,4 @@ File type: json, txt, etc...
 
 #### Defined in
 
-[src/types/index.ts:686](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L686)
+[src/types/index.ts:686](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L686)

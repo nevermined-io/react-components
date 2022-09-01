@@ -12,8 +12,7 @@
     "test:integrations": "jest --testPathPattern=integration-tests",
     "eject": "react-scripts eject",
     "ts:lint": "npx eslint . --ext .ts,.tsx",
-    "docs": "npx typedoc && mkdir -p ../docs/core && cp -r ../temp-docs/* ../docs/core && rm -rf ../temp-docs",
-    "artifacts:download": "./scripts/download-artifacts.sh v2.0.5 mumbai"
+    "docs": "npx typedoc && rm ../docs/core/.nojekyll"
   },
   "main": "./dist/node/index.js",
   "types": "./dist/node/index.d.ts",

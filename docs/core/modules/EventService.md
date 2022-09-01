@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / EventService
-
 # Namespace: EventService
 
 ## Table of contents
@@ -15,7 +13,7 @@
 
 ### getAssetRegisterEvent
 
-▸ **getAssetRegisterEvent**(`did`, `graphUrl`): `Promise`<[`RegisterEvent`](../interfaces/RegisterEvent.md)[]\>
+▸ **getAssetRegisterEvent**(`sdk`, `did`): `Promise`<[`RegisterEvent`](../interfaces/RegisterEvent.md)[]\>
 
 Get asset registering event
 
@@ -57,8 +55,8 @@ const MyComponent = () => {
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
+| `sdk` | `Nevermined` | Nevermined instance |
 | `did` | `string` | assets did |
-| `graphUrl` | `string` | - |
 
 #### Returns
 
@@ -66,7 +64,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:248](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/event.ts#L248)
+[src/services/event.ts:254](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/event.ts#L254)
 
 ___
 
@@ -124,13 +122,13 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:43](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/event.ts#L43)
+[src/services/event.ts:43](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/event.ts#L43)
 
 ___
 
 ### getUserFulfilledEvents
 
-▸ **getUserFulfilledEvents**(`sdk`, `account`): `Promise`<[`FullfilledOrders`](../interfaces/FullfilledOrders.md)[]\>
+▸ **getUserFulfilledEvents**(`sdk`, `account`): `Promise`<[`FulfilledOrders`](../interfaces/FulfilledOrders.md)[]\>
 
 Get fullfilled nft transfer events by user address
 
@@ -176,11 +174,11 @@ const MyComponent = () => {
 
 #### Returns
 
-`Promise`<[`FullfilledOrders`](../interfaces/FullfilledOrders.md)[]\>
+`Promise`<[`FulfilledOrders`](../interfaces/FulfilledOrders.md)[]\>
 
 #### Defined in
 
-[src/services/event.ts:112](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/event.ts#L112)
+[src/services/event.ts:114](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/event.ts#L114)
 
 ___
 
@@ -238,4 +236,4 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:179](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/services/event.ts#L179)
+[src/services/event.ts:183](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/event.ts#L183)

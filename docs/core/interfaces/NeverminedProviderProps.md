@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / NeverminedProviderProps
-
 # Interface: NeverminedProviderProps
 
 Nevermined Provider to get the core Catalog functionalities as context
@@ -22,7 +20,7 @@ This provider require children elements
 
 #### Defined in
 
-[src/types/index.ts:322](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L322)
+[src/types/index.ts:322](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L322)
 
 ___
 
@@ -34,7 +32,7 @@ Show Catalog logs in console logs if it sets to `true`
 
 #### Defined in
 
-[src/types/index.ts:326](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L326)
+[src/types/index.ts:326](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L326)
 
 ___
 
@@ -46,4 +44,4 @@ The config needed to build Nevermined SDK
 
 #### Defined in
 
-[src/types/index.ts:324](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L324)
+[src/types/index.ts:324](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L324)

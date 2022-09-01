@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / GenericOutput
-
 # Interface: GenericOutput<T, E\>
 
 Used as a result data schema of a resolved promise
@@ -29,7 +27,7 @@ Data from the promise
 
 #### Defined in
 
-[src/types/index.ts:334](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L334)
+[src/types/index.ts:334](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L334)
 
 ___
 
@@ -41,7 +39,7 @@ If the promise throw an error
 
 #### Defined in
 
-[src/types/index.ts:336](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L336)
+[src/types/index.ts:336](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L336)
 
 ___
 
@@ -53,4 +51,4 @@ If the promise resolve was success
 
 #### Defined in
 
-[src/types/index.ts:338](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L338)
+[src/types/index.ts:338](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L338)

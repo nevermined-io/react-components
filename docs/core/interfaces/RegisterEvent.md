@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / RegisterEvent
-
 # Interface: RegisterEvent
 
 To registe a event from the blockchain
@@ -23,7 +21,7 @@ The block number of the blockchain which the asset was updated
 
 #### Defined in
 
-[src/types/index.ts:742](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L742)
+[src/types/index.ts:742](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L742)
 
 ___
 
@@ -35,7 +33,7 @@ Id of the asset
 
 #### Defined in
 
-[src/types/index.ts:736](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L736)
+[src/types/index.ts:736](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L736)
 
 ___
 
@@ -47,7 +45,7 @@ The last modification of the asset
 
 #### Defined in
 
-[src/types/index.ts:740](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L740)
+[src/types/index.ts:740](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L740)
 
 ___
 
@@ -59,4 +57,4 @@ Owner of the asset
 
 #### Defined in
 
-[src/types/index.ts:738](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L738)
+[src/types/index.ts:738](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L738)

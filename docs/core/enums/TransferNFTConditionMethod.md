@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / TransferNFTConditionMethod
-
 # Enumeration: TransferNFTConditionMethod
 
 ## Table of contents
@@ -17,7 +15,7 @@
 
 #### Defined in
 
-[src/types/index.ts:378](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L378)
+[src/types/index.ts:378](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L378)
 
 ___
 
@@ -27,4 +25,4 @@ ___
 
 #### Defined in
 
-[src/types/index.ts:379](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L379)
+[src/types/index.ts:379](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L379)

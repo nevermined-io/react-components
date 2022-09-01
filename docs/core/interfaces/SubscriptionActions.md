@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / SubscriptionActions
-
 # Interface: SubscriptionActions
 
 ## Table of contents
@@ -38,4 +36,4 @@ It is true if the subscription was successfully completed
 
 #### Defined in
 
-[src/types/index.ts:767](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L767)
+[src/types/index.ts:767](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L767)
