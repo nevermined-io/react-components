@@ -1,0 +1,26 @@
+name: Check documentation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  push-to-docs:
+    runs-on: ubuntu-latest
+    steps:  
+      - uses: actions/checkout@v3
+      - name: Generate documentation for the Catalog core
+        run: |
+          cd lib
+          yarn install --ignore-engines
+          yarn docs
+      - name: Generate documentation for the Catalog providers
+        run: |
+          cd providers
+          yarn install --ignore-engines
+          yarn docs
+      - name: Doc linter
+        run: yarn lint:docs
