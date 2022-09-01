@@ -23,4 +23,6 @@ jobs:
           yarn install --ignore-engines
           yarn docs
       - name: Doc linter
-        run: yarn lint:docs
+        run: |
+          yarn install
+          yarn lint:docs
