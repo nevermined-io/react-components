@@ -4,5 +4,6 @@
      "./src/index.ts",
     ],
     "plugin": ["typedoc-plugin-markdown"],
-    "out": "../temp-docs"
+    "out": "../docs/providers",
+    "hideBreadcrumbs": true
 }

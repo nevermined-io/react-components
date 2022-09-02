@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / RoyaltyKind
-
 # Enumeration: RoyaltyKind
 
 ## Table of contents

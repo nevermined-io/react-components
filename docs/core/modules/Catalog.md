@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / Catalog
-
 # Namespace: Catalog
 
 ## Table of contents
@@ -11,6 +9,7 @@
 ### Functions
 
 - [NeverminedProvider](Catalog.md#neverminedprovider)
+- [initializeNevermined](Catalog.md#initializenevermined)
 - [useNevermined](Catalog.md#usenevermined)
 
 ## Variables
@@ -21,7 +20,7 @@
 
 #### Defined in
 
-[src/catalog.tsx:557](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/catalog.tsx#L557)
+[src/catalog.tsx:560](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/catalog.tsx#L560)
 
 ## Functions
 
@@ -87,7 +86,27 @@ const SDKInstance = () => {
 
 #### Defined in
 
-[src/catalog.tsx:120](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/catalog.tsx#L120)
+[src/catalog.tsx:121](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/catalog.tsx#L121)
+
+___
+
+### initializeNevermined
+
+▸ **initializeNevermined**(`config`): `Promise`<[`GenericOutput`](../interfaces/GenericOutput.md)<`Nevermined`, `any`\>\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `config` | `Config` |
+
+#### Returns
+
+`Promise`<[`GenericOutput`](../interfaces/GenericOutput.md)<`Nevermined`, `any`\>\>
+
+#### Defined in
+
+[src/catalog.tsx:54](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/catalog.tsx#L54)
 
 ___
 
@@ -101,4 +120,4 @@ ___
 
 #### Defined in
 
-[src/catalog.tsx:559](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/catalog.tsx#L559)
+[src/catalog.tsx:562](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/catalog.tsx#L562)

@@ -1719,10 +1719,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@nevermined-io/nevermined-sdk-js@^0.23.1":
-  version "0.23.1"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.23.1.tgz#8718426d0e6a0d270e7aa64bf4756344a64d27c5"
-  integrity sha512-zchoLsYK0C5UqgJRqMwwcqHnhyTT07Magf7bj75rRJCSF+sHP6scsBtmzvG0V4WExDn+ahRWvQ61FuD4wWgCrw==
+"@nevermined-io/nevermined-sdk-js@^0.23.3":
+  version "0.23.4"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.23.4.tgz#a820691dfaeded48403fb2bff48d8c04cdee5a5e"
+  integrity sha512-d9YD5hVdsdlJa2LecTleu1ZhGPSynEO1RMIYSgnpDHZY8uftk8PwpgP2FnaKGbHJ+KAKGKz29abhfqNzHiu7kw==
   dependencies:
     "@nevermined-io/secret-store-client" "^0.0.16"
     "@nevermined-io/subgraphs" "0.4.1"

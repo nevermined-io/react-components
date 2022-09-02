@@ -14,13 +14,17 @@ jobs:
       - name: Generate documentation for the Catalog core
         run: |
           cd lib
+          rm -rf ./docs/core
           yarn install --ignore-engines
           yarn docs
       - name: Generate documentation for the Catalog providers
         run: |
           cd providers
+          rm -rf ./docs/providers
           yarn install --ignore-engines
           yarn docs
+      - name: Restructure generated docs
+        run: sh ./scripts/restructure_docs.sh
       - name: Install envsubst
         run: |
           sudo apt update

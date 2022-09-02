@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](README.md) / Exports
-
 # @nevermined-io/catalog-core
 
 ## Table of contents
@@ -30,7 +28,7 @@
 - [ContractEventSubscription](interfaces/ContractEventSubscription.md)
 - [CustomErc20Token](interfaces/CustomErc20Token.md)
 - [FileMetadata](interfaces/FileMetadata.md)
-- [FullfilledOrders](interfaces/FullfilledOrders.md)
+- [FulfilledOrders](interfaces/FulfilledOrders.md)
 - [GenericOutput](interfaces/GenericOutput.md)
 - [MarketplaceAPIToken](interfaces/MarketplaceAPIToken.md)
 - [MintNFTInput](interfaces/MintNFTInput.md)
@@ -51,8 +49,12 @@
 
 ### Functions
 
+- [conductOrder](modules.md#conductorder)
 - [getAgreementId](modules.md#getagreementid)
 - [getCurrentAccount](modules.md#getcurrentaccount)
+- [handlePostRequest](modules.md#handlepostrequest)
+- [isEmptyObject](modules.md#isemptyobject)
+- [loadFulfilledEvents](modules.md#loadfulfilledevents)
 - [zeroX](modules.md#zerox)
 
 ## Type Aliases
@@ -65,7 +67,7 @@ Id of the asset
 
 #### Defined in
 
-[src/types/index.ts:342](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L342)
+[src/types/index.ts:342](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L342)
 
 ___
 
@@ -89,9 +91,37 @@ node_modules/@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway.d.ts:6
 
 ## Functions
 
+### conductOrder
+
+▸ **conductOrder**(`orderParams`): `Promise`<`string`\>
+
+Order transfer asset to a new owner
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `orderParams` | `Object` |  |
+| `orderParams.ddo` | `DDO` | Asset object |
+| `orderParams.gatewayAddress` | `string` | Address of gateway to allow handle the asset transaction |
+| `orderParams.newOwner` | `default` | Address of the new owner who will be transferred the asset |
+| `orderParams.sdk` | `Nevermined` | Instance of SDK object |
+
+#### Returns
+
+`Promise`<`string`\>
+
+Agreement id generated after order an asset
+
+#### Defined in
+
+[src/utils/index.ts:42](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/utils/index.ts#L42)
+
+___
+
 ### getAgreementId
 
-▸ **getAgreementId**(`sdk`, `template`, `did`, `account`): `Promise`<`any`\>
+▸ **getAgreementId**(`sdk`, `template`, `did`): `Promise`<`any`\>
 
 Get agreement id of the asset based in the account that request it
 
@@ -102,7 +132,6 @@ Get agreement id of the asset based in the account that request it
 | `sdk` | `Nevermined` | Instance of SDK object |
 | `template` | `Template` | The template to use according of type of asset |
 | `did` | `string` | The id of the asset |
-| `account` | `string` | Account user connected currently |
 
 #### Returns
 
@@ -112,7 +141,7 @@ Agreement id generated after order an asset
 
 #### Defined in
 
-[src/utils/index.ts:111](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/utils/index.ts#L111)
+[src/utils/index.ts:110](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/utils/index.ts#L110)
 
 ___
 
@@ -134,7 +163,83 @@ Returns current account registered in SDK
 
 #### Defined in
 
-[src/utils/index.ts:22](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/utils/index.ts#L22)
+[src/utils/index.ts:17](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/utils/index.ts#L17)
+
+___
+
+### handlePostRequest
+
+▸ **handlePostRequest**(`url`, `formData`, `retries?`): `Promise`<`any`\>
+
+Handle a post request with retries if it fail
+
+#### Parameters
+
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `url` | `string` | `undefined` | Url to request |
+| `formData` | `FormData` | `undefined` | The form data to request |
+| `retries` | `number` | `3` | Number of requests to try |
+
+#### Returns
+
+`Promise`<`any`\>
+
+Return the result data of the request
+
+#### Defined in
+
+[src/utils/index.ts:139](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/utils/index.ts#L139)
+
+___
+
+### isEmptyObject
+
+▸ **isEmptyObject**(`i`): `boolean`
+
+Checks if object is empty
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `i` | `any` | Object to check |
+
+#### Returns
+
+`boolean`
+
+`true` if object is empty or undefined
+
+#### Defined in
+
+[src/utils/index.ts:10](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/utils/index.ts#L10)
+
+___
+
+### loadFulfilledEvents
+
+▸ **loadFulfilledEvents**(`sdk`, `account`, `condition`): `Promise`<{ `documentId`: `string`  }[]\>
+
+Load all the past events from an account that match with the method `getFulfilleds`
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `sdk` | `Nevermined` | Instance of SDK object |
+| `account` | `string` | Account user connected currently |
+| `condition` | `Condition` | - |
+
+#### Returns
+
+`Promise`<{ `documentId`: `string`  }[]\>
+
+Array of object with the document id of each fullfilled events
+
+#### Defined in
+
+[src/utils/index.ts:81](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/utils/index.ts#L81)
 
 ___
 

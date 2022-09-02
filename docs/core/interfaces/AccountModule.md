@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-core](../README.md) / [Exports](../modules.md) / AccountModule
-
 # Interface: AccountModule
 
 AccountModule is exposed by the main context
@@ -36,7 +34,7 @@ The new generated token
 
 #### Defined in
 
-[src/types/index.ts:440](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L440)
+[src/types/index.ts:440](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L440)
 
 ___
 
@@ -64,7 +62,7 @@ List of assets which was bought by the address given as argument
 
 #### Defined in
 
-[src/types/index.ts:435](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L435)
+[src/types/index.ts:435](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L435)
 
 ___
 
@@ -92,7 +90,7 @@ List of assets which was published by the address given
 
 #### Defined in
 
-[src/types/index.ts:429](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L429)
+[src/types/index.ts:429](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L429)
 
 ___
 
@@ -123,7 +121,7 @@ true if the user owns at least one edition of the NFT
 
 #### Defined in
 
-[src/types/index.ts:455](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L455)
+[src/types/index.ts:455](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L455)
 
 ___
 
@@ -143,7 +141,7 @@ of a NFT (limitted by the NFT cap).
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `nftAddress` | `string` | - |
+| `nftAddress` | `string` | The contract address of the ERC-721 NFT contract |
 | `walletAddress` | `string` | The public address of the user |
 
 ##### Returns
@@ -154,7 +152,7 @@ true if the user holds the NFT
 
 #### Defined in
 
-[src/types/index.ts:466](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L466)
+[src/types/index.ts:465](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L465)
 
 ___
 
@@ -176,4 +174,4 @@ if token is valid it will return true
 
 #### Defined in
 
-[src/types/index.ts:445](https://github.com/nevermined-io/components-catalog/blob/0f2a278/lib/src/types/index.ts#L445)
+[src/types/index.ts:445](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L445)

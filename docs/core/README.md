@@ -1,5 +1,3 @@
-@nevermined-io/catalog-core / [Exports](modules.md)
-
 ---
 sidebar_position: 1
 title: Getting started

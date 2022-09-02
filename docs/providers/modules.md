@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-providers](README.md) / Exports
-
 # @nevermined-io/catalog-providers
 
 ## Table of contents
@@ -30,4 +28,4 @@
 
 #### Defined in
 
-[utils/index.ts:1](https://github.com/nevermined-io/components-catalog/blob/f400cb9/providers/src/utils/index.ts#L1)
+[utils/index.ts:1](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/utils/index.ts#L1)

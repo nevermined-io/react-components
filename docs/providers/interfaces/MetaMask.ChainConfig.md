@@ -1,5 +1,3 @@
-[@nevermined-io/catalog-providers](../README.md) / [Exports](../modules.md) / [MetaMask](../modules/MetaMask.md) / ChainConfig
-
 # Interface: ChainConfig
 
 [MetaMask](../modules/MetaMask.md).ChainConfig
@@ -108,4 +106,4 @@ Return the network confing by giving chain Id in Hexadecimal
 
 #### Defined in
 
-[metamask.tsx:125](https://github.com/nevermined-io/components-catalog/blob/f400cb9/providers/src/metamask.tsx#L125)
+[metamask.tsx:125](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/metamask.tsx#L125)

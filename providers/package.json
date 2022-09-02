@@ -11,7 +11,7 @@
     "test:unit": "jest",
     "eject": "react-scripts eject",
     "ts:lint": "npx eslint . --ext .ts,.tsx",
-    "docs": "npx typedoc && mkdir -p ../docs/providers && cp -r ../temp-docs/* ../docs/providers && rm -rf ../temp-docs"
+    "docs": "npx typedoc && rm ../docs/providers/.nojekyll"
   },
   "main": "./dist/node/index.js",
   "types": "./dist/node/index.d.ts",
