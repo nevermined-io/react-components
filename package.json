@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "lint:docs": "remark docs"
+    "lint:docs": "remark docs",
+    "docs:restructure": "./scripts/restructure_docs.sh"
   },
   "devDependencies": {
     "remark": "^14.0.2",

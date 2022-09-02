@@ -23,7 +23,7 @@ jobs:
           yarn install --ignore-engines
           yarn docs
       - name: Restructure generated docs
-        run: sh ./scripts/restructure_docs.sh
+        run: yarn docs:restructure
       - name: Install envsubst
         run: |
           sudo apt update
