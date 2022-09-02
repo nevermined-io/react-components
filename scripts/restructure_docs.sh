@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+shopt -s extglob
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 CORE_DOCS_DIR="$SCRIPT_DIR/../docs/core"
