@@ -9,7 +9,8 @@ jobs:
   push-to-docs:
     runs-on: ubuntu-latest
     steps:  
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
       - name: Generate documentation for the Catalog core
         run: |
           cd lib
@@ -23,7 +24,7 @@ jobs:
           yarn install --ignore-engines
           yarn docs
       - name: Restructure generated docs
-        run: sh ./scripts/restructure_docs.sh
+        run: yarn docs:restructure
       - name: Install envsubst
         run: |
           sudo apt update
