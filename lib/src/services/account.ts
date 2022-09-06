@@ -4,6 +4,7 @@ import { useNevermined } from '../catalog';
 import { UserProfileParams } from '../types';
 import { saveMarketplaceApiTokenToLocalStorage } from '../utils/marketplace_token';
 import { Account, Logger } from '@nevermined-io/nevermined-sdk-js';
+import { loadFulfilledEvents } from '..'
 import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
 
 /**
@@ -449,6 +450,42 @@ export const useUserProfile = (walletAddress: string): {
 };
 
 /**
+ * This method validates if an user is an asset holder.
+ *
+ * @param did The unique identifier of the asset
+ * @param walletAddress The public address of the user
+ * @returns true if the user owns at least one edition of the NFT
+ */
+export const useIsAssetHolder = (
+  did: string,
+  walletAddress: string
+): { ownAsset: boolean } => {
+  const { sdk, isLoadingSDK } = useNevermined();
+  const [ownAsset, setOwnAsset] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (isLoadingSDK) {
+      return;
+    }
+
+    (async () => {
+      const purchased = await loadFulfilledEvents(sdk, walletAddress, 'accessCondition');
+
+      const purchasedDDO = await Promise.all(
+        purchased.map((asset) => sdk.assets.resolve(asset.documentId))
+      );
+
+      const asset = purchasedDDO.filter((p) => p).find((p) => p.id === did);
+      setOwnAsset(Boolean(asset));
+    })();
+  }, [walletAddress, isLoadingSDK]);
+
+  return {
+    ownAsset,
+  }
+}
+
+/**
  * This method validates if a user is a NFT (ERC-1155 based) holder for a specific `tokenId`.
  * For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
  * of a NFT (limitted by the NFT cap).
@@ -457,7 +494,7 @@ export const useUserProfile = (walletAddress: string): {
  * @param walletAddress The public address of the user
  * @returns true if the user owns at least one edition of the NFT
  */
-export const userIsNFT1155Holder = (
+export const useIsNFT1155Holder = (
   did: string,
   walletAddress: string
 ): { ownNFT1155: boolean } => {
@@ -496,7 +533,7 @@ export const userIsNFT1155Holder = (
  * @param walletAddress The public address of the user
  * @returns true if the user holds the NFT
  */
-export const userIsNFT721Holder = (
+export const useIsNFT721Holder = (
   nftAddress: string,
   walletAddress: string
 ): { ownNFT721: boolean } => {

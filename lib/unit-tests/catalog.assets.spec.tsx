@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { render, screen, renderHook, waitFor } from '@testing-library/react';
 import { generateTestingUtils } from 'eth-testing';
 import { appConfig } from './config';
-import { agreementId, ddo, walletAddress, nevermined, nftTokenAddress } from './mockups';
+import { agreementId, ddo, walletAddress, nevermined, nftTokenAddress, mintNFTInput } from './mockups';
 import { Catalog } from '../src';
-import { DDO } from '@nevermined-io/nevermined-sdk-js';
+import { DDO, Logger } from '@nevermined-io/nevermined-sdk-js';
 
 jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
   ...jest.requireActual('@nevermined-io/nevermined-sdk-js'),
@@ -77,11 +77,52 @@ describe('Nevermined assets', () => {
     });
   });
 
+  it('Should get an asset by passing a query', async () => {
+    const { result } = renderHook(
+      () => {
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const [asset, setAsset] = useState<DDO[]>([]);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+          (async () => {
+            try {
+              const result = await assets.query({
+                query: {
+                  id: ddo.id
+                }
+              });
+              
+              setAsset(result.results);
+            } catch (error: any) {
+              console.error(error.message);
+            }
+          })();
+        }, [isLoadingSDK]);
+
+        return asset;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(async () => {
+      expect(result.current).toStrictEqual([ddo]);
+    });
+  });
+
   it('Should order an asset', async () => {
     const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       assets: {
+        ...sdk.assets,
         resolve: async () => undefined as any,
         owner: async () => '0xdF1B443A155b07D2b2cAeA2d99715dC84E812EE2',
         order: async () => agreementId,
@@ -129,6 +170,7 @@ describe('Nevermined assets', () => {
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       assets: {
+        ...sdk.assets,
         resolve: async () => ddo,
         owner: async () => walletAddress,
         order: async () => agreementId,
@@ -177,6 +219,7 @@ describe('Nevermined assets', () => {
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       assets: {
+        ...sdk.assets,
         resolve: async () => ddo,
         owner: async () => '0xdF1B443A155b07D2b2cAeA2d99715dC84E812EE2',
         order: async () => agreementId,
@@ -259,6 +302,7 @@ describe('Nevermined assets', () => {
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       nfts: {
+        ...sdk.nfts,
         ownerOf: () => '0xdF1B443A155b07D2b2cAeA2d99715dC84E812EE2',
         balance: () => 1,
         order721: () => agreementId,
@@ -341,6 +385,7 @@ describe('Nevermined assets', () => {
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       nfts: {
+        ...sdk.nfts,
         ownerOf: () => '0xdF1B443A155b07D2b2cAeA2d99715dC84E812EE2',
         balance: () => 0,
         order721: () => agreementId,
@@ -390,6 +435,7 @@ describe('Nevermined assets', () => {
     sdkSpy.mockResolvedValue({
       ...sdk,
       assets: {
+        ...sdk.assets,
         resolve: async () => ddo,
         owner: async () => walletAddress,
         order: async () => agreementId,
@@ -417,7 +463,7 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.downloadAsset(ddo.id, agreementId);
+              const result = await assets.downloadAsset(ddo.id);
               setIsDownloaded(result);
             } catch (error: any) {
               console.error(error.message);
@@ -447,6 +493,7 @@ describe('Nevermined assets', () => {
     sdkSpy.mockResolvedValue({
       ...sdk,
       assets: {
+        ...sdk.assets,
         resolve: async () => ddo,
         owner: async () => '0xdF1B443A155b07D2b2cAeA2d99715dC84E812EE2',
         order: async () => agreementId,
@@ -474,7 +521,7 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.downloadAsset(ddo.id, agreementId);
+              const result = await assets.downloadAsset(ddo.id);
               setIsDownloaded(result);
             } catch (error: any) {
               console.error(error.message);
@@ -620,5 +667,481 @@ describe('Nevermined assets', () => {
     await waitFor(async () => {
       expect(result.current).toBe('cid://bafkqaesimvwgy3zmebhgk5tfojwws3tfmqqq');
     });
-  })
+  });
+
+  it('should mint a nft1155 asset', async () => {
+    const { result } = renderHook(
+      () => {
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const [asset, setAsset] = useState<DDO>({} as DDO);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+          (async () => {
+            try {
+              const result = await assets.mint(mintNFTInput)
+              
+              setAsset(result);
+            } catch (error: any) {
+              console.error(error.message);
+            }
+          })();
+        }, [isLoadingSDK]);
+
+        return asset;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(async () => {
+      expect(result.current).toStrictEqual(ddo);
+    });
+  });
+
+  it('should not mint if publisher address is not found', async () => {
+    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
+      ...sdk,
+      accounts: {
+        ...sdk.accounts,
+        list: async () => [],
+      },
+    });
+
+    const logSpy: jest.SpyInstance<void, any> = jest.spyOn(Logger, 'error');
+
+    renderHook(
+      () => {
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const [asset, setAsset] = useState<DDO>({} as DDO);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+          (async () => {
+            try {
+              const result = await assets.mint(mintNFTInput)
+              
+              setAsset(result);
+            } catch (error: any) {
+              console.error(error.message);
+            }
+          })();
+        }, [isLoadingSDK]);
+
+        return asset;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(async () => {
+      expect(logSpy).toBeCalledWith('No account was found!')
+    });
+  });
+
+  it('should not mint if gateway address is not set', async () => {
+    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
+      ...sdk,
+      accounts: {
+        list: async () => [{
+          getId: () => walletAddress
+        }],
+      }
+    });
+
+    const logSpy = jest.spyOn(Logger, 'error');
+    const appConfigCopy = {...appConfig }
+    appConfig.gatewayAddress = ''
+
+    renderHook(
+      () => {
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const [asset, setAsset] = useState<DDO>({} as DDO);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+          (async () => {
+            try {
+              const result = await assets.mint(mintNFTInput)
+              
+              setAsset(result);
+            } catch (error: any) {
+              console.error(error.message);
+            }
+          })();
+        }, [isLoadingSDK]);
+
+        return asset;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(async () => {
+      expect(logSpy).toBeCalledWith('Gateway address from config is required to mint NFT1155 asset')
+    });
+
+    appConfig.gatewayAddress = appConfigCopy.gatewayAddress;
+  });
+
+  it('should transfer the ownership to other account', async () => {
+    const { result } = renderHook(
+      () => {
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const [transfered, setTransfered] = useState<boolean>(false);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+          (async () => {
+            try {
+              const result = await assets.transfer({
+                did: ddo.id,
+                amount: 1,
+              })
+              setTransfered(result);
+            } catch (error: any) {
+              console.error(error.message);
+            }
+          })();
+        }, [isLoadingSDK]);
+
+        return transfered;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(async () => {
+      expect(result.current).toBe(true)
+    }, {
+      timeout: 5000
+    });
+  });
+
+  it('Should request approval for transfer ownership to other account', async () => {
+    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdkSpy = jest.spyOn(nevermined, 'getInstance');
+
+    sdkSpy.mockResolvedValue({
+      ...sdk,
+      keeper: {
+        ...sdk.keeper,
+        nftUpgradeable: {
+          isApprovedForAll: () => false
+        }
+      },
+    });
+
+    const sdkInstance: any = await sdkSpy.getMockImplementation()?.();
+
+    const setApprovalForAllSpy = jest.spyOn(sdkInstance.nfts, 'setApprovalForAll');
+
+    const { result } = renderHook(
+      () => {
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const [transfered, setTransfered] = useState<boolean>(false);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+          (async () => {
+            try {
+              const result = await assets.transfer({
+                did: ddo.id,
+                amount: 1,
+              })
+              setTransfered(result);
+            } catch (error: any) {
+              console.error(error.message);
+            }
+          })();
+        }, [isLoadingSDK]);
+
+        return transfered;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(async () => {
+      expect(result.current).toBe(true)
+    }, {
+      timeout: 5000
+    });
+
+    expect(setApprovalForAllSpy).toBeCalled();
+  });
+
+  it("should not transfer ownership if gateway address is not set", async () => {
+    const appConfigCopy = {...appConfig }
+    appConfig.gatewayAddress = '';
+    const logSpy = jest.spyOn(Logger, 'log');
+
+    const { result } = renderHook(
+      () => {
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const [transfered, setTransfered] = useState<boolean>(false);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+          (async () => {
+            try {
+              const result = await assets.transfer({
+                did: ddo.id,
+                amount: 1,
+              })
+              setTransfered(result);
+            } catch (error: any) {
+              console.error(error.message);
+            }
+          })();
+        }, [isLoadingSDK]);
+
+        return transfered;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(async () => {
+      expect(logSpy).toHaveBeenCalledWith("gatewayAddress or gatewayUri is not set. abort.");
+    });
+
+    await waitFor(async () => {
+      expect(result.current).toBe(false);
+    });
+
+    appConfig.gatewayAddress = appConfigCopy.gatewayAddress;
+  });
+
+  it("should not transfer ownership if owner is not found", async () => {
+    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
+      ...sdk,
+      accounts: {
+        ...sdk.accounts,
+        list: async () => [],
+      }
+    });
+
+    const logSpy = jest.spyOn(Logger, 'log');
+
+    const { result } = renderHook(
+      () => {
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const [transfered, setTransfered] = useState<boolean>(false);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+          (async () => {
+            try {
+              const result = await assets.transfer({
+                did: ddo.id,
+                amount: 1,
+              })
+              setTransfered(result);
+            } catch (error: any) {
+              console.error(error.message);
+            }
+          })();
+        }, [isLoadingSDK]);
+
+        return transfered;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(async () => {
+      expect(logSpy).toHaveBeenCalledWith("Users need to be connected to perform a transfer. abort.")
+    });
+
+    await waitFor(async () => {
+      expect(result.current).toBe(false)
+    });
+  });
+
+  it("should not transfer ownership if agreementId is not found", async () => {
+    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
+      ...sdk,
+      accounts: {
+        ...sdk.accounts,
+        list: async () => [
+          {
+            getId: () => walletAddress
+          }
+        ],
+      },
+      nfts: {
+        ...sdk.ntfs,
+        order: () => undefined
+      }
+    });
+
+    const logSpy = jest.spyOn(Logger, 'log');
+
+    const { result } = renderHook(
+      () => {
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const [transfered, setTransfered] = useState<boolean>(false);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+          (async () => {
+            try {
+              const result = await assets.transfer({
+                did: ddo.id,
+                amount: 1,
+              })
+              setTransfered(result);
+            } catch (error: any) {
+              console.error(error.message);
+            }
+          })();
+        }, [isLoadingSDK]);
+
+        return transfered;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(async () => {
+      expect(logSpy).toHaveBeenCalledWith("Could not approve spending from new owner wallet. abort.")
+    }, {
+      timeout: 5000
+    });
+
+    await waitFor(async () => {
+      expect(result.current).toBe(false)
+    });
+  });
+
+  it("should not transfer ownership if post transfer fail", async () => {
+    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
+      ...sdk,
+      nfts: {
+        ...sdk.ntfs,
+        setApprovalForAll: async () => ({
+          to: '0xf61B443A155b07D2b2cAeA2d99715dC84E83932f',
+          from: walletAddress,
+          contractAddress: nftTokenAddress,
+          transactionIndex: 2,
+          gasUsed: 23433044444,
+          logsBloom: '',
+          blockHash: '',
+          transactionHash: '',
+          logs: [],
+          blockNumber: 133443,
+          confirmations: 43,
+          cumulativeGasUsed: 23433044444,
+          effectiveGasPrice: 23433044444,
+          byzantium: false,
+          type: 2,
+          events: [],
+        }),
+        order: () => agreementId
+      },
+      utils: {
+        fetch: {
+          post: () => undefined
+        }
+      }
+    });
+
+    const logSpy = jest.spyOn(Logger, 'log');
+
+    const { result } = renderHook(
+      () => {
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const [transfered, setTransfered] = useState<boolean>(false);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+          (async () => {
+            try {
+              const result = await assets.transfer({
+                did: ddo.id,
+                amount: 1,
+              })
+              setTransfered(result);
+            } catch (error: any) {
+              console.error(error.message);
+            }
+          })();
+        }, [isLoadingSDK]);
+
+        return transfered;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(async () => {
+      expect(logSpy).toHaveBeenCalledWith("Something went wrong! Please try again.")
+    }, {
+      timeout: 5000
+    });
+
+    await waitFor(async () => {
+      expect(result.current).toBe(false)
+    });
+  });
 });

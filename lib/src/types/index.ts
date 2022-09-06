@@ -17,13 +17,14 @@ import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/Asse
 import { BigNumber } from 'ethers';
 import { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
 
-
+export * from '@nevermined-io/nevermined-sdk-js';
 export { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
 export type {
   ContractEventSubscription,
   EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 export { zeroX } from '@nevermined-io/nevermined-sdk-js/dist/node/utils';
+export type { NftTypes } from '@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway';
 
 
 /**
@@ -444,6 +445,14 @@ export interface AccountModule {
    */
   isTokenValid: () => boolean;
   /**
+   * This method validates if an user is an asset holder.
+   *
+   * @param did The unique identifier of the asset
+   * @param walletAddress The public address of the user
+   * @returns true if the user owns at least one edition of the NFT
+   */
+  isAssetHolder: (did: string, walletAddress: string) => Promise<boolean>;
+  /**
    * This method validates if a user is a NFT (ERC-1155 based) holder for a specific `tokenId`.
    * For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
    * of a NFT (limitted by the NFT cap).
@@ -549,7 +558,7 @@ export interface AssetsModule {
    * @param did id of the NFT (721 & 1155) asset
    * @returns if the NFT is downloaded successfully the method will return a true
   */
-  downloadAsset: (did: string, agreementId: string) => Promise<boolean>;
+  downloadAsset: (did: string) => Promise<boolean>;
   /**
    * Upload files to Filecoin
    * @param file The file to upload to Filecoin
@@ -840,5 +849,3 @@ export interface AssetPublishProviderState {
     royaltyKind: RoyaltyKind;
   }) => Promise<DDO | undefined>;
 }
-
-export type { NftTypes } from '@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway';

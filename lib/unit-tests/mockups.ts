@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { SearchQuery } from '@nevermined-io/nevermined-sdk-js';
 
 export const ddo = {
   '@context': 'https://w3id.org/did/v1',
@@ -325,7 +326,13 @@ export const nevermined = {
       owner: async () => '0xdF1B443A155b07D2b2cAeA2d99715dC84E812EE2',
       order: async () => agreementId,
       download: async () => true,
-      consume: async () => true
+      consume: async () => true,
+      query: (_q: SearchQuery) => ({
+        totalPages: 1,
+        totalResults: 1,
+        page: 1,
+        results: [ddo],
+      }),
     },
     accounts: {
       list: async () => [
@@ -339,10 +346,32 @@ export const nevermined = {
       balance: async () => 1,
       order721: async () => agreementId,
       order: async () => agreementId,
-      access: async () => true
+      access: async () => true,
+      setApprovalForAll: async () => ({
+        to: '0xf61B443A155b07D2b2cAeA2d99715dC84E83932f',
+        from: walletAddress,
+        contractAddress: nftTokenAddress,
+        transactionIndex: 2,
+        gasUsed: 23433044444,
+        logsBloom: '',
+        blockHash: '',
+        transactionHash: '',
+        logs: [],
+        blockNumber: 133443,
+        confirmations: 43,
+        cumulativeGasUsed: 23433044444,
+        effectiveGasPrice: 23433044444,
+        byzantium: false,
+        type: 2,
+        events: [],
+      }),
+      create: async () => ddo
     },
     keeper: {
       conditions: {
+        transferNftCondition: {
+          address: '0x610D9314EDF2ced7681BA1633C33fdb8cF365a12'
+        }, 
         accessCondition: {
           events: {
             getPastEvents: () => [
@@ -351,7 +380,7 @@ export const nevermined = {
               }
             ]
           }
-        }
+        },
       },
       templates: {
         accessTemplate: {
@@ -387,6 +416,9 @@ export const nevermined = {
             ]
           }
         }
+      },
+      nftUpgradeable: {
+        isApprovedForAll: () => true
       }
     },
     contracts: {
@@ -397,5 +429,40 @@ export const nevermined = {
         balanceOf: async () => 1500000000000000000
       })
     },
+
+    utils: {
+      fetch: {
+        post: () => ({
+          ok: true,
+        })
+      }
+    }
   })
 };
+
+export const metadata = {
+  main: {
+    name: '',
+    files: [{
+      index: 0,
+      contentType: 'application/json',
+      url: 'https://github.com/nevermined-io/docs/blob/master/docs/architecture/specs/metadata/examples/ddo-example.json'
+    }],
+    type: 'dataset',
+    author: '',
+    license: '',
+    dateCreated: new Date().toISOString(),
+    price: ''
+  }
+};
+
+export const mintNFTInput = {
+    metadata,
+    publisher: walletAddress,
+    cap: 100,
+    royalties: 0,
+    nftAmount: 1,
+    preMint: true,
+    erc20TokenAddress: '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e',
+    assetRewards: {}
+}

@@ -111,7 +111,7 @@ export const getAgreementId = async (
   sdk: Nevermined,
   template: Template,
   did: string,
-) => {
+): Promise<string> => {
   const agreements = await sdk.keeper.templates[template].events.getPastEvents({
     methodName: 'getAgreementCreateds',
     eventName: 'AgreementCreated',
