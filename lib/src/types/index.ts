@@ -483,19 +483,13 @@ export interface AssetsModule {
    * Get the asset object by the did given
    * @param did id of the asset
    */
-  getSingle: (did: DID) => Promise<DDO>;
+  findOne: (did: DID) => Promise<DDO>;
   /**
    * 
    * @param q Query to custom the search: order result, filtering, etc...
    * @returns List of assets according with the query given
    */
   query: (q: SearchQuery) => Promise<QueryResult>;
-  /**
-   * Get the entire object of the asset
-   * @param did id of the asset
-   * @returns Asset object
-   */
-  resolve: (did: DID) => Promise<DDO | undefined>;
   /**
    * Transfer the ownership of the asset to other account
    * @param assetInfo

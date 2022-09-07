@@ -3,7 +3,7 @@ import { render, screen, renderHook, waitFor } from '@testing-library/react';
 import { generateTestingUtils } from 'eth-testing';
 import { appConfig } from './config';
 import { agreementId, ddo, walletAddress, nevermined, nftTokenAddress, mintNFTInput } from './mockups';
-import { Catalog } from '../src';
+import { Catalog, NFTDetails } from '../src';
 import { DDO, Logger } from '@nevermined-io/nevermined-sdk-js';
 
 jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
@@ -57,7 +57,7 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.getSingle(ddo.id);
+              const result = await assets.findOne(ddo.id);
               setAsset(result);
             } catch (error: any) {
               console.error(error.message);
@@ -1017,7 +1017,7 @@ describe('Nevermined assets', () => {
         ],
       },
       nfts: {
-        ...sdk.ntfs,
+        ...sdk.nfts,
         order: () => undefined
       }
     });
@@ -1072,7 +1072,7 @@ describe('Nevermined assets', () => {
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       nfts: {
-        ...sdk.ntfs,
+        ...sdk.nfts,
         setApprovalForAll: async () => ({
           to: '0xf61B443A155b07D2b2cAeA2d99715dC84E83932f',
           from: walletAddress,
@@ -1144,4 +1144,39 @@ describe('Nevermined assets', () => {
       expect(result.current).toBe(false)
     });
   });
+
+  it("Should get the details of an NFT asset", async () => {
+    const { result } = renderHook(
+      () => {
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const [ NFTDetails, setNFTDetails] = useState<NFTDetails>({} as NFTDetails);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+          (async () => {
+            try {
+              const result = await assets.nftDetails(ddo.id)
+              setNFTDetails(result);
+            } catch (error: any) {
+              console.error(error.message);
+            }
+          })();
+        }, [isLoadingSDK]);
+
+        return NFTDetails;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(async () => {
+      expect(result.current.owner).toBe(ddo.id)
+    });
+  })
 });

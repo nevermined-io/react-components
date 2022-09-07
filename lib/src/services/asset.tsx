@@ -89,7 +89,7 @@ export const useAsset = (did: string): AssetState => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const ddo: DDO | undefined = await assets.resolve(did);
+        const ddo: DDO | undefined = await assets.findOne(did);
         if (!ddo) return;
         const metaData: MetaData = ddo.findServiceByType('metadata').attributes;
         const nftDetails = await assets.nftDetails(did);

@@ -250,7 +250,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   };
 
   const assets: AssetsModule = {
-    getSingle: async (did: string): Promise<DDO> => {
+    findOne: async (did: string): Promise<DDO> => {
       try {
         if (isEmptyObject(sdk)) return {} as DDO;
         const ddo: DDO = await sdk.assets.resolve(String(did));
@@ -361,17 +361,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       } catch (e) {
         Logger.error(e);
         return false;
-      }
-    },
-
-    resolve: async (did: string): Promise<DDO | undefined> => {
-      try {
-        if (isEmptyObject(sdk)) return undefined;
-        const resvoledAsset = await sdk.assets.resolve(did);
-        return resvoledAsset;
-      } catch (error) {
-        verbose && Logger.error(error);
-        return undefined;
       }
     },
 

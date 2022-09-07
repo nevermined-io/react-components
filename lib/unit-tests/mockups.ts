@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { SearchQuery } from '@nevermined-io/nevermined-sdk-js';
+import jwt from 'jsonwebtoken';
 
 export const ddo = {
   '@context': 'https://w3id.org/did/v1',
@@ -343,10 +344,21 @@ export const nevermined = {
     },
     nfts: {
       ownerOf: async () => walletAddress,
-      balance: async () => 1,
+      balance: async () => 1500000000000000,
       order721: async () => agreementId,
       order: async () => agreementId,
       access: async () => true,
+      details: async () => ({
+        owner: ddo.id,
+        lastChecksum: faker.date.past().toDateString(),
+        url: 'https://nevermined.io',
+        lastUpdatedBy: faker.date.past().toDateString(),
+        blockNumberUpdated: 13445,
+        providers: [],
+        nftSupply: 100,
+        mintCap: 100,
+        royalties: 0,
+      }),
       setApprovalForAll: async () => ({
         to: '0xf61B443A155b07D2b2cAeA2d99715dC84E83932f',
         from: walletAddress,
@@ -365,7 +377,8 @@ export const nevermined = {
         type: 2,
         events: [],
       }),
-      create: async () => ddo
+      create: async () => ddo,
+      transferForDelegate: async () => true
     },
     keeper: {
       conditions: {
@@ -427,6 +440,11 @@ export const nevermined = {
         symbol: async () => 'NVM',
         decimals: async () => 18,
         balanceOf: async () => 1500000000000000000
+      }),
+      loadNft721: async () => ({
+        balanceOf: async () => ({
+          gt: () => true,
+        })
       })
     },
 
@@ -435,7 +453,18 @@ export const nevermined = {
         post: () => ({
           ok: true,
         })
-      }
+      },
+      jwt: {
+        generateClientAssertion: () => faker.internet.password(20),
+      },
+
+    },
+    marketplace:{
+      login: () => jwt.sign({iss: walletAddress,
+        sub: `u-${faker.datatype.uuid()}`,
+        role: [],
+        exp: faker.date.future().getTime()
+      }, 'secret') 
     }
   })
 };
