@@ -815,14 +815,17 @@ export interface AssetPublishProviderState {
    * @param asset
    * @param asset.nftAddress nft721 token address to publish
    * @param asset.metadata The description of the asset
+   * @param asset.providers List of providers
    * @returns Asset object
    */
   publishNFT721: ({
     nftAddress,
-    metadata
+    metadata,
+    providers
   }: {
     nftAddress: string;
     metadata: MetaData;
+    providers: string[] | undefined;
   }) => Promise<DDO | undefined>;
   /** Publish a nft1155 asset
    * @param asset

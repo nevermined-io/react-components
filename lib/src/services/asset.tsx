@@ -196,14 +196,17 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * 
    * @param nftAddress The contract address of the ERC-721 NFT
    * @param metadata The metadata object describing the asset 
+   * @param providers Array that contains the provider addreses 
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishNFT721 = async ({
     nftAddress,
-    metadata
+    metadata,
+    providers = undefined
   }: {
     nftAddress: string;
     metadata: MetaData;
+    providers: string[] | undefined;
   }) => {
     try {
       setIsProcessing(true);
@@ -225,7 +228,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         nftAddress,
         undefined,
         false,
-        undefined,
+        providers,
         0,
         undefined,
         undefined,

@@ -172,7 +172,7 @@ ___
 
 ### publishNFT721
 
-• **publishNFT721**: (`asset`: { `metadata`: `MetaData` ; `nftAddress`: `string`  }) => `Promise`<`undefined` \| `DDO`\>
+• **publishNFT721**: (`asset`: { `metadata`: `MetaData` ; `nftAddress`: `string` ; `providers`: `string[]` }) => `Promise`<`undefined` \| `DDO`\>
 
 #### Type declaration
 
