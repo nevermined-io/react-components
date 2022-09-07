@@ -17,4 +17,4 @@ Some important characteristic of the Nevermined and by extension by the Catalog 
 
 ## React Framework
 
-Nevermined is framework agnostic, but we created this catalog on top of React to facilitate the integration of Nevermined to React builders. The same level of use cases/applications can be delivered in any other framework using the [Nevermined SDK](http://nvm-docs.nevermined.io/docs/architecture/components/sdks/getting-started).
+Nevermined is framework agnostic, but we created this catalog on top of React to facilitate the integration of Nevermined to React builders. The same level of use cases/applications can be delivered in any other framework using the [Nevermined SDK](http://nvm-docs.nevermined.io/docs/nevermined-sdk/getting-started).
