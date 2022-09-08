@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { generateTestingUtils } from 'eth-testing';
-import { appConfig } from './config';
-import { agreementId, ddo, walletAddress, nevermined } from './mockups';
-import { Catalog, Account } from '../src';
+import { appConfig } from '../config';
+import { agreementId, ddo, walletAddress, nevermined } from '../mockups';
+import { Catalog, Account } from '../../src';
 
 
 jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
   ...jest.requireActual('@nevermined-io/nevermined-sdk-js'),
-  Nevermined: jest.requireActual('./mockups').nevermined
+  Nevermined: jest.requireActual('../mockups').nevermined
 }));
 
 jest.mock('axios', () => ({
@@ -34,7 +34,7 @@ describe('Nevermined subscription', () => {
   });
 
   it('should buy subscription NFT721', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     const sdkSpy = jest.spyOn(nevermined, 'getInstance');
 
     sdkSpy.mockResolvedValue({
@@ -97,7 +97,7 @@ describe('Nevermined subscription', () => {
   });
 
   it('should buy subscription NFT1155', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     const sdkSpy = jest.spyOn(nevermined, 'getInstance');
 
     sdkSpy.mockResolvedValue({

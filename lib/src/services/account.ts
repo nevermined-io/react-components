@@ -9,7 +9,7 @@ import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumbe
 
 /**
  * Get account releases(mints)
- * @param id - user address
+ * @param walletAddress - user address
  *
  * @example
  * ```typescript
@@ -31,7 +31,7 @@ import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumbe
  * ```
  */
 export const useAccountReleases = (
-  id: string
+  walletAddress: string
 ): { isLoading: boolean; accountReleases: string[] } => {
   const [accountReleases, setAccountReleases] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -40,20 +40,20 @@ export const useAccountReleases = (
   useEffect(() => {
     const loadReleases = async (): Promise<void> => {
       setIsLoading(true);
-      const data = await account.getReleases(id);
+      const data = await account.getReleases(walletAddress);
       setAccountReleases(data);
       setAccountReleases(data);
       setIsLoading(false);
     };
     loadReleases();
-  }, [id]);
+  }, [walletAddress]);
 
   return { isLoading, accountReleases };
 };
 
 /**
  * Get account owned nfts
- * @param id - user address
+ * @param walletAddress - user address
  *
  * @example
  * ```typescript
@@ -75,7 +75,7 @@ export const useAccountReleases = (
  * ```
  */
 export const useAccountCollection = (
-  id: string
+  walletAddress: string
 ): { 
   /** If the nfts are still loading */
   isLoading: boolean;
@@ -87,14 +87,14 @@ export const useAccountCollection = (
 
   useEffect(() => {
     const loadCollection = async (): Promise<void> => {
-      if (!id || !sdk.utils) return;
+      if (!walletAddress || !sdk.utils) return;
       setLoading(true);
-      const data = await account.getCollection(id);
+      const data = await account.getCollection(walletAddress);
       setAccountCollection(data);
       setLoading(false);
     };
     loadCollection();
-  }, [id, sdk]);
+  }, [walletAddress, sdk]);
 
   return { isLoading, accountCollection };
 };

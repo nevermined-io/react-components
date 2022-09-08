@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { render, screen, renderHook, waitFor } from '@testing-library/react';
 import { generateTestingUtils } from 'eth-testing';
-import { appConfig } from './config';
-import { agreementId, ddo, walletAddress, nevermined, nftTokenAddress, mintNFTInput } from './mockups';
-import { Catalog, NFTDetails } from '../src';
+import { appConfig } from '../config';
+import { agreementId, ddo, walletAddress, nevermined, nftTokenAddress, mintNFTInput } from '../mockups';
+import { Catalog, NFTDetails } from '../../src';
 import { DDO, Logger } from '@nevermined-io/nevermined-sdk-js';
 
 jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
   ...jest.requireActual('@nevermined-io/nevermined-sdk-js'),
-  Nevermined: jest.requireActual('./mockups').nevermined
+  Nevermined: jest.requireActual('../mockups').nevermined
 }));
 
 jest.mock('axios', () => ({
@@ -118,7 +118,7 @@ describe('Nevermined assets', () => {
   });
 
   it('Should order an asset', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       assets: {
@@ -166,7 +166,7 @@ describe('Nevermined assets', () => {
   });
 
   it('should not order if the user is the owner of the asset', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       assets: {
@@ -215,7 +215,7 @@ describe('Nevermined assets', () => {
   });
 
   it('should get the agreement id if the asset was purchased by the user already', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       assets: {
@@ -298,7 +298,7 @@ describe('Nevermined assets', () => {
   });
 
   it('should order nft 721', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       nfts: {
@@ -381,7 +381,7 @@ describe('Nevermined assets', () => {
   });
 
   it('should order nft 1155', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       nfts: {
@@ -429,7 +429,7 @@ describe('Nevermined assets', () => {
   });
 
   it('should download asset if the user is the owner', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     const sdkSpy = jest.spyOn(nevermined, 'getInstance');
 
     sdkSpy.mockResolvedValue({
@@ -487,7 +487,7 @@ describe('Nevermined assets', () => {
   });
 
   it('should consume the asset if the user is not the owner', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     const sdkSpy = jest.spyOn(nevermined, 'getInstance');
 
     sdkSpy.mockResolvedValue({
@@ -706,7 +706,7 @@ describe('Nevermined assets', () => {
   });
 
   it('should not mint if publisher address is not found', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       accounts: {
@@ -753,7 +753,7 @@ describe('Nevermined assets', () => {
   });
 
   it('should not mint if gateway address is not set', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       accounts: {
@@ -845,7 +845,7 @@ describe('Nevermined assets', () => {
   });
 
   it('Should request approval for transfer ownership to other account', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     const sdkSpy = jest.spyOn(nevermined, 'getInstance');
 
     sdkSpy.mockResolvedValue({
@@ -952,7 +952,7 @@ describe('Nevermined assets', () => {
   });
 
   it("should not transfer ownership if owner is not found", async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       accounts: {
@@ -1005,7 +1005,7 @@ describe('Nevermined assets', () => {
   });
 
   it("should not transfer ownership if agreementId is not found", async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       accounts: {
@@ -1068,7 +1068,7 @@ describe('Nevermined assets', () => {
   });
 
   it("should not transfer ownership if post transfer fail", async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       nfts: {

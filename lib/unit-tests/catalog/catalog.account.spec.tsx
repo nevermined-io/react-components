@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { generateTestingUtils } from 'eth-testing';
-import { appConfig } from './config';
-import { Catalog, AuthToken } from '../src';
+import { appConfig } from '../config';
+import { Catalog, AuthToken } from '../../src';
 import jwt from 'jsonwebtoken';
-import { ddo, walletAddress, nevermined } from './mockups';
+import { ddo, walletAddress, nevermined } from '../mockups';
 import { faker } from '@faker-js/faker';
 
 jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
   ...jest.requireActual('@nevermined-io/nevermined-sdk-js'),
-  Nevermined: jest.requireActual('./mockups').nevermined
+  Nevermined: jest.requireActual('../mockups').nevermined
 }));
 
 jest.mock('axios', () => ({
@@ -218,7 +218,7 @@ describe('Nevermined account', () => {
   });
 
   it('should not be an asset holder', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       keeper: {
@@ -328,7 +328,7 @@ describe('Nevermined account', () => {
   });
 
   it('should not be a nft721 holder', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       contracts: {
@@ -435,7 +435,7 @@ describe('Nevermined account', () => {
   });
 
   it('should not be a nft1155 holder', async () => {
-    const sdk = await jest.requireActual('./mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
 
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,

@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { SearchQuery } from '@nevermined-io/nevermined-sdk-js';
+import { Profile } from '@nevermined-io/nevermined-sdk-js';
 import jwt from 'jsonwebtoken';
 
 export const ddo = {
@@ -315,10 +316,31 @@ export const ddo = {
 };
 
 export const walletAddress = '0xf61B443A155b07D2b2cAeA2d99715dC84E839EEf';
-
+export const walletAddress2 = '0xf61B443A155b07D2b2cAeA2d99715dC84E83932f';
 export const agreementId = '0xdB1B443A155b07D2b2cAeA2d99715dC84E839EE4';
-
 export const nftTokenAddress = '0xdB3B4435155b07D2b2cAeA2d99715dC84E839Af8';
+
+export const newProfile: Partial<Profile> = {
+  userId: `u-${faker.datatype.uuid()}`,
+  name: faker.name.firstName(),
+  nickname: faker.internet.userName(),
+  email: faker.internet.email(),
+  addresses: [walletAddress],
+  additionalInformation: {
+    linkedinProfile: ''
+  }
+};
+
+export const updatedProfile: Partial<Profile> = {...newProfile, nickname: faker.internet.userName()};
+
+export const profileResult: Partial<Profile> = {
+  name: newProfile.name,
+  nickname: newProfile.nickname,
+  email: newProfile.email,
+  additionalInformation: {
+    linkedinProfile: '',
+  }
+}
 
 export const nevermined = {
   getInstance: async () => ({
@@ -337,6 +359,11 @@ export const nevermined = {
     },
     accounts: {
       list: async () => [
+        {
+          getId: () => walletAddress
+        }
+      ],
+      requestList: async () => [
         {
           getId: () => walletAddress
         }
@@ -360,7 +387,7 @@ export const nevermined = {
         royalties: 0,
       }),
       setApprovalForAll: async () => ({
-        to: '0xf61B443A155b07D2b2cAeA2d99715dC84E83932f',
+        to: walletAddress2,
         from: walletAddress,
         contractAddress: nftTokenAddress,
         transactionIndex: 2,
@@ -464,7 +491,16 @@ export const nevermined = {
         sub: `u-${faker.datatype.uuid()}`,
         role: [],
         exp: faker.date.future().getTime()
-      }, 'secret') 
+      }, 'secret'),
+      addNewAddress: () => jwt.sign({iss: walletAddress,
+        sub: `u-${faker.datatype.uuid()}`,
+        role: [],
+        exp: faker.date.future().getTime()
+      }, 'secret')
+    },
+    profiles: {
+      update: () => updatedProfile,
+      findOneByAddress: () => newProfile,
     }
   })
 };
