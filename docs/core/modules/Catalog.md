@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[src/catalog.tsx:566](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/catalog.tsx#L566)
+[catalog.tsx:566](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/catalog.tsx#L566)
 
 ## Functions
 
@@ -86,27 +86,27 @@ const SDKInstance = () => {
 
 #### Defined in
 
-[src/catalog.tsx:121](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/catalog.tsx#L121)
+[catalog.tsx:121](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/catalog.tsx#L121)
 
 ___
 
 ### initializeNevermined
 
-▸ **initializeNevermined**(`config`): `Promise`<[`GenericOutput`](../interfaces/GenericOutput.md)<[`Nevermined`](../classes/Nevermined.md), `any`\>\>
+▸ **initializeNevermined**(`config`): `Promise`<[`GenericOutput`](../interfaces/GenericOutput.md)<`Nevermined`, `any`\>\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `config` | [`Config`](../classes/Config.md) |
+| `config` | `Config` |
 
 #### Returns
 
-`Promise`<[`GenericOutput`](../interfaces/GenericOutput.md)<[`Nevermined`](../classes/Nevermined.md), `any`\>\>
+`Promise`<[`GenericOutput`](../interfaces/GenericOutput.md)<`Nevermined`, `any`\>\>
 
 #### Defined in
 
-[src/catalog.tsx:54](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/catalog.tsx#L54)
+[catalog.tsx:54](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/catalog.tsx#L54)
 
 ___
 
@@ -120,4 +120,4 @@ ___
 
 #### Defined in
 
-[src/catalog.tsx:568](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/catalog.tsx#L568)
+[catalog.tsx:568](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/catalog.tsx#L568)

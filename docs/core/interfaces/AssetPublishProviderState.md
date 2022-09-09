@@ -30,7 +30,7 @@ Handle publish asset message
 
 #### Defined in
 
-[src/types/index.ts:786](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L786)
+[types/index.ts:786](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L786)
 
 ___
 
@@ -42,7 +42,7 @@ All the parameters needed to publish an asset
 
 #### Defined in
 
-[src/types/index.ts:792](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L792)
+[types/index.ts:792](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L792)
 
 ___
 
@@ -54,7 +54,7 @@ Handle error publish asset message
 
 #### Defined in
 
-[src/types/index.ts:784](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L784)
+[types/index.ts:784](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L784)
 
 ___
 
@@ -81,7 +81,7 @@ Update asset parameters when some input changes
 
 #### Defined in
 
-[src/types/index.ts:803](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L803)
+[types/index.ts:803](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L803)
 
 ___
 
@@ -93,7 +93,7 @@ If the asset is publishing
 
 #### Defined in
 
-[src/types/index.ts:790](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L790)
+[types/index.ts:790](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L790)
 
 ___
 
@@ -105,17 +105,17 @@ If the asset was published correctly
 
 #### Defined in
 
-[src/types/index.ts:788](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L788)
+[types/index.ts:788](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L788)
 
 ___
 
 ### publishAsset
 
-• **publishAsset**: (`asset`: { `metadata`: [`MetaData`](MetaData.md)  }) => `Promise`<`undefined` \| [`DDO`](../classes/DDO.md)\>
+• **publishAsset**: (`asset`: { `metadata`: `MetaData`  }) => `Promise`<`undefined` \| `DDO`\>
 
 #### Type declaration
 
-▸ (`asset`): `Promise`<`undefined` \| [`DDO`](../classes/DDO.md)\>
+▸ (`asset`): `Promise`<`undefined` \| `DDO`\>
 
 Publish no-nft asset
 
@@ -124,27 +124,27 @@ Publish no-nft asset
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `asset` | `Object` |  |
-| `asset.metadata` | [`MetaData`](MetaData.md) | The description of the asset |
+| `asset.metadata` | `MetaData` | The description of the asset |
 
 ##### Returns
 
-`Promise`<`undefined` \| [`DDO`](../classes/DDO.md)\>
+`Promise`<`undefined` \| `DDO`\>
 
 Asset object
 
 #### Defined in
 
-[src/types/index.ts:813](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L813)
+[types/index.ts:813](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L813)
 
 ___
 
 ### publishNFT1155
 
-• **publishNFT1155**: (`asset`: { `cap`: `number` ; `metadata`: [`MetaData`](MetaData.md) ; `royalties`: `number` ; `royaltyKind`: [`RoyaltyKind`](../enums/RoyaltyKind.md)  }) => `Promise`<`undefined` \| [`DDO`](../classes/DDO.md)\>
+• **publishNFT1155**: (`asset`: { `cap`: `number` ; `metadata`: `MetaData` ; `royalties`: `number` ; `royaltyKind`: `RoyaltyKind`  }) => `Promise`<`undefined` \| `DDO`\>
 
 #### Type declaration
 
-▸ (`asset`): `Promise`<`undefined` \| [`DDO`](../classes/DDO.md)\>
+▸ (`asset`): `Promise`<`undefined` \| `DDO`\>
 
 Publish a nft1155 asset
 
@@ -154,29 +154,29 @@ Publish a nft1155 asset
 | :------ | :------ | :------ |
 | `asset` | `Object` |  |
 | `asset.cap` | `number` | Amount of asset that is possible to mint |
-| `asset.metadata` | [`MetaData`](MetaData.md) | The description of the asset |
+| `asset.metadata` | `MetaData` | The description of the asset |
 | `asset.royalties` | `number` | - |
-| `asset.royaltyKind` | [`RoyaltyKind`](../enums/RoyaltyKind.md) | Set how the owner will receive rewards for each sale |
+| `asset.royaltyKind` | `RoyaltyKind` | Set how the owner will receive rewards for each sale |
 
 ##### Returns
 
-`Promise`<`undefined` \| [`DDO`](../classes/DDO.md)\>
+`Promise`<`undefined` \| `DDO`\>
 
 Asset object
 
 #### Defined in
 
-[src/types/index.ts:837](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L837)
+[types/index.ts:837](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L837)
 
 ___
 
 ### publishNFT721
 
-• **publishNFT721**: (`asset`: { `metadata`: [`MetaData`](MetaData.md) ; `nftAddress`: `string` ; `providers`: `undefined` \| `string`[]  }) => `Promise`<`undefined` \| [`DDO`](../classes/DDO.md)\>
+• **publishNFT721**: (`asset`: { `metadata`: `MetaData` ; `nftAddress`: `string` ; `providers`: `undefined` \| `string`[]  }) => `Promise`<`undefined` \| `DDO`\>
 
 #### Type declaration
 
-▸ (`asset`): `Promise`<`undefined` \| [`DDO`](../classes/DDO.md)\>
+▸ (`asset`): `Promise`<`undefined` \| `DDO`\>
 
 Publish a nft721 asset
 
@@ -185,19 +185,19 @@ Publish a nft721 asset
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `asset` | `Object` |  |
-| `asset.metadata` | [`MetaData`](MetaData.md) | The description of the asset |
+| `asset.metadata` | `MetaData` | The description of the asset |
 | `asset.nftAddress` | `string` | nft721 token address to publish |
 | `asset.providers` | `undefined` \| `string`[] | List of providers |
 
 ##### Returns
 
-`Promise`<`undefined` \| [`DDO`](../classes/DDO.md)\>
+`Promise`<`undefined` \| `DDO`\>
 
 Asset object
 
 #### Defined in
 
-[src/types/index.ts:821](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L821)
+[types/index.ts:821](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L821)
 
 ___
 
@@ -223,7 +223,7 @@ Reset all the parameters of the asset
 
 #### Defined in
 
-[src/types/index.ts:807](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L807)
+[types/index.ts:807](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L807)
 
 ___
 
@@ -235,7 +235,7 @@ Set asset message
 
 #### Defined in
 
-[src/types/index.ts:796](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L796)
+[types/index.ts:796](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L796)
 
 ___
 
@@ -247,7 +247,7 @@ Set parameters needed to publish an asset
 
 #### Defined in
 
-[src/types/index.ts:794](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L794)
+[types/index.ts:794](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L794)
 
 ___
 
@@ -259,4 +259,4 @@ Set error asset message
 
 #### Defined in
 
-[src/types/index.ts:798](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L798)
+[types/index.ts:798](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L798)

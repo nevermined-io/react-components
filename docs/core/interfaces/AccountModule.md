@@ -35,7 +35,7 @@ The new generated token
 
 #### Defined in
 
-[src/types/index.ts:441](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L441)
+[types/index.ts:441](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L441)
 
 ___
 
@@ -63,7 +63,7 @@ List of assets which was bought by the address given as argument
 
 #### Defined in
 
-[src/types/index.ts:436](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L436)
+[types/index.ts:436](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L436)
 
 ___
 
@@ -91,7 +91,7 @@ List of assets which was published by the address given
 
 #### Defined in
 
-[src/types/index.ts:430](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L430)
+[types/index.ts:430](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L430)
 
 ___
 
@@ -120,7 +120,7 @@ true if the user owns at least one edition of the NFT
 
 #### Defined in
 
-[src/types/index.ts:454](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L454)
+[types/index.ts:454](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L454)
 
 ___
 
@@ -151,7 +151,7 @@ true if the user owns at least one edition of the NFT
 
 #### Defined in
 
-[src/types/index.ts:464](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L464)
+[types/index.ts:464](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L464)
 
 ___
 
@@ -182,7 +182,7 @@ true if the user holds the NFT
 
 #### Defined in
 
-[src/types/index.ts:474](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L474)
+[types/index.ts:474](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L474)
 
 ___
 
@@ -204,4 +204,4 @@ if token is valid it will return true
 
 #### Defined in
 
-[src/types/index.ts:446](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L446)
+[types/index.ts:446](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L446)

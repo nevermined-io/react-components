@@ -55,7 +55,7 @@ const MyComponent = () => {
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `sdk` | [`Nevermined`](../classes/Nevermined.md) | Nevermined instance |
+| `sdk` | `Nevermined` | Nevermined instance |
 | `did` | `string` | assets did |
 
 #### Returns
@@ -64,7 +64,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:254](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/services/event.ts#L254)
+[services/event.ts:254](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/services/event.ts#L254)
 
 ___
 
@@ -112,9 +112,9 @@ const MyComponent = () => {
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `sdk` | [`Nevermined`](../classes/Nevermined.md) | `undefined` | Nevermined instance |
+| `sdk` | `Nevermined` | `undefined` | Nevermined instance |
 | `receiver` | `string` | `undefined` | Transfers receiver address |
-| `nftType` | [`NftTypes`](../modules.md#nfttypes) | `1155` | Choose the NFT type. Default value 1155 |
+| `nftType` | `NftTypes` | `1155` | Choose the NFT type. Default value 1155 |
 
 #### Returns
 
@@ -122,7 +122,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:43](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/services/event.ts#L43)
+[services/event.ts:43](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/services/event.ts#L43)
 
 ___
 
@@ -169,7 +169,7 @@ const MyComponent = () => {
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `sdk` | [`Nevermined`](../classes/Nevermined.md) | Nevermined instance |
+| `sdk` | `Nevermined` | Nevermined instance |
 | `account` | `string` | user address |
 
 #### Returns
@@ -178,7 +178,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:114](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/services/event.ts#L114)
+[services/event.ts:114](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/services/event.ts#L114)
 
 ___
 
@@ -227,7 +227,7 @@ const MyComponent = () => {
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `sdk` | [`Nevermined`](../classes/Nevermined.md) | Nevermined instance |
+| `sdk` | `Nevermined` | Nevermined instance |
 | `owner` | `string` | user address of events publisher |
 
 #### Returns
@@ -236,4 +236,4 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/event.ts:183](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/services/event.ts#L183)
+[services/event.ts:183](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/services/event.ts#L183)

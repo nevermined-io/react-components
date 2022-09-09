@@ -65,7 +65,7 @@ const Example = (props: ExampleProps) => {
 
 #### Defined in
 
-[src/types/index.ts:261](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L261)
+[types/index.ts:261](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L261)
 
 ___
 
@@ -172,7 +172,7 @@ const Example = () => {
 
 #### Defined in
 
-[src/types/index.ts:224](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L224)
+[types/index.ts:224](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L224)
 
 ___
 
@@ -184,19 +184,19 @@ True if sdk is loading
 
 #### Defined in
 
-[src/types/index.ts:45](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L45)
+[types/index.ts:45](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L45)
 
 ___
 
 ### sdk
 
-• **sdk**: [`Nevermined`](../classes/Nevermined.md)
+• **sdk**: `Nevermined`
 
 Nevermined sdk instance which has all the core functionalities
 
 #### Defined in
 
-[src/types/index.ts:41](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L41)
+[types/index.ts:41](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L41)
 
 ___
 
@@ -208,7 +208,7 @@ Error message from sdk
 
 #### Defined in
 
-[src/types/index.ts:43](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L43)
+[types/index.ts:43](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L43)
 
 ___
 
@@ -266,7 +266,7 @@ const Example = () => {
 
 #### Defined in
 
-[src/types/index.ts:125](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L125)
+[types/index.ts:125](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L125)
 
 ___
 
@@ -329,13 +329,13 @@ const BuyAsset = ({ddo}: {ddo: DDO}) => {
 
 #### Defined in
 
-[src/types/index.ts:315](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L315)
+[types/index.ts:315](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L315)
 
 ___
 
 ### updateSDK
 
-• **updateSDK**: (`newConfig`: [`Config`](../classes/Config.md)) => `Promise`<`boolean`\>
+• **updateSDK**: (`newConfig`: `Config`) => `Promise`<`boolean`\>
 
 #### Type declaration
 
@@ -374,7 +374,7 @@ const Example = (props: ExampleProps) => {
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `newConfig` | [`Config`](../classes/Config.md) | Config object to rebuild Nevermined SDK |
+| `newConfig` | `Config` | Config object to rebuild Nevermined SDK |
 
 ##### Returns
 
@@ -382,4 +382,4 @@ const Example = (props: ExampleProps) => {
 
 #### Defined in
 
-[src/types/index.ts:76](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L76)
+[types/index.ts:76](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L76)

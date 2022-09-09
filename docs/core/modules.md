@@ -9,97 +9,39 @@
 - [AuthToken](modules/AuthToken.md)
 - [Catalog](modules/Catalog.md)
 - [EventService](modules/EventService.md)
-- [KeyTransfer](modules/KeyTransfer.md)
 - [SubscribeService](modules/SubscribeService.md)
-- [conditions](modules/conditions.md)
-- [events](modules/events.md)
-- [subgraphs](modules/subgraphs.md)
-- [templates](modules/templates.md)
-- [utils](modules/utils.md)
 
 ### Enumerations
 
-- [ConditionState](enums/ConditionState.md)
-- [CreateProgressStep](enums/CreateProgressStep.md)
-- [OrderProgressStep](enums/OrderProgressStep.md)
-- [PermissionType](enums/PermissionType.md)
-- [PlatformTechStatus](enums/PlatformTechStatus.md)
-- [ProvenanceMethod](enums/ProvenanceMethod.md)
-- [RoyaltyKind](enums/RoyaltyKind.md)
 - [State](enums/State.md)
 - [TransferNFTConditionMethod](enums/TransferNFTConditionMethod.md)
-
-### Classes
-
-- [Account](classes/Account.md)
-- [Accounts](classes/Accounts.md)
-- [AgreementTemplate](classes/AgreementTemplate.md)
-- [ClientError](classes/ClientError.md)
-- [Condition](classes/Condition.md)
-- [Config](classes/Config.md)
-- [DDO](classes/DDO.md)
-- [Keeper](classes/Keeper.md)
-- [Nevermined](classes/Nevermined.md)
-- [Nft721](classes/Nft721.md)
 
 ### Interfaces
 
 - [AccountModule](interfaces/AccountModule.md)
-- [AdditionalInformation](interfaces/AdditionalInformation.md)
-- [Algorithm](interfaces/Algorithm.md)
 - [AssetFile](interfaces/AssetFile.md)
 - [AssetPublishParams](interfaces/AssetPublishParams.md)
 - [AssetPublishProviderState](interfaces/AssetPublishProviderState.md)
 - [AssetState](interfaces/AssetState.md)
 - [AssetsModule](interfaces/AssetsModule.md)
-- [Bookmark](interfaces/Bookmark.md)
-- [ContractEventSubscription](interfaces/ContractEventSubscription.md)
-- [Curation](interfaces/Curation.md)
 - [CustomErc20Token](interfaces/CustomErc20Token.md)
-- [File](interfaces/File.md)
 - [FileMetadata](interfaces/FileMetadata.md)
 - [FulfilledOrders](interfaces/FulfilledOrders.md)
 - [GenericOutput](interfaces/GenericOutput.md)
 - [MarketplaceAPIToken](interfaces/MarketplaceAPIToken.md)
-- [MetaData](interfaces/MetaData.md)
-- [MetaDataMain](interfaces/MetaDataMain.md)
 - [MintNFTInput](interfaces/MintNFTInput.md)
 - [NFTDetails](interfaces/NFTDetails.md)
 - [NeverminedProviderContext](interfaces/NeverminedProviderContext.md)
 - [NeverminedProviderProps](interfaces/NeverminedProviderProps.md)
-- [NewBookmark](interfaces/NewBookmark.md)
-- [NewPermission](interfaces/NewPermission.md)
-- [NewProfile](interfaces/NewProfile.md)
-- [Permission](interfaces/Permission.md)
-- [PlatformKeeperTech](interfaces/PlatformKeeperTech.md)
-- [PlatformTech](interfaces/PlatformTech.md)
-- [PlatformVersions](interfaces/PlatformVersions.md)
-- [Profile](interfaces/Profile.md)
-- [ProvenanceRegistry](interfaces/ProvenanceRegistry.md)
 - [RegisterEvent](interfaces/RegisterEvent.md)
-- [SearchQuery](interfaces/SearchQuery.md)
-- [Service](interfaces/Service.md)
-- [ServiceDefinition](interfaces/ServiceDefinition.md)
-- [Stage](interfaces/Stage.md)
-- [StageInput](interfaces/StageInput.md)
-- [StageOutput](interfaces/StageOutput.md)
-- [StageRequirements](interfaces/StageRequirements.md)
-- [StageTransformation](interfaces/StageTransformation.md)
 - [SubscribeModule](interfaces/SubscribeModule.md)
 - [SubscriptionActions](interfaces/SubscriptionActions.md)
 - [Transfer](interfaces/Transfer.md)
 - [UserProfileParams](interfaces/UserProfileParams.md)
-- [Workflow](interfaces/Workflow.md)
 
 ### Type Aliases
 
 - [DID](modules.md#did)
-- [EventResult](modules.md#eventresult)
-- [NftTypes](modules.md#nfttypes)
-
-### Variables
-
-- [Logger](modules.md#logger)
 
 ### Functions
 
@@ -109,7 +51,6 @@
 - [handlePostRequest](modules.md#handlepostrequest)
 - [isEmptyObject](modules.md#isemptyobject)
 - [loadFulfilledEvents](modules.md#loadfulfilledevents)
-- [zeroX](modules.md#zerox)
 
 ## Type Aliases
 
@@ -121,37 +62,7 @@ Id of the asset
 
 #### Defined in
 
-[src/types/index.ts:343](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L343)
-
-___
-
-### EventResult
-
-Ƭ **EventResult**: `Promise`<`any`[]\>
-
-#### Defined in
-
-node_modules/@nevermined-io/nevermined-sdk-js/dist/node/events/NeverminedEvent.d.ts:22
-
-___
-
-### NftTypes
-
-Ƭ **NftTypes**: ``721`` \| ``1155``
-
-#### Defined in
-
-node_modules/@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway.d.ts:6
-
-## Variables
-
-### Logger
-
-• `Const` **Logger**: [`Logger`](classes/utils.Logger.md)
-
-#### Defined in
-
-node_modules/@nevermined-io/nevermined-sdk-js/dist/node/utils/Logger.d.ts:19
+[types/index.ts:343](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L343)
 
 ## Functions
 
@@ -166,10 +77,10 @@ Order transfer asset to a new owner
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `orderParams` | `Object` |  |
-| `orderParams.ddo` | [`DDO`](classes/DDO.md) | Asset object |
+| `orderParams.ddo` | `DDO` | Asset object |
 | `orderParams.gatewayAddress` | `string` | Address of gateway to allow handle the asset transaction |
-| `orderParams.newOwner` | [`Account`](classes/Account.md) | Address of the new owner who will be transferred the asset |
-| `orderParams.sdk` | [`Nevermined`](classes/Nevermined.md) | Instance of SDK object |
+| `orderParams.newOwner` | `default` | Address of the new owner who will be transferred the asset |
+| `orderParams.sdk` | `Nevermined` | Instance of SDK object |
 
 #### Returns
 
@@ -179,7 +90,7 @@ Agreement id generated after order an asset
 
 #### Defined in
 
-[src/utils/index.ts:42](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/utils/index.ts#L42)
+[utils/index.ts:42](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/index.ts#L42)
 
 ___
 
@@ -193,7 +104,7 @@ Get agreement id of the asset based in the account that request it
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `sdk` | [`Nevermined`](classes/Nevermined.md) | Instance of SDK object |
+| `sdk` | `Nevermined` | Instance of SDK object |
 | `template` | `Template` | The template to use according of type of asset |
 | `did` | `string` | The id of the asset |
 
@@ -205,13 +116,13 @@ Agreement id generated after order an asset
 
 #### Defined in
 
-[src/utils/index.ts:110](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/utils/index.ts#L110)
+[utils/index.ts:110](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/index.ts#L110)
 
 ___
 
 ### getCurrentAccount
 
-▸ **getCurrentAccount**(`sdk`): `Promise`<[`Account`](classes/Account.md)\>
+▸ **getCurrentAccount**(`sdk`): `Promise`<`default`\>
 
 Returns current account registered in SDK
 
@@ -219,15 +130,15 @@ Returns current account registered in SDK
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `sdk` | [`Nevermined`](classes/Nevermined.md) | Instance of SDK object |
+| `sdk` | `Nevermined` | Instance of SDK object |
 
 #### Returns
 
-`Promise`<[`Account`](classes/Account.md)\>
+`Promise`<`default`\>
 
 #### Defined in
 
-[src/utils/index.ts:17](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/utils/index.ts#L17)
+[utils/index.ts:17](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/index.ts#L17)
 
 ___
 
@@ -253,7 +164,7 @@ Return the result data of the request
 
 #### Defined in
 
-[src/utils/index.ts:139](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/utils/index.ts#L139)
+[utils/index.ts:139](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/index.ts#L139)
 
 ___
 
@@ -277,7 +188,7 @@ Checks if object is empty
 
 #### Defined in
 
-[src/utils/index.ts:10](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/utils/index.ts#L10)
+[utils/index.ts:10](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/index.ts#L10)
 
 ___
 
@@ -291,7 +202,7 @@ Load all the past events from an account that match with the method `getFulfille
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `sdk` | [`Nevermined`](classes/Nevermined.md) | Instance of SDK object |
+| `sdk` | `Nevermined` | Instance of SDK object |
 | `account` | `string` | Account user connected currently |
 | `condition` | `Condition` | - |
 
@@ -303,24 +214,4 @@ Array of object with the document id of each fullfilled events
 
 #### Defined in
 
-[src/utils/index.ts:81](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/utils/index.ts#L81)
-
-___
-
-### zeroX
-
-▸ **zeroX**(`input`): `string`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `input` | `string` |
-
-#### Returns
-
-`string`
-
-#### Defined in
-
-node_modules/@nevermined-io/nevermined-sdk-js/dist/node/utils/ConversionTypeHelpers.d.ts:1
+[utils/index.ts:81](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/index.ts#L81)

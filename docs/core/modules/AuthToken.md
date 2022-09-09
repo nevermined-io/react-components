@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[src/utils/marketplace_token.ts:5](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/utils/marketplace_token.ts#L5)
+[utils/marketplace_token.ts:5](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/marketplace_token.ts#L5)
 
 ## Functions
 
@@ -39,7 +39,7 @@ Auth token object which generated from Marketplace API
 
 #### Defined in
 
-[src/utils/marketplace_token.ts:20](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/utils/marketplace_token.ts#L20)
+[utils/marketplace_token.ts:20](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/marketplace_token.ts#L20)
 
 ___
 
@@ -57,7 +57,7 @@ Return `true` if token is valid
 
 #### Defined in
 
-[src/utils/marketplace_token.ts:54](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/utils/marketplace_token.ts#L54)
+[utils/marketplace_token.ts:54](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/marketplace_token.ts#L54)
 
 ___
 
@@ -71,7 +71,7 @@ Generate new Marketplace API API token
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `sdk` | [`Nevermined`](../classes/Nevermined.md) | Instance of SDK object |
+| `sdk` | `Nevermined` | Instance of SDK object |
 
 #### Returns
 
@@ -81,7 +81,7 @@ Auth token object which generated from Marketplace API
 
 #### Defined in
 
-[src/utils/marketplace_token.ts:36](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/utils/marketplace_token.ts#L36)
+[utils/marketplace_token.ts:36](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/marketplace_token.ts#L36)
 
 ___
 
@@ -103,4 +103,4 @@ Save Marketplace API token to local storage
 
 #### Defined in
 
-[src/utils/marketplace_token.ts:11](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/utils/marketplace_token.ts#L11)
+[utils/marketplace_token.ts:11](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/marketplace_token.ts#L11)

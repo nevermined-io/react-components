@@ -27,7 +27,7 @@ The price of the asset
 
 #### Defined in
 
-[src/types/index.ts:659](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L659)
+[types/index.ts:659](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L659)
 
 ___
 
@@ -39,7 +39,7 @@ The maximum of assets that can be minted
 
 #### Defined in
 
-[src/types/index.ts:655](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L655)
+[types/index.ts:655](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L655)
 
 ___
 
@@ -51,19 +51,19 @@ The erc20 token address which the buyer will pay the price
 
 #### Defined in
 
-[src/types/index.ts:663](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L663)
+[types/index.ts:663](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L663)
 
 ___
 
 ### metadata
 
-• **metadata**: [`MetaData`](MetaData.md)
+• **metadata**: `MetaData`
 
 MetaData object which contain all the parameters that describes the asset
 
 #### Defined in
 
-[src/types/index.ts:651](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L651)
+[types/index.ts:651](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L651)
 
 ___
 
@@ -75,7 +75,7 @@ The amount of NFTs that an address needs to hold in order to access the DID's pr
 
 #### Defined in
 
-[src/types/index.ts:661](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L661)
+[types/index.ts:661](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L661)
 
 ___
 
@@ -91,7 +91,7 @@ url to set at publishing time that resolves to the metadata of the nft as expect
 
 #### Defined in
 
-[src/types/index.ts:669](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L669)
+[types/index.ts:669](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L669)
 
 ___
 
@@ -103,19 +103,19 @@ If assets are minted in the creation process
 
 #### Defined in
 
-[src/types/index.ts:665](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L665)
+[types/index.ts:665](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L665)
 
 ___
 
 ### publisher
 
-• **publisher**: [`Account`](../classes/Account.md)
+• **publisher**: `default`
 
 The Publisher account of the asset
 
 #### Defined in
 
-[src/types/index.ts:653](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L653)
+[types/index.ts:653](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L653)
 
 ___
 
@@ -127,7 +127,7 @@ The profit that the publisher get for every sale
 
 #### Defined in
 
-[src/types/index.ts:657](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L657)
+[types/index.ts:657](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L657)
 
 ___
 
@@ -139,4 +139,4 @@ Trasaction number of the asset creation
 
 #### Defined in
 
-[src/types/index.ts:671](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L671)
+[types/index.ts:671](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L671)
