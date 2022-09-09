@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker';
-import { SearchQuery } from '@nevermined-io/nevermined-sdk-js';
-import { Profile } from '@nevermined-io/nevermined-sdk-js';
+import { MetaData, SearchQuery, Profile } from '../src';
 import jwt from 'jsonwebtoken';
 
 export const ddo = {
   '@context': 'https://w3id.org/did/v1',
+  findServiceByType: () => ddo.service[0],
   authentication: [
     {
       type: 'RsaSignatureAuthentication2018',
@@ -356,6 +356,8 @@ export const nevermined = {
         page: 1,
         results: [ddo],
       }),
+      create: async () => ddo,
+      createNft721: async () => ddo,
     },
     accounts: {
       list: async () => [
@@ -405,6 +407,7 @@ export const nevermined = {
         events: [],
       }),
       create: async () => ddo,
+      createWithRoyalties: async () => ddo,
       transferForDelegate: async () => true
     },
     keeper: {
@@ -505,7 +508,7 @@ export const nevermined = {
   })
 };
 
-export const metadata = {
+export const metadata: MetaData = {
   main: {
     name: '',
     files: [{
@@ -513,7 +516,7 @@ export const metadata = {
       contentType: 'application/json',
       url: 'https://github.com/nevermined-io/docs/blob/master/docs/architecture/specs/metadata/examples/ddo-example.json'
     }],
-    type: 'dataset',
+    type: "dataset",
     author: '',
     license: '',
     dateCreated: new Date().toISOString(),

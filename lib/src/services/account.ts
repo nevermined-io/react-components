@@ -537,10 +537,14 @@ export const useIsNFT721Holder = (
   nftAddress: string,
   walletAddress: string
 ): { ownNFT721: boolean } => {
-  const { sdk } = useNevermined();
+  const { sdk, isLoadingSDK } = useNevermined();
   const [ownNFT721, setOwnNFT721] = useState<boolean>(false);
 
   useEffect(() => {
+    if (isLoadingSDK) {
+      return;
+    }
+
     (async () => {
       const walletAccount = new Account(walletAddress);
       if (walletAccount) {     
@@ -549,7 +553,7 @@ export const useIsNFT721Holder = (
         setOwnNFT721(balance.gt(0))
       }
     })();
-  }, [walletAddress]);
+  }, [walletAddress, isLoadingSDK]);
 
   return {
     ownNFT721

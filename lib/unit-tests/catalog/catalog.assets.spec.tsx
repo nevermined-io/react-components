@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { render, screen, renderHook, waitFor } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 import { generateTestingUtils } from 'eth-testing';
 import { appConfig } from '../config';
 import { agreementId, ddo, walletAddress, nevermined, nftTokenAddress, mintNFTInput } from '../mockups';
@@ -25,21 +25,12 @@ const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
   <Catalog.NeverminedProvider config={appConfig}>{children}</Catalog.NeverminedProvider>
 );
 
-const setup = (children: React.ReactElement) =>
-  render(<Catalog.NeverminedProvider config={appConfig}>{children}</Catalog.NeverminedProvider>);
-
 describe('Nevermined assets', () => {
   const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 
   afterEach(() => {
     testingUtils.clearAllMocks();
     jest.clearAllMocks();
-  });
-
-  it('Component load', () => {
-    testingUtils.mockConnectedWallet([walletAddress]);
-    setup(<h1>Hello nevermined</h1>);
-    expect(screen.getByText('Hello nevermined')).toBeInTheDocument();
   });
 
   it('Should get single asset', async () => {

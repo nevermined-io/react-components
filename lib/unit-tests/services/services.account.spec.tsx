@@ -10,21 +10,11 @@ jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
   Nevermined: jest.requireActual('../mockups').nevermined
 }));
 
-jest.mock('axios', () => ({
-  post: () => ({
-    data: {
-      url: 'cid://bafkqaesimvwgy3zmebhgk5tfojwws3tfmqqq'
-    }
-  })
-}));
-
-jest.mock('axios-retry', () => () => undefined);
-
 const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
   <Catalog.NeverminedProvider config={appConfig}>{children}</Catalog.NeverminedProvider>
 );
 
-describe('Service account', () => {
+describe('Account Service', () => {
   const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 
   afterEach(() => {
@@ -407,6 +397,205 @@ describe('Service account', () => {
     await waitFor(() => {
       expect(result.current).toStrictEqual('Nickname is required');
     });
-  })
+  });
 
+  it('should return true as an asset holder', async () => {
+    const { result } = renderHook(
+      () => {
+        const { isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const { ownAsset } = AccountService.useIsAssetHolder(ddo.id, walletAddress);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+        }, [isLoadingSDK, ownAsset]);
+
+        return ownAsset;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(() => {
+      expect(result.current).toStrictEqual(true);
+    });
+  });
+
+  it('should return false as an asset holder', async () => {
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
+    jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
+      ...sdk,
+      keeper: {
+        ...sdk.keeper,
+        templates: {
+          ...sdk.keeper.templates,
+          accessTemplate: {
+            events: {
+              getPastEvents: async () => [],
+            }
+          }
+        }
+      }
+    });
+
+    const { result } = renderHook(
+      () => {
+        const { isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const { ownAsset } = AccountService.useIsAssetHolder(ddo.id, walletAddress);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+        }, [isLoadingSDK, ownAsset]);
+
+        return ownAsset;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(() => {
+      expect(result.current).toStrictEqual(false);
+    });
+  });
+
+  it('should return true as a nft721 holder', async () => {
+    const { result } = renderHook(
+      () => {
+        const { isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const { ownNFT721 } = AccountService.useIsNFT721Holder(ddo.id, walletAddress);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+        }, [isLoadingSDK, ownNFT721]);
+
+        return ownNFT721;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(() => {
+      expect(result.current).toStrictEqual(true);
+    });
+  });
+
+  it('should return false as a nft721 holder', async () => {
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
+    jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
+      ...sdk,
+      contracts: {
+        ...sdk.contracts,
+        loadNft721: async () => ({
+          balanceOf: async () => ({
+            gt: () => false,
+          })
+        })
+      }
+    });
+
+    const { result } = renderHook(
+      () => {
+        const { isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const { ownNFT721 } = AccountService.useIsNFT721Holder(ddo.id, walletAddress);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+        }, [isLoadingSDK, ownNFT721]);
+
+        return ownNFT721;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(() => {
+      expect(result.current).toStrictEqual(false);
+    });
+  });
+
+  it('should return true as a nft1155 holder', async () => {
+    const { result } = renderHook(
+      () => {
+        const { isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const { ownNFT1155 } = AccountService.useIsNFT1155Holder(ddo.id, walletAddress);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+        }, [isLoadingSDK, ownNFT1155]);
+
+        return ownNFT1155;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(() => {
+      expect(result.current).toStrictEqual(true);
+    });
+  });
+
+  it('should return false as a nft1155 holder', async () => {
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
+    jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
+      ...sdk,
+      nfts: {
+        ...sdk.ntfs,
+        balance: () => 0
+      }
+    });
+
+    const { result } = renderHook(
+      () => {
+        const { isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const { ownNFT1155 } = AccountService.useIsNFT1155Holder(ddo.id, walletAddress);
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+        }, [isLoadingSDK, ownNFT1155]);
+
+        return ownNFT1155;
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(() => {
+      expect(result.current).toStrictEqual(false);
+    });
+  });
 });

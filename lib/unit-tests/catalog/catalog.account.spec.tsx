@@ -12,16 +12,6 @@ jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
   Nevermined: jest.requireActual('../mockups').nevermined
 }));
 
-jest.mock('axios', () => ({
-  post: () => ({
-    data: {
-      url: 'cid://bafkqaesimvwgy3zmebhgk5tfojwws3tfmqqq'
-    }
-  })
-}));
-
-jest.mock('axios-retry', () => () => undefined);
-
 const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
   <Catalog.NeverminedProvider config={appConfig}>{children}</Catalog.NeverminedProvider>
 );

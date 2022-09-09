@@ -795,7 +795,7 @@ export interface AssetPublishProviderState {
   /** Set asset message */
   setAssetMessage: React.Dispatch<React.SetStateAction<string>>;
   /** Set error asset message */
-  setAssetErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  setErrorAssetMessage: React.Dispatch<React.SetStateAction<string>>;
   /** Update asset parameters when some input changes
    * @param value Parameter value
    * @param input Input where come the changes which match with the parameters
