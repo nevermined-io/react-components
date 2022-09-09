@@ -137,8 +137,6 @@ export interface WalletProviderState {
     checkIsLogged: () => Promise<boolean>;
     /** If Metamask wallet is installed and available in the browser */
     isAvailable: () => boolean;
-    /** Switch between Metamask accounts */
-    promptSwitchAccounts: () => Promise<void>;
     /** Check if the switched chain is supported
      * and in case that not it suggests to change to the default chain
      * also if a chain is not registered in Metamask it ask for register it */
@@ -342,17 +340,6 @@ export const WalletProvider = ({
         return eths.current !== null;
     };
 
-    const promptSwitchAccounts = async () => {
-        await window.ethereum.request?.({
-            method: "wallet_requestPermissions",
-            params: [
-                {
-                    eth_accounts: {},
-                },
-            ],
-        });
-    };
-
     const checkIsLogged = async (): Promise<boolean> => {
         if (!isAvailable() || !eths.current?.listAccounts) return false;
         const accounts = await eths.current?.listAccounts();
@@ -392,7 +379,6 @@ export const WalletProvider = ({
         loginMetamask,
         getProvider,
         logout,
-        promptSwitchAccounts,
         switchChainsOrRegisterSupportedChain,
         checkIsLogged,
         isAvailable,
