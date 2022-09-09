@@ -9,15 +9,14 @@ under 'assets' object
 
 - [downloadAsset](AssetsModule.md#downloadasset)
 - [downloadNFT](AssetsModule.md#downloadnft)
+- [findOne](AssetsModule.md#findone)
 - [getCustomErc20Token](AssetsModule.md#getcustomerc20token)
-- [getSingle](AssetsModule.md#getsingle)
 - [mint](AssetsModule.md#mint)
 - [nftDetails](AssetsModule.md#nftdetails)
 - [orderAsset](AssetsModule.md#orderasset)
 - [orderNFT1155](AssetsModule.md#ordernft1155)
 - [orderNFT721](AssetsModule.md#ordernft721)
 - [query](AssetsModule.md#query)
-- [resolve](AssetsModule.md#resolve)
 - [transfer](AssetsModule.md#transfer)
 - [uploadAssetToFilecoin](AssetsModule.md#uploadassettofilecoin)
 
@@ -25,11 +24,11 @@ under 'assets' object
 
 ### downloadAsset
 
-• **downloadAsset**: (`did`: `string`, `agreementId`: `string`) => `Promise`<`boolean`\>
+• **downloadAsset**: (`did`: `string`) => `Promise`<`boolean`\>
 
 #### Type declaration
 
-▸ (`did`, `agreementId`): `Promise`<`boolean`\>
+▸ (`did`): `Promise`<`boolean`\>
 
 Download an asset already ordered and transfered to the buyer,
 if the user is the owner of the asset
@@ -39,7 +38,6 @@ if the user is the owner of the asset
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `did` | `string` | id of the NFT (721 & 1155) asset |
-| `agreementId` | `string` | - |
 
 ##### Returns
 
@@ -49,7 +47,7 @@ if the NFT is downloaded successfully the method will return a true
 
 #### Defined in
 
-[src/types/index.ts:552](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L552)
+[src/types/index.ts:555](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L555)
 
 ___
 
@@ -78,7 +76,33 @@ if the NFT is downloaded successfully the method will return a true
 
 #### Defined in
 
-[src/types/index.ts:539](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L539)
+[src/types/index.ts:542](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L542)
+
+___
+
+### findOne
+
+• **findOne**: (`did`: `string`) => `Promise`<[`DDO`](../classes/DDO.md)\>
+
+#### Type declaration
+
+▸ (`did`): `Promise`<[`DDO`](../classes/DDO.md)\>
+
+Get the asset object by the did given
+
+##### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `did` | `string` | id of the asset |
+
+##### Returns
+
+`Promise`<[`DDO`](../classes/DDO.md)\>
+
+#### Defined in
+
+[src/types/index.ts:486](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L486)
 
 ___
 
@@ -106,33 +130,7 @@ Custom token details
 
 #### Defined in
 
-[src/types/index.ts:545](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L545)
-
-___
-
-### getSingle
-
-• **getSingle**: (`did`: `string`) => `Promise`<`DDO`\>
-
-#### Type declaration
-
-▸ (`did`): `Promise`<`DDO`\>
-
-Get the asset object by the did given
-
-##### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `did` | `string` | id of the asset |
-
-##### Returns
-
-`Promise`<`DDO`\>
-
-#### Defined in
-
-[src/types/index.ts:477](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L477)
+[src/types/index.ts:548](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L548)
 
 ___
 
@@ -160,7 +158,7 @@ If the asset was minted successfully the function will return `true`
 
 #### Defined in
 
-[src/types/index.ts:503](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L503)
+[src/types/index.ts:506](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L506)
 
 ___
 
@@ -188,7 +186,7 @@ Agreement details of the NFT asset
 
 #### Defined in
 
-[src/types/index.ts:509](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L509)
+[src/types/index.ts:512](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L512)
 
 ___
 
@@ -217,7 +215,7 @@ which is needed to transfer the asset to the buyer
 
 #### Defined in
 
-[src/types/index.ts:516](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L516)
+[src/types/index.ts:519](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L519)
 
 ___
 
@@ -246,7 +244,7 @@ which is needed to transfer the NFT1155 asset to the buyer
 
 #### Defined in
 
-[src/types/index.ts:532](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L532)
+[src/types/index.ts:535](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L535)
 
 ___
 
@@ -276,13 +274,13 @@ which is needed to transfer the NFT721 asset to the buyer
 
 #### Defined in
 
-[src/types/index.ts:524](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L524)
+[src/types/index.ts:527](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L527)
 
 ___
 
 ### query
 
-• **query**: (`q`: `SearchQuery`) => `Promise`<`QueryResult`\>
+• **query**: (`q`: [`SearchQuery`](SearchQuery.md)) => `Promise`<`QueryResult`\>
 
 #### Type declaration
 
@@ -292,7 +290,7 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `q` | `SearchQuery` | Query to custom the search: order result, filtering, etc... |
+| `q` | [`SearchQuery`](SearchQuery.md) | Query to custom the search: order result, filtering, etc... |
 
 ##### Returns
 
@@ -302,35 +300,7 @@ List of assets according with the query given
 
 #### Defined in
 
-[src/types/index.ts:483](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L483)
-
-___
-
-### resolve
-
-• **resolve**: (`did`: `string`) => `Promise`<`undefined` \| `DDO`\>
-
-#### Type declaration
-
-▸ (`did`): `Promise`<`undefined` \| `DDO`\>
-
-Get the entire object of the asset
-
-##### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `did` | `string` | id of the asset |
-
-##### Returns
-
-`Promise`<`undefined` \| `DDO`\>
-
-Asset object
-
-#### Defined in
-
-[src/types/index.ts:489](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L489)
+[src/types/index.ts:492](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L492)
 
 ___
 
@@ -360,7 +330,7 @@ Return true if asset was transferred successfully
 
 #### Defined in
 
-[src/types/index.ts:497](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L497)
+[src/types/index.ts:500](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L500)
 
 ___
 
@@ -389,4 +359,4 @@ The url where is located the file already uploaded
 
 #### Defined in
 
-[src/types/index.ts:559](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L559)
+[src/types/index.ts:562](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L562)

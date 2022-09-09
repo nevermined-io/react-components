@@ -18,7 +18,7 @@ Entity created
 
 #### Defined in
 
-[src/types/index.ts:374](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L374)
+[src/types/index.ts:375](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L375)
 
 ___
 
@@ -30,7 +30,7 @@ Entity disable or not available
 
 #### Defined in
 
-[src/types/index.ts:370](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L370)
+[src/types/index.ts:371](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L371)
 
 ___
 
@@ -42,4 +42,4 @@ Entity not validated yet or incomplete
 
 #### Defined in
 
-[src/types/index.ts:372](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L372)
+[src/types/index.ts:373](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L373)

@@ -6,15 +6,16 @@
 
 - [useAccountCollection](AccountService.md#useaccountcollection)
 - [useAccountReleases](AccountService.md#useaccountreleases)
+- [useIsAssetHolder](AccountService.md#useisassetholder)
+- [useIsNFT1155Holder](AccountService.md#useisnft1155holder)
+- [useIsNFT721Holder](AccountService.md#useisnft721holder)
 - [useUserProfile](AccountService.md#useuserprofile)
-- [userIsNFT1155Holder](AccountService.md#userisnft1155holder)
-- [userIsNFT721Holder](AccountService.md#userisnft721holder)
 
 ## Functions
 
 ### useAccountCollection
 
-▸ **useAccountCollection**(`id`): `Object`
+▸ **useAccountCollection**(`walletAddress`): `Object`
 
 Get account owned nfts
 
@@ -42,7 +43,7 @@ const MyComponent = () => {
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | user address |
+| `walletAddress` | `string` | user address |
 
 #### Returns
 
@@ -55,13 +56,13 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/account.ts:76](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/account.ts#L76)
+[src/services/account.ts:77](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/services/account.ts#L77)
 
 ___
 
 ### useAccountReleases
 
-▸ **useAccountReleases**(`id`): `Object`
+▸ **useAccountReleases**(`walletAddress`): `Object`
 
 Get account releases(mints)
 
@@ -89,7 +90,7 @@ const MyComponent = () => {
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | user address |
+| `walletAddress` | `string` | user address |
 
 #### Returns
 
@@ -102,7 +103,98 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/account.ts:32](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/account.ts#L32)
+[src/services/account.ts:33](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/services/account.ts#L33)
+
+___
+
+### useIsAssetHolder
+
+▸ **useIsAssetHolder**(`did`, `walletAddress`): `Object`
+
+This method validates if an user is an asset holder.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `did` | `string` | The unique identifier of the asset |
+| `walletAddress` | `string` | The public address of the user |
+
+#### Returns
+
+`Object`
+
+true if the user owns at least one edition of the NFT
+
+| Name | Type |
+| :------ | :------ |
+| `ownAsset` | `boolean` |
+
+#### Defined in
+
+[src/services/account.ts:459](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/services/account.ts#L459)
+
+___
+
+### useIsNFT1155Holder
+
+▸ **useIsNFT1155Holder**(`did`, `walletAddress`): `Object`
+
+This method validates if a user is a NFT (ERC-1155 based) holder for a specific `tokenId`.
+For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
+of a NFT (limitted by the NFT cap).
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `did` | `string` | The unique identifier of the NFT within a NFT ERC-1155 contract |
+| `walletAddress` | `string` | The public address of the user |
+
+#### Returns
+
+`Object`
+
+true if the user owns at least one edition of the NFT
+
+| Name | Type |
+| :------ | :------ |
+| `ownNFT1155` | `boolean` |
+
+#### Defined in
+
+[src/services/account.ts:497](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/services/account.ts#L497)
+
+___
+
+### useIsNFT721Holder
+
+▸ **useIsNFT721Holder**(`nftAddress`, `walletAddress`): `Object`
+
+This method validates if a user is a NFT (ERC-721 based) holder for a specific NFT contract address.
+For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
+of a NFT (limitted by the NFT cap).
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `nftAddress` | `string` | The contract address of the ERC-721 NFT contract |
+| `walletAddress` | `string` | The public address of the user |
+
+#### Returns
+
+`Object`
+
+true if the user holds the NFT
+
+| Name | Type |
+| :------ | :------ |
+| `ownNFT721` | `boolean` |
+
+#### Defined in
+
+[src/services/account.ts:536](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/services/account.ts#L536)
 
 ___
 
@@ -324,66 +416,4 @@ export const UserProfile: NextPage = () => {
 
 #### Defined in
 
-[src/services/account.ts:287](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/account.ts#L287)
-
-___
-
-### userIsNFT1155Holder
-
-▸ **userIsNFT1155Holder**(`did`, `walletAddress`): `Object`
-
-This method validates if a user is a NFT (ERC-1155 based) holder for a specific `tokenId`.
-For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
-of a NFT (limitted by the NFT cap).
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `did` | `string` | The unique identifier of the NFT within a NFT ERC-1155 contract |
-| `walletAddress` | `string` | The public address of the user |
-
-#### Returns
-
-`Object`
-
-true if the user owns at least one edition of the NFT
-
-| Name | Type |
-| :------ | :------ |
-| `ownNFT1155` | `boolean` |
-
-#### Defined in
-
-[src/services/account.ts:460](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/account.ts#L460)
-
-___
-
-### userIsNFT721Holder
-
-▸ **userIsNFT721Holder**(`nftAddress`, `walletAddress`): `Object`
-
-This method validates if a user is a NFT (ERC-721 based) holder for a specific NFT contract address.
-For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
-of a NFT (limitted by the NFT cap).
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `nftAddress` | `string` | The contract address of the ERC-721 NFT contract |
-| `walletAddress` | `string` | The public address of the user |
-
-#### Returns
-
-`Object`
-
-true if the user holds the NFT
-
-| Name | Type |
-| :------ | :------ |
-| `ownNFT721` | `boolean` |
-
-#### Defined in
-
-[src/services/account.ts:499](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/account.ts#L499)
+[src/services/account.ts:288](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/services/account.ts#L288)

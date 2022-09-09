@@ -10,7 +10,7 @@
 
 ### buySubscription
 
-• **buySubscription**: (`subscriptionDid`: `string`, `buyer`: `default`, `nftHolder`: `string`, `nftAmount`: `number`, `nftType`: [`NftTypes`](../modules.md#nfttypes)) => `Promise`<`string`\>
+• **buySubscription**: (`subscriptionDid`: `string`, `buyer`: [`Account`](../classes/Account.md), `nftHolder`: `string`, `nftAmount`: `number`, `nftType`: [`NftTypes`](../modules.md#nfttypes)) => `Promise`<`string`\>
 
 #### Type declaration
 
@@ -23,7 +23,7 @@ Order a NFT asset and transfer and delegate it to the subscription buyer
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `subscriptionDid` | `string` | Id of the NFT to subscribe |
-| `buyer` | `default` | The account who buy the subscription of the NFT asset |
+| `buyer` | [`Account`](../classes/Account.md) | The account who buy the subscription of the NFT asset |
 | `nftHolder` | `string` | The owner of the NFT asset |
 | `nftAmount` | `number` | The amount of NFT asset to buy |
 | `nftType` | [`NftTypes`](../modules.md#nfttypes) | NFT asset type which can be 721 or 1155 |
@@ -36,4 +36,4 @@ It is true if the subscription was successfully completed
 
 #### Defined in
 
-[src/types/index.ts:767](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L767)
+[src/types/index.ts:770](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/lib/src/types/index.ts#L770)
