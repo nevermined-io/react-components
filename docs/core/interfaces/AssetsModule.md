@@ -11,7 +11,6 @@ under 'assets' object
 - [downloadNFT](AssetsModule.md#downloadnft)
 - [findOne](AssetsModule.md#findone)
 - [getCustomErc20Token](AssetsModule.md#getcustomerc20token)
-- [mint](AssetsModule.md#mint)
 - [nftDetails](AssetsModule.md#nftdetails)
 - [orderAsset](AssetsModule.md#orderasset)
 - [orderNFT1155](AssetsModule.md#ordernft1155)
@@ -47,7 +46,7 @@ if the NFT is downloaded successfully the method will return a true
 
 #### Defined in
 
-[types/index.ts:555](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L555)
+[types/index.ts:553](https://github.com/nevermined-io/components-catalog/blob/b19d66a/lib/src/types/index.ts#L553)
 
 ___
 
@@ -76,7 +75,7 @@ if the NFT is downloaded successfully the method will return a true
 
 #### Defined in
 
-[types/index.ts:542](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L542)
+[types/index.ts:540](https://github.com/nevermined-io/components-catalog/blob/b19d66a/lib/src/types/index.ts#L540)
 
 ___
 
@@ -102,7 +101,7 @@ Get the asset object by the did given
 
 #### Defined in
 
-[types/index.ts:486](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L486)
+[types/index.ts:490](https://github.com/nevermined-io/components-catalog/blob/b19d66a/lib/src/types/index.ts#L490)
 
 ___
 
@@ -130,35 +129,7 @@ Custom token details
 
 #### Defined in
 
-[types/index.ts:548](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L548)
-
-___
-
-### mint
-
-• **mint**: (`did`: `any`) => `Promise`<`any`\>
-
-#### Type declaration
-
-▸ (`did`): `Promise`<`any`\>
-
-Mint an asset
-
-##### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `did` | `any` |
-
-##### Returns
-
-`Promise`<`any`\>
-
-If the asset was minted successfully the function will return `true`
-
-#### Defined in
-
-[types/index.ts:506](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L506)
+[types/index.ts:546](https://github.com/nevermined-io/components-catalog/blob/b19d66a/lib/src/types/index.ts#L546)
 
 ___
 
@@ -186,7 +157,7 @@ Agreement details of the NFT asset
 
 #### Defined in
 
-[types/index.ts:512](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L512)
+[types/index.ts:510](https://github.com/nevermined-io/components-catalog/blob/b19d66a/lib/src/types/index.ts#L510)
 
 ___
 
@@ -215,7 +186,7 @@ which is needed to transfer the asset to the buyer
 
 #### Defined in
 
-[types/index.ts:519](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L519)
+[types/index.ts:517](https://github.com/nevermined-io/components-catalog/blob/b19d66a/lib/src/types/index.ts#L517)
 
 ___
 
@@ -244,7 +215,7 @@ which is needed to transfer the NFT1155 asset to the buyer
 
 #### Defined in
 
-[types/index.ts:535](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L535)
+[types/index.ts:533](https://github.com/nevermined-io/components-catalog/blob/b19d66a/lib/src/types/index.ts#L533)
 
 ___
 
@@ -274,7 +245,7 @@ which is needed to transfer the NFT721 asset to the buyer
 
 #### Defined in
 
-[types/index.ts:527](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L527)
+[types/index.ts:525](https://github.com/nevermined-io/components-catalog/blob/b19d66a/lib/src/types/index.ts#L525)
 
 ___
 
@@ -300,7 +271,7 @@ List of assets according with the query given
 
 #### Defined in
 
-[types/index.ts:492](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L492)
+[types/index.ts:496](https://github.com/nevermined-io/components-catalog/blob/b19d66a/lib/src/types/index.ts#L496)
 
 ___
 
@@ -330,7 +301,7 @@ Return true if asset was transferred successfully
 
 #### Defined in
 
-[types/index.ts:500](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L500)
+[types/index.ts:504](https://github.com/nevermined-io/components-catalog/blob/b19d66a/lib/src/types/index.ts#L504)
 
 ___
 
@@ -359,4 +330,4 @@ The url where is located the file already uploaded
 
 #### Defined in
 
-[types/index.ts:562](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L562)
+[types/index.ts:560](https://github.com/nevermined-io/components-catalog/blob/b19d66a/lib/src/types/index.ts#L560)

@@ -16,7 +16,6 @@ import {
   EventResult,
   GenericOutput,
   MarketplaceAPIToken,
-  MintNFTInput,
   NeverminedProviderContext,
   NeverminedProviderProps,
   NFTDetails,
@@ -269,49 +268,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       } catch (error) {
         verbose && Logger.error(error);
         return {} as QueryResult;
-      }
-    },
-
-    mint: async (input: MintNFTInput): Promise<DDO | undefined> => {
-      try {
-        if (isEmptyObject(sdk)) return undefined;
-        const [publisherAddress] = await sdk.accounts.list();
-        if (!publisherAddress) {
-          Logger.error('No account was found!');
-          return;
-        }
-
-        if (!config.gatewayAddress) {
-          Logger.error('Gateway address from config is required to mint NFT1155 asset');
-          return
-        }
-
-        const transferNftCondition = sdk.keeper.conditions.transferNftCondition;
-
-        const transferNftConditionContractReceipt = await sdk.nfts.setApprovalForAll(transferNftCondition.address, true, publisherAddress);
-
-        Logger.log(`Contract Receipt for approved transfer NFT: ${transferNftConditionContractReceipt}`);
-
-        const gateawayContractReceipt = await sdk.nfts.setApprovalForAll(config.gatewayAddress, true, publisherAddress);
-
-        Logger.log(`Contract Receipt for approved gateway: ${gateawayContractReceipt}`);
-
-        const minted: DDO = await sdk.nfts.create(
-          input.metadata,
-          publisherAddress,
-          input.cap,
-          input.royalties,
-          input.assetRewards,
-          input.nftAmount || undefined,
-          input.erc20TokenAddress || undefined,
-          input.preMint || false,
-          input.nftMetadata || undefined, // uri
-          input.txParams || undefined
-        );
-        return minted;
-      } catch (error) {
-        verbose && Logger.error(error);
-        return undefined;
       }
     },
 
