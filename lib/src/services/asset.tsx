@@ -89,7 +89,7 @@ export const useAsset = (did: string): AssetState => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const ddo: DDO | undefined = await assets.resolve(did);
+        const ddo: DDO | undefined = await assets.findOne(did);
         if (!ddo) return;
         const metaData: MetaData = ddo.findServiceByType('metadata').attributes;
         const nftDetails = await assets.nftDetails(did);
@@ -120,7 +120,7 @@ export const AssetPublishContext = createContext({} as AssetPublishProviderState
  */
 export const AssetPublishProvider = ({ children }: { children: React.ReactElement }) => {
   const { sdk, account } = useNevermined();
-  const [errorAssetMessage, setAssetErrorMessage] = useState('');
+  const [errorAssetMessage, setErrorAssetMessage] = useState('');
   const [isPublished, setIsPublished] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [assetMessage, setAssetMessage] = useState('');
@@ -139,7 +139,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
 
     setIsPublished(false);
     setAssetMessage('');
-    setAssetErrorMessage('');
+    setErrorAssetMessage('');
   };
 
   const handleChange = (value: string, input: string) => {
@@ -166,9 +166,10 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         BigNumber.from(assetPublish.price)
       );
       if (!account.isTokenValid()) {
-        setAssetErrorMessage(
+        setErrorAssetMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
         );
+
         await account.generateToken();
       }
 
@@ -176,11 +177,11 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       setIsProcessing(false);
       setIsPublished(true);
       setAssetMessage('The asset has been sucessfully published');
-      setAssetErrorMessage('');
+      setErrorAssetMessage('');
       return ddo;
     } catch (error: any) {
       Logger.error(error.message);
-      setAssetErrorMessage('There was an error publishing the asset');
+      setErrorAssetMessage('There was an error publishing the asset');
       setAssetMessage('');
       setIsProcessing(false);
       throw new ClientError(error.message, 'Catalog');
@@ -214,7 +215,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       const accountWallet = await getCurrentAccount(sdk);
 
       if (!account.isTokenValid()) {
-        setAssetErrorMessage(
+        setErrorAssetMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
         );
         await account.generateToken();
@@ -240,11 +241,11 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       setIsProcessing(false);
       setIsPublished(true);
       setAssetMessage('The asset NFT 721 has been sucessfully published');
-      setAssetErrorMessage('');
+      setErrorAssetMessage('');
       return ddo;
     } catch (error: any) {
       Logger.error(error.message);
-      setAssetErrorMessage('There was an error publishing the asset NFT 721');
+      setErrorAssetMessage('There was an error publishing the asset NFT 721');
       setAssetMessage('');
       setIsProcessing(false);
       throw new ClientError(error.message, 'Catalog');
@@ -286,7 +287,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         BigNumber.from(assetPublish.price)
       );
       if (!account.isTokenValid()) {
-        setAssetErrorMessage(
+        setErrorAssetMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
         );
         await account.generateToken();
@@ -303,11 +304,11 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       setIsProcessing(false);
       setIsPublished(true);
       setAssetMessage('The asset NFT 1155 has been sucessfully published');
-      setAssetErrorMessage('');
+      setErrorAssetMessage('');
       return ddo;
     } catch (error: any) {
       Logger.error(error.message);
-      setAssetErrorMessage('There was an error publishing the asset NFT 1155');
+      setErrorAssetMessage('There was an error publishing the asset NFT 1155');
       setAssetMessage('');
       setIsProcessing(false);
       throw new ClientError(error.message, 'Catalog');
@@ -322,7 +323,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     assetPublish,
     setAssetPublish,
     setAssetMessage,
-    setAssetErrorMessage,
+    setErrorAssetMessage,
     handleChange,
     publishAsset,
     publishNFT721,

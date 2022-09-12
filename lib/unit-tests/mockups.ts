@@ -1,7 +1,10 @@
 import { faker } from '@faker-js/faker';
+import { MetaData, SearchQuery, Profile } from '../src';
+import jwt from 'jsonwebtoken';
 
 export const ddo = {
   '@context': 'https://w3id.org/did/v1',
+  findServiceByType: () => ddo.service[0],
   authentication: [
     {
       type: 'RsaSignatureAuthentication2018',
@@ -313,10 +316,31 @@ export const ddo = {
 };
 
 export const walletAddress = '0xf61B443A155b07D2b2cAeA2d99715dC84E839EEf';
-
+export const walletAddress2 = '0xf61B443A155b07D2b2cAeA2d99715dC84E83932f';
 export const agreementId = '0xdB1B443A155b07D2b2cAeA2d99715dC84E839EE4';
-
 export const nftTokenAddress = '0xdB3B4435155b07D2b2cAeA2d99715dC84E839Af8';
+
+export const newProfile: Partial<Profile> = {
+  userId: `u-${faker.datatype.uuid()}`,
+  name: faker.name.firstName(),
+  nickname: faker.internet.userName(),
+  email: faker.internet.email(),
+  addresses: [walletAddress],
+  additionalInformation: {
+    linkedinProfile: ''
+  }
+};
+
+export const updatedProfile: Partial<Profile> = {...newProfile, nickname: faker.internet.userName()};
+
+export const profileResult: Partial<Profile> = {
+  name: newProfile.name,
+  nickname: newProfile.nickname,
+  email: newProfile.email,
+  additionalInformation: {
+    linkedinProfile: '',
+  }
+}
 
 export const nevermined = {
   getInstance: async () => ({
@@ -325,10 +349,23 @@ export const nevermined = {
       owner: async () => '0xdF1B443A155b07D2b2cAeA2d99715dC84E812EE2',
       order: async () => agreementId,
       download: async () => true,
-      consume: async () => true
+      consume: async () => true,
+      query: (_q: SearchQuery) => ({
+        totalPages: 1,
+        totalResults: 1,
+        page: 1,
+        results: [ddo],
+      }),
+      create: async () => ddo,
+      createNft721: async () => ddo,
     },
     accounts: {
       list: async () => [
+        {
+          getId: () => walletAddress
+        }
+      ],
+      requestList: async () => [
         {
           getId: () => walletAddress
         }
@@ -336,13 +373,48 @@ export const nevermined = {
     },
     nfts: {
       ownerOf: async () => walletAddress,
-      balance: async () => 1,
+      balance: async () => 1500000000000000,
       order721: async () => agreementId,
       order: async () => agreementId,
-      access: async () => true
+      access: async () => true,
+      details: async () => ({
+        owner: ddo.id,
+        lastChecksum: faker.date.past().toDateString(),
+        url: 'https://nevermined.io',
+        lastUpdatedBy: faker.date.past().toDateString(),
+        blockNumberUpdated: 13445,
+        providers: [],
+        nftSupply: 100,
+        mintCap: 100,
+        royalties: 0,
+      }),
+      setApprovalForAll: async () => ({
+        to: walletAddress2,
+        from: walletAddress,
+        contractAddress: nftTokenAddress,
+        transactionIndex: 2,
+        gasUsed: 23433044444,
+        logsBloom: '',
+        blockHash: '',
+        transactionHash: '',
+        logs: [],
+        blockNumber: 133443,
+        confirmations: 43,
+        cumulativeGasUsed: 23433044444,
+        effectiveGasPrice: 23433044444,
+        byzantium: false,
+        type: 2,
+        events: [],
+      }),
+      create: async () => ddo,
+      createWithRoyalties: async () => ddo,
+      transferForDelegate: async () => true
     },
     keeper: {
       conditions: {
+        transferNftCondition: {
+          address: '0x610D9314EDF2ced7681BA1633C33fdb8cF365a12'
+        }, 
         accessCondition: {
           events: {
             getPastEvents: () => [
@@ -351,7 +423,7 @@ export const nevermined = {
               }
             ]
           }
-        }
+        },
       },
       templates: {
         accessTemplate: {
@@ -387,6 +459,9 @@ export const nevermined = {
             ]
           }
         }
+      },
+      nftUpgradeable: {
+        isApprovedForAll: () => true
       }
     },
     contracts: {
@@ -395,7 +470,67 @@ export const nevermined = {
         symbol: async () => 'NVM',
         decimals: async () => 18,
         balanceOf: async () => 1500000000000000000
+      }),
+      loadNft721: async () => ({
+        balanceOf: async () => ({
+          gt: () => true,
+        })
       })
     },
+
+    utils: {
+      fetch: {
+        post: () => ({
+          ok: true,
+        })
+      },
+      jwt: {
+        generateClientAssertion: () => faker.internet.password(20),
+      },
+
+    },
+    marketplace:{
+      login: () => jwt.sign({iss: walletAddress,
+        sub: `u-${faker.datatype.uuid()}`,
+        role: [],
+        exp: faker.date.future().getTime()
+      }, 'secret'),
+      addNewAddress: () => jwt.sign({iss: walletAddress,
+        sub: `u-${faker.datatype.uuid()}`,
+        role: [],
+        exp: faker.date.future().getTime()
+      }, 'secret')
+    },
+    profiles: {
+      update: () => updatedProfile,
+      findOneByAddress: () => newProfile,
+    }
   })
 };
+
+export const metadata: MetaData = {
+  main: {
+    name: '',
+    files: [{
+      index: 0,
+      contentType: 'application/json',
+      url: 'https://github.com/nevermined-io/docs/blob/master/docs/architecture/specs/metadata/examples/ddo-example.json'
+    }],
+    type: "dataset",
+    author: '',
+    license: '',
+    dateCreated: new Date().toISOString(),
+    price: ''
+  }
+};
+
+export const mintNFTInput = {
+    metadata,
+    publisher: walletAddress,
+    cap: 100,
+    royalties: 0,
+    nftAmount: 1,
+    preMint: true,
+    erc20TokenAddress: '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e',
+    assetRewards: {}
+}

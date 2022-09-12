@@ -59,11 +59,11 @@ const Example = () => {
 
 ### paymentEvents
 
-• **paymentEvents**: (`cb`: (`events`: [`EventResult`](../modules.md#eventresult)[]) => `void`) => [`ContractEventSubscription`](ContractEventSubscription.md)
+• **paymentEvents**: (`cb`: (`events`: `EventResult`[]) => `void`) => `ContractEventSubscription`
 
 #### Type declaration
 
-▸ (`cb`): [`ContractEventSubscription`](ContractEventSubscription.md)
+▸ (`cb`): `ContractEventSubscription`
 
 Subscribe a `payment` event and execute callbacks once that this event is listened
 
@@ -71,27 +71,27 @@ Subscribe a `payment` event and execute callbacks once that this event is listen
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `cb` | (`events`: [`EventResult`](../modules.md#eventresult)[]) => `void` | Callback event |
+| `cb` | (`events`: `EventResult`[]) => `void` | Callback event |
 
 ##### Returns
 
-[`ContractEventSubscription`](ContractEventSubscription.md)
+`ContractEventSubscription`
 
 return the `payment` event with a functionality to unsubscribe
 
 #### Defined in
 
-[src/types/index.ts:616](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L616)
+[types/index.ts:619](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L619)
 
 ___
 
 ### transferEvents
 
-• **transferEvents**: (`cb`: (`events`: [`EventResult`](../modules.md#eventresult)[]) => `void`, `nftType?`: [`NftTypes`](../modules.md#nfttypes)) => [`ContractEventSubscription`](ContractEventSubscription.md)
+• **transferEvents**: (`cb`: (`events`: `EventResult`[]) => `void`, `nftType?`: `NftTypes`) => `ContractEventSubscription`
 
 #### Type declaration
 
-▸ (`cb`, `nftType?`): [`ContractEventSubscription`](ContractEventSubscription.md)
+▸ (`cb`, `nftType?`): `ContractEventSubscription`
 
 Subscribe a `transfer` event and execute callbacks once that this event is listened
 
@@ -99,15 +99,15 @@ Subscribe a `transfer` event and execute callbacks once that this event is liste
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `cb` | (`events`: [`EventResult`](../modules.md#eventresult)[]) => `void` | Callback to execute |
-| `nftType?` | [`NftTypes`](../modules.md#nfttypes) | NFT asset type which can be 721 or 1155 |
+| `cb` | (`events`: `EventResult`[]) => `void` | Callback to execute |
+| `nftType?` | `NftTypes` | NFT asset type which can be 721 or 1155 |
 
 ##### Returns
 
-[`ContractEventSubscription`](ContractEventSubscription.md)
+`ContractEventSubscription`
 
 return the `transfer` event with a functionality to unsubscribe
 
 #### Defined in
 
-[src/types/index.ts:623](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L623)
+[types/index.ts:626](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L626)

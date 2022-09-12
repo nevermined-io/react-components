@@ -28,7 +28,7 @@
 
 #### Defined in
 
-[metamask.tsx:11](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/metamask.tsx#L11)
+[metamask.tsx:11](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/providers/src/metamask.tsx#L11)
 
 ## Variables
 
@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[metamask.tsx:154](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/metamask.tsx#L154)
+[metamask.tsx:152](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/providers/src/metamask.tsx#L152)
 
 ## Functions
 
@@ -95,7 +95,7 @@ All the functionalities to handle the wallet in dapp
 
 #### Defined in
 
-[metamask.tsx:193](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/metamask.tsx#L193)
+[metamask.tsx:191](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/providers/src/metamask.tsx#L191)
 
 ___
 
@@ -109,4 +109,4 @@ ___
 
 #### Defined in
 
-[metamask.tsx:409](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/providers/src/metamask.tsx#L409)
+[metamask.tsx:395](https://github.com/nevermined-io/components-catalog/blob/7d68f2d/providers/src/metamask.tsx#L395)

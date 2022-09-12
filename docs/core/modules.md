@@ -13,7 +13,6 @@
 
 ### Enumerations
 
-- [RoyaltyKind](enums/RoyaltyKind.md)
 - [State](enums/State.md)
 - [TransferNFTConditionMethod](enums/TransferNFTConditionMethod.md)
 
@@ -25,7 +24,6 @@
 - [AssetPublishProviderState](interfaces/AssetPublishProviderState.md)
 - [AssetState](interfaces/AssetState.md)
 - [AssetsModule](interfaces/AssetsModule.md)
-- [ContractEventSubscription](interfaces/ContractEventSubscription.md)
 - [CustomErc20Token](interfaces/CustomErc20Token.md)
 - [FileMetadata](interfaces/FileMetadata.md)
 - [FulfilledOrders](interfaces/FulfilledOrders.md)
@@ -44,8 +42,6 @@
 ### Type Aliases
 
 - [DID](modules.md#did)
-- [EventResult](modules.md#eventresult)
-- [NftTypes](modules.md#nfttypes)
 
 ### Functions
 
@@ -55,7 +51,6 @@
 - [handlePostRequest](modules.md#handlepostrequest)
 - [isEmptyObject](modules.md#isemptyobject)
 - [loadFulfilledEvents](modules.md#loadfulfilledevents)
-- [zeroX](modules.md#zerox)
 
 ## Type Aliases
 
@@ -67,27 +62,7 @@ Id of the asset
 
 #### Defined in
 
-[src/types/index.ts:342](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/types/index.ts#L342)
-
-___
-
-### EventResult
-
-Ƭ **EventResult**: `Promise`<`any`[]\>
-
-#### Defined in
-
-node_modules/@nevermined-io/nevermined-sdk-js/dist/node/events/NeverminedEvent.d.ts:22
-
-___
-
-### NftTypes
-
-Ƭ **NftTypes**: ``721`` \| ``1155``
-
-#### Defined in
-
-node_modules/@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway.d.ts:6
+[types/index.ts:343](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/types/index.ts#L343)
 
 ## Functions
 
@@ -115,13 +90,13 @@ Agreement id generated after order an asset
 
 #### Defined in
 
-[src/utils/index.ts:42](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/utils/index.ts#L42)
+[utils/index.ts:42](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/index.ts#L42)
 
 ___
 
 ### getAgreementId
 
-▸ **getAgreementId**(`sdk`, `template`, `did`): `Promise`<`any`\>
+▸ **getAgreementId**(`sdk`, `template`, `did`): `Promise`<`string`\>
 
 Get agreement id of the asset based in the account that request it
 
@@ -135,13 +110,13 @@ Get agreement id of the asset based in the account that request it
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`string`\>
 
 Agreement id generated after order an asset
 
 #### Defined in
 
-[src/utils/index.ts:110](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/utils/index.ts#L110)
+[utils/index.ts:110](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/index.ts#L110)
 
 ___
 
@@ -163,7 +138,7 @@ Returns current account registered in SDK
 
 #### Defined in
 
-[src/utils/index.ts:17](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/utils/index.ts#L17)
+[utils/index.ts:17](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/index.ts#L17)
 
 ___
 
@@ -189,7 +164,7 @@ Return the result data of the request
 
 #### Defined in
 
-[src/utils/index.ts:139](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/utils/index.ts#L139)
+[utils/index.ts:139](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/index.ts#L139)
 
 ___
 
@@ -213,7 +188,7 @@ Checks if object is empty
 
 #### Defined in
 
-[src/utils/index.ts:10](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/utils/index.ts#L10)
+[utils/index.ts:10](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/index.ts#L10)
 
 ___
 
@@ -239,24 +214,4 @@ Array of object with the document id of each fullfilled events
 
 #### Defined in
 
-[src/utils/index.ts:81](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/utils/index.ts#L81)
-
-___
-
-### zeroX
-
-▸ **zeroX**(`input`): `string`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `input` | `string` |
-
-#### Returns
-
-`string`
-
-#### Defined in
-
-node_modules/@nevermined-io/nevermined-sdk-js/dist/node/utils/ConversionTypeHelpers.d.ts:1
+[utils/index.ts:81](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/utils/index.ts#L81)

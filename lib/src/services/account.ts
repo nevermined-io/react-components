@@ -4,11 +4,12 @@ import { useNevermined } from '../catalog';
 import { UserProfileParams } from '../types';
 import { saveMarketplaceApiTokenToLocalStorage } from '../utils/marketplace_token';
 import { Account, Logger } from '@nevermined-io/nevermined-sdk-js';
+import { loadFulfilledEvents } from '..'
 import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
 
 /**
  * Get account releases(mints)
- * @param id - user address
+ * @param walletAddress - user address
  *
  * @example
  * ```typescript
@@ -30,7 +31,7 @@ import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumbe
  * ```
  */
 export const useAccountReleases = (
-  id: string
+  walletAddress: string
 ): { isLoading: boolean; accountReleases: string[] } => {
   const [accountReleases, setAccountReleases] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -39,20 +40,20 @@ export const useAccountReleases = (
   useEffect(() => {
     const loadReleases = async (): Promise<void> => {
       setIsLoading(true);
-      const data = await account.getReleases(id);
+      const data = await account.getReleases(walletAddress);
       setAccountReleases(data);
       setAccountReleases(data);
       setIsLoading(false);
     };
     loadReleases();
-  }, [id]);
+  }, [walletAddress]);
 
   return { isLoading, accountReleases };
 };
 
 /**
  * Get account owned nfts
- * @param id - user address
+ * @param walletAddress - user address
  *
  * @example
  * ```typescript
@@ -74,7 +75,7 @@ export const useAccountReleases = (
  * ```
  */
 export const useAccountCollection = (
-  id: string
+  walletAddress: string
 ): { 
   /** If the nfts are still loading */
   isLoading: boolean;
@@ -86,14 +87,14 @@ export const useAccountCollection = (
 
   useEffect(() => {
     const loadCollection = async (): Promise<void> => {
-      if (!id || !sdk.utils) return;
+      if (!walletAddress || !sdk.utils) return;
       setLoading(true);
-      const data = await account.getCollection(id);
+      const data = await account.getCollection(walletAddress);
       setAccountCollection(data);
       setLoading(false);
     };
     loadCollection();
-  }, [id, sdk]);
+  }, [walletAddress, sdk]);
 
   return { isLoading, accountCollection };
 };
@@ -449,6 +450,42 @@ export const useUserProfile = (walletAddress: string): {
 };
 
 /**
+ * This method validates if an user is an asset holder.
+ *
+ * @param did The unique identifier of the asset
+ * @param walletAddress The public address of the user
+ * @returns true if the user owns at least one edition of the NFT
+ */
+export const useIsAssetHolder = (
+  did: string,
+  walletAddress: string
+): { ownAsset: boolean } => {
+  const { sdk, isLoadingSDK } = useNevermined();
+  const [ownAsset, setOwnAsset] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (isLoadingSDK) {
+      return;
+    }
+
+    (async () => {
+      const purchased = await loadFulfilledEvents(sdk, walletAddress, 'accessCondition');
+
+      const purchasedDDO = await Promise.all(
+        purchased.map((asset) => sdk.assets.resolve(asset.documentId))
+      );
+
+      const asset = purchasedDDO.filter((p) => p).find((p) => p.id === did);
+      setOwnAsset(Boolean(asset));
+    })();
+  }, [walletAddress, isLoadingSDK]);
+
+  return {
+    ownAsset,
+  }
+}
+
+/**
  * This method validates if a user is a NFT (ERC-1155 based) holder for a specific `tokenId`.
  * For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
  * of a NFT (limitted by the NFT cap).
@@ -457,7 +494,7 @@ export const useUserProfile = (walletAddress: string): {
  * @param walletAddress The public address of the user
  * @returns true if the user owns at least one edition of the NFT
  */
-export const userIsNFT1155Holder = (
+export const useIsNFT1155Holder = (
   did: string,
   walletAddress: string
 ): { ownNFT1155: boolean } => {
@@ -496,14 +533,18 @@ export const userIsNFT1155Holder = (
  * @param walletAddress The public address of the user
  * @returns true if the user holds the NFT
  */
-export const userIsNFT721Holder = (
+export const useIsNFT721Holder = (
   nftAddress: string,
   walletAddress: string
 ): { ownNFT721: boolean } => {
-  const { sdk } = useNevermined();
+  const { sdk, isLoadingSDK } = useNevermined();
   const [ownNFT721, setOwnNFT721] = useState<boolean>(false);
 
   useEffect(() => {
+    if (isLoadingSDK) {
+      return;
+    }
+
     (async () => {
       const walletAccount = new Account(walletAddress);
       if (walletAccount) {     
@@ -512,7 +553,7 @@ export const userIsNFT721Holder = (
         setOwnNFT721(balance.gt(0))
       }
     })();
-  }, [walletAddress]);
+  }, [walletAddress, isLoadingSDK]);
 
   return {
     ownNFT721

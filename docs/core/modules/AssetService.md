@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[src/services/asset.tsx:113](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/asset.tsx#L113)
+[services/asset.tsx:113](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/services/asset.tsx#L113)
 
 ## Functions
 
@@ -50,7 +50,7 @@ Here is an example how to implement it
 
 #### Defined in
 
-[src/services/asset.tsx:121](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/asset.tsx#L121)
+[services/asset.tsx:121](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/services/asset.tsx#L121)
 
 ___
 
@@ -87,7 +87,7 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/asset.tsx:85](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/asset.tsx#L85)
+[services/asset.tsx:85](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/services/asset.tsx#L85)
 
 ___
 
@@ -101,7 +101,7 @@ ___
 
 #### Defined in
 
-[src/services/asset.tsx:333](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/asset.tsx#L333)
+[services/asset.tsx:337](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/services/asset.tsx#L337)
 
 ___
 
@@ -148,4 +148,4 @@ const MyComponent = () => {
 
 #### Defined in
 
-[src/services/asset.tsx:32](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/asset.tsx#L32)
+[services/asset.tsx:32](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/services/asset.tsx#L32)

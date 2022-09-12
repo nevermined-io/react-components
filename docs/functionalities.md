@@ -9,11 +9,3 @@ The Catalog simplifies the creation of web applications for React developers. Th
 ## Components
 
 **Complete this via TS DOC generation**
-
-
-
-
-
-
-
-

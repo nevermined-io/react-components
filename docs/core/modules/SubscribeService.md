@@ -46,11 +46,11 @@ Array of events with method `unsubscribe` in order to stop listening specific ev
 
 | Name | Type |
 | :------ | :------ |
-| `paymentEvents` | [`EventResult`](../modules.md#eventresult)[] |
+| `paymentEvents` | `EventResult`[] |
 
 #### Defined in
 
-[src/services/subscribe.ts:35](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/subscribe.ts#L35)
+[services/subscribe.ts:35](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/services/subscribe.ts#L35)
 
 ___
 
@@ -87,7 +87,7 @@ const MyComponent = () => {
 
 | Name | Type | Default value |
 | :------ | :------ | :------ |
-| `nftType` | [`NftTypes`](../modules.md#nfttypes) | `1155` |
+| `nftType` | `NftTypes` | `1155` |
 
 #### Returns
 
@@ -97,8 +97,8 @@ Array of events with method `unsubscribe` in order to stop listening specific ev
 
 | Name | Type |
 | :------ | :------ |
-| `transferEvents` | [`EventResult`](../modules.md#eventresult)[] |
+| `transferEvents` | `EventResult`[] |
 
 #### Defined in
 
-[src/services/subscribe.ts:93](https://github.com/nevermined-io/components-catalog/blob/ca4d0f1/lib/src/services/subscribe.ts#L93)
+[services/subscribe.ts:93](https://github.com/nevermined-io/components-catalog/blob/92824c5/lib/src/services/subscribe.ts#L93)

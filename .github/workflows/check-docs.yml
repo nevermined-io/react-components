@@ -8,7 +8,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  push-to-docs:
+  check-docs:
     runs-on: ubuntu-latest
     steps:  
       - uses: actions/checkout@v3
