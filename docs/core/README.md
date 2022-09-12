@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 title: Getting started
+description: Nevermined Catalog Core
 ---
 
 # Getting started
