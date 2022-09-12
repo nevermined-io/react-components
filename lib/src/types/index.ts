@@ -16,6 +16,7 @@ import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import { BigNumber } from 'ethers';
 import { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
+import { ServiceCommon, ServiceType } from '@nevermined-io/nevermined-sdk-js/dist/node/ddo/Service';
 
 export * from '@nevermined-io/nevermined-sdk-js';
 export { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
@@ -25,6 +26,8 @@ export type {
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 export { zeroX } from '@nevermined-io/nevermined-sdk-js/dist/node/utils';
 export type { NftTypes } from '@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway';
+export type { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
+export type { ServiceCommon, ServiceType } from '@nevermined-io/nevermined-sdk-js/dist/node/ddo/Service';
 
 
 /**
@@ -123,6 +126,7 @@ export interface NeverminedProviderContext {
    * ```
    */
   subscribe: SubscribeModule;
+  // TODO: fix documentation
   /**
    * `assets` contains all the functionalities to handle assets for example get, 
    * mint, transfer, order or download asset
@@ -499,12 +503,6 @@ export interface AssetsModule {
    */
   transfer: ({ did, amount }: { did: string; amount: number }) => Promise<boolean>;
   /**
-   * Mint an asset
-   * @param input Object input with all the data required to mint an asset
-   * @returns If the asset was minted successfully the function will return `true`
-   */
-  mint: (did: any) => Promise<any>;
-  /**
    * Get the aggreement details of the NFT asset (owner, nfts supplay, royalties, etc...)
    * @param did id of the NFT (721 & 1155) asset
    * @returns Agreement details of the NFT asset
@@ -644,34 +642,6 @@ export interface AssetState {
 }
 
 /**
- * Mint NFT input interface
- */
-export interface MintNFTInput {
-  /**MetaData object which contain all the parameters that describes the asset */
-  metadata: MetaData;
-  /**The Publisher account of the asset */
-  publisher: Account;
-  /** The maximum of assets that can be minted */
-  cap: number;
-  /** The profit that the publisher get for every sale */
-  royalties: number;
-  /** The price of the asset */
-  assetRewards: AssetRewards;
-  /** The amount of NFTs that an address needs to hold in order to access the DID's protected assets. Leave it undefined and it will default to 1. */
-  nftAmount?: number;
-  /** The erc20 token address which the buyer will pay the price */
-  erc20TokenAddress?: string;
-  /** If assets are minted in the creation process */
-  preMint?: boolean;
-  /**  url to set at publishing time that resolves to the metadata of the nft as expected by opensea
-   * @see {@link https://docs.opensea.io/docs/metadata-standards}
-   */
-  nftMetadata?: string;
-  /** Trasaction number of the asset creation */
-  txParams?: TxParameters;
-}
-
-/**
  * Authorization needed to request to Marketplace Api
  */
 export interface MarketplaceAPIToken {
@@ -805,44 +775,140 @@ export interface AssetPublishProviderState {
    * @param resetAssetPublish Initial parameters used for reset
    */
   reset: (resetAssetPublish: AssetPublishParams) => void;
-  /** Publish no-nft asset
+  /**
+   * Nevermined is a network where users register digital assets and attach to 
+   * them services (like data sharing, nfts minting, etc).
+   * With this method a user can register an asset in Nevermined giving a piece of metadata. 
+   * This will return the DDO created (including the unique identifier of the asset - aka DID).
+   * 
    * @param asset
-   * @param asset.metadata The description of the asset
-   * @returns Asset object
+   * @param asset.metadata The metadata object describing the asset
+   * @param asset.assetRewards The price of the asset that the owner will receive
+   * @param asset.servicesTypes List of service types to associate with the asse
+   * @param asset.services List of services associate with the asset
+   * @param asset.method Method used to encrypt the urls
+   * @param asset.providers Array that contains the provider addreses
+   * @param asset.erc20TokenAddress The erc20 token address which the buyer will pay the price
+   * @param asset.txParameters Trasaction number of the asset creation
+   * @returns The DDO object including the asset metadata and the DID
    */
-  publishAsset: ({ metadata }: { metadata: MetaData }) => Promise<DDO | undefined>;
-  /** Publish a nft721 asset
-   * @param asset
-   * @param asset.nftAddress nft721 token address to publish
-   * @param asset.metadata The description of the asset
-   * @param asset.providers List of providers
-   * @returns Asset object
+  publishAsset: ({ 
+    metadata,
+    assetRewards,
+    serviceTypes,
+    services,
+    method,
+    providers,
+    erc20TokenAddress,
+    txParameters,
+  }: 
+  { 
+    metadata: MetaData;
+    assetRewards?: AssetRewards;
+    serviceTypes?: ServiceType[];
+    services?: ServiceCommon[];
+    method?: string;
+    providers?: string[];
+    erc20TokenAddress?: string,
+    txParameters?: TxParameters,
+  }) => Promise<DDO | undefined>;
+  /**
+   * In Nevermined is possible to register a digital asset that allow users pay for having a 
+   * NFT (ERC-721). This typically allows content creators to provide access to exclusive 
+   * contents for NFT holders.
+   * It will create a new digital asset associated to a ERC-721 NFT contract 
+   * (given the `nftAddress` parameter)
+   * 
+   * @param nft721
+   * @param nft721.nftAddress The contract address of the ERC-721 NFT
+   * @param nft721.metadata The metadata object describing the asset
+   * @param nft721.assetRewards The price of the asset that the owner will receive
+   * @param nft721.method Method used to encrypt the urls
+   * @param nft721.providers Array that contains the provider addreses
+   * @param nft721.erc20TokenAddress The erc20 token address which the buyer will pay the price
+   * @param nft721.preMint If assets are minted in the creation process
+   * @param nft721.royalties The amount of royalties paid back to the original creator in the secondary market
+   * @param nft721.nftMetadata Url to set at publishing time that resolves to the metadata of the nft as expected by opensea
+   * @param nft721.txParameters Trasaction number of the asset creation
+   * @param nft721.services List of services associate with the asset
+   * @param nft721.nftTransfer if the nft will be transfered to other address after published
+   * @param nft721.duration When expire the NFT721. The default 0 value means never
+   * @returns The DDO object including the asset metadata and the DID
    */
-  publishNFT721: ({
+    publishNFT721: ({
     nftAddress,
     metadata,
-    providers
+    assetRewards,
+    method,
+    providers,
+    erc20TokenAddress,
+    preMint,
+    royalties,
+    nftMetadata,
+    txParameters,
+    services,
+    nftTransfer,
+    duration
   }: {
     nftAddress: string;
     metadata: MetaData;
-    providers: string[] | undefined;
+    assetRewards?: AssetRewards;
+    method?: string,
+    providers?: string[];
+    erc20TokenAddress?: string;
+    preMint?: boolean;
+    royalties?: number;
+    nftMetadata?: string;
+    txParameters?: TxParameters;
+    services?: string[];
+    nftTransfer?: boolean;
+    duration?: number;
   }) => Promise<DDO | undefined>;
-  /** Publish a nft1155 asset
-   * @param asset
-   * @param asset.metadata The description of the asset
-   * @param asset.cap Amount of asset that is possible to mint
-   * @param asset.royaltyKind Set how the owner will receive rewards for each sale
-   * @returns Asset object
+  /**
+   * In Nevermined is possible to register a digital asset that allow users pay for having a 
+   * NFT (ERC-1155). This typically allows content creators to provide access to exclusive 
+   * contents for NFT holders.
+   * ERC-1155 NFTs are semi-fungible, meaning that a NFT can have multiple editions.
+   * 
+   * This method will create a new digital asset associated to a ERC-1155 NFT contract. 
+   * 
+   * @param nft1155
+   * @param nft1155.gatewayAddress Gateway address to approve to handle the NFT
+   * @param nft1155.metadata The metadata object describing the asset
+   * @param nft1155.cap The maximum number of editions that can be minted. If `0` means there is no limit (uncapped)
+   * @param nft1155.assetRewards The price of the asset that the owner will receive
+   * @param nft1155.royalties The amount of royalties paid back to the original creator in the secondary market
+   * @param nft1155.royaltyKind The royalties scheme that can be used
+   * @param nft1155.nftAmount NFT amount to publish
+   * @param nft1155.erc20TokenAddress The erc20 token address which the buyer will pay the price
+   * @param nft1155.preMint If assets are minted in the creation process
+   * @param nft1155.nftMetadata Url to set at publishing time that resolves to the metadata of the nft as expected by opensea
+   * @param nft1155.txParameters Trasaction number of the asset creation
+   * @returns The DDO object including the asset metadata and the DID
    */
   publishNFT1155: ({
+    gatewayAddress,
     metadata,
     cap,
+    assetRewards,
     royalties,
-    royaltyKind
-  }: {
-    metadata: MetaData;
-    cap: number;
-    royalties: number;
-    royaltyKind: RoyaltyKind;
-  }) => Promise<DDO | undefined>;
+    royaltyKind,
+    nftAmount,
+    erc20TokenAddress,
+    preMint,
+    nftMetadata,
+    txParameters,
+    }: {
+      gatewayAddress: string,
+      metadata: MetaData,
+      cap: number,
+      assetRewards?: AssetRewards;
+      royalties: number,
+      royaltyKind: RoyaltyKind,
+      nftAmount?: number,
+      erc20TokenAddress?: string,
+      preMint?: boolean,
+      nftMetadata?: string,
+      txParameters?: TxParameters,
+    }) => Promise<DDO | undefined>;
 }

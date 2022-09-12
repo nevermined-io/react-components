@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { generateTestingUtils } from 'eth-testing';
 import { appConfig } from '../config';
-import { Catalog, AssetService, DDO, RoyaltyKind, MarketplaceAPIToken } from '../../src';
+import { Catalog, AssetService, DDO, RoyaltyKind, MarketplaceAPIToken, Logger } from '../../src';
 import { ddo as assetObject, metadata, nftTokenAddress, walletAddress } from '../mockups';
 import { faker } from '@faker-js/faker';
 import jwt from 'jsonwebtoken';
@@ -192,6 +192,7 @@ describe('Assets Service', () => {
 
           (async () => {
             const result = await publishNFT1155({
+              gatewayAddress: String(appConfig.gatewayAddress),
               metadata,
               cap: 100,
               royalties: 0,
@@ -218,6 +219,51 @@ describe('Assets Service', () => {
         isPublished: true,
       });
     });
+  });
+
+  it('should not mint if gateway address is not set', async () => {
+    const logSpy = jest.spyOn(Logger, 'error');
+    const appConfigCopy = {...appConfig }
+    appConfig.gatewayAddress = ''
+
+    renderHook(
+      () => {
+        const { isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const { publishNFT1155 } = AssetService.useAssetPublish();
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider();
+            updateSDK(appConfig);
+            return;
+          }
+
+          (async () => {
+            try {
+              await publishNFT1155({
+                gatewayAddress: '',
+                metadata,
+                cap: 100,
+                royalties: 0,
+                royaltyKind: RoyaltyKind.Standard
+            })
+              
+            } catch (error: any) {
+              console.error(error.message);
+            }
+          })();
+        }, [isLoadingSDK]);
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    );
+
+    await waitFor(async () => {
+      expect(logSpy).toBeCalledWith('Gateway address from config is required to mint NFT1155 asset')
+    });
+
+    appConfig.gatewayAddress = appConfigCopy.gatewayAddress;
   });
 
   it('should update asset to publish after call handleChange function', async() => {

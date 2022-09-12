@@ -3,8 +3,7 @@ import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React, { useContext, useEffect, useState, createContext } from 'react';
 import { NeverminedContext, useNevermined } from '../catalog';
-import { AssetState, AssetPublishParams, RoyaltyKind, AssetPublishProviderState } from '../types';
-import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
+import { AssetState, AssetPublishParams, RoyaltyKind, AssetPublishProviderState, TxParameters, ServiceCommon, ServiceType } from '../types';
 import { getCurrentAccount } from '../utils';
 
 /**
@@ -152,19 +151,42 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * With this method a user can register an asset in Nevermined giving a piece of metadata. 
    * This will return the DDO created (including the unique identifier of the asset - aka DID).
    * 
-   * @param metadata The metadata object describing the asset 
+   * @param asset
+   * @param asset.metadata The metadata object describing the asset
+   * @param asset.assetRewards The price of the asset that the owner will receive
+   * @param asset.servicesTypes List of service types to associate with the asse
+   * @param asset.services List of services associate with the asset
+   * @param asset.method Method used to encrypt the urls
+   * @param asset.providers Array that contains the provider addreses
+   * @param asset.erc20TokenAddress The erc20 token address which the buyer will pay the price
+   * @param asset.txParameters Trasaction number of the asset creation
    * @returns The DDO object including the asset metadata and the DID
    */
-  const publishAsset = async ({ metadata }: { metadata: MetaData }) => {
+  const publishAsset = async ({ 
+    metadata,
+    assetRewards = new AssetRewards(),
+    serviceTypes,
+    services,
+    method,
+    providers,
+    erc20TokenAddress,
+    txParameters,
+  }: 
+  { 
+    metadata: MetaData;
+    assetRewards?: AssetRewards;
+    serviceTypes?: ServiceType[];
+    services?: ServiceCommon[];
+    method?: string;
+    providers?: string[];
+    erc20TokenAddress?: string,
+    txParameters?: TxParameters,
+  }) => {
     try {
       setIsProcessing(true);
 
       const accountWallet = await getCurrentAccount(sdk);
 
-      const assetRewards = new AssetRewards(
-        accountWallet.getId(),
-        BigNumber.from(assetPublish.price)
-      );
       if (!account.isTokenValid()) {
         setErrorAssetMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
@@ -173,7 +195,17 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         await account.generateToken();
       }
 
-      const ddo = await sdk.assets.create(metadata, accountWallet, assetRewards);
+      const ddo = await sdk.assets.create(
+        metadata,
+        accountWallet,
+        assetRewards,
+        serviceTypes,
+        services,
+        method,
+        providers,
+        erc20TokenAddress,
+        txParameters
+      );
       setIsProcessing(false);
       setIsPublished(true);
       setAssetMessage('The asset has been sucessfully published');
@@ -195,19 +227,50 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * It will create a new digital asset associated to a ERC-721 NFT contract 
    * (given the `nftAddress` parameter)
    * 
-   * @param nftAddress The contract address of the ERC-721 NFT
-   * @param metadata The metadata object describing the asset 
-   * @param providers Array that contains the provider addreses 
+   * @param nft721
+   * @param nft721.nftAddress The contract address of the ERC-721 NFT
+   * @param nft721.metadata The metadata object describing the asset
+   * @param nft721.assetRewards The price of the asset that the owner will receive
+   * @param nft721.method Method used to encrypt the urls
+   * @param nft721.providers Array that contains the provider addreses
+   * @param nft721.erc20TokenAddress The erc20 token address which the buyer will pay the price
+   * @param nft721.preMint If assets are minted in the creation process
+   * @param nft721.royalties The amount of royalties paid back to the original creator in the secondary market
+   * @param nft721.nftMetadata Url to set at publishing time that resolves to the metadata of the nft as expected by opensea
+   * @param nft721.txParameters Trasaction number of the asset creation
+   * @param nft721.services List of services associate with the asset
+   * @param nft721.nftTransfer if the nft will be transfered to other address after published
+   * @param nft721.duration When expire the NFT721. The default 0 value means never
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishNFT721 = async ({
     nftAddress,
     metadata,
-    providers = undefined
+    assetRewards = new AssetRewards(),
+    method = 'PSK-RSA',
+    providers,
+    erc20TokenAddress,
+    preMint = false,
+    royalties = 0,
+    nftMetadata,
+    txParameters,
+    services = ['nft721-access'],
+    nftTransfer = false,
+    duration = 0
   }: {
     nftAddress: string;
     metadata: MetaData;
-    providers: string[] | undefined;
+    assetRewards?: AssetRewards;
+    method?: string,
+    providers?: string[];
+    erc20TokenAddress?: string;
+    preMint?: boolean;
+    royalties?: number;
+    nftMetadata?: string;
+    txParameters?: TxParameters;
+    services?: string[];
+    nftTransfer?: boolean;
+    duration?: number;
   }) => {
     try {
       setIsProcessing(true);
@@ -224,18 +287,18 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       const ddo = await sdk.assets.createNft721(
         metadata,
         accountWallet,
-        new AssetRewards(),
-        'PSK-RSA',
+        assetRewards,
+        method,
         nftAddress,
-        undefined,
-        false,
+        erc20TokenAddress,
+        preMint,
         providers,
-        0,
-        undefined,
-        undefined,
-        ['nft721-access'],
-        false,
-        0
+        royalties,
+        nftMetadata,
+        txParameters,
+        services,
+        nftTransfer,
+        duration,
     )
 
       setIsProcessing(false);
@@ -260,32 +323,50 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * 
    * This method will create a new digital asset associated to a ERC-1155 NFT contract. 
    * 
-   * @param metadata The metadata object describing the asset
-   * @param cap The maximum number of editions that can be minted. If `0` means there is no limit (uncapped) 
-   * @param royalties The amount of royalties paid back to the original creator in the secondary market
-   * @param royaltyKind The royalties scheme that can be used
+   * @param nft1155
+   * @param nft1155.gatewayAddress Gateway address to approve to handle the NFT
+   * @param nft1155.metadata The metadata object describing the asset
+   * @param nft1155.cap The maximum number of editions that can be minted. If `0` means there is no limit (uncapped)
+   * @param nft1155.assetRewards The price of the asset that the owner will receive
+   * @param nft1155.royalties The amount of royalties paid back to the original creator in the secondary market
+   * @param nft1155.royaltyKind The royalties scheme that can be used
+   * @param nft1155.nftAmount NFT amount to publish
+   * @param nft1155.erc20TokenAddress The erc20 token address which the buyer will pay the price
+   * @param nft1155.preMint If assets are minted in the creation process
+   * @param nft1155.nftMetadata Url to set at publishing time that resolves to the metadata of the nft as expected by opensea
+   * @param nft1155.txParameters Trasaction number of the asset creation
    * @returns The DDO object including the asset metadata and the DID
-   */  
+   */
   const publishNFT1155 = async ({
+    gatewayAddress,
     metadata,
     cap,
+    assetRewards = new AssetRewards(),
     royalties,
-    royaltyKind
+    royaltyKind,
+    nftAmount = 1,
+    erc20TokenAddress,
+    preMint = false,
+    nftMetadata,
+    txParameters,
   }: {
-    metadata: MetaData;
-    cap: number;
-    royalties: number;
-    royaltyKind: RoyaltyKind;
+    gatewayAddress: string,
+    metadata: MetaData,
+    cap: number,
+    assetRewards?: AssetRewards;
+    royalties: number,
+    royaltyKind: RoyaltyKind,
+    nftAmount?: number,
+    erc20TokenAddress?: string,
+    preMint?: boolean,
+    nftMetadata?: string,
+    txParameters?: TxParameters,
   }) => {
     try {
       setIsProcessing(true);
 
       const accountWallet = await getCurrentAccount(sdk);
 
-      const assetRewards = new AssetRewards(
-        accountWallet.getId(),
-        BigNumber.from(assetPublish.price)
-      );
       if (!account.isTokenValid()) {
         setErrorAssetMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
@@ -293,13 +374,34 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         await account.generateToken();
       }
 
+      if (!gatewayAddress) {
+        Logger.error('Gateway address from config is required to mint NFT1155 asset');
+        return
+      }
+
+      const transferNftCondition = sdk.keeper.conditions.transferNftCondition;
+
+      const transferNftConditionContractReceipt = await sdk.nfts.setApprovalForAll(transferNftCondition.address, true, accountWallet);
+
+      Logger.log(`Contract Receipt for approved transfer NFT: ${transferNftConditionContractReceipt}`);
+
+      const gateawayContractReceipt = await sdk.nfts.setApprovalForAll(gatewayAddress, true, accountWallet);
+
+      Logger.log(`Contract Receipt for approved gateway: ${gateawayContractReceipt}`);
+
+
       const ddo = await sdk.nfts.createWithRoyalties(
         metadata,
         accountWallet,
         cap,
         royalties,
         royaltyKind,
-        assetRewards
+        assetRewards,
+        nftAmount,
+        erc20TokenAddress,
+        preMint,
+        nftMetadata,
+        txParameters,
       );
       setIsProcessing(false);
       setIsPublished(true);
