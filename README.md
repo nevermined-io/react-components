@@ -18,8 +18,7 @@
    * [How can I use it?](#how-can-i-use-it)
       * [First: Add the NPM dependency to your project](#first-add-the-npm-dependency-to-your-project)
       * [Second: Integrate it in your code](#second-integrate-it-in-your-code)
-   * [Demo and examples](#demo-and-examples)
-   * [Advanced documentation](#advanced-documentation)
+   * [Demo and example](#demo-and-examples)
 * [License](#license)
 
 ---
@@ -99,14 +98,9 @@ const SingleAsset = () => {
 
 ```
 
+## Demo and example
 
-## Demo and examples
-
-You can find more information in the [examples page](docs/examples.md).
-
-## Advanced documentation
-
-To find additional options and documentation you can visit the [advanced documentation page](docs/advanced.md) or the [providers page](docs/providers.md) to understand how to integrate the catalog with different providers like Metamask.
+You can find more information in the [examples page](docs/example.md).
 
 
 # License
