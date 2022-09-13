@@ -12,6 +12,7 @@ export const acceptedChainId = process.env.REACT_APP_ACCEPTED_CHAIN_ID || '80001
 export const rootUri = process.env.REACT_APP_ROOT_URI || 'http://localhost:3445';
 export const marketplaceUri = 'https://defi.v2.marketplace-api.mumbai.nevermined.rocks';
 const graphHttpUri = process.env.GRAPH_HTTP_URI ||  'https://api.thegraph.com/subgraphs/name/nevermined-io/common';
+export const erc20TokenAddress = process.env.ERC20_TOKEN_ADDRESS || '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e';
 
 export const appConfig: Config = {
   //@ts-ignore
@@ -26,8 +27,3 @@ export const appConfig: Config = {
   artifactsFolder: `${rootUri}/contracts`
 };
 
-//
-// export const nodeUri =
-//   process.env.REACT_APP_NODE_URI ||
-//   'https://polygon-mumbai.infura.io/v3/eda048626e2745b182f43de61ac70be1';
-//export const marketplaceUri = 'https://metadata.auto-nvm2.nevermined.rocks';

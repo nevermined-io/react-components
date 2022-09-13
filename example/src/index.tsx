@@ -1,3 +1,5 @@
+import '@nevermined-io/styles/lib/esm/styles/globals.scss'
+import '@nevermined-io/styles/lib/esm/index.css'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Catalog } from '@nevermined-io/catalog-core';
