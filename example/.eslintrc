@@ -12,5 +12,8 @@
     "node": true,
     "jest": true,
     "cypress/globals": true
+  },
+  "rules": {
+    "react-hooks/exhaustive-deps": "off"
   }
 }
