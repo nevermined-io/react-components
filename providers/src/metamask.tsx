@@ -233,6 +233,12 @@ export const WalletProvider = ({
     }, [isChainCorrect]);
 
     useEffect(() => {
+
+        if (!window.ethereum) {
+            console.log("No Account found!");
+            return
+        }
+
         (async () => {
             try {
                 const chainIdHex = await window.ethereum.request?.({
@@ -247,12 +253,14 @@ export const WalletProvider = ({
         })();
 
         window.ethereum.on("chainChanged", (chainHexId: string) => {
-            checkChain(chainHexId);
-        });
+                checkChain(chainHexId);
+        });        
     }, []);
+
 
     useEffect(() => {
         const registerOnAccounsChangedListener = async (): Promise<void> => {
+
             window.ethereum.on("accountsChanged", (newAccount: string[]) => {
                 if (newAccount && newAccount.length > 0) {
                     setWalletAddress(
@@ -264,8 +272,12 @@ export const WalletProvider = ({
                 }
             });
         };
-
-        registerOnAccounsChangedListener();
+        if (window.ethereum)
+            registerOnAccounsChangedListener();
+        else {
+            setWalletAddress("");
+            console.log("No Account found!");
+        }
     }, []);
 
     const updateWalletAddress = async (): Promise<void> => {
