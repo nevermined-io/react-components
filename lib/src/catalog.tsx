@@ -124,8 +124,8 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
   useEffect(() => {
     const loadNevermined = async (): Promise<void> => {
-      if (!config.web3Provider) {
-        Logger.log('Please include web3 proivder in your sdk config. aborting.');
+      if (!config.web3Provider && !config.nodeUri) {
+        Logger.log('Please include web3 provider in your sdk config. aborting.');
         return;
       }
       setIsLoading(true);
