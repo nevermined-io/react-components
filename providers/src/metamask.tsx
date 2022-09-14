@@ -233,15 +233,9 @@ export const WalletProvider = ({
     }, [isChainCorrect]);
 
     useEffect(() => {
-
-        if (!window.ethereum) {
-            console.log("No Account found!");
-            return
-        }
-
         (async () => {
             try {
-                const chainIdHex = await window.ethereum.request?.({
+                const chainIdHex = await window?.ethereum?.request?.({
                     method: "eth_chainId",
                 });
                 const chainId = convertHextoIntString(chainIdHex);
@@ -252,7 +246,7 @@ export const WalletProvider = ({
             }
         })();
 
-        window.ethereum.on("chainChanged", (chainHexId: string) => {
+        window?.ethereum?.on("chainChanged", (chainHexId: string) => {
                 checkChain(chainHexId);
         });        
     }, []);
@@ -261,7 +255,7 @@ export const WalletProvider = ({
     useEffect(() => {
         const registerOnAccounsChangedListener = async (): Promise<void> => {
 
-            window.ethereum.on("accountsChanged", (newAccount: string[]) => {
+            window?.ethereum?.on("accountsChanged", (newAccount: string[]) => {
                 if (newAccount && newAccount.length > 0) {
                     setWalletAddress(
                         ethers.utils.getAddress(newAccount[0])
@@ -272,12 +266,7 @@ export const WalletProvider = ({
                 }
             });
         };
-        if (window.ethereum)
-            registerOnAccounsChangedListener();
-        else {
-            setWalletAddress("");
-            console.log("No Account found!");
-        }
+        registerOnAccounsChangedListener();
     }, []);
 
     const updateWalletAddress = async (): Promise<void> => {
@@ -316,7 +305,7 @@ export const WalletProvider = ({
             return;
         }
         try {
-            await window.ethereum.request?.({
+            await window?.ethereum?.request?.({
                 method: "wallet_switchEthereumChain",
                 params: [
                     {
@@ -331,7 +320,7 @@ export const WalletProvider = ({
                 try {
                     const currentChainConfig =
                         chainConfig.returnConfig(acceptedChainIdHex);
-                    const configParam = await window.ethereum.request?.({
+                    const configParam = await window?.ethereum?.request?.({
                         method: "wallet_addEthereumChain",
                         params: [currentChainConfig],
                     });
@@ -360,7 +349,7 @@ export const WalletProvider = ({
 
     const startLogin = async (): Promise<string[]> => {
         try {
-            const response = await window.ethereum.request?.({
+            const response = await window?.ethereum?.request?.({
                 method: "eth_requestAccounts",
             });
             setWalletAddress(ethers.utils.getAddress(response[0]));
