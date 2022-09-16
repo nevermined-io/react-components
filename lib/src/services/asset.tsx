@@ -1,9 +1,18 @@
 import { DDO, MetaData, SearchQuery, ClientError, Logger } from '@nevermined-io/nevermined-sdk-js';
-import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React, { useContext, useEffect, useState, createContext } from 'react';
 import { NeverminedContext, useNevermined } from '../catalog';
-import { AssetState, AssetPublishParams, RoyaltyKind, AssetPublishProviderState, TxParameters, ServiceCommon, ServiceType } from '../types';
+import { 
+  AssetState,
+  AssetPublishParams,
+  AssetPublishProviderState,
+  TxParameters,
+  ServiceCommon,
+  ServiceType,
+  QueryResult,
+  EncryptionMethod,
+  RoyaltyAttributes
+} from '../types';
 import { getCurrentAccount } from '../utils';
 
 /**
@@ -177,7 +186,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     assetRewards?: AssetRewards;
     serviceTypes?: ServiceType[];
     services?: ServiceCommon[];
-    method?: string;
+    method?: EncryptionMethod;
     providers?: string[];
     erc20TokenAddress?: string,
     txParameters?: TxParameters,
@@ -235,7 +244,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param nft721.providers Array that contains the provider addreses
    * @param nft721.erc20TokenAddress The erc20 token address which the buyer will pay the price
    * @param nft721.preMint If assets are minted in the creation process
-   * @param nft721.royalties The amount of royalties paid back to the original creator in the secondary market
+   * @param nft721.royaltyAttributes The amount of royalties paid back to the original creator in the secondary market
    * @param nft721.nftMetadata Url to set at publishing time that resolves to the metadata of the nft as expected by opensea
    * @param nft721.txParameters Trasaction number of the asset creation
    * @param nft721.services List of services associate with the asset
@@ -251,7 +260,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     providers,
     erc20TokenAddress,
     preMint = false,
-    royalties = 0,
+    royaltyAttributes,
     nftMetadata,
     txParameters,
     services = ['nft721-access'],
@@ -261,14 +270,14 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     nftAddress: string;
     metadata: MetaData;
     assetRewards?: AssetRewards;
-    method?: string,
+    method?: EncryptionMethod,
     providers?: string[];
     erc20TokenAddress?: string;
     preMint?: boolean;
-    royalties?: number;
+    royaltyAttributes: RoyaltyAttributes;
     nftMetadata?: string;
     txParameters?: TxParameters;
-    services?: string[];
+    services?: ServiceType[];
     nftTransfer?: boolean;
     duration?: number;
   }) => {
@@ -293,7 +302,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         erc20TokenAddress,
         preMint,
         providers,
-        royalties,
+        royaltyAttributes,
         nftMetadata,
         txParameters,
         services,
@@ -328,8 +337,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param nft1155.metadata The metadata object describing the asset
    * @param nft1155.cap The maximum number of editions that can be minted. If `0` means there is no limit (uncapped)
    * @param nft1155.assetRewards The price of the asset that the owner will receive
-   * @param nft1155.royalties The amount of royalties paid back to the original creator in the secondary market
-   * @param nft1155.royaltyKind The royalties scheme that can be used
+   * @param nft1155.royaltyAttributes The amount of royalties paid back to the original creator in the secondary market
    * @param nft1155.nftAmount NFT amount to publish
    * @param nft1155.erc20TokenAddress The erc20 token address which the buyer will pay the price
    * @param nft1155.preMint If assets are minted in the creation process
@@ -342,8 +350,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     metadata,
     cap,
     assetRewards = new AssetRewards(),
-    royalties,
-    royaltyKind,
+    royaltyAttributes,
     nftAmount = 1,
     erc20TokenAddress,
     preMint = false,
@@ -354,8 +361,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     metadata: MetaData,
     cap: number,
     assetRewards?: AssetRewards;
-    royalties: number,
-    royaltyKind: RoyaltyKind,
+    royaltyAttributes: RoyaltyAttributes,
     nftAmount?: number,
     erc20TokenAddress?: string,
     preMint?: boolean,
@@ -394,8 +400,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         metadata,
         accountWallet,
         cap,
-        royalties,
-        royaltyKind,
+        royaltyAttributes,
         assetRewards,
         nftAmount,
         erc20TokenAddress,

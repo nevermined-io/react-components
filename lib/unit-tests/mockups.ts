@@ -462,6 +462,11 @@ export const nevermined = {
       },
       nftUpgradeable: {
         isApprovedForAll: () => true
+      },
+      royalties: {
+        standard: 'standard',
+        curve: 'curve',
+        legacy: 'legacy'
       }
     },
     contracts: {

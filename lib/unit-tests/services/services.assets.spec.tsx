@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { generateTestingUtils } from 'eth-testing';
 import { appConfig } from '../config';
-import { Catalog, AssetService, DDO, RoyaltyKind, MarketplaceAPIToken, Logger } from '../../src';
+import { Catalog, AssetService, DDO, RoyaltyKind, getRoyaltyScheme, MarketplaceAPIToken, Logger, Nevermined } from '../../src';
 import { ddo as assetObject, metadata, nftTokenAddress, walletAddress } from '../mockups';
 import { faker } from '@faker-js/faker';
 import jwt from 'jsonwebtoken';
@@ -22,6 +22,11 @@ const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
 
 describe('Assets Service', () => {
   const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
+  const royaltyAttributes = (sdk: Nevermined) => ({
+    royaltyKind: RoyaltyKind.Standard,
+    scheme: getRoyaltyScheme(sdk, RoyaltyKind.Standard),
+    amount: 0,
+  });
 
   afterEach(() => {
     testingUtils.clearAllMocks();
@@ -136,7 +141,7 @@ describe('Assets Service', () => {
   it('should publish an nft721', async() => {
     const { result } = renderHook(
       () => {
-        const { isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const { isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined();
         const { publishNFT721, isPublished } = AssetService.useAssetPublish();
         const [ddo, setDDO ] = useState<DDO>({} as DDO);
 
@@ -152,6 +157,7 @@ describe('Assets Service', () => {
               nftAddress: nftTokenAddress,
               metadata,
               providers: undefined,
+              royaltyAttributes: royaltyAttributes(sdk)
             }) as DDO;
 
             setDDO(result)
@@ -179,7 +185,7 @@ describe('Assets Service', () => {
   it('should publish an nft1155', async() => {
     const { result } = renderHook(
       () => {
-        const { isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const { isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined();
         const { publishNFT1155, isPublished } = AssetService.useAssetPublish();
         const [ddo, setDDO ] = useState<DDO>({} as DDO);
 
@@ -195,8 +201,7 @@ describe('Assets Service', () => {
               gatewayAddress: String(appConfig.gatewayAddress),
               metadata,
               cap: 100,
-              royalties: 0,
-              royaltyKind: RoyaltyKind.Standard
+              royaltyAttributes: royaltyAttributes(sdk)
             }) as DDO;
 
             setDDO(result)
@@ -228,7 +233,7 @@ describe('Assets Service', () => {
 
     renderHook(
       () => {
-        const { isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const { isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined();
         const { publishNFT1155 } = AssetService.useAssetPublish();
 
         useEffect(() => {
@@ -244,8 +249,7 @@ describe('Assets Service', () => {
                 gatewayAddress: '',
                 metadata,
                 cap: 100,
-                royalties: 0,
-                royaltyKind: RoyaltyKind.Standard
+                royaltyAttributes: royaltyAttributes(sdk),
             })
               
             } catch (error: any) {

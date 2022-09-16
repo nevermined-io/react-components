@@ -2,7 +2,7 @@ import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/Asse
 import React, { useEffect, useState } from 'react';
 import { MetaData, Logger, DDO } from '@nevermined-io/nevermined-sdk-js';
 import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
-import { Catalog, AssetService, RoyaltyKind } from '@nevermined-io/catalog-core';
+import { Catalog, AssetService, RoyaltyKind, RoyaltyAttributes, getRoyaltyScheme } from '@nevermined-io/catalog-core';
 import { getCurrentAccount } from '@nevermined-io/catalog-core'
 import { MetaMask } from '@nevermined-io/catalog-providers';
 import { UiText, UiLayout, BEM, UiButton } from '@nevermined-io/styles';
@@ -172,6 +172,11 @@ const App = () => {
       const rewardsRecipients: any[] = [];
       const assetRewardsMap = constructRewardMap(rewardsRecipients, 100, publisher.getId());
       const assetRewards = new AssetRewards(assetRewardsMap);
+      const royaltyAttributes = {
+        royaltyKind: RoyaltyKind.Standard,
+        scheme: getRoyaltyScheme(sdk, RoyaltyKind.Standard),
+        amount: 0,
+      };
 
       if (!account.isTokenValid()) {
         await account.generateToken();
@@ -183,8 +188,7 @@ const App = () => {
         nftAmount: 1,
         preMint: true,
         cap: 100,
-        royalties: 0,
-        royaltyKind: RoyaltyKind.Standard,
+        royaltyAttributes,
         erc20TokenAddress,
       });
 
