@@ -1741,10 +1741,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@nevermined-io/nevermined-sdk-js@^0.23.3":
-  version "0.23.3"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.23.3.tgz#00080284e400dd6528330b9c5a425860d681d271"
-  integrity sha512-qynASM3lctlmZsS+DVbxREEFXPpWtkEJKcFUI71xFHp0Bo6NUfMVfpo/G7k5jv8gbAfgn0QjSTNPaTB8unCJdw==
+"@nevermined-io/nevermined-sdk-js@^0.23.5":
+  version "0.23.5"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.23.5.tgz#ab7e9c9d4e8d528552f91c7681677e62a7a5eec1"
+  integrity sha512-GJriSUsmJFYh3uLPS8KnsW71tC7vYVltcCR4WzVkrfeJBoQl/nD6fZCHo6bWcWWZD/n1hGNeC1O1p+wZHh3XCw==
   dependencies:
     "@nevermined-io/secret-store-client" "^0.0.16"
     "@nevermined-io/subgraphs" "0.4.1"
@@ -7253,7 +7253,7 @@ rc@^1.0.1, rc@^1.1.6:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-dom@^18.2.0:
+react-dom@>=17.0.2:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
   integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
@@ -7276,7 +7276,7 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
-react@*:
+react@>=17.0.2:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==

@@ -1997,10 +1997,10 @@
   resolved "https://registry.yarnpkg.com/@metamask/safe-event-emitter/-/safe-event-emitter-2.0.0.tgz#af577b477c683fad17c619a78208cede06f9605c"
   integrity sha512-/kSXhY692qiV1MXu6EeOZvg5nECLclxNXcKCxJ3cXQgYuRymRHpdx/t7JXfsK+JLjwA1e1c1/SBrlQYpusC29Q==
 
-"@nevermined-io/catalog-core@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/catalog-core/-/catalog-core-0.1.0.tgz#37df841dc352f0877f80efa9f45073028eccf36e"
-  integrity sha512-E9GJu36d30N7BPMVzZ0+1Xgr6mxvN6BagpJL9I8ZjHQ9CW5gTqw/gVDBOBrCY6rgqHhYsb6+yq1Hsv7788jlJQ==
+"@nevermined-io/catalog-core@0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/catalog-core/-/catalog-core-0.1.2.tgz#9933e68140434459030e7fea2e30e9833265f3a7"
+  integrity sha512-kYnNzzdy1ps3RRrfw3cv1I/v9RUnUeeoA4pV+4I+94Ry57bTuZhuFDe/hijmlBwJR5VRiJb9nO8cZtWuB9h75g==
   dependencies:
     "@nevermined-io/nevermined-sdk-js" "^0.23.3"
     "@types/jsonwebtoken" "^8.5.8"
@@ -2013,10 +2013,10 @@
     nodemon "^2.0.16"
     react "*"
 
-"@nevermined-io/catalog-providers@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/catalog-providers/-/catalog-providers-0.1.0.tgz#d395578cae7cbdfb211387df1f986255eb2c78dc"
-  integrity sha512-iJBL7zwDlnotKq+eNm2zJdx87oHLtZIIEcR3JL+B+p4OtdnL7nD/tzhndGpjVE+pJSG9BUwU4f7L6SOdrZ40cA==
+"@nevermined-io/catalog-providers@0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/catalog-providers/-/catalog-providers-0.1.2.tgz#cebe0c6efa449167da730f8ed285fa92eb0be176"
+  integrity sha512-VW2MmaVUwDfkgeIN0KaX5Z7B5Mrhmr/3M2FpE85RLs+ZllUSzw1bSIFtuxq7epBzCMQBwJtH1TEkxzsjT61Ygg==
   dependencies:
     ethers "^5.6.9"
     nodemon "^2.0.16"

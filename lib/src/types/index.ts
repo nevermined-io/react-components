@@ -12,10 +12,10 @@ import {
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { NftTypes } from '@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway';
 import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
-import { QueryResult } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
+import { QueryResult, EncryptionMethod } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import { BigNumber } from 'ethers';
-import { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
+import { RoyaltyAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
 import { ServiceCommon, ServiceType } from '@nevermined-io/nevermined-sdk-js/dist/node/ddo/Service';
 
 export * from '@nevermined-io/nevermined-sdk-js';
@@ -28,6 +28,9 @@ export { zeroX } from '@nevermined-io/nevermined-sdk-js/dist/node/utils';
 export type { NftTypes } from '@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway';
 export type { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
 export type { ServiceCommon, ServiceType } from '@nevermined-io/nevermined-sdk-js/dist/node/ddo/Service';
+export type { QueryResult, EncryptionMethod } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
+export type { RoyaltyAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
+export { getRoyaltyScheme } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets'
 
 
 /**
@@ -807,7 +810,7 @@ export interface AssetPublishProviderState {
     assetRewards?: AssetRewards;
     serviceTypes?: ServiceType[];
     services?: ServiceCommon[];
-    method?: string;
+    method?: EncryptionMethod;
     providers?: string[];
     erc20TokenAddress?: string,
     txParameters?: TxParameters,
@@ -827,7 +830,7 @@ export interface AssetPublishProviderState {
    * @param nft721.providers Array that contains the provider addreses
    * @param nft721.erc20TokenAddress The erc20 token address which the buyer will pay the price
    * @param nft721.preMint If assets are minted in the creation process
-   * @param nft721.royalties The amount of royalties paid back to the original creator in the secondary market
+   * @param nft721.royaltyAttributes The amount of royalties paid back to the original creator in the secondary market
    * @param nft721.nftMetadata Url to set at publishing time that resolves to the metadata of the nft as expected by opensea
    * @param nft721.txParameters Trasaction number of the asset creation
    * @param nft721.services List of services associate with the asset
@@ -843,7 +846,7 @@ export interface AssetPublishProviderState {
     providers,
     erc20TokenAddress,
     preMint,
-    royalties,
+    royaltyAttributes,
     nftMetadata,
     txParameters,
     services,
@@ -853,14 +856,14 @@ export interface AssetPublishProviderState {
     nftAddress: string;
     metadata: MetaData;
     assetRewards?: AssetRewards;
-    method?: string,
+    method?: EncryptionMethod,
     providers?: string[];
     erc20TokenAddress?: string;
     preMint?: boolean;
-    royalties?: number;
+    royaltyAttributes: RoyaltyAttributes;
     nftMetadata?: string;
     txParameters?: TxParameters;
-    services?: string[];
+    services?: ServiceType[];
     nftTransfer?: boolean;
     duration?: number;
   }) => Promise<DDO | undefined>;
@@ -877,8 +880,7 @@ export interface AssetPublishProviderState {
    * @param nft1155.metadata The metadata object describing the asset
    * @param nft1155.cap The maximum number of editions that can be minted. If `0` means there is no limit (uncapped)
    * @param nft1155.assetRewards The price of the asset that the owner will receive
-   * @param nft1155.royalties The amount of royalties paid back to the original creator in the secondary market
-   * @param nft1155.royaltyKind The royalties scheme that can be used
+   * @param nft1155.royaltyAttributes The amount of royalties paid back to the original creator in the secondary market
    * @param nft1155.nftAmount NFT amount to publish
    * @param nft1155.erc20TokenAddress The erc20 token address which the buyer will pay the price
    * @param nft1155.preMint If assets are minted in the creation process
@@ -891,8 +893,7 @@ export interface AssetPublishProviderState {
     metadata,
     cap,
     assetRewards,
-    royalties,
-    royaltyKind,
+    royaltyAttributes,
     nftAmount,
     erc20TokenAddress,
     preMint,
@@ -903,8 +904,7 @@ export interface AssetPublishProviderState {
       metadata: MetaData,
       cap: number,
       assetRewards?: AssetRewards;
-      royalties: number,
-      royaltyKind: RoyaltyKind,
+      royaltyAttributes: RoyaltyAttributes
       nftAmount?: number,
       erc20TokenAddress?: string,
       preMint?: boolean,

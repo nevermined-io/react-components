@@ -399,7 +399,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         const agreementId = await getAgreementId(sdk, 'accessTemplate', did);
 
         if ((await sdk.assets.owner(did)) === account.getId()) {
-          return sdk.assets.download(did, account);
+          return Boolean(sdk.assets.download(did, account));
         }
 
         return sdk.assets.consume(agreementId, did, account);
