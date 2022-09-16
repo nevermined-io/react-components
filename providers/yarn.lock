@@ -1719,10 +1719,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@nevermined-io/nevermined-sdk-js@^0.23.3":
-  version "0.23.4"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.23.4.tgz#a820691dfaeded48403fb2bff48d8c04cdee5a5e"
-  integrity sha512-d9YD5hVdsdlJa2LecTleu1ZhGPSynEO1RMIYSgnpDHZY8uftk8PwpgP2FnaKGbHJ+KAKGKz29abhfqNzHiu7kw==
+"@nevermined-io/nevermined-sdk-js@^0.23.5":
+  version "0.23.5"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.23.5.tgz#ab7e9c9d4e8d528552f91c7681677e62a7a5eec1"
+  integrity sha512-GJriSUsmJFYh3uLPS8KnsW71tC7vYVltcCR4WzVkrfeJBoQl/nD6fZCHo6bWcWWZD/n1hGNeC1O1p+wZHh3XCw==
   dependencies:
     "@nevermined-io/secret-store-client" "^0.0.16"
     "@nevermined-io/subgraphs" "0.4.1"
@@ -5685,9 +5685,9 @@ jest@^28.1.0:
     jest-cli "^28.1.3"
 
 jose@^4.5.1:
-  version "4.8.3"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-4.8.3.tgz#5a754fb4aa5f2806608d083f438e6916b11087da"
-  integrity sha512-7rySkpW78d8LBp4YU70Wb7+OTgE3OwAALNVZxhoIhp4Kscp+p/fBkdpxGAMKxvCAMV4QfXBU9m6l9nX/vGwd2g==
+  version "4.9.3"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-4.9.3.tgz#890abd3f26725fe0f2aa720bc2f7835702b624db"
+  integrity sha512-f8E/z+T3Q0kA9txzH2DKvH/ds2uggcw0m3vVPSB9HrSkrQ7mojjifvS7aR8cw+lQl2Fcmx9npwaHpM/M3GD8UQ==
 
 js-base64@^2.1.9:
   version "2.6.4"
