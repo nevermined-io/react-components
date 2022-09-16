@@ -21,7 +21,7 @@ The block number of the blockchain which the asset was updated
 
 #### Defined in
 
-[types/index.ts:715](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L715)
+[types/index.ts:718](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L718)
 
 ___
 
@@ -33,7 +33,7 @@ Id of the asset
 
 #### Defined in
 
-[types/index.ts:709](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L709)
+[types/index.ts:712](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L712)
 
 ___
 
@@ -45,7 +45,7 @@ The last modification of the asset
 
 #### Defined in
 
-[types/index.ts:713](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L713)
+[types/index.ts:716](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L716)
 
 ___
 
@@ -57,4 +57,4 @@ Owner of the asset
 
 #### Defined in
 
-[types/index.ts:711](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L711)
+[types/index.ts:714](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L714)

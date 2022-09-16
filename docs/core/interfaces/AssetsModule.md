@@ -46,7 +46,7 @@ if the NFT is downloaded successfully the method will return a true
 
 #### Defined in
 
-[types/index.ts:553](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L553)
+[types/index.ts:556](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L556)
 
 ___
 
@@ -75,7 +75,7 @@ if the NFT is downloaded successfully the method will return a true
 
 #### Defined in
 
-[types/index.ts:540](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L540)
+[types/index.ts:543](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L543)
 
 ___
 
@@ -101,7 +101,7 @@ Get the asset object by the did given
 
 #### Defined in
 
-[types/index.ts:490](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L490)
+[types/index.ts:493](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L493)
 
 ___
 
@@ -129,7 +129,7 @@ Custom token details
 
 #### Defined in
 
-[types/index.ts:546](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L546)
+[types/index.ts:549](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L549)
 
 ___
 
@@ -157,7 +157,7 @@ Agreement details of the NFT asset
 
 #### Defined in
 
-[types/index.ts:510](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L510)
+[types/index.ts:513](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L513)
 
 ___
 
@@ -186,7 +186,7 @@ which is needed to transfer the asset to the buyer
 
 #### Defined in
 
-[types/index.ts:517](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L517)
+[types/index.ts:520](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L520)
 
 ___
 
@@ -215,7 +215,7 @@ which is needed to transfer the NFT1155 asset to the buyer
 
 #### Defined in
 
-[types/index.ts:533](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L533)
+[types/index.ts:536](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L536)
 
 ___
 
@@ -245,7 +245,7 @@ which is needed to transfer the NFT721 asset to the buyer
 
 #### Defined in
 
-[types/index.ts:525](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L525)
+[types/index.ts:528](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L528)
 
 ___
 
@@ -271,7 +271,7 @@ List of assets according with the query given
 
 #### Defined in
 
-[types/index.ts:496](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L496)
+[types/index.ts:499](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L499)
 
 ___
 
@@ -301,7 +301,7 @@ Return true if asset was transferred successfully
 
 #### Defined in
 
-[types/index.ts:504](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L504)
+[types/index.ts:507](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L507)
 
 ___
 
@@ -330,4 +330,4 @@ The url where is located the file already uploaded
 
 #### Defined in
 
-[types/index.ts:560](https://github.com/nevermined-io/components-catalog/blob/20a1be5/lib/src/types/index.ts#L560)
+[types/index.ts:563](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L563)
