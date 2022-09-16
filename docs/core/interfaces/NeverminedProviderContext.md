@@ -65,7 +65,7 @@ const Example = (props: ExampleProps) => {
 
 #### Defined in
 
-[types/index.ts:268](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L268)
+[types/index.ts:272](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L272)
 
 ___
 
@@ -78,7 +78,7 @@ mint, transfer, order or download asset
 
 **`Example`**
 
-Mint an asset example:
+Publish an asset example:
 
 ```tsx
 const Example = () => {
@@ -135,31 +135,36 @@ const Example = () => {
    return rewardMap;
  };
  
- const mint = async () => {
-   try {
-     const publisher = await getCurrentAccount(sdk);
-     const rewardsRecipients: any[] = [];
-     const assetRewardsMap = constructRewardMap(rewardsRecipients, 100, publisher.getId());
-     const assetRewards = new AssetRewards(assetRewardsMap);
-     const data: MintNFTInput = {
-       metadata,
-       publisher,
-       cap: 100,
-       royalties: 0,
-       nftAmount: 1,
-       preMint: true,
-       erc20TokenAddress: '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e', //usdc token
-       //@ts-ignore
-       assetRewards
-     };
-     if (!account.isTokenValid()) {
-       await account.generateToken();
-     }
-     const response = await assets.mint(data);
-     setDDO(response);
-   } catch (error) {
-     console.log('error', error);
-   }
+ const onPublish = async () => {
+  try {
+    const publisher = await getCurrentAccount(sdk);
+    const rewardsRecipients: any[] = [];
+    const assetRewardsMap = constructRewardMap(rewardsRecipients, 100, publisher.getId());
+    const assetRewards = new AssetRewards(assetRewardsMap);
+    const royaltyAttributes = {
+      royaltyKind: RoyaltyKind.Standard,
+      scheme: getRoyaltyScheme(sdk, RoyaltyKind.Standard),
+      amount: 0,
+    };
+ 
+    if (!account.isTokenValid()) {
+      await account.generateToken();
+    }
+    const response = await publishNFT1155({
+      gatewayAddress: String(appConfig.gatewayAddress),
+      assetRewards,
+      metadata,
+      nftAmount: 1,
+      preMint: true,
+      cap: 100,
+      royaltyAttributes,
+      erc20TokenAddress,
+    });
+ 
+    setDDO(response as DDO);
+  } catch (error) {
+    console.log('error', error);
+  }
  };
  
  return (
@@ -172,7 +177,7 @@ const Example = () => {
 
 #### Defined in
 
-[types/index.ts:231](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L231)
+[types/index.ts:235](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L235)
 
 ___
 
@@ -184,7 +189,7 @@ True if sdk is loading
 
 #### Defined in
 
-[types/index.ts:51](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L51)
+[types/index.ts:51](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L51)
 
 ___
 
@@ -196,7 +201,7 @@ Nevermined sdk instance which has all the core functionalities
 
 #### Defined in
 
-[types/index.ts:47](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L47)
+[types/index.ts:47](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L47)
 
 ___
 
@@ -208,7 +213,7 @@ Error message from sdk
 
 #### Defined in
 
-[types/index.ts:49](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L49)
+[types/index.ts:49](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L49)
 
 ___
 
@@ -266,7 +271,7 @@ const Example = () => {
 
 #### Defined in
 
-[types/index.ts:131](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L131)
+[types/index.ts:131](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L131)
 
 ___
 
@@ -329,7 +334,7 @@ const BuyAsset = ({ddo}: {ddo: DDO}) => {
 
 #### Defined in
 
-[types/index.ts:322](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L322)
+[types/index.ts:326](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L326)
 
 ___
 
@@ -382,4 +387,4 @@ const Example = (props: ExampleProps) => {
 
 #### Defined in
 
-[types/index.ts:82](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L82)
+[types/index.ts:82](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L82)

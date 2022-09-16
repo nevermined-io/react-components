@@ -30,7 +30,7 @@ Handle publish asset message
 
 #### Defined in
 
-[types/index.ts:759](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L759)
+[types/index.ts:763](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L763)
 
 ___
 
@@ -42,7 +42,7 @@ All the parameters needed to publish an asset
 
 #### Defined in
 
-[types/index.ts:765](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L765)
+[types/index.ts:769](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L769)
 
 ___
 
@@ -54,7 +54,7 @@ Handle error publish asset message
 
 #### Defined in
 
-[types/index.ts:757](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L757)
+[types/index.ts:761](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L761)
 
 ___
 
@@ -81,7 +81,7 @@ Update asset parameters when some input changes
 
 #### Defined in
 
-[types/index.ts:776](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L776)
+[types/index.ts:780](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L780)
 
 ___
 
@@ -93,7 +93,7 @@ If the asset is publishing
 
 #### Defined in
 
-[types/index.ts:763](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L763)
+[types/index.ts:767](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L767)
 
 ___
 
@@ -105,7 +105,7 @@ If the asset was published correctly
 
 #### Defined in
 
-[types/index.ts:761](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L761)
+[types/index.ts:765](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L765)
 
 ___
 
@@ -144,7 +144,7 @@ The DDO object including the asset metadata and the DID
 
 #### Defined in
 
-[types/index.ts:798](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L798)
+[types/index.ts:802](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L802)
 
 ___
 
@@ -187,7 +187,7 @@ The DDO object including the asset metadata and the DID
 
 #### Defined in
 
-[types/index.ts:891](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L891)
+[types/index.ts:895](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L895)
 
 ___
 
@@ -232,7 +232,7 @@ The DDO object including the asset metadata and the DID
 
 #### Defined in
 
-[types/index.ts:841](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L841)
+[types/index.ts:845](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L845)
 
 ___
 
@@ -258,7 +258,7 @@ Reset all the parameters of the asset
 
 #### Defined in
 
-[types/index.ts:780](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L780)
+[types/index.ts:784](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L784)
 
 ___
 
@@ -270,7 +270,7 @@ Set asset message
 
 #### Defined in
 
-[types/index.ts:769](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L769)
+[types/index.ts:773](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L773)
 
 ___
 
@@ -282,7 +282,7 @@ Set parameters needed to publish an asset
 
 #### Defined in
 
-[types/index.ts:767](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L767)
+[types/index.ts:771](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L771)
 
 ___
 
@@ -294,4 +294,4 @@ Set error asset message
 
 #### Defined in
 
-[types/index.ts:771](https://github.com/nevermined-io/components-catalog/blob/89449f9/lib/src/types/index.ts#L771)
+[types/index.ts:775](https://github.com/nevermined-io/components-catalog/blob/cae3a0f/lib/src/types/index.ts#L775)

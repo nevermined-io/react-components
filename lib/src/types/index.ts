@@ -129,13 +129,12 @@ export interface NeverminedProviderContext {
    * ```
    */
   subscribe: SubscribeModule;
-  // TODO: fix documentation
   /**
    * `assets` contains all the functionalities to handle assets for example get, 
    * mint, transfer, order or download asset
    * 
    * @example
-   * Mint an asset example:
+   * Publish an asset example:
    * 
    * ```tsx
    * const Example = () => {
@@ -192,31 +191,36 @@ export interface NeverminedProviderContext {
    *    return rewardMap;
    *  };
    *  
-   *  const mint = async () => {
-   *    try {
-   *      const publisher = await getCurrentAccount(sdk);
-   *      const rewardsRecipients: any[] = [];
-   *      const assetRewardsMap = constructRewardMap(rewardsRecipients, 100, publisher.getId());
-   *      const assetRewards = new AssetRewards(assetRewardsMap);
-   *      const data: MintNFTInput = {
-   *        metadata,
-   *        publisher,
-   *        cap: 100,
-   *        royalties: 0,
-   *        nftAmount: 1,
-   *        preMint: true,
-   *        erc20TokenAddress: '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e', //usdc token
-   *        //@ts-ignore
-   *        assetRewards
-   *      };
-   *      if (!account.isTokenValid()) {
-   *        await account.generateToken();
-   *      }
-   *      const response = await assets.mint(data);
-   *      setDDO(response);
-   *    } catch (error) {
-   *      console.log('error', error);
-   *    }
+   *  const onPublish = async () => {
+   *   try {
+   *     const publisher = await getCurrentAccount(sdk);
+   *     const rewardsRecipients: any[] = [];
+   *     const assetRewardsMap = constructRewardMap(rewardsRecipients, 100, publisher.getId());
+   *     const assetRewards = new AssetRewards(assetRewardsMap);
+   *     const royaltyAttributes = {
+   *       royaltyKind: RoyaltyKind.Standard,
+   *       scheme: getRoyaltyScheme(sdk, RoyaltyKind.Standard),
+   *       amount: 0,
+   *     };
+   *  
+   *     if (!account.isTokenValid()) {
+   *       await account.generateToken();
+   *     }
+   *     const response = await publishNFT1155({
+   *       gatewayAddress: String(appConfig.gatewayAddress),
+   *       assetRewards,
+   *       metadata,
+   *       nftAmount: 1,
+   *       preMint: true,
+   *       cap: 100,
+   *       royaltyAttributes,
+   *       erc20TokenAddress,
+   *     });
+   *  
+   *     setDDO(response as DDO);
+   *   } catch (error) {
+   *     console.log('error', error);
+   *   }
    *  };
    *  
    *  return (
