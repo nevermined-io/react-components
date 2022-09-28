@@ -296,6 +296,8 @@ export const useUserProfile = (walletAddress: string): {
   isUpdated: boolean,
   /** If new address is added */
   isAddressAdded: boolean,
+  /** If token has been generated */
+  isTokenGenerated: boolean,
   /** User profile parameters */
   userProfile: Partial<UserProfileParams>,
   /** Addresses wallet accounts included in the user profile */
@@ -315,6 +317,7 @@ export const useUserProfile = (walletAddress: string): {
   const [successMessage, setSuccessMessage] = useState('');
   const [isUpdated, setIsUpated] = useState(false);
   const [isAddressAdded, setIsAddressAdded] = useState(false);
+  const [isTokenGenerated, setIsTokenGenerated] = useState(false);
 
   const [userId, setUserId] = useState('');
   const [userProfile, setUserProfile] = useState<Partial<UserProfileParams>>({
@@ -330,11 +333,14 @@ export const useUserProfile = (walletAddress: string): {
   const [addresses, setAddresses] = useState<string[]>([]);
 
   const checkAuth = async () => {
+    
     if (!account.isTokenValid()) {
+      setIsTokenGenerated(false)
       setErrorMessage(
         'Your login is expired. Please first sign with your wallet before to continue'
       );
       await account.generateToken();
+      setIsTokenGenerated(true)
     }
   };
 
@@ -440,6 +446,7 @@ export const useUserProfile = (walletAddress: string): {
     successMessage,
     isUpdated,
     isAddressAdded,
+    isTokenGenerated,
     userProfile,
     addresses,
     newAddress,
