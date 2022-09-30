@@ -347,7 +347,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       return sdk.assets.order(did, 'access', account);
     },
 
-    orderNFT1155: async (did: string, amount = 1): Promise<string> => {
+    orderNFT1155: async (did: string, amount: BigNumber = BigNumber.from(1)): Promise<string> => {
       const account = await getCurrentAccount(sdk);
 
       const balance = await sdk.nfts.balance(did, account);
@@ -482,12 +482,12 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       let agreementId;
       let transferResult;
       try {
-        agreementId = nftType === 721 ? await sdk.nfts.order721(subscriptionDid, buyer): await sdk.nfts.order(subscriptionDid, nftAmount, buyer);
+        agreementId = nftType === 721 ? await sdk.nfts.order721(subscriptionDid, buyer): await sdk.nfts.order(subscriptionDid, BigNumber.from(nftAmount), buyer);
         transferResult = await sdk.nfts.transferForDelegate(
           agreementId,
           nftHolder,
           buyer.getId(),
-          nftAmount,
+          BigNumber.from(nftAmount),
           nftType
         );
       } catch (error) {

@@ -185,7 +185,7 @@ const App = () => {
         gatewayAddress: String(appConfig.gatewayAddress),
         assetRewards,
         metadata,
-        nftAmount: 1,
+        nftAmount: BigNumber.from(1),
         preMint: true,
         cap: 100,
         royaltyAttributes,

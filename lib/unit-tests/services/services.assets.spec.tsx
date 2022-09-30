@@ -6,6 +6,7 @@ import { Catalog, AssetService, DDO, RoyaltyKind, getRoyaltyScheme, MarketplaceA
 import { ddo as assetObject, metadata, nftTokenAddress, walletAddress } from '../mockups';
 import { faker } from '@faker-js/faker';
 import jwt from 'jsonwebtoken';
+import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
 
 jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
   ...jest.requireActual('@nevermined-io/nevermined-sdk-js'),
@@ -200,7 +201,7 @@ describe('Assets Service', () => {
             const result = await publishNFT1155({
               gatewayAddress: String(appConfig.gatewayAddress),
               metadata,
-              cap: 100,
+              cap: BigNumber.from(100),
               royaltyAttributes: royaltyAttributes(sdk)
             }) as DDO;
 
@@ -248,7 +249,7 @@ describe('Assets Service', () => {
               await publishNFT1155({
                 gatewayAddress: '',
                 metadata,
-                cap: 100,
+                cap: BigNumber.from(100),
                 royaltyAttributes: royaltyAttributes(sdk),
             })
               

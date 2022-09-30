@@ -1,6 +1,7 @@
 import { Account, DDO, Nevermined, Logger, ClientError } from '@nevermined-io/nevermined-sdk-js';
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
+import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
 
 /**
  * Checks if object is empty
@@ -62,7 +63,7 @@ export const conductOrder = async ({
     }
     Logger.log('USDC spending is approved.');
     Logger.log(`Asking for approval and locking payment for USDC.`);
-    const agreementId: string = await sdk.nfts.order(ddo.id, 1, newOwner);
+    const agreementId: string = await sdk.nfts.order(ddo.id, BigNumber.from(1), newOwner);
     Logger.log('Transferring the NFT.');
     Logger.log('Order agreement ID', agreementId);
     return agreementId;

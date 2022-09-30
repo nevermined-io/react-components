@@ -150,7 +150,7 @@ ___
 
 ### publishNFT1155
 
-• **publishNFT1155**: (`nft1155`: { `assetRewards?`: `default` ; `cap`: `number` ; `erc20TokenAddress?`: `string` ; `gatewayAddress`: `string` ; `metadata`: `MetaData` ; `nftAmount?`: `number` ; `nftMetadata?`: `string` ; `preMint?`: `boolean` ; `royaltyAttributes`: `RoyaltyAttributes` ; `txParameters?`: `TxParameters`  }) => `Promise`<`undefined` \| `DDO`\>
+• **publishNFT1155**: (`nft1155`: { `assetRewards?`: `default` ; `cap`: `BigNumber` ; `erc20TokenAddress?`: `string` ; `gatewayAddress`: `string` ; `metadata`: `MetaData` ; `nftAmount?`: `BigNumber` ; `nftMetadata?`: `string` ; `preMint?`: `boolean` ; `royaltyAttributes`: `RoyaltyAttributes` ; `txParameters?`: `TxParameters`  }) => `Promise`<`undefined` \| `DDO`\>
 
 #### Type declaration
 

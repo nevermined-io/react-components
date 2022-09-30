@@ -14,6 +14,7 @@ import {
   RoyaltyAttributes
 } from '../types';
 import { getCurrentAccount } from '../utils';
+import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
 
 /**
  * Get all assets
@@ -263,7 +264,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     royaltyAttributes,
     nftMetadata,
     txParameters,
-    services = ['nft721-access'],
+    services = ['nft-access'],
     nftTransfer = false,
     duration = 0
   }: {
@@ -351,7 +352,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     cap,
     assetRewards = new AssetRewards(),
     royaltyAttributes,
-    nftAmount = 1,
+    nftAmount = BigNumber.from(1),
     erc20TokenAddress,
     preMint = false,
     nftMetadata,
@@ -359,10 +360,10 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
   }: {
     gatewayAddress: string,
     metadata: MetaData,
-    cap: number,
+    cap: BigNumber,
     assetRewards?: AssetRewards;
     royaltyAttributes: RoyaltyAttributes,
-    nftAmount?: number,
+    nftAmount?: BigNumber,
     erc20TokenAddress?: string,
     preMint?: boolean,
     nftMetadata?: string,

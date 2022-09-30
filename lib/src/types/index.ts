@@ -210,7 +210,7 @@ export interface NeverminedProviderContext {
    *       gatewayAddress: String(appConfig.gatewayAddress),
    *       assetRewards,
    *       metadata,
-   *       nftAmount: 1,
+   *       nftAmount: BigNumber.from(1),
    *       preMint: true,
    *       cap: 100,
    *       royaltyAttributes,
@@ -906,10 +906,10 @@ export interface AssetPublishProviderState {
     }: {
       gatewayAddress: string,
       metadata: MetaData,
-      cap: number,
+      cap: BigNumber,
       assetRewards?: AssetRewards;
       royaltyAttributes: RoyaltyAttributes
-      nftAmount?: number,
+      nftAmount?: BigNumber,
       erc20TokenAddress?: string,
       preMint?: boolean,
       nftMetadata?: string,
