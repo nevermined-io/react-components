@@ -69,10 +69,10 @@ export const initializeNevermined = async (
 
 /**
  * Nevermined Provider to get the core Catalog functionalities as context
- * 
- * @param config - 
+ *
+ * @param config -
  * @param verbose - Show Catalog logs in console logs if it sets to `true`
- * 
+ *
  * @example
  * Initialize NeverminedProvider:
  * ```tsx
@@ -83,8 +83,8 @@ export const initializeNevermined = async (
  * import Example from 'examples';
  * import { MetaMask } from '@nevermined-io/catalog-providers';
  * import chainConfig, { mumbaiChainId } from './chain_config';
- * 
- * 
+ *
+ *
  * ReactDOM.render(
  *   <div>
  *     <Catalog.NeverminedProvider config={appConfig} verbose={true}>
@@ -101,7 +101,7 @@ export const initializeNevermined = async (
  * );
  * ```
  * Once it is intialized then we can execute the hook inside components
- * 
+ *
  * ```ts
  * const SDKInstance = () => {
  *  const { sdk, isLoadingSDK } = Catalog.useNevermined();
@@ -147,7 +147,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     return newSDK.success;
   };
 
-  
+
   const account: AccountModule = {
     isTokenValid: (): boolean => isTokenValid(),
     generateToken: async (): Promise<MarketplaceAPIToken> => {
@@ -218,17 +218,17 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       const asset = purchasedDDO.filter((p) => p).find((p) => p.id === did);
       return Boolean(asset);
     },
-    
+
     isNFT1155Holder: async (
       did: string,
       walletAddress: string
     ): Promise<boolean> => {
-      const walletAccount = new Account(walletAddress); 
+      const walletAccount = new Account(walletAddress);
       if (walletAccount) {
         const balance = await sdk.nfts.balance(did, walletAccount);
         const nftBalance =  BigNumber.from(balance).toNumber()
         return nftBalance > 0
-            
+
       }
       return false;
     },
@@ -238,12 +238,12 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       walletAddress: string
     ): Promise<boolean> => {
       if (walletAddress) {
-        const walletAccount = new Account(walletAddress); 
+        const walletAccount = new Account(walletAddress);
         const nft721 = await sdk.contracts.loadNft721(nftAddress)
         const balance = await nft721.balanceOf(walletAccount)
         return balance.gt(0)
       }
-      
+
       return false;
     },
   };
@@ -497,11 +497,11 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
       if (!transferResult)
         throw new Error("Error delegating the NFT of the subscription with agreement " + agreementId)
-        
-      return agreementId 
-      
+
+      return agreementId
+
     },
-    
+
   };
 
 
@@ -521,4 +521,14 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
 export const NeverminedContext = createContext({} as NeverminedProviderContext);
 
-export const useNevermined = (): NeverminedProviderContext => useContext(NeverminedContext);
+export const useNevermined = (): NeverminedProviderContext => {
+  const contextValue = useContext(NeverminedContext);
+
+  if (!contextValue) {
+    throw new Error(
+      'could not find Nevermined context value; please ensure the component is wrapped in a <NeverminedProvider>'
+    )
+  }
+
+  return contextValue;
+}

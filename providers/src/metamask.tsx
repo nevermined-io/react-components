@@ -393,4 +393,14 @@ export const WalletProvider = ({
     );
 };
 
-export const useWallet = (): WalletProviderState => useContext(WalletContext);
+export const useWallet = (): WalletProviderState => {
+    const contextValue = useContext(WalletContext);
+
+  if (!contextValue) {
+    throw new Error(
+      'could not find MetaMask context value; please ensure the component is wrapped in a <WalletProvider>'
+    )
+  }
+
+  return contextValue;
+}
