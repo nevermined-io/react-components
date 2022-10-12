@@ -1,21 +1,8 @@
 {
   "extends": [
-    "react-app",
-    "react-app/jest",
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    "nevermined"
   ],
   "rules": {
-    "@typescript-eslint/no-unused-vars": "error",
-    "react/display-name": "off",
-    "react-hooks/exhaustive-deps": "off",
-    "react-hooks/rules-of-hooks": "off"
-  },
-  "env": {
-    "es6": true,
-    "browser": true,
-    "node": true,
-    "jest": true
+    "@next/next/no-html-link-for-pages": "off"
   }
 }

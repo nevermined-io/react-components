@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { MetaData, SearchQuery, Profile } from '../src';
+import { MetaData, Profile } from '../src';
 import jwt from 'jsonwebtoken';
 
 export const ddo = {
@@ -350,7 +350,7 @@ export const nevermined = {
       order: async () => agreementId,
       download: async () => true,
       consume: async () => true,
-      query: (_q: SearchQuery) => ({
+      query: () => ({
         totalPages: 1,
         totalResults: 1,
         page: 1,
