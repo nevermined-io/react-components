@@ -1,5 +1,5 @@
 import { Logger, Nevermined } from '@nevermined-io/nevermined-sdk-js';
-import { FulfilledOrders, RegisterEvent, Transfer, TransferNFTConditionMethod, NftTypes  } from '../types';
+import { FulfilledOrders, RegisterEvent, Transfer, TransferNFTConditionMethod, ERCType  } from '../types';
 
 /**
  * Get recieved transfers by address and nft type
@@ -40,7 +40,7 @@ import { FulfilledOrders, RegisterEvent, Transfer, TransferNFTConditionMethod, N
  * }
  * ```
  */
-export const getTransfers = async (sdk: Nevermined, receiver: string, nftType: NftTypes = 1155): Promise<Transfer[]> => {
+export const getTransfers = async (sdk: Nevermined, receiver: string, nftType: ERCType = 1155): Promise<Transfer[]> => {
   try {
     const resultStruct = {
       id: true,

@@ -3,7 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { generateTestingUtils } from 'eth-testing';
 import { appConfig } from '../config';
 import { agreementId, ddo, walletAddress, nevermined, nftTokenAddress } from '../mockups';
-import { Catalog, NFTDetails } from '../../src';
+import { Catalog, NFTDetails, BigNumber } from '../../src';
 import { DDO, Logger } from '@nevermined-io/nevermined-sdk-js';
 
 jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
@@ -351,7 +351,7 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.orderNFT1155(ddo.id);
+              const result = await assets.orderNFT1155(ddo.id, BigNumber.from(1));
               setAgrId(result);
             } catch (error: any) {
               console.error(error.message);
@@ -399,7 +399,7 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.orderNFT1155(ddo.id);
+              const result = await assets.orderNFT1155(ddo.id, BigNumber.from(1));
               setAgrId(result);
             } catch (error: any) {
               console.error(error.message);

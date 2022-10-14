@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { generateTestingUtils } from 'eth-testing';
 import { appConfig } from '../config';
-import { Catalog, AssetService, DDO, RoyaltyKind, getRoyaltyScheme, MarketplaceAPIToken, Logger, Nevermined } from '../../src';
+import { Catalog, AssetService, DDO, RoyaltyKind, getRoyaltyScheme, MarketplaceAPIToken, Logger, Nevermined, BigNumber } from '../../src';
 import { ddo as assetObject, metadata, nftTokenAddress, walletAddress } from '../mockups';
 import { faker } from '@faker-js/faker';
 import jwt from 'jsonwebtoken';
@@ -200,7 +200,7 @@ describe('Assets Service', () => {
             const result = await publishNFT1155({
               gatewayAddress: String(appConfig.gatewayAddress),
               metadata,
-              cap: 100,
+              cap: BigNumber.from(100),
               royaltyAttributes: royaltyAttributes(sdk)
             }) as DDO;
 
@@ -248,7 +248,7 @@ describe('Assets Service', () => {
               await publishNFT1155({
                 gatewayAddress: '',
                 metadata,
-                cap: 100,
+                cap: BigNumber.from(100),
                 royaltyAttributes: royaltyAttributes(sdk),
             })
               

@@ -45,7 +45,7 @@ describe('Events Integration', () => {
   });
 
   it('should get fulfilled events by the user', async () => {
-    const eventServiceSpy = jest.spyOn(EventService, 'getUserFulfilledEvents');
+    let eventServiceSpy: unknown;
 
     renderHook(
       () => {
@@ -60,6 +60,7 @@ describe('Events Integration', () => {
 
           (async () => {
             try {
+              eventServiceSpy = jest.spyOn(EventService, 'getUserFulfilledEvents');
               const result = await EventService.getUserFulfilledEvents(sdk, walletAddress);
               setEvents([...result]);
             } catch (error: any) {

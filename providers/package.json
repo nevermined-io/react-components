@@ -46,7 +46,7 @@
     "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
-    "@nevermined-io/nevermined-sdk-js": "^0.23.5",
+    "@nevermined-io/nevermined-sdk-js": "^0.25.0-rc1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@types/jest": "^27.0.3",

@@ -4,7 +4,7 @@ import {
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events';
 import { useContext, useEffect, useState } from 'react';
 import { NeverminedContext } from '../catalog';
-import { NftTypes, TransferNFTConditionMethod } from '../types';
+import { ERCType, TransferNFTConditionMethod } from '../types';
 
 /**
  * Subscribe to payment events
@@ -90,7 +90,7 @@ export const useSubscribeToPaymentEvents = (): { paymentEvents: EventResult[] } 
  * ```
  * @returns Array of events with method `unsubscribe` in order to stop listening specific event
  */
-export const useSubscribeToTransferEvents = (nftType: NftTypes = 1155): { transferEvents: EventResult[] } => {
+export const useSubscribeToTransferEvents = (nftType: ERCType = 1155): { transferEvents: EventResult[] } => {
   const { sdk } = useContext(NeverminedContext);
   const [transferSubscription, setTransferSubscription] = useState<ContractEventSubscription>();
   const [transferEvents, setTransferEvents] = useState([] as EventResult[]);

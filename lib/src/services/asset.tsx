@@ -11,7 +11,9 @@ import {
   ServiceType,
   QueryResult,
   EncryptionMethod,
-  RoyaltyAttributes
+  RoyaltyAttributes,
+  BigNumber,
+  NeverminedNFT1155Type,
 } from '../types';
 import { getCurrentAccount } from '../utils';
 
@@ -189,7 +191,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     method?: EncryptionMethod;
     providers?: string[];
     erc20TokenAddress?: string,
-    txParameters?: TxParameters,
+    txParameters?: string,
   }) => {
     try {
       setIsProcessing(true);
@@ -246,7 +248,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param nft721.preMint If assets are minted in the creation process
    * @param nft721.royaltyAttributes The amount of royalties paid back to the original creator in the secondary market
    * @param nft721.nftMetadata Url to set at publishing time that resolves to the metadata of the nft as expected by opensea
-   * @param nft721.txParameters Trasaction number of the asset creation
    * @param nft721.services List of services associate with the asset
    * @param nft721.nftTransfer if the nft will be transfered to other address after published
    * @param nft721.duration When expire the NFT721. The default 0 value means never
@@ -262,8 +263,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     preMint = false,
     royaltyAttributes,
     nftMetadata,
-    txParameters,
-    services = ['nft721-access'],
+    services = ['nft-access'],
     nftTransfer = false,
     duration = 0
   }: {
@@ -276,7 +276,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     preMint?: boolean;
     royaltyAttributes: RoyaltyAttributes;
     nftMetadata?: string;
-    txParameters?: TxParameters;
     services?: ServiceType[];
     nftTransfer?: boolean;
     duration?: number;
@@ -304,7 +303,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         providers,
         royaltyAttributes,
         nftMetadata,
-        txParameters,
         services,
         nftTransfer,
         duration,
@@ -342,6 +340,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param nft1155.erc20TokenAddress The erc20 token address which the buyer will pay the price
    * @param nft1155.preMint If assets are minted in the creation process
    * @param nft1155.nftMetadata Url to set at publishing time that resolves to the metadata of the nft as expected by opensea
+   * @param nft1155.neverminedNFTType the type of the NFT1155
+   * @param nft1155.appId The id of the application creating the NFT
    * @param nft1155.txParameters Trasaction number of the asset creation
    * @returns The DDO object including the asset metadata and the DID
    */
@@ -351,21 +351,25 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     cap,
     assetRewards = new AssetRewards(),
     royaltyAttributes,
-    nftAmount = 1,
+    nftAmount,
     erc20TokenAddress,
     preMint = false,
     nftMetadata,
+    neverminedNFT1155Type,
+    appId,
     txParameters,
   }: {
     gatewayAddress: string,
     metadata: MetaData,
-    cap: number,
+    cap: BigNumber,
     assetRewards?: AssetRewards;
     royaltyAttributes: RoyaltyAttributes,
-    nftAmount?: number,
+    nftAmount?: BigNumber,
     erc20TokenAddress?: string,
     preMint?: boolean,
     nftMetadata?: string,
+    neverminedNFT1155Type?: NeverminedNFT1155Type,
+    appId?: string,
     txParameters?: TxParameters,
   }) => {
     try {
@@ -406,6 +410,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         erc20TokenAddress,
         preMint,
         nftMetadata,
+        neverminedNFT1155Type,
+        appId,
         txParameters,
       );
       setIsProcessing(false);
