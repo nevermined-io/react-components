@@ -797,6 +797,7 @@ export interface AssetPublishProviderState {
    * @param asset.method Method used to encrypt the urls
    * @param asset.providers Array that contains the provider addreses
    * @param asset.erc20TokenAddress The erc20 token address which the buyer will pay the price
+   * @param asset.appId The id of the application creating the asset
    * @param asset.txParameters Trasaction number of the asset creation
    * @returns The DDO object including the asset metadata and the DID
    */
@@ -808,6 +809,7 @@ export interface AssetPublishProviderState {
     method,
     providers,
     erc20TokenAddress,
+    appId,
     txParameters,
   }: 
   { 
@@ -818,7 +820,8 @@ export interface AssetPublishProviderState {
     method?: EncryptionMethod;
     providers?: string[];
     erc20TokenAddress?: string,
-    txParameters?: string,
+    appId?: string,
+    txParameters?: TxParameters,
   }) => Promise<DDO | undefined>;
   /**
    * In Nevermined is possible to register a digital asset that allow users pay for having a 

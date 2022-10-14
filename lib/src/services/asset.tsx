@@ -170,6 +170,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param asset.method Method used to encrypt the urls
    * @param asset.providers Array that contains the provider addreses
    * @param asset.erc20TokenAddress The erc20 token address which the buyer will pay the price
+   * @param asset.appId The id of the application creating the asset
    * @param asset.txParameters Trasaction number of the asset creation
    * @returns The DDO object including the asset metadata and the DID
    */
@@ -181,6 +182,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     method,
     providers,
     erc20TokenAddress,
+    appId,
     txParameters,
   }: 
   { 
@@ -191,7 +193,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     method?: EncryptionMethod;
     providers?: string[];
     erc20TokenAddress?: string,
-    txParameters?: string,
+    appId?: string,
+    txParameters?: TxParameters,
   }) => {
     try {
       setIsProcessing(true);
@@ -215,7 +218,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         method,
         providers,
         erc20TokenAddress,
-        txParameters
+        appId,
+        txParameters,
       );
       setIsProcessing(false);
       setIsPublished(true);
