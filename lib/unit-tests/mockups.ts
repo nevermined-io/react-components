@@ -521,12 +521,10 @@ export const metadata: MetaData = {
       contentType: 'application/json',
       url: 'https://github.com/nevermined-io/docs/blob/master/docs/architecture/specs/metadata/examples/ddo-example.json'
     }],
-    isDTP: false,
     type: "dataset",
     author: '',
     license: '',
     dateCreated: new Date().toISOString(),
-    price: ''
   }
 };
 
