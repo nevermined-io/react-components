@@ -1,6 +1,6 @@
 {
   "name": "@nevermined-io/catalog-providers",
-  "version": "0.3.0-rc1",
+  "version": "0.3.0",
   "private": false,
   "scripts": {
     "watch": "./node_modules/.bin/nodemon",
@@ -10,7 +10,8 @@
     "clean": "rm -rf dist",
     "test:unit": "jest",
     "eject": "react-scripts eject",
-    "ts:lint": "eslint ./",
+    "lint": "eslint ./",
+    "lint:fix": "yarn run lint -- --fix",
     "docs": "npx typedoc && rm ../docs/providers/.nojekyll"
   },
   "main": "./dist/node/index.js",
@@ -57,7 +58,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "8.1.0",
     "eslint": "^8.20.0",
-    "eslint-config-nevermined": "^0.1.0",
+    "eslint-config-nevermined": "^0.2.0",
     "eslint-config-next": "^12.3.1",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^7.0.1",

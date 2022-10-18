@@ -1,5 +1,5 @@
-import { Logger, Nevermined } from '@nevermined-io/nevermined-sdk-js';
-import { FulfilledOrders, RegisterEvent, Transfer, TransferNFTConditionMethod, ERCType  } from '../types';
+import { Logger, Nevermined } from '@nevermined-io/nevermined-sdk-js'
+import { FulfilledOrders, RegisterEvent, Transfer, TransferNFTConditionMethod, ERCType  } from '../types'
 
 /**
  * Get recieved transfers by address and nft type
@@ -47,13 +47,13 @@ export const getTransfers = async (sdk: Nevermined, receiver: string, nftType: E
       _did: true,
       _agreementId: true,
       _receiver: true
-    };
-    const methodName = 'getFulfilleds';
+    }
+    const methodName = 'getFulfilleds'
     const condition = {
       where: {
         _receiver: receiver
       }
-    };
+    }
     const data: Transfer[] = await sdk
       .keeper
       .conditions[nftType === 721 ? TransferNFTConditionMethod.nft721 : TransferNFTConditionMethod.nft1155]
@@ -64,14 +64,14 @@ export const getTransfers = async (sdk: Nevermined, receiver: string, nftType: E
         eventName: 'Fulfilled',
         methodName,
         result: resultStruct
-    });
-    return data;
+    })
+    return data
   } catch (error) {
-    Logger.warn('Something went wrong@getTransfers');
-    Logger.debug(error);
-    return [];
+    Logger.warn('Something went wrong@getTransfers')
+    Logger.debug(error)
+    return []
   }
-};
+}
 
 
 /**
@@ -120,26 +120,26 @@ export const getUserFulfilledEvents = async (
       where: {
         _grantee: account
       }
-    };
+    }
     const resultStruct = {
       _documentId: true,
       id: true
-    };
-    const methodName = 'getFulfilleds';
+    }
+    const methodName = 'getFulfilleds'
     const result = await sdk.keeper.conditions.nftAccessCondition.events.getPastEvents({
       methodName,
       eventName: 'Fulfilled',
       filterSubgraph: condition,
       filterJsonRpc: { _grantee: account },
       result: resultStruct
-    });
-    return result;
+    })
+    return result
   } catch (error) {
-    Logger.warn('Something went wrong@getUserFulfilledEvents');
-    Logger.debug(error);
-    return [];
+    Logger.warn('Something went wrong@getUserFulfilledEvents')
+    Logger.debug(error)
+    return []
   }
-};
+}
 
 /**
  * Get nft creating events registered by user
@@ -185,33 +185,33 @@ export const getUserRegisterEvents = async (
   owner: string
 ): Promise<RegisterEvent[]> => {
   try {
-    const methodName = 'getDIDAttributeRegistereds';
+    const methodName = 'getDIDAttributeRegistereds'
     const condition = {
       where: {
         _owner: owner
       }
-    };
+    }
     const resultStruct = {
       _did: true,
       _owner: true,
       _lastUpdatedBy: true,
       _blockNumberUpdated: true
-    };
+    }
     const result: RegisterEvent[] = await sdk.keeper.didRegistry.events.getPastEvents({
       methodName,
       eventName: 'DIDAttributeRegistered',
       filterSubgraph: condition,
       filterJsonRpc: { _owner: owner },
       result: resultStruct
-    });
+    })
 
-    return result;
+    return result
   } catch (error) {
-    Logger.warn('Something went wrong@getUserRegisterEvents');
-    Logger.debug(error);
-    return [];
+    Logger.warn('Something went wrong@getUserRegisterEvents')
+    Logger.debug(error)
+    return []
   }
-};
+}
 
 /**
  * Get asset registering event
@@ -261,8 +261,8 @@ export const getAssetRegisterEvent = async (
       where: {
         _did: did
       }
-    };
-    const methodName = 'getDIDAttributeRegistereds';
+    }
+    const methodName = 'getDIDAttributeRegistereds'
     const resultStruct = {
       _did: true,
       _owner: true,
@@ -277,11 +277,11 @@ export const getAssetRegisterEvent = async (
         filterJsonRpc: { _did: did },
         result: resultStruct
       }
-    );
-    return registerEvents; // Should have length 1
+    )
+    return registerEvents // Should have length 1
   } catch (error) {
-    Logger.warn('Something went wrong@getAssetRegisterEvent');
-    Logger.debug(error);
-    return [];
+    Logger.warn('Something went wrong@getAssetRegisterEvent')
+    Logger.debug(error)
+    return []
   }
-};
+}

@@ -4,18 +4,18 @@ import React, {
     useEffect,
     useRef,
     useContext,
-} from "react";
-import { ethers } from "ethers";
+} from "react"
+import { ethers } from "ethers"
 import DefaultChainConfig from "./chain-config"
 
 export type MetamaskProvider = ethers.providers.JsonRpcProvider | ethers.providers.Web3Provider
 
 const convertHextoIntString = (hex: string) => {
-    const removedAddressFormat = hex.replace("0x", "");
-    const intString = parseInt(removedAddressFormat, 16);
+    const removedAddressFormat = hex.replace("0x", "")
+    const intString = parseInt(removedAddressFormat, 16)
 
-    return intString.toString();
-};
+    return intString.toString()
+}
 
 /**
  * Config network to connect with dapp
@@ -149,7 +149,7 @@ export interface WalletProviderState {
     isChainCorrect: boolean;
 }
 
-export const WalletContext = createContext({} as WalletProviderState);
+export const WalletContext = createContext({} as WalletProviderState)
 
 /**
  * Wallet provider for Metamask with all the functionalities to handle the wallet in dapp 
@@ -199,57 +199,57 @@ export const WalletProvider = ({
     correctNetworkId: string;
     externalChainConfig?: ChainConfig;
 }) => {
-    const correctChainId = convertHextoIntString(correctNetworkId);
-    const eths = useRef({} as MetamaskProvider);
-    const [walletAddress, setWalletAddress] = useState<string>("");
-    const [acceptedChainId, setAcceptedChainId] = useState("");
-    const [acceptedChainIdHex, setAcceptedChainIdHex] = useState("");
-    const [isChainCorrect, setIsChainCorrect] = useState(true);
-    const chainConfig: ChainConfig = externalChainConfig || DefaultChainConfig;
+    const correctChainId = convertHextoIntString(correctNetworkId)
+    const eths = useRef({} as MetamaskProvider)
+    const [walletAddress, setWalletAddress] = useState<string>("")
+    const [acceptedChainId, setAcceptedChainId] = useState("")
+    const [acceptedChainIdHex, setAcceptedChainIdHex] = useState("")
+    const [isChainCorrect, setIsChainCorrect] = useState(true)
+    const chainConfig: ChainConfig = externalChainConfig || DefaultChainConfig
 
     const checkIsNotChainCorrect = (chainHexId: string) => {
         return !Object.keys(chainConfig).some((env: string) => {
             if (env === "returnConfig") {
-                return false;
+                return false
             }
 
-            return (chainConfig[env] as ChainNetwork).chainId === chainHexId;
-        });
-    };
+            return (chainConfig[env] as ChainNetwork).chainId === chainHexId
+        })
+    }
 
     const checkChain = async (chainHexId: string) => {
         if (checkIsNotChainCorrect(chainHexId)) {
-            setAcceptedChainId(correctChainId);
-            setAcceptedChainIdHex(correctNetworkId);
-            setIsChainCorrect(false);
+            setAcceptedChainId(correctChainId)
+            setAcceptedChainIdHex(correctNetworkId)
+            setIsChainCorrect(false)
         } else {
-            setAcceptedChainId(convertHextoIntString(chainHexId));
-            setAcceptedChainIdHex(chainHexId);
+            setAcceptedChainId(convertHextoIntString(chainHexId))
+            setAcceptedChainIdHex(chainHexId)
         }
-    };
+    }
 
     useEffect(() => {
-        if (!isChainCorrect) switchChainsOrRegisterSupportedChain();
-    }, [isChainCorrect]);
+        if (!isChainCorrect) switchChainsOrRegisterSupportedChain()
+    }, [isChainCorrect])
 
     useEffect(() => {
         (async () => {
             try {
                 const chainIdHex = await window?.ethereum?.request?.({
                     method: "eth_chainId",
-                });
-                const chainId = convertHextoIntString(chainIdHex);
-                setAcceptedChainId(chainId);
-                checkChain(chainIdHex);
+                })
+                const chainId = convertHextoIntString(chainIdHex)
+                setAcceptedChainId(chainId)
+                checkChain(chainIdHex)
             } catch (error: any) {
                 console.error(error.message)
             }
-        })();
+        })()
 
         window?.ethereum?.on("chainChanged", (chainHexId: string) => {
-                checkChain(chainHexId);
-        });        
-    }, []);
+                checkChain(chainHexId)
+        })        
+    }, [])
 
 
     useEffect(() => {
@@ -259,50 +259,50 @@ export const WalletProvider = ({
                 if (newAccount && newAccount.length > 0) {
                     setWalletAddress(
                         ethers.utils.getAddress(newAccount[0])
-                    );
+                    )
                 } else {
-                    setWalletAddress("");
-                    console.log("No Account found!");
+                    setWalletAddress("")
+                    console.log("No Account found!")
                 }
-            });
-        };
-        registerOnAccounsChangedListener();
-    }, []);
+            })
+        }
+        registerOnAccounsChangedListener()
+    }, [])
 
     const updateWalletAddress = async (): Promise<void> => {
-        const accounts = await eths.current?.listAccounts();
+        const accounts = await eths.current?.listAccounts()
         setWalletAddress(
             accounts?.length ? ethers.utils.getAddress(accounts[0]) : ""
-        );
-    };
+        )
+    }
 
     useEffect(() => {
         (() => {
             let provider = {} as MetamaskProvider
             // Modern dapp browsers
             if (window.ethereum) {
-                provider = new ethers.providers.Web3Provider(window.ethereum);
+                provider = new ethers.providers.Web3Provider(window.ethereum)
             }
             // Legacy dapp browsers
             else if (window.web3) {
-                provider = new ethers.providers.Web3Provider(window.web3);
+                provider = new ethers.providers.Web3Provider(window.web3)
             } else {
-                console.log("No Web3, defaulting to HTTPProvider");
-                provider = new ethers.providers.JsonRpcProvider(nodeUri);
+                console.log("No Web3, defaulting to HTTPProvider")
+                provider = new ethers.providers.JsonRpcProvider(nodeUri)
             }
-            eths.current = provider;
-        })();
-    }, []);
+            eths.current = provider
+        })()
+    }, [])
 
     useEffect(() => {
         if(!eths.current?.listAccounts) return
         
-        updateWalletAddress();
+        updateWalletAddress()
     }, [eths.current?.listAccounts])
 
     const switchChainsOrRegisterSupportedChain = async (): Promise<void> => {
         if (!acceptedChainIdHex) {
-            return;
+            return
         }
         try {
             await window?.ethereum?.request?.({
@@ -312,68 +312,68 @@ export const WalletProvider = ({
                         chainId: acceptedChainIdHex,
                     },
                 ],
-            });
+            })
 
-            setIsChainCorrect(true);
+            setIsChainCorrect(true)
         } catch (switchError) {
             if ((switchError as any).code === 4902) {
                 try {
                     const currentChainConfig =
-                        chainConfig.returnConfig(acceptedChainIdHex);
+                        chainConfig.returnConfig(acceptedChainIdHex)
                     const configParam = await window?.ethereum?.request?.({
                         method: "wallet_addEthereumChain",
                         params: [currentChainConfig],
-                    });
+                    })
                     if (!configParam) {
                         console.log(
                             `Chain ${acceptedChainId} added successfully!`
-                        );
+                        )
                     }
                 } catch (addError) {
-                    console.error(addError);
+                    console.error(addError)
                 }
             }
-            console.error(switchError);
+            console.error(switchError)
         }
-    };
+    }
 
     const isAvailable = (): boolean => {
-        return eths.current !== null;
-    };
+        return eths.current !== null
+    }
 
     const checkIsLogged = async (): Promise<boolean> => {
-        if (!isAvailable() || !eths.current?.listAccounts) return false;
-        const accounts = await eths.current?.listAccounts();
-        return Boolean(accounts?.length);
-    };
+        if (!isAvailable() || !eths.current?.listAccounts) return false
+        const accounts = await eths.current?.listAccounts()
+        return Boolean(accounts?.length)
+    }
 
     const startLogin = async (): Promise<string[]> => {
         try {
             const response = await window?.ethereum?.request?.({
                 method: "eth_requestAccounts",
-            });
-            setWalletAddress(ethers.utils.getAddress(response[0]));
-            return response;
+            })
+            setWalletAddress(ethers.utils.getAddress(response[0]))
+            return response
         } catch (error) {
-            return await Promise.reject(error);
+            return await Promise.reject(error)
         }
-    };
+    }
 
     const loginMetamask = async () => {
         try {
-            await startLogin();
+            await startLogin()
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
-    };
+    }
 
     const logout = (): void => {
-        setWalletAddress("");
-    };
+        setWalletAddress("")
+    }
 
     const getProvider = (): MetamaskProvider => {
-        return eths.current;
-    };
+        return eths.current
+    }
 
     const IState = {
         walletAddress,
@@ -384,17 +384,17 @@ export const WalletProvider = ({
         checkIsLogged,
         isAvailable,
         isChainCorrect,
-    };
+    }
 
     return (
         <WalletContext.Provider value={IState}>
             {children}
         </WalletContext.Provider>
-    );
-};
+    )
+}
 
 export const useWallet = (): WalletProviderState => {
-    const contextValue = useContext(WalletContext);
+    const contextValue = useContext(WalletContext)
 
   if (!contextValue) {
     throw new Error(
@@ -402,5 +402,5 @@ export const useWallet = (): WalletProviderState => {
     )
   }
 
-  return contextValue;
+  return contextValue
 }

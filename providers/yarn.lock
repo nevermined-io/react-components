@@ -1719,12 +1719,11 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@nevermined-io/nevermined-sdk-js@^0.23.5":
-  version "0.23.5"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.23.5.tgz#ab7e9c9d4e8d528552f91c7681677e62a7a5eec1"
-  integrity sha512-GJriSUsmJFYh3uLPS8KnsW71tC7vYVltcCR4WzVkrfeJBoQl/nD6fZCHo6bWcWWZD/n1hGNeC1O1p+wZHh3XCw==
+"@nevermined-io/nevermined-sdk-js@^0.25.0-rc1":
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.25.0.tgz#620a8b9287bc2dcc63360d1104cbf2f618d3add3"
+  integrity sha512-U3qgMBUoKgJgNQ8ZsitvJxmyF9bIkIY28ktXFUBinmDgDc4AsVpJmiVZfCFpeF5/S8iF4sKJ2gjQrqHC/ETCaA==
   dependencies:
-    "@nevermined-io/secret-store-client" "^0.0.16"
     "@nevermined-io/subgraphs" "0.4.1"
     assert "^2.0.0"
     codegen-graph-ts "npm:@nevermined-io/codegen-graph-ts@0.1.4"
@@ -1743,13 +1742,6 @@
     url "^0.11.0"
     uuid "^3.4.0"
     whatwg-url "^7.1.0"
-
-"@nevermined-io/secret-store-client@^0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/secret-store-client/-/secret-store-client-0.0.16.tgz#45f2ffbd5855642912a153d20001674c6aa6ce96"
-  integrity sha512-2YJpxQ38iYToXtOUK3ta8HrAqZL0/sBOxznbZNZO0Dbo6w9e2oKdQivRMnzqkBBFCIyXWFiv3So/cWHGUHa65A==
-  dependencies:
-    node-fetch "^2.6.0"
 
 "@nevermined-io/subgraphs@0.4.1":
   version "0.4.1"
@@ -3800,10 +3792,10 @@ escodegen@^2.0.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-nevermined@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-nevermined/-/eslint-config-nevermined-0.1.0.tgz#fdee39252d485cbe5194a420b30ec34c09e8bc44"
-  integrity sha512-b49PKyTANbwQAwsBC3ZESHAdOkrF3tYA+qoNjgnP1gT30O2ojysi/W95CYBP87QbrT6AQxBDSvt4OzFkabyNJA==
+eslint-config-nevermined@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-nevermined/-/eslint-config-nevermined-0.2.0.tgz#49ca6977d1b7d9ecf8716529a95e318986807f94"
+  integrity sha512-j8q/SSbAFQXlqOxLCDobAHdx0H7bNwwcdi9CjM7WXn5m1Su79lPfhcwQIMRpIvYKxTOEq0xxSXKLcpiACdxTXw==
 
 eslint-config-next@^12.3.1:
   version "12.3.1"
@@ -6451,7 +6443,7 @@ neo-async@^2.6.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-node-fetch@2.6.7, node-fetch@^2.6.0, node-fetch@^2.6.1:
+node-fetch@2.6.7, node-fetch@^2.6.1:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==

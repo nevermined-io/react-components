@@ -1,6 +1,6 @@
-import { faker } from '@faker-js/faker';
-import { MetaData, Profile } from '../src';
-import jwt from 'jsonwebtoken';
+import { faker } from '@faker-js/faker'
+import { MetaData, Profile } from '../src'
+import jwt from 'jsonwebtoken'
 
 export const ddo = {
   '@context': 'https://w3id.org/did/v1',
@@ -313,12 +313,12 @@ export const ddo = {
       serviceEndpoint: 'http://localhost:8030/'
     }
   ]
-};
+}
 
-export const walletAddress = '0xf61B443A155b07D2b2cAeA2d99715dC84E839EEf';
-export const walletAddress2 = '0xf61B443A155b07D2b2cAeA2d99715dC84E83932f';
-export const agreementId = '0xdB1B443A155b07D2b2cAeA2d99715dC84E839EE4';
-export const nftTokenAddress = '0xdB3B4435155b07D2b2cAeA2d99715dC84E839Af8';
+export const walletAddress = '0xf61B443A155b07D2b2cAeA2d99715dC84E839EEf'
+export const walletAddress2 = '0xf61B443A155b07D2b2cAeA2d99715dC84E83932f'
+export const agreementId = '0xdB1B443A155b07D2b2cAeA2d99715dC84E839EE4'
+export const nftTokenAddress = '0xdB3B4435155b07D2b2cAeA2d99715dC84E839Af8'
 
 export const newProfile: Partial<Profile> = {
   userId: `u-${faker.datatype.uuid()}`,
@@ -329,9 +329,9 @@ export const newProfile: Partial<Profile> = {
   additionalInformation: {
     linkedinProfile: ''
   }
-};
+}
 
-export const updatedProfile: Partial<Profile> = {...newProfile, nickname: faker.internet.userName()};
+export const updatedProfile: Partial<Profile> = {...newProfile, nickname: faker.internet.userName()}
 
 export const profileResult: Partial<Profile> = {
   name: newProfile.name,
@@ -511,7 +511,7 @@ export const nevermined = {
       findOneByAddress: () => newProfile,
     }
   })
-};
+}
 
 export const metadata: MetaData = {
   main: {
@@ -526,7 +526,7 @@ export const metadata: MetaData = {
     license: '',
     dateCreated: new Date().toISOString(),
   }
-};
+}
 
 export const mintNFTInput = {
     metadata,

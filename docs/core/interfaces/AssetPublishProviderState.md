@@ -30,7 +30,7 @@ Handle publish asset message
 
 #### Defined in
 
-[types/index.ts:764](https://github.com/nevermined-io/components-catalog/blob/7d4dcdd/lib/src/types/index.ts#L764)
+[types/index.ts:764](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L764)
 
 ___
 
@@ -42,7 +42,7 @@ All the parameters needed to publish an asset
 
 #### Defined in
 
-[types/index.ts:770](https://github.com/nevermined-io/components-catalog/blob/7d4dcdd/lib/src/types/index.ts#L770)
+[types/index.ts:770](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L770)
 
 ___
 
@@ -54,7 +54,7 @@ Handle error publish asset message
 
 #### Defined in
 
-[types/index.ts:762](https://github.com/nevermined-io/components-catalog/blob/7d4dcdd/lib/src/types/index.ts#L762)
+[types/index.ts:762](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L762)
 
 ___
 
@@ -81,7 +81,7 @@ Update asset parameters when some input changes
 
 #### Defined in
 
-[types/index.ts:781](https://github.com/nevermined-io/components-catalog/blob/7d4dcdd/lib/src/types/index.ts#L781)
+[types/index.ts:781](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L781)
 
 ___
 
@@ -93,7 +93,7 @@ If the asset is publishing
 
 #### Defined in
 
-[types/index.ts:768](https://github.com/nevermined-io/components-catalog/blob/7d4dcdd/lib/src/types/index.ts#L768)
+[types/index.ts:768](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L768)
 
 ___
 
@@ -105,13 +105,13 @@ If the asset was published correctly
 
 #### Defined in
 
-[types/index.ts:766](https://github.com/nevermined-io/components-catalog/blob/7d4dcdd/lib/src/types/index.ts#L766)
+[types/index.ts:766](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L766)
 
 ___
 
 ### publishAsset
 
-• **publishAsset**: (`asset`: { `assetRewards?`: `default` ; `erc20TokenAddress?`: `string` ; `metadata`: `MetaData` ; `method?`: `EncryptionMethod` ; `providers?`: `string`[] ; `serviceTypes?`: `ServiceType`[] ; `services?`: `ServiceCommon`[] ; `txParameters?`: `string`  }) => `Promise`<`undefined` \| `DDO`\>
+• **publishAsset**: (`asset`: { `appId?`: `string` ; `assetRewards?`: `default` ; `erc20TokenAddress?`: `string` ; `metadata`: `MetaData` ; `method?`: `EncryptionMethod` ; `providers?`: `string`[] ; `serviceTypes?`: `ServiceType`[] ; `services?`: `ServiceCommon`[] ; `txParameters?`: `TxParameters`  }) => `Promise`<`undefined` \| `DDO`\>
 
 #### Type declaration
 
@@ -127,6 +127,7 @@ This will return the DDO created (including the unique identifier of the asset -
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `asset` | `Object` |  |
+| `asset.appId?` | `string` | The id of the application creating the asset |
 | `asset.assetRewards?` | `default` | The price of the asset that the owner will receive |
 | `asset.erc20TokenAddress?` | `string` | The erc20 token address which the buyer will pay the price |
 | `asset.metadata` | `MetaData` | The metadata object describing the asset |
@@ -134,7 +135,7 @@ This will return the DDO created (including the unique identifier of the asset -
 | `asset.providers?` | `string`[] | Array that contains the provider addreses |
 | `asset.serviceTypes?` | `ServiceType`[] | - |
 | `asset.services?` | `ServiceCommon`[] | List of services associate with the asset |
-| `asset.txParameters?` | `string` | Trasaction number of the asset creation |
+| `asset.txParameters?` | `TxParameters` | Trasaction number of the asset creation |
 
 ##### Returns
 
@@ -144,7 +145,7 @@ The DDO object including the asset metadata and the DID
 
 #### Defined in
 
-[types/index.ts:803](https://github.com/nevermined-io/components-catalog/blob/7d4dcdd/lib/src/types/index.ts#L803)
+[types/index.ts:804](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L804)
 
 ___
 
@@ -189,7 +190,7 @@ The DDO object including the asset metadata and the DID
 
 #### Defined in
 
-[types/index.ts:898](https://github.com/nevermined-io/components-catalog/blob/7d4dcdd/lib/src/types/index.ts#L898)
+[types/index.ts:901](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L901)
 
 ___
 
@@ -234,7 +235,7 @@ The DDO object including the asset metadata and the DID
 
 #### Defined in
 
-[types/index.ts:846](https://github.com/nevermined-io/components-catalog/blob/7d4dcdd/lib/src/types/index.ts#L846)
+[types/index.ts:849](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L849)
 
 ___
 
@@ -260,7 +261,7 @@ Reset all the parameters of the asset
 
 #### Defined in
 
-[types/index.ts:785](https://github.com/nevermined-io/components-catalog/blob/7d4dcdd/lib/src/types/index.ts#L785)
+[types/index.ts:785](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L785)
 
 ___
 
@@ -272,7 +273,7 @@ Set asset message
 
 #### Defined in
 
-[types/index.ts:774](https://github.com/nevermined-io/components-catalog/blob/7d4dcdd/lib/src/types/index.ts#L774)
+[types/index.ts:774](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L774)
 
 ___
 
@@ -284,7 +285,7 @@ Set parameters needed to publish an asset
 
 #### Defined in
 
-[types/index.ts:772](https://github.com/nevermined-io/components-catalog/blob/7d4dcdd/lib/src/types/index.ts#L772)
+[types/index.ts:772](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L772)
 
 ___
 
@@ -296,4 +297,4 @@ Set error asset message
 
 #### Defined in
 
-[types/index.ts:776](https://github.com/nevermined-io/components-catalog/blob/7d4dcdd/lib/src/types/index.ts#L776)
+[types/index.ts:776](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L776)

@@ -25,7 +25,7 @@ jobs:
       - name: Install packages
         run: cd ${{ matrix.module }} && yarn install --ignore-engines
       - name: Linter
-        run: cd ${{ matrix.module }} && yarn ts:lint
+        run: cd ${{ matrix.module }} && yarn lint
       - name: Unit tests
         run: cd ${{ matrix.module }} && yarn test:unit
       - name: Build

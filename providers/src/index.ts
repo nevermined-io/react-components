@@ -1,2 +1,2 @@
 export { zeroX } from './utils'
-export * as MetaMask from "./metamask";
+export * as MetaMask from "./metamask"

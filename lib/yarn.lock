@@ -1741,10 +1741,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@nevermined-io/nevermined-sdk-js@^0.25.0-rc3":
-  version "0.25.0-rc3"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.25.0-rc3.tgz#bfb1426abe082b16c1e92704a84caed3e49b2c9e"
-  integrity sha512-OaEq9qJZgqhLya2u1zJA2RIUrX/Uskm7gO7DvxgFyht9pHj0DF6HDpSVsQ1kn8DXk5SmE9bq2qVEnbCWm7+5GQ==
+"@nevermined-io/nevermined-sdk-js@^0.25.0":
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.25.0.tgz#620a8b9287bc2dcc63360d1104cbf2f618d3add3"
+  integrity sha512-U3qgMBUoKgJgNQ8ZsitvJxmyF9bIkIY28ktXFUBinmDgDc4AsVpJmiVZfCFpeF5/S8iF4sKJ2gjQrqHC/ETCaA==
   dependencies:
     "@nevermined-io/subgraphs" "0.4.1"
     assert "^2.0.0"
@@ -3848,10 +3848,10 @@ escodegen@^2.0.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-nevermined@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-nevermined/-/eslint-config-nevermined-0.1.0.tgz#fdee39252d485cbe5194a420b30ec34c09e8bc44"
-  integrity sha512-b49PKyTANbwQAwsBC3ZESHAdOkrF3tYA+qoNjgnP1gT30O2ojysi/W95CYBP87QbrT6AQxBDSvt4OzFkabyNJA==
+eslint-config-nevermined@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-nevermined/-/eslint-config-nevermined-0.2.0.tgz#49ca6977d1b7d9ecf8716529a95e318986807f94"
+  integrity sha512-j8q/SSbAFQXlqOxLCDobAHdx0H7bNwwcdi9CjM7WXn5m1Su79lPfhcwQIMRpIvYKxTOEq0xxSXKLcpiACdxTXw==
 
 eslint-config-next@^12.3.1:
   version "12.3.1"
