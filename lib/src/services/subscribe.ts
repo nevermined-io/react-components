@@ -1,10 +1,10 @@
 import {
   ContractEventSubscription,
   EventResult
-} from '@nevermined-io/nevermined-sdk-js/dist/node/events';
-import { useContext, useEffect, useState } from 'react';
-import { NeverminedContext } from '../catalog';
-import { NftTypes, TransferNFTConditionMethod } from '../types';
+} from '@nevermined-io/nevermined-sdk-js/dist/node/events'
+import { useContext, useEffect, useState } from 'react'
+import { NeverminedContext } from '../catalog'
+import { ERCType, TransferNFTConditionMethod } from '../types'
 
 /**
  * Subscribe to payment events
@@ -33,15 +33,15 @@ import { NftTypes, TransferNFTConditionMethod } from '../types';
  * @returns Array of events with method `unsubscribe` in order to stop listening specific event
  */
 export const useSubscribeToPaymentEvents = (): { paymentEvents: EventResult[] } => {
-  const { sdk } = useContext(NeverminedContext);
-  const [paymentSubscription, setPaymentSubscription] = useState<ContractEventSubscription>();
-  const [paymentEvents, setPaymentEvents] = useState([] as EventResult[]);
+  const { sdk } = useContext(NeverminedContext)
+  const [paymentSubscription, setPaymentSubscription] = useState<ContractEventSubscription>()
+  const [paymentEvents, setPaymentEvents] = useState([] as EventResult[])
 
   useEffect(() => {
     if (sdk && sdk.keeper) {
       const paymentSubscriptionTemp = sdk.keeper.conditions.lockPaymentCondition.events.subscribe(
         (events) => {
-          setPaymentEvents(events);
+          setPaymentEvents(events)
         },
         {
           filterSubgraph: {},
@@ -55,14 +55,14 @@ export const useSubscribeToPaymentEvents = (): { paymentEvents: EventResult[] } 
             _receivers: true
           }
         }
-      );
-      setPaymentSubscription(paymentSubscriptionTemp);
+      )
+      setPaymentSubscription(paymentSubscriptionTemp)
     }
-    return () => paymentSubscription?.unsubscribe();
-  }, [sdk]);
+    return () => paymentSubscription?.unsubscribe()
+  }, [sdk])
 
-  return { paymentEvents };
-};
+  return { paymentEvents }
+}
 
 /**
  * Subscribe to nft transfer events
@@ -90,16 +90,16 @@ export const useSubscribeToPaymentEvents = (): { paymentEvents: EventResult[] } 
  * ```
  * @returns Array of events with method `unsubscribe` in order to stop listening specific event
  */
-export const useSubscribeToTransferEvents = (nftType: NftTypes = 1155): { transferEvents: EventResult[] } => {
-  const { sdk } = useContext(NeverminedContext);
-  const [transferSubscription, setTransferSubscription] = useState<ContractEventSubscription>();
-  const [transferEvents, setTransferEvents] = useState([] as EventResult[]);
+export const useSubscribeToTransferEvents = (nftType: ERCType = 1155): { transferEvents: EventResult[] } => {
+  const { sdk } = useContext(NeverminedContext)
+  const [transferSubscription, setTransferSubscription] = useState<ContractEventSubscription>()
+  const [transferEvents, setTransferEvents] = useState([] as EventResult[])
 
   useEffect(() => {
     if (sdk && sdk.keeper) {
       const response = sdk.keeper.conditions[nftType === 721 ? TransferNFTConditionMethod.nft721 : TransferNFTConditionMethod.nft1155].events.subscribe(
         (events) => {
-          setTransferEvents(events);
+          setTransferEvents(events)
         },
         {
           filterSubgraph: {},
@@ -113,12 +113,12 @@ export const useSubscribeToTransferEvents = (nftType: NftTypes = 1155): { transf
             _receiver: true
           }
         }
-      );
-      setTransferSubscription(response);
+      )
+      setTransferSubscription(response)
     }
 
-    return () => transferSubscription?.unsubscribe();
-  }, [sdk]);
+    return () => transferSubscription?.unsubscribe()
+  }, [sdk])
 
-  return { transferEvents };
-};
+  return { transferEvents }
+}

@@ -1,7 +1,7 @@
-import { DDO, MetaData, SearchQuery, ClientError, Logger } from '@nevermined-io/nevermined-sdk-js';
-import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
-import React, { useContext, useEffect, useState, createContext } from 'react';
-import { NeverminedContext, useNevermined } from '../catalog';
+import { DDO, MetaData, SearchQuery, ClientError, Logger } from '@nevermined-io/nevermined-sdk-js'
+import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards'
+import React, { useContext, useEffect, useState, createContext } from 'react'
+import { NeverminedContext, useNevermined } from '../catalog'
 import { 
   AssetState,
   AssetPublishParams,
@@ -11,9 +11,11 @@ import {
   ServiceType,
   QueryResult,
   EncryptionMethod,
-  RoyaltyAttributes
-} from '../types';
-import { getCurrentAccount } from '../utils';
+  RoyaltyAttributes,
+  BigNumber,
+  NeverminedNFT1155Type,
+} from '../types'
+import { getCurrentAccount } from '../utils'
 
 /**
  * Get all assets
@@ -45,33 +47,33 @@ export const useAssets = (
   /** If the query is still processing */
   isLoading: boolean;
 } => {
-  const { assets, sdk } = useContext(NeverminedContext);
-  const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<QueryResult>({} as QueryResult);
+  const { assets, sdk } = useContext(NeverminedContext)
+  const [isLoading, setIsLoading] = useState(false)
+  const [result, setResult] = useState<QueryResult>({} as QueryResult)
 
   const handler = async () => {
     try {
-      if (!q) return;
-      setIsLoading(true);
-      const queryResponse: QueryResult = await assets.query(q);
-      setResult(queryResponse);
-      setIsLoading(false);
+      if (!q) return
+      setIsLoading(true)
+      const queryResponse: QueryResult = await assets.query(q)
+      setResult(queryResponse)
+      setIsLoading(false)
     } catch (error: any) {
-      Logger.error(error.message);
-      setIsLoading(false);
+      Logger.error(error.message)
+      setIsLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    if (isLoading) return;
-    handler();
-  }, [assets, sdk, q]);
+    if (isLoading) return
+    handler()
+  }, [assets, sdk, q])
 
   return {
     result,
     isLoading
-  };
-};
+  }
+}
 
 /**
  * Get single asset
@@ -91,34 +93,34 @@ export const useAssets = (
  * ```
  */
 export const useAsset = (did: string): AssetState => {
-  const { assets } = useContext(NeverminedContext);
-  const [state, setState] = useState<AssetState>({} as AssetState);
+  const { assets } = useContext(NeverminedContext)
+  const [state, setState] = useState<AssetState>({} as AssetState)
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const ddo: DDO | undefined = await assets.findOne(did);
-        if (!ddo) return;
-        const metaData: MetaData = ddo.findServiceByType('metadata').attributes;
-        const nftDetails = await assets.nftDetails(did);
+        const ddo: DDO | undefined = await assets.findOne(did)
+        if (!ddo) return
+        const metaData: MetaData = ddo.findServiceByType('metadata').attributes
+        const nftDetails = await assets.nftDetails(did)
         setState({
           ddo,
           metadata: metaData,
           nftDetails,
           error: '',
           isLoading: false
-        } as AssetState);
+        } as AssetState)
       } catch (e) {
-        Logger.error(e as Error);
+        Logger.error(e as Error)
       }
-    };
-    getData();
-  }, [did, assets]);
+    }
+    getData()
+  }, [did, assets])
 
-  return { ...state };
-};
+  return { ...state }
+}
 
-export const AssetPublishContext = createContext({} as AssetPublishProviderState);
+export const AssetPublishContext = createContext({} as AssetPublishProviderState)
 
 /**
  * Provider with all the functionalities to publish assets (no-nft, nft721, nft1155)
@@ -127,11 +129,11 @@ export const AssetPublishContext = createContext({} as AssetPublishProviderState
  * @see {@link https://github.com/nevermined-io/defi-marketplace/tree/main/client/src/%2Bassets/user-publish-steps}
  */
 export const AssetPublishProvider = ({ children }: { children: React.ReactElement }) => {
-  const { sdk, account } = useNevermined();
-  const [errorAssetMessage, setErrorAssetMessage] = useState('');
-  const [isPublished, setIsPublished] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [assetMessage, setAssetMessage] = useState('');
+  const { sdk, account } = useNevermined()
+  const [errorAssetMessage, setErrorAssetMessage] = useState('')
+  const [isPublished, setIsPublished] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [assetMessage, setAssetMessage] = useState('')
   const [assetPublish, setAssetPublish] = useState<AssetPublishParams>({
     name: '',
     author: '',
@@ -140,19 +142,19 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     category: 'None',
     price: 0,
     assetFiles: []
-  });
+  })
 
   const reset = (resetAssetPublish: AssetPublishParams) => {
-    setAssetPublish(resetAssetPublish);
+    setAssetPublish(resetAssetPublish)
 
-    setIsPublished(false);
-    setAssetMessage('');
-    setErrorAssetMessage('');
-  };
+    setIsPublished(false)
+    setAssetMessage('')
+    setErrorAssetMessage('')
+  }
 
   const handleChange = (value: string, input: string) => {
-    setAssetPublish({ ...assetPublish, [input]: value });
-  };
+    setAssetPublish({ ...assetPublish, [input]: value })
+  }
 
   /**
    * Nevermined is a network where users register digital assets and attach to 
@@ -168,6 +170,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param asset.method Method used to encrypt the urls
    * @param asset.providers Array that contains the provider addreses
    * @param asset.erc20TokenAddress The erc20 token address which the buyer will pay the price
+   * @param asset.appId The id of the application creating the asset
    * @param asset.txParameters Trasaction number of the asset creation
    * @returns The DDO object including the asset metadata and the DID
    */
@@ -179,6 +182,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     method,
     providers,
     erc20TokenAddress,
+    appId,
     txParameters,
   }: 
   { 
@@ -189,19 +193,20 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     method?: EncryptionMethod;
     providers?: string[];
     erc20TokenAddress?: string,
+    appId?: string,
     txParameters?: TxParameters,
   }) => {
     try {
-      setIsProcessing(true);
+      setIsProcessing(true)
 
-      const accountWallet = await getCurrentAccount(sdk);
+      const accountWallet = await getCurrentAccount(sdk)
 
       if (!account.isTokenValid()) {
         setErrorAssetMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
-        );
+        )
 
-        await account.generateToken();
+        await account.generateToken()
       }
 
       const ddo = await sdk.assets.create(
@@ -213,21 +218,22 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         method,
         providers,
         erc20TokenAddress,
-        txParameters
-      );
-      setIsProcessing(false);
-      setIsPublished(true);
-      setAssetMessage('The asset has been sucessfully published');
-      setErrorAssetMessage('');
-      return ddo;
+        appId,
+        txParameters,
+      )
+      setIsProcessing(false)
+      setIsPublished(true)
+      setAssetMessage('The asset has been sucessfully published')
+      setErrorAssetMessage('')
+      return ddo
     } catch (error: any) {
-      Logger.error(error.message);
-      setErrorAssetMessage('There was an error publishing the asset');
-      setAssetMessage('');
-      setIsProcessing(false);
-      throw new ClientError(error.message, 'Catalog');
+      Logger.error(error.message)
+      setErrorAssetMessage('There was an error publishing the asset')
+      setAssetMessage('')
+      setIsProcessing(false)
+      throw new ClientError(error.message, 'Catalog')
     }
-  };
+  }
 
   /**
    * In Nevermined is possible to register a digital asset that allow users pay for having a 
@@ -246,7 +252,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param nft721.preMint If assets are minted in the creation process
    * @param nft721.royaltyAttributes The amount of royalties paid back to the original creator in the secondary market
    * @param nft721.nftMetadata Url to set at publishing time that resolves to the metadata of the nft as expected by opensea
-   * @param nft721.txParameters Trasaction number of the asset creation
    * @param nft721.services List of services associate with the asset
    * @param nft721.nftTransfer if the nft will be transfered to other address after published
    * @param nft721.duration When expire the NFT721. The default 0 value means never
@@ -262,8 +267,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     preMint = false,
     royaltyAttributes,
     nftMetadata,
-    txParameters,
-    services = ['nft721-access'],
+    services = ['nft-access'],
     nftTransfer = false,
     duration = 0
   }: {
@@ -276,21 +280,20 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     preMint?: boolean;
     royaltyAttributes: RoyaltyAttributes;
     nftMetadata?: string;
-    txParameters?: TxParameters;
     services?: ServiceType[];
     nftTransfer?: boolean;
     duration?: number;
   }) => {
     try {
-      setIsProcessing(true);
+      setIsProcessing(true)
 
-      const accountWallet = await getCurrentAccount(sdk);
+      const accountWallet = await getCurrentAccount(sdk)
 
       if (!account.isTokenValid()) {
         setErrorAssetMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
-        );
-        await account.generateToken();
+        )
+        await account.generateToken()
       }
     
       const ddo = await sdk.assets.createNft721(
@@ -304,25 +307,24 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         providers,
         royaltyAttributes,
         nftMetadata,
-        txParameters,
         services,
         nftTransfer,
         duration,
     )
 
-      setIsProcessing(false);
-      setIsPublished(true);
-      setAssetMessage('The asset NFT 721 has been sucessfully published');
-      setErrorAssetMessage('');
-      return ddo;
+      setIsProcessing(false)
+      setIsPublished(true)
+      setAssetMessage('The asset NFT 721 has been sucessfully published')
+      setErrorAssetMessage('')
+      return ddo
     } catch (error: any) {
-      Logger.error(error.message);
-      setErrorAssetMessage('There was an error publishing the asset NFT 721');
-      setAssetMessage('');
-      setIsProcessing(false);
-      throw new ClientError(error.message, 'Catalog');
+      Logger.error(error.message)
+      setErrorAssetMessage('There was an error publishing the asset NFT 721')
+      setAssetMessage('')
+      setIsProcessing(false)
+      throw new ClientError(error.message, 'Catalog')
     }
-  };
+  }
 
   /**
    * In Nevermined is possible to register a digital asset that allow users pay for having a 
@@ -342,6 +344,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param nft1155.erc20TokenAddress The erc20 token address which the buyer will pay the price
    * @param nft1155.preMint If assets are minted in the creation process
    * @param nft1155.nftMetadata Url to set at publishing time that resolves to the metadata of the nft as expected by opensea
+   * @param nft1155.neverminedNFTType the type of the NFT1155
+   * @param nft1155.appId The id of the application creating the NFT
    * @param nft1155.txParameters Trasaction number of the asset creation
    * @returns The DDO object including the asset metadata and the DID
    */
@@ -351,49 +355,53 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     cap,
     assetRewards = new AssetRewards(),
     royaltyAttributes,
-    nftAmount = 1,
+    nftAmount,
     erc20TokenAddress,
     preMint = false,
     nftMetadata,
+    neverminedNFT1155Type,
+    appId,
     txParameters,
   }: {
     gatewayAddress: string,
     metadata: MetaData,
-    cap: number,
+    cap: BigNumber,
     assetRewards?: AssetRewards;
     royaltyAttributes: RoyaltyAttributes,
-    nftAmount?: number,
+    nftAmount?: BigNumber,
     erc20TokenAddress?: string,
     preMint?: boolean,
     nftMetadata?: string,
+    neverminedNFT1155Type?: NeverminedNFT1155Type,
+    appId?: string,
     txParameters?: TxParameters,
   }) => {
     try {
-      setIsProcessing(true);
+      setIsProcessing(true)
 
-      const accountWallet = await getCurrentAccount(sdk);
+      const accountWallet = await getCurrentAccount(sdk)
 
       if (!account.isTokenValid()) {
         setErrorAssetMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
-        );
-        await account.generateToken();
+        )
+        await account.generateToken()
       }
 
       if (!gatewayAddress) {
-        Logger.error('Gateway address from config is required to mint NFT1155 asset');
+        Logger.error('Gateway address from config is required to mint NFT1155 asset')
         return
       }
 
-      const transferNftCondition = sdk.keeper.conditions.transferNftCondition;
+      const transferNftCondition = sdk.keeper.conditions.transferNftCondition
 
-      const transferNftConditionContractReceipt = await sdk.nfts.setApprovalForAll(transferNftCondition.address, true, accountWallet);
+      const transferNftConditionContractReceipt = await sdk.nfts.setApprovalForAll(transferNftCondition.address, true, accountWallet)
 
-      Logger.log(`Contract Receipt for approved transfer NFT: ${transferNftConditionContractReceipt}`);
+      Logger.log(`Contract Receipt for approved transfer NFT: ${transferNftConditionContractReceipt}`)
 
-      const gateawayContractReceipt = await sdk.nfts.setApprovalForAll(gatewayAddress, true, accountWallet);
+      const gateawayContractReceipt = await sdk.nfts.setApprovalForAll(gatewayAddress, true, accountWallet)
 
-      Logger.log(`Contract Receipt for approved gateway: ${gateawayContractReceipt}`);
+      Logger.log(`Contract Receipt for approved gateway: ${gateawayContractReceipt}`)
 
 
       const ddo = await sdk.nfts.createWithRoyalties(
@@ -406,21 +414,23 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         erc20TokenAddress,
         preMint,
         nftMetadata,
+        neverminedNFT1155Type,
+        appId,
         txParameters,
-      );
-      setIsProcessing(false);
-      setIsPublished(true);
-      setAssetMessage('The asset NFT 1155 has been sucessfully published');
-      setErrorAssetMessage('');
-      return ddo;
+      )
+      setIsProcessing(false)
+      setIsPublished(true)
+      setAssetMessage('The asset NFT 1155 has been sucessfully published')
+      setErrorAssetMessage('')
+      return ddo
     } catch (error: any) {
-      Logger.error(error.message);
-      setErrorAssetMessage('There was an error publishing the asset NFT 1155');
-      setAssetMessage('');
-      setIsProcessing(false);
-      throw new ClientError(error.message, 'Catalog');
+      Logger.error(error.message)
+      setErrorAssetMessage('There was an error publishing the asset NFT 1155')
+      setAssetMessage('')
+      setIsProcessing(false)
+      throw new ClientError(error.message, 'Catalog')
     }
-  };
+  }
 
   const IState = {
     errorAssetMessage,
@@ -436,9 +446,9 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     publishNFT721,
     publishNFT1155,
     reset
-  };
+  }
 
-  return <AssetPublishContext.Provider value={IState}>{children}</AssetPublishContext.Provider>;
-};
+  return <AssetPublishContext.Provider value={IState}>{children}</AssetPublishContext.Provider>
+}
 
-export const useAssetPublish = (): AssetPublishProviderState => useContext(AssetPublishContext);
+export const useAssetPublish = (): AssetPublishProviderState => useContext(AssetPublishContext)

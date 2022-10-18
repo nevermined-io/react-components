@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { renderHook, waitFor } from '@testing-library/react';
-import { generateTestingUtils } from 'eth-testing';
-import { appConfig } from '../config';
-import { Catalog, AssetService, DDO, RoyaltyKind, getRoyaltyScheme, MarketplaceAPIToken, Logger, Nevermined } from '../../src';
-import { ddo as assetObject, metadata, nftTokenAddress, walletAddress } from '../mockups';
-import { faker } from '@faker-js/faker';
-import jwt from 'jsonwebtoken';
+import React, { useEffect, useState } from 'react'
+import { renderHook, waitFor } from '@testing-library/react'
+import { generateTestingUtils } from 'eth-testing'
+import { appConfig } from '../config'
+import { Catalog, AssetService, DDO, RoyaltyKind, getRoyaltyScheme, MarketplaceAPIToken, Logger, Nevermined, BigNumber } from '../../src'
+import { ddo as assetObject, metadata, nftTokenAddress, walletAddress } from '../mockups'
+import { faker } from '@faker-js/faker'
+import jwt from 'jsonwebtoken'
 
 jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
   ...jest.requireActual('@nevermined-io/nevermined-sdk-js'),
   Nevermined: jest.requireActual('../mockups').nevermined
-}));
+}))
 
 const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
   <Catalog.NeverminedProvider config={appConfig}>
@@ -18,138 +18,138 @@ const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
       {children}
     </AssetService.AssetPublishProvider>
   </Catalog.NeverminedProvider>
-);
+)
 
 describe('Assets Service', () => {
-  const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
+  const testingUtils = generateTestingUtils({ providerType: 'MetaMask' })
   const royaltyAttributes = (sdk: Nevermined) => ({
     royaltyKind: RoyaltyKind.Standard,
     scheme: getRoyaltyScheme(sdk, RoyaltyKind.Standard),
     amount: 0,
-  });
+  })
 
   afterEach(() => {
-    testingUtils.clearAllMocks();
-    jest.clearAllMocks();
-  });
+    testingUtils.clearAllMocks()
+    jest.clearAllMocks()
+  })
 
   it('should find assets', async () => {
     const { result } = renderHook(
       () => {
-        const { isLoadingSDK, updateSDK } = Catalog.useNevermined();
+        const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
         const { result } = AssetService.useAssets({
           query: {
             id: assetObject.id
           }
-        });
+        })
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
-        }, [isLoadingSDK, result]);
+        }, [isLoadingSDK, result])
 
-        return result;
+        return result
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(result.current.results).toStrictEqual([assetObject]);
-    });
-  });
+      expect(result.current.results).toStrictEqual([assetObject])
+    })
+  })
 
   it('should find an asset', async () => {
     const { result } = renderHook(
       () => {
-        const { isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const { ddo, metadata } = AssetService.useAsset(assetObject.id);
+        const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { ddo, metadata } = AssetService.useAsset(assetObject.id)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
-        }, [isLoadingSDK, ddo]);
+        }, [isLoadingSDK, ddo])
 
         return {
           ddo,
           metadata,
-        };
+        }
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
       expect(result.current).toStrictEqual({
         ddo: assetObject,
         metadata: assetObject.service[0].attributes,
-      });
-    });
-  });
+      })
+    })
+  })
 
   it('should publish an asset', async() => {
     const { result } = renderHook(
       () => {
-        const { isLoadingSDK, updateSDK, account } = Catalog.useNevermined();
-        const { publishAsset, isPublished } = AssetService.useAssetPublish();
-        const [ddo, setDDO ] = useState<DDO>({} as DDO);
+        const { isLoadingSDK, updateSDK, account } = Catalog.useNevermined()
+        const { publishAsset, isPublished } = AssetService.useAssetPublish()
+        const [ddo, setDDO ] = useState<DDO>({} as DDO)
 
-        jest.spyOn(account, 'isTokenValid').mockReturnValue(true);
+        jest.spyOn(account, 'isTokenValid').mockReturnValue(true)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             const result = await publishAsset({
               metadata,
-            }) as DDO;
+            }) as DDO
 
             setDDO(result)
           })()
-        }, [isLoadingSDK, ddo]);
+        }, [isLoadingSDK, ddo])
 
         return {
           ddo,
           isPublished,
-        };
+        }
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
       expect(result.current).toStrictEqual({
         ddo: assetObject,
         isPublished: true,
-      });
-    });
-  });
+      })
+    })
+  })
 
   it('should publish an nft721', async() => {
     const { result } = renderHook(
       () => {
-        const { isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined();
-        const { publishNFT721, isPublished } = AssetService.useAssetPublish();
-        const [ddo, setDDO ] = useState<DDO>({} as DDO);
+        const { isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
+        const { publishNFT721, isPublished } = AssetService.useAssetPublish()
+        const [ddo, setDDO ] = useState<DDO>({} as DDO)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
@@ -158,89 +158,89 @@ describe('Assets Service', () => {
               metadata,
               providers: undefined,
               royaltyAttributes: royaltyAttributes(sdk)
-            }) as DDO;
+            }) as DDO
 
             setDDO(result)
           })()
-        }, [isLoadingSDK, ddo]);
+        }, [isLoadingSDK, ddo])
 
         return {
           ddo,
           isPublished,
-        };
+        }
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
       expect(result.current).toStrictEqual({
         ddo: assetObject,
         isPublished: true,
-      });
-    });
-  });
+      })
+    })
+  })
 
   it('should publish an nft1155', async() => {
     const { result } = renderHook(
       () => {
-        const { isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined();
-        const { publishNFT1155, isPublished } = AssetService.useAssetPublish();
-        const [ddo, setDDO ] = useState<DDO>({} as DDO);
+        const { isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
+        const { publishNFT1155, isPublished } = AssetService.useAssetPublish()
+        const [ddo, setDDO ] = useState<DDO>({} as DDO)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             const result = await publishNFT1155({
               gatewayAddress: String(appConfig.gatewayAddress),
               metadata,
-              cap: 100,
+              cap: BigNumber.from(100),
               royaltyAttributes: royaltyAttributes(sdk)
-            }) as DDO;
+            }) as DDO
 
             setDDO(result)
           })()
-        }, [isLoadingSDK, ddo]);
+        }, [isLoadingSDK, ddo])
 
         return {
           ddo,
           isPublished,
-        };
+        }
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
       expect(result.current).toStrictEqual({
         ddo: assetObject,
         isPublished: true,
-      });
-    });
-  });
+      })
+    })
+  })
 
   it('should not mint if gateway address is not set', async () => {
-    const logSpy = jest.spyOn(Logger, 'error');
+    const logSpy = jest.spyOn(Logger, 'error')
     const appConfigCopy = {...appConfig }
     appConfig.gatewayAddress = ''
 
     renderHook(
       () => {
-        const { isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined();
-        const { publishNFT1155 } = AssetService.useAssetPublish();
+        const { isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
+        const { publishNFT1155 } = AssetService.useAssetPublish()
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
@@ -248,41 +248,41 @@ describe('Assets Service', () => {
               await publishNFT1155({
                 gatewayAddress: '',
                 metadata,
-                cap: 100,
+                cap: BigNumber.from(100),
                 royaltyAttributes: royaltyAttributes(sdk),
             })
               
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
       expect(logSpy).toBeCalledWith('Gateway address from config is required to mint NFT1155 asset')
-    });
+    })
 
-    appConfig.gatewayAddress = appConfigCopy.gatewayAddress;
-  });
+    appConfig.gatewayAddress = appConfigCopy.gatewayAddress
+  })
 
   it('should update asset to publish after call handleChange function', async() => {
-    const author = faker.name.firstName();
+    const author = faker.name.firstName()
 
     const { result } = renderHook(
       () => {
-        const { isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const { assetPublish, setAssetPublish, handleChange } = AssetService.useAssetPublish();
+        const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assetPublish, setAssetPublish, handleChange } = AssetService.useAssetPublish()
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
@@ -295,37 +295,37 @@ describe('Assets Service', () => {
                 category: 'None',
                 price: 0,
                 assetFiles: []
-              });
+              })
   
               handleChange(author, 'author')
             }
           })()
-        }, [isLoadingSDK, assetPublish]);
+        }, [isLoadingSDK, assetPublish])
 
-        return assetPublish;
+        return assetPublish
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(result.current.author).toBe(author);
-    });
-  });
+      expect(result.current.author).toBe(author)
+    })
+  })
 
   it('should reset asset to publish', async() => {
     const { result } = renderHook(
       () => {
-        const { isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const { assetPublish, setAssetPublish, reset } = AssetService.useAssetPublish();
-        const [count, setCount] = useState(0);
+        const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assetPublish, setAssetPublish, reset } = AssetService.useAssetPublish()
+        const [count, setCount] = useState(0)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
@@ -338,7 +338,7 @@ describe('Assets Service', () => {
                 category: 'None',
                 price: 0,
                 assetFiles: []
-              });
+              })
   
               reset({
                 name: '',
@@ -348,19 +348,19 @@ describe('Assets Service', () => {
                 category: 'None',
                 price: 0,
                 assetFiles: []
-              });
+              })
 
-              setCount(count + 1);
+              setCount(count + 1)
             }
           })()
-        }, [isLoadingSDK, assetPublish]);
+        }, [isLoadingSDK, assetPublish])
 
-        return assetPublish;
+        return assetPublish
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
       expect(result.current).toStrictEqual({
@@ -371,21 +371,21 @@ describe('Assets Service', () => {
         category: 'None',
         price: 0,
         assetFiles: []
-      });
-    });
-  });
+      })
+    })
+  })
 
   it('should throw an error if token is not valid', async () => {
-    let generateTokenSpy: jest.SpyInstance<Promise<MarketplaceAPIToken>, any>;
+    let generateTokenSpy: jest.SpyInstance<Promise<MarketplaceAPIToken>, any>
 
     renderHook(
       () => {
-        const { isLoadingSDK, updateSDK, account } = Catalog.useNevermined();
-        const { publishAsset, errorAssetMessage } = AssetService.useAssetPublish();
+        const { isLoadingSDK, updateSDK, account } = Catalog.useNevermined()
+        const { publishAsset, errorAssetMessage } = AssetService.useAssetPublish()
 
-        jest.spyOn(account, 'isTokenValid').mockReturnValue(false);
+        jest.spyOn(account, 'isTokenValid').mockReturnValue(false)
 
-        generateTokenSpy = jest.spyOn(account, 'generateToken');
+        generateTokenSpy = jest.spyOn(account, 'generateToken')
 
         generateTokenSpy.mockImplementation(async() => {
           const token = jwt.sign({iss: walletAddress,
@@ -396,32 +396,32 @@ describe('Assets Service', () => {
           
           return {
             token,
-          };
-        });
+          }
+        })
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             await publishAsset({
               metadata,
-            }) as DDO;
+            }) as DDO
           })()
-        }, [isLoadingSDK, errorAssetMessage]);
+        }, [isLoadingSDK, errorAssetMessage])
 
-        return errorAssetMessage;
+        return errorAssetMessage
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(generateTokenSpy).toBeCalledTimes(1);
-    });
-  });
-});
+      expect(generateTokenSpy).toBeCalledTimes(1)
+    })
+  })
+})

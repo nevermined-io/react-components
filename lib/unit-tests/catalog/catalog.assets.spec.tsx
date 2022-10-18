@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { renderHook, waitFor } from '@testing-library/react';
-import { generateTestingUtils } from 'eth-testing';
-import { appConfig } from '../config';
-import { agreementId, ddo, walletAddress, nevermined, nftTokenAddress } from '../mockups';
-import { Catalog, NFTDetails } from '../../src';
-import { DDO, Logger } from '@nevermined-io/nevermined-sdk-js';
+import React, { useEffect, useState } from 'react'
+import { renderHook, waitFor } from '@testing-library/react'
+import { generateTestingUtils } from 'eth-testing'
+import { appConfig } from '../config'
+import { agreementId, ddo, walletAddress, nevermined, nftTokenAddress } from '../mockups'
+import { Catalog, NFTDetails, BigNumber } from '../../src'
+import { DDO, Logger } from '@nevermined-io/nevermined-sdk-js'
 
 jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
   ...jest.requireActual('@nevermined-io/nevermined-sdk-js'),
   Nevermined: jest.requireActual('../mockups').nevermined
-}));
+}))
 
 jest.mock('axios', () => ({
   post: () => ({
@@ -17,68 +17,68 @@ jest.mock('axios', () => ({
       url: 'cid://bafkqaesimvwgy3zmebhgk5tfojwws3tfmqqq'
     }
   })
-}));
+}))
 
-jest.mock('axios-retry', () => () => undefined);
+jest.mock('axios-retry', () => () => undefined)
 
 const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
   <Catalog.NeverminedProvider config={appConfig}>{children}</Catalog.NeverminedProvider>
-);
+)
 
 describe('Nevermined assets', () => {
-  const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
+  const testingUtils = generateTestingUtils({ providerType: 'MetaMask' })
 
   afterEach(() => {
-    testingUtils.clearAllMocks();
-    jest.clearAllMocks();
-  });
+    testingUtils.clearAllMocks()
+    jest.clearAllMocks()
+  })
 
   it('Should get single asset', async () => {
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [asset, setAsset] = useState<DDO>({} as DDO);
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [asset, setAsset] = useState<DDO>({} as DDO)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             try {
-              const result = await assets.findOne(ddo.id);
-              setAsset(result);
+              const result = await assets.findOne(ddo.id)
+              setAsset(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return asset;
+        return asset
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(result.current).toStrictEqual(ddo);
-    });
-  });
+      expect(result.current).toStrictEqual(ddo)
+    })
+  })
 
   it('Should get an asset by passing a query', async () => {
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [asset, setAsset] = useState<DDO[]>([]);
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [asset, setAsset] = useState<DDO[]>([])
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
@@ -87,29 +87,29 @@ describe('Nevermined assets', () => {
                 query: {
                   id: ddo.id
                 }
-              });
+              })
               
-              setAsset(result.results);
+              setAsset(result.results)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return asset;
+        return asset
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(result.current).toStrictEqual([ddo]);
-    });
-  });
+      expect(result.current).toStrictEqual([ddo])
+    })
+  })
 
   it('Should order an asset', async () => {
-    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       assets: {
@@ -120,44 +120,44 @@ describe('Nevermined assets', () => {
         download: async () => true,
         consume: async () => true
       }
-    });
+    })
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [agrId, setAgrId] = useState<string>('');
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [agrId, setAgrId] = useState<string>('')
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             try {
-              const result = await assets.orderAsset(ddo.id);
-              setAgrId(result);
+              const result = await assets.orderAsset(ddo.id)
+              setAgrId(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return agrId;
+        return agrId
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(result.current).toBe(agreementId);
-    });
-  });
+      expect(result.current).toBe(agreementId)
+    })
+  })
 
   it('should not order if the user is the owner of the asset', async () => {
-    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       assets: {
@@ -168,45 +168,45 @@ describe('Nevermined assets', () => {
         download: async () => true,
         consume: async () => true
       }
-    });
+    })
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [errorMessage, setErrorMessage] = useState<string>('');
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [errorMessage, setErrorMessage] = useState<string>('')
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             try {
-              await assets.orderAsset(ddo.id);
+              await assets.orderAsset(ddo.id)
             } catch (error: any) {
-              setErrorMessage(error.message);
+              setErrorMessage(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return errorMessage;
+        return errorMessage
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
       expect(result.current).toBe(
         "Catalog error: You are already the owner, you don't need to order the asset"
-      );
-    });
-  });
+      )
+    })
+  })
 
   it('should get the agreement id if the asset was purchased by the user already', async () => {
-    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       assets: {
@@ -217,79 +217,79 @@ describe('Nevermined assets', () => {
         download: async () => true,
         consume: async () => true
       }
-    });
+    })
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [agrId, setAgrId] = useState<string>('');
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [agrId, setAgrId] = useState<string>('')
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             try {
-              const result = await assets.orderAsset(ddo.id);
-              setAgrId(result);
+              const result = await assets.orderAsset(ddo.id)
+              setAgrId(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return agrId;
+        return agrId
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(result.current).toBe(agreementId);
-    });
-  });
+      expect(result.current).toBe(agreementId)
+    })
+  })
 
   it('should get the agreement id if the nft 721 was purchased by the user already', async () => {
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [agrId, setAgrId] = useState<string>('');
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [agrId, setAgrId] = useState<string>('')
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             try {
-              const result = await assets.orderNFT721(ddo.id, nftTokenAddress);
-              setAgrId(result);
+              const result = await assets.orderNFT721(ddo.id, nftTokenAddress)
+              setAgrId(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return agrId;
+        return agrId
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(result.current).toBe(agreementId);
-    });
-  });
+      expect(result.current).toBe(agreementId)
+    })
+  })
 
   it('should order nft 721', async () => {
-    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       nfts: {
@@ -300,79 +300,79 @@ describe('Nevermined assets', () => {
         order: () => agreementId,
         access: () => true
       }
-    });
+    })
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [agrId, setAgrId] = useState<string>('');
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [agrId, setAgrId] = useState<string>('')
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             try {
-              const result = await assets.orderNFT721(ddo.id, nftTokenAddress);
-              setAgrId(result);
+              const result = await assets.orderNFT721(ddo.id, nftTokenAddress)
+              setAgrId(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return agrId;
+        return agrId
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(result.current).toBe(agreementId);
-    });
-  });
+      expect(result.current).toBe(agreementId)
+    })
+  })
 
   it('should get the agreement id if the nft 1155 was purchased by the user already', async () => {
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [agrId, setAgrId] = useState<string>('');
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [agrId, setAgrId] = useState<string>('')
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             try {
-              const result = await assets.orderNFT1155(ddo.id);
-              setAgrId(result);
+              const result = await assets.orderNFT1155(ddo.id, BigNumber.from(1))
+              setAgrId(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return agrId;
+        return agrId
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(result.current).toBe(agreementId);
-    });
-  });
+      expect(result.current).toBe(agreementId)
+    })
+  })
 
   it('should order nft 1155', async () => {
-    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       nfts: {
@@ -383,45 +383,45 @@ describe('Nevermined assets', () => {
         order: () => agreementId,
         access: () => true
       }
-    });
+    })
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [agrId, setAgrId] = useState<string>('');
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [agrId, setAgrId] = useState<string>('')
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             try {
-              const result = await assets.orderNFT1155(ddo.id);
-              setAgrId(result);
+              const result = await assets.orderNFT1155(ddo.id, BigNumber.from(1))
+              setAgrId(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return agrId;
+        return agrId
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(result.current).toBe(agreementId);
-    });
-  });
+      expect(result.current).toBe(agreementId)
+    })
+  })
 
   it('should download asset if the user is the owner', async () => {
-    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
-    const sdkSpy = jest.spyOn(nevermined, 'getInstance');
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
+    const sdkSpy = jest.spyOn(nevermined, 'getInstance')
 
     sdkSpy.mockResolvedValue({
       ...sdk,
@@ -433,53 +433,53 @@ describe('Nevermined assets', () => {
         download: async () => true,
         consume: async () => true
       }
-    });
+    })
 
-    const sdkInstance: any = await sdkSpy.getMockImplementation()?.();
+    const sdkInstance: any = await sdkSpy.getMockImplementation()?.()
 
-    const downloadSpy = jest.spyOn(sdkInstance.assets, 'download');
-    const consumeSpy = jest.spyOn(sdkInstance.assets, 'consume');
+    const downloadSpy = jest.spyOn(sdkInstance.assets, 'download')
+    const consumeSpy = jest.spyOn(sdkInstance.assets, 'consume')
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [isDownloaded, setIsDownloaded] = useState<boolean>(false);
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [isDownloaded, setIsDownloaded] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             try {
-              const result = await assets.downloadAsset(ddo.id);
-              setIsDownloaded(result);
+              const result = await assets.downloadAsset(ddo.id)
+              setIsDownloaded(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return isDownloaded;
+        return isDownloaded
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(result.current).toBe(true);
-    });
+      expect(result.current).toBe(true)
+    })
 
-    expect(downloadSpy).toBeCalled();
-    expect(consumeSpy).not.toBeCalled();
-  });
+    expect(downloadSpy).toBeCalled()
+    expect(consumeSpy).not.toBeCalled()
+  })
 
   it('should consume the asset if the user is not the owner', async () => {
-    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
-    const sdkSpy = jest.spyOn(nevermined, 'getInstance');
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
+    const sdkSpy = jest.spyOn(nevermined, 'getInstance')
 
     sdkSpy.mockResolvedValue({
       ...sdk,
@@ -491,84 +491,84 @@ describe('Nevermined assets', () => {
         download: async () => true,
         consume: async () => true
       }
-    });
+    })
 
-    const sdkInstance: any = await sdkSpy.getMockImplementation()?.();
+    const sdkInstance: any = await sdkSpy.getMockImplementation()?.()
 
-    const downloadSpy = jest.spyOn(sdkInstance.assets, 'download');
-    const consumeSpy = jest.spyOn(sdkInstance.assets, 'consume');
+    const downloadSpy = jest.spyOn(sdkInstance.assets, 'download')
+    const consumeSpy = jest.spyOn(sdkInstance.assets, 'consume')
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [isDownloaded, setIsDownloaded] = useState<boolean>(false);
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [isDownloaded, setIsDownloaded] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             try {
-              const result = await assets.downloadAsset(ddo.id);
-              setIsDownloaded(result);
+              const result = await assets.downloadAsset(ddo.id)
+              setIsDownloaded(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return isDownloaded;
+        return isDownloaded
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(result.current).toBe(true);
-    });
+      expect(result.current).toBe(true)
+    })
 
-    expect(downloadSpy).not.toBeCalled();
-    expect(consumeSpy).toBeCalled();
-  });
+    expect(downloadSpy).not.toBeCalled()
+    expect(consumeSpy).toBeCalled()
+  })
 
   it('should download the nft', async () => {
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [isDownloaded, setIsDownloaded] = useState<boolean>(false);
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [isDownloaded, setIsDownloaded] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             try {
-              const result = await assets.downloadNFT(ddo.id);
-              setIsDownloaded(result);
+              const result = await assets.downloadNFT(ddo.id)
+              setIsDownloaded(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return isDownloaded;
+        return isDownloaded
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(result.current).toBe(true);
-    });
-  });
+      expect(result.current).toBe(true)
+    })
+  })
 
   it('should get details of a custom erc20 token', async () => {
     interface CustomErc20Token {
@@ -580,34 +580,34 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [customErc20Token, setCustomErc20Token] = useState({} as CustomErc20Token);
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [customErc20Token, setCustomErc20Token] = useState({} as CustomErc20Token)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             try {
               const result = await assets.getCustomErc20Token(
                 '0xdF1B443A155b07D2b2cAeA2d99715dC84E812EE2'
-              );
-              setCustomErc20Token({ ...result });
+              )
+              setCustomErc20Token({ ...result })
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return customErc20Token;
+        return customErc20Token
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
       expect(result.current).toStrictEqual({
@@ -615,62 +615,62 @@ describe('Nevermined assets', () => {
         symbol: 'NVM',
         decimals: 18,
         balance: 1500000000000000000
-      });
-    });
-  });
+      })
+    })
+  })
 
   it('should upload an asset to filecoin', async() => {
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [filecoinUrl, setFileCoinUrl] = useState('');
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [filecoinUrl, setFileCoinUrl] = useState('')
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             try {
               const blob = new Blob(['Hello! Nevermined'], {
                 type: 'text'
-              });
+              })
 
               const file = new File([blob], 'Nevermined test')
 
-              const response = await assets.uploadAssetToFilecoin(file, 'cid://');
+              const response = await assets.uploadAssetToFilecoin(file, 'cid://')
               setFileCoinUrl(response)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return filecoinUrl;
+        return filecoinUrl
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(result.current).toBe('cid://bafkqaesimvwgy3zmebhgk5tfojwws3tfmqqq');
-    });
-  });
+      expect(result.current).toBe('cid://bafkqaesimvwgy3zmebhgk5tfojwws3tfmqqq')
+    })
+  })
 
   it('should transfer the ownership to other account', async () => {
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [transfered, setTransfered] = useState<boolean>(false);
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [transfered, setTransfered] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
@@ -679,30 +679,30 @@ describe('Nevermined assets', () => {
                 did: ddo.id,
                 amount: 1,
               })
-              setTransfered(result);
+              setTransfered(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return transfered;
+        return transfered
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
       expect(result.current).toBe(true)
     }, {
       timeout: 5000
-    });
-  });
+    })
+  })
 
   it('Should request approval for transfer ownership to other account', async () => {
-    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
-    const sdkSpy = jest.spyOn(nevermined, 'getInstance');
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
+    const sdkSpy = jest.spyOn(nevermined, 'getInstance')
 
     sdkSpy.mockResolvedValue({
       ...sdk,
@@ -712,22 +712,22 @@ describe('Nevermined assets', () => {
           isApprovedForAll: () => false
         }
       },
-    });
+    })
 
-    const sdkInstance: any = await sdkSpy.getMockImplementation()?.();
+    const sdkInstance: any = await sdkSpy.getMockImplementation()?.()
 
-    const setApprovalForAllSpy = jest.spyOn(sdkInstance.nfts, 'setApprovalForAll');
+    const setApprovalForAllSpy = jest.spyOn(sdkInstance.nfts, 'setApprovalForAll')
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [transfered, setTransfered] = useState<boolean>(false);
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [transfered, setTransfered] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
@@ -736,44 +736,44 @@ describe('Nevermined assets', () => {
                 did: ddo.id,
                 amount: 1,
               })
-              setTransfered(result);
+              setTransfered(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return transfered;
+        return transfered
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
       expect(result.current).toBe(true)
     }, {
       timeout: 5000
-    });
+    })
 
-    expect(setApprovalForAllSpy).toBeCalled();
-  });
+    expect(setApprovalForAllSpy).toBeCalled()
+  })
 
   it("should not transfer ownership if gateway address is not set", async () => {
     const appConfigCopy = {...appConfig }
-    appConfig.gatewayAddress = '';
-    const logSpy = jest.spyOn(Logger, 'log');
+    appConfig.gatewayAddress = ''
+    const logSpy = jest.spyOn(Logger, 'log')
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [transfered, setTransfered] = useState<boolean>(false);
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [transfered, setTransfered] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
@@ -782,53 +782,53 @@ describe('Nevermined assets', () => {
                 did: ddo.id,
                 amount: 1,
               })
-              setTransfered(result);
+              setTransfered(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return transfered;
+        return transfered
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
-      expect(logSpy).toHaveBeenCalledWith("gatewayAddress or gatewayUri is not set. abort.");
-    });
+      expect(logSpy).toHaveBeenCalledWith("gatewayAddress or gatewayUri is not set. abort.")
+    })
 
     await waitFor(async () => {
-      expect(result.current).toBe(false);
-    });
+      expect(result.current).toBe(false)
+    })
 
-    appConfig.gatewayAddress = appConfigCopy.gatewayAddress;
-  });
+    appConfig.gatewayAddress = appConfigCopy.gatewayAddress
+  })
 
   it("should not transfer ownership if owner is not found", async () => {
-    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       accounts: {
         ...sdk.accounts,
         list: async () => [],
       }
-    });
+    })
 
-    const logSpy = jest.spyOn(Logger, 'log');
+    const logSpy = jest.spyOn(Logger, 'log')
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [transfered, setTransfered] = useState<boolean>(false);
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [transfered, setTransfered] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
@@ -837,31 +837,31 @@ describe('Nevermined assets', () => {
                 did: ddo.id,
                 amount: 1,
               })
-              setTransfered(result);
+              setTransfered(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return transfered;
+        return transfered
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
       expect(logSpy).toHaveBeenCalledWith("Users need to be connected to perform a transfer. abort.")
-    });
+    })
 
     await waitFor(async () => {
       expect(result.current).toBe(false)
-    });
-  });
+    })
+  })
 
   it("should not transfer ownership if agreementId is not found", async () => {
-    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       accounts: {
@@ -876,20 +876,20 @@ describe('Nevermined assets', () => {
         ...sdk.nfts,
         order: () => undefined
       }
-    });
+    })
 
-    const logSpy = jest.spyOn(Logger, 'log');
+    const logSpy = jest.spyOn(Logger, 'log')
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [transfered, setTransfered] = useState<boolean>(false);
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [transfered, setTransfered] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
@@ -898,33 +898,33 @@ describe('Nevermined assets', () => {
                 did: ddo.id,
                 amount: 1,
               })
-              setTransfered(result);
+              setTransfered(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return transfered;
+        return transfered
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
       expect(logSpy).toHaveBeenCalledWith("Could not approve spending from new owner wallet. abort.")
     }, {
       timeout: 5000
-    });
+    })
 
     await waitFor(async () => {
       expect(result.current).toBe(false)
-    });
-  });
+    })
+  })
 
   it("should not transfer ownership if post transfer fail", async () => {
-    const sdk = await jest.requireActual('../mockups').nevermined.getInstance();
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       nfts: {
@@ -954,20 +954,20 @@ describe('Nevermined assets', () => {
           post: () => undefined
         }
       }
-    });
+    })
 
-    const logSpy = jest.spyOn(Logger, 'log');
+    const logSpy = jest.spyOn(Logger, 'log')
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [transfered, setTransfered] = useState<boolean>(false);
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [transfered, setTransfered] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
@@ -976,63 +976,63 @@ describe('Nevermined assets', () => {
                 did: ddo.id,
                 amount: 1,
               })
-              setTransfered(result);
+              setTransfered(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return transfered;
+        return transfered
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
       expect(logSpy).toHaveBeenCalledWith("Something went wrong! Please try again.")
     }, {
       timeout: 5000
-    });
+    })
 
     await waitFor(async () => {
       expect(result.current).toBe(false)
-    });
-  });
+    })
+  })
 
   it("Should get the details of an NFT asset", async () => {
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined();
-        const [ NFTDetails, setNFTDetails] = useState<NFTDetails>({} as NFTDetails);
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [ NFTDetails, setNFTDetails] = useState<NFTDetails>({} as NFTDetails)
 
         useEffect(() => {
           if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider();
-            updateSDK(appConfig);
-            return;
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
           }
 
           (async () => {
             try {
               const result = await assets.nftDetails(ddo.id)
-              setNFTDetails(result);
+              setNFTDetails(result)
             } catch (error: any) {
-              console.error(error.message);
+              console.error(error.message)
             }
-          })();
-        }, [isLoadingSDK]);
+          })()
+        }, [isLoadingSDK])
 
-        return NFTDetails;
+        return NFTDetails
       },
       {
         wrapper: wrapperProvider
       }
-    );
+    )
 
     await waitFor(async () => {
       expect(result.current.owner).toBe(ddo.id)
-    });
+    })
   })
-});
+})

@@ -1,4 +1,5 @@
-import { Account, DDO, Nevermined, Logger, ClientError } from '@nevermined-io/nevermined-sdk-js';
+import { Account, DDO, Nevermined, Logger, ClientError } from '@nevermined-io/nevermined-sdk-js'
+import { BigNumber } from '../types'
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
 
@@ -7,7 +8,7 @@ import axiosRetry from 'axios-retry'
  * @param i Object to check
  * @return `true` if object is empty or undefined
  */
-export const isEmptyObject = (i: any) => !i || Object.keys(i).length < 1;
+export const isEmptyObject = (i: any) => !i || Object.keys(i).length < 1
 
 
 /**
@@ -15,20 +16,20 @@ export const isEmptyObject = (i: any) => !i || Object.keys(i).length < 1;
  * @param sdk Instance of SDK object
  */
 export const getCurrentAccount = async (sdk: Nevermined) => {
-  let accounts: Account[] = [];
+  let accounts: Account[] = []
   if (sdk.accounts) {
-    accounts = await sdk.accounts.list();
+    accounts = await sdk.accounts.list()
     if (!accounts?.length) {
-      accounts = await sdk.accounts.requestList();
+      accounts = await sdk.accounts.requestList()
     }
   }
 
-  return accounts[0];
-};
+  return accounts[0]
+}
 
-type Template = 'accessTemplate' | 'nft721AccessTemplate' | 'nftAccessTemplate';
+type Template = 'accessTemplate' | 'nft721AccessTemplate' | 'nftAccessTemplate'
 
-type Condition = 'accessCondition' | 'nftAccessCondition';
+type Condition = 'accessCondition' | 'nftAccessCondition'
 
 /** 
  * Order transfer asset to a new owner
@@ -51,26 +52,26 @@ export const conductOrder = async ({
   newOwner: Account;
 }): Promise<string> => {
   try {
-    Logger.log('Checking if USDC spending is approved.');
+    Logger.log('Checking if USDC spending is approved.')
     const isApproved = await sdk.keeper.nftUpgradeable.isApprovedForAll(
       newOwner.getId(),
       gatewayAddress
-    );
+    )
     if (!isApproved) {
-      const receipt = await sdk.nfts.setApprovalForAll(gatewayAddress, true, newOwner);
-      Logger.log('Approval receipt:', receipt);
+      const receipt = await sdk.nfts.setApprovalForAll(gatewayAddress, true, newOwner)
+      Logger.log('Approval receipt:', receipt)
     }
-    Logger.log('USDC spending is approved.');
-    Logger.log(`Asking for approval and locking payment for USDC.`);
-    const agreementId: string = await sdk.nfts.order(ddo.id, 1, newOwner);
-    Logger.log('Transferring the NFT.');
-    Logger.log('Order agreement ID', agreementId);
-    return agreementId;
+    Logger.log('USDC spending is approved.')
+    Logger.log(`Asking for approval and locking payment for USDC.`)
+    const agreementId: string = await sdk.nfts.order(ddo.id, BigNumber.from(1), newOwner)
+    Logger.log('Transferring the NFT.')
+    Logger.log('Order agreement ID', agreementId)
+    return agreementId
   } catch (error) {
-    console.error(error);
-    return '';
+    console.error(error)
+    return ''
   }
-};
+}
 
 /**
  * Load all the past events from an account that match with the method `getFulfilleds`
@@ -95,10 +96,10 @@ export const loadFulfilledEvents = async (
     result: {
       _documentId: true
     }
-  });
+  })
 
-  return fulfilled.map((doc) => ({ documentId: doc._documentId }));
-};
+  return fulfilled.map((doc) => ({ documentId: doc._documentId }))
+}
 
 /**
  * Get agreement id of the asset based in the account that request it
@@ -124,10 +125,10 @@ export const getAgreementId = async (
     result: {
       _agreementId: true,
     }
-  });
+  })
 
-  return agreements[0]?._agreementId;
-};
+  return agreements[0]?._agreementId
+}
 
 /**
  * Handle a post request with retries if it fail
@@ -157,6 +158,6 @@ export const handlePostRequest = async (url: string, formData: FormData, retries
     return response?.data
   } catch (e) {
     Logger.error(e)
-    throw new ClientError((e as any).message, 'Catalog');
+    throw new ClientError((e as any).message, 'Catalog')
   }
 }

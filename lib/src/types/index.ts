@@ -5,33 +5,34 @@ import {
   MetaData,
   Nevermined,
   SearchQuery
-} from '@nevermined-io/nevermined-sdk-js';
+} from '@nevermined-io/nevermined-sdk-js'
 import {
   ContractEventSubscription,
   EventResult
-} from '@nevermined-io/nevermined-sdk-js/dist/node/events';
-import { NftTypes } from '@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway';
-import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
-import { QueryResult, EncryptionMethod } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
-import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
-import { BigNumber } from 'ethers';
-import { RoyaltyAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
-import { ServiceCommon, ServiceType } from '@nevermined-io/nevermined-sdk-js/dist/node/ddo/Service';
-
-export * from '@nevermined-io/nevermined-sdk-js';
-export { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
+} from '@nevermined-io/nevermined-sdk-js/dist/node/events'
+import { QueryResult, EncryptionMethod } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata'
+import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards'
+import { RoyaltyAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets'
+import { ServiceCommon, ServiceType } from '@nevermined-io/nevermined-sdk-js/dist/node/ddo/Service'
+import { ERCType, NeverminedNFT1155Type } from '@nevermined-io/nevermined-sdk-js/dist/node/models/NFTAttributes'
+import BigNumberUtils from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber'
+import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase'
+export * from '@nevermined-io/nevermined-sdk-js'
+export { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets'
 export type {
   ContractEventSubscription,
   EventResult
-} from '@nevermined-io/nevermined-sdk-js/dist/node/events';
-export { zeroX } from '@nevermined-io/nevermined-sdk-js/dist/node/utils';
-export type { NftTypes } from '@nevermined-io/nevermined-sdk-js/dist/node/gateway/Gateway';
-export type { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase';
-export type { ServiceCommon, ServiceType } from '@nevermined-io/nevermined-sdk-js/dist/node/ddo/Service';
-export type { QueryResult, EncryptionMethod } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata';
-export type { RoyaltyAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets';
+} from '@nevermined-io/nevermined-sdk-js/dist/node/events'
+export { zeroX } from '@nevermined-io/nevermined-sdk-js/dist/node/utils'
+export type { ERCType, NeverminedNFT1155Type } from '@nevermined-io/nevermined-sdk-js/dist/node/models/NFTAttributes'
+export type { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase'
+export type { ServiceCommon, ServiceType } from '@nevermined-io/nevermined-sdk-js/dist/node/ddo/Service'
+export type { QueryResult, EncryptionMethod } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata'
+export type { RoyaltyAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets'
 export { getRoyaltyScheme } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets'
 
+export const BigNumber = BigNumberUtils
+export type BigNumber = BigNumberUtils
 
 /**
  * Values returns from the main NVM context
@@ -97,7 +98,7 @@ export interface NeverminedProviderContext {
    *   }
    *
    *   const currentAccount = await getCurrentAccount(sdk);
-   *   const response = await subscription.buySubscription(ddo.id, currentAccount, owner, 1, 1155);
+   *   const response = await subscription.buySubscription(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
    *  };
    * 
    *  const stopLog = () => {
@@ -210,9 +211,9 @@ export interface NeverminedProviderContext {
    *       gatewayAddress: String(appConfig.gatewayAddress),
    *       assetRewards,
    *       metadata,
-   *       nftAmount: 1,
+   *       nftAmount: BigNumber.from(1),
    *       preMint: true,
-   *       cap: 100,
+   *       cap: BigNumber.from(100),
    *       royaltyAttributes,
    *       erc20TokenAddress,
    *     });
@@ -297,7 +298,7 @@ export interface NeverminedProviderContext {
    *    }
    *  
    *    const currentAccount = await getCurrentAccount(sdk);
-   *    const response = await subscription.buySubscription(ddo.id, currentAccount, owner, 1, 1155);
+   *    const response = await subscription.buySubscription(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
    *    setIsBought(response);
    *  };
    *  
@@ -351,7 +352,7 @@ export interface GenericOutput<T, E> {
 }
 
 /** Id of the asset */
-export type DID = string;
+export type DID = string
 
 /**
  * Details of the NFT asset agreement
@@ -423,7 +424,7 @@ export interface CustomErc20Token {
   /** Name of the token */
   name: string;
   /** Amount of tokens holded by the wallet account */
-  balance: BigNumber;
+  balance: BigNumberUtils;
   /** Decimals of the token */
   decimals: number;
 }
@@ -537,7 +538,7 @@ export interface AssetsModule {
    * @returns In case the order is completed successfully it returns the agreementId
    * which is needed to transfer the NFT1155 asset to the buyer
    */
-  orderNFT1155: (did: string) => Promise<string>;
+  orderNFT1155: (did: string, amount: BigNumber) => Promise<string>;
   /**
    * Download a NFT asset already ordered and transfered to the buyer,
    * if the user is the owner of the asset
@@ -584,7 +585,7 @@ export interface AssetsModule {
  *   }
  *
  *   const currentAccount = await getCurrentAccount(sdk);
- *   const response = await subscription.buySubscription(ddo.id, currentAccount, owner, 1, 1155);
+ *   const response = await subscription.buySubscription(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
  *  };
  * 
  *  const stopLog = () => {
@@ -628,7 +629,7 @@ export interface SubscribeModule {
    * @param nftType NFT asset type which can be 721 or 1155
    * @returns return the `transfer` event with a functionality to unsubscribe 
    */
-  transferEvents: (cb: (events: EventResult[]) => void, nftType?: NftTypes) => ContractEventSubscription;
+  transferEvents: (cb: (events: EventResult[]) => void, nftType?: ERCType) => ContractEventSubscription;
 }
 
 
@@ -741,15 +742,15 @@ export interface SubscriptionActions {
    * @param buyer The account who buy the subscription of the NFT asset
    * @param nftHolder The owner of the NFT asset
    * @param nftAmount The amount of NFT asset to buy
-   * @param nftType NFT asset type which can be 721 or 1155
+   * @param ercType NFT asset type which can be 721 or 1155
    * @returns It is true if the subscription was successfully completed
    */
   buySubscription: (
     subscriptionDid: string,
     buyer: Account,
     nftHolder: string,
-    nftAmount: number,
-    nftType: NftTypes
+    nftAmount: BigNumber,
+    ercType: ERCType
   ) => Promise<string>;
 }
 
@@ -796,6 +797,7 @@ export interface AssetPublishProviderState {
    * @param asset.method Method used to encrypt the urls
    * @param asset.providers Array that contains the provider addreses
    * @param asset.erc20TokenAddress The erc20 token address which the buyer will pay the price
+   * @param asset.appId The id of the application creating the asset
    * @param asset.txParameters Trasaction number of the asset creation
    * @returns The DDO object including the asset metadata and the DID
    */
@@ -807,6 +809,7 @@ export interface AssetPublishProviderState {
     method,
     providers,
     erc20TokenAddress,
+    appId,
     txParameters,
   }: 
   { 
@@ -817,6 +820,7 @@ export interface AssetPublishProviderState {
     method?: EncryptionMethod;
     providers?: string[];
     erc20TokenAddress?: string,
+    appId?: string,
     txParameters?: TxParameters,
   }) => Promise<DDO | undefined>;
   /**
@@ -866,7 +870,7 @@ export interface AssetPublishProviderState {
     preMint?: boolean;
     royaltyAttributes: RoyaltyAttributes;
     nftMetadata?: string;
-    txParameters?: TxParameters;
+    txParameters?: string;
     services?: ServiceType[];
     nftTransfer?: boolean;
     duration?: number;
@@ -889,6 +893,8 @@ export interface AssetPublishProviderState {
    * @param nft1155.erc20TokenAddress The erc20 token address which the buyer will pay the price
    * @param nft1155.preMint If assets are minted in the creation process
    * @param nft1155.nftMetadata Url to set at publishing time that resolves to the metadata of the nft as expected by opensea
+   * @param nft1155.neverminedNFTType the type of the NFT1155
+   * @param nft1155.appId The id of the application creating the NFT
    * @param nft1155.txParameters Trasaction number of the asset creation
    * @returns The DDO object including the asset metadata and the DID
    */
@@ -902,17 +908,21 @@ export interface AssetPublishProviderState {
     erc20TokenAddress,
     preMint,
     nftMetadata,
+    neverminedNFT1155Type,
+    appId,
     txParameters,
     }: {
       gatewayAddress: string,
       metadata: MetaData,
-      cap: number,
+      cap: BigNumber,
       assetRewards?: AssetRewards;
       royaltyAttributes: RoyaltyAttributes
-      nftAmount?: number,
+      nftAmount?: BigNumber,
       erc20TokenAddress?: string,
       preMint?: boolean,
       nftMetadata?: string,
+      neverminedNFT1155Type?: NeverminedNFT1155Type,
+      appId?: string,
       txParameters?: TxParameters,
     }) => Promise<DDO | undefined>;
 }

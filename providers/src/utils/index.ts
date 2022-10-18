@@ -3,8 +3,8 @@ export function zeroX(input = "") {
     input,
     /^(?:0x)*([a-f0-9]+)$/i,
     "zeroXTransformer"
-  );
-  return (valid ? "0x" : "") + output;
+  )
+  return (valid ? "0x" : "") + output
 }
 
 const inputMatch = (
@@ -15,11 +15,11 @@ const inputMatch = (
   if (typeof input !== "string") {
     throw new Error(
       `[${conversorName}] Expected string, input type: ${typeof input}`
-    );
+    )
   }
-  const match = input.match(regexp);
+  const match = input.match(regexp)
   if (!match) {
-    return { valid: false, output: input };
+    return { valid: false, output: input }
   }
-  return { valid: true, output: match[1] };
-};
+  return { valid: true, output: match[1] }
+}
