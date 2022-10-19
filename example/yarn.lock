@@ -1997,12 +1997,12 @@
   resolved "https://registry.yarnpkg.com/@metamask/safe-event-emitter/-/safe-event-emitter-2.0.0.tgz#af577b477c683fad17c619a78208cede06f9605c"
   integrity sha512-/kSXhY692qiV1MXu6EeOZvg5nECLclxNXcKCxJ3cXQgYuRymRHpdx/t7JXfsK+JLjwA1e1c1/SBrlQYpusC29Q==
 
-"@nevermined-io/catalog-core@0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/catalog-core/-/catalog-core-0.1.2.tgz#9933e68140434459030e7fea2e30e9833265f3a7"
-  integrity sha512-kYnNzzdy1ps3RRrfw3cv1I/v9RUnUeeoA4pV+4I+94Ry57bTuZhuFDe/hijmlBwJR5VRiJb9nO8cZtWuB9h75g==
+"@nevermined-io/catalog-core@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/catalog-core/-/catalog-core-0.3.0.tgz#eb5f313d50ba1509b6c4eaf234d0084ddbb43bd6"
+  integrity sha512-KcnUbgVxGEiYxlB0umlrnrPAwdfhfCfl+9ZKO7WU86+M3ttEyD4kuF6lmWxX4NnKHw/44ql5g6GBjfUqtMA0tQ==
   dependencies:
-    "@nevermined-io/nevermined-sdk-js" "^0.23.3"
+    "@nevermined-io/nevermined-sdk-js" "^0.25.0"
     "@types/jsonwebtoken" "^8.5.8"
     axios "^0.27.2"
     axios-retry "^3.3.1"
@@ -2011,22 +2011,20 @@
     jest-environment-jsdom "^28.1.3"
     jsonwebtoken "^8.5.1"
     nodemon "^2.0.16"
-    react "*"
 
-"@nevermined-io/catalog-providers@0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/catalog-providers/-/catalog-providers-0.1.2.tgz#cebe0c6efa449167da730f8ed285fa92eb0be176"
-  integrity sha512-VW2MmaVUwDfkgeIN0KaX5Z7B5Mrhmr/3M2FpE85RLs+ZllUSzw1bSIFtuxq7epBzCMQBwJtH1TEkxzsjT61Ygg==
+"@nevermined-io/catalog-providers@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/catalog-providers/-/catalog-providers-0.3.0.tgz#2ae00a49b6d1149614a8fe95fe76ec6967289843"
+  integrity sha512-Ph2+zSj14LRAn89dwm5ym9sNH5evvFY46fENN9iSk75MPp8dK9M22/wKOkhESbHaTFHRKGa0hewTMfKX1dtkWw==
   dependencies:
     ethers "^5.6.9"
     nodemon "^2.0.16"
 
-"@nevermined-io/nevermined-sdk-js@^0.23.3":
-  version "0.23.5"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.23.5.tgz#ab7e9c9d4e8d528552f91c7681677e62a7a5eec1"
-  integrity sha512-GJriSUsmJFYh3uLPS8KnsW71tC7vYVltcCR4WzVkrfeJBoQl/nD6fZCHo6bWcWWZD/n1hGNeC1O1p+wZHh3XCw==
+"@nevermined-io/nevermined-sdk-js@^0.25.0":
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.25.0.tgz#620a8b9287bc2dcc63360d1104cbf2f618d3add3"
+  integrity sha512-U3qgMBUoKgJgNQ8ZsitvJxmyF9bIkIY28ktXFUBinmDgDc4AsVpJmiVZfCFpeF5/S8iF4sKJ2gjQrqHC/ETCaA==
   dependencies:
-    "@nevermined-io/secret-store-client" "^0.0.16"
     "@nevermined-io/subgraphs" "0.4.1"
     assert "^2.0.0"
     codegen-graph-ts "npm:@nevermined-io/codegen-graph-ts@0.1.4"
@@ -2046,17 +2044,10 @@
     uuid "^3.4.0"
     whatwg-url "^7.1.0"
 
-"@nevermined-io/secret-store-client@^0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/secret-store-client/-/secret-store-client-0.0.16.tgz#45f2ffbd5855642912a153d20001674c6aa6ce96"
-  integrity sha512-2YJpxQ38iYToXtOUK3ta8HrAqZL0/sBOxznbZNZO0Dbo6w9e2oKdQivRMnzqkBBFCIyXWFiv3So/cWHGUHa65A==
-  dependencies:
-    node-fetch "^2.6.0"
-
-"@nevermined-io/styles@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/styles/-/styles-0.1.7.tgz#d665650087b314d3ccd9701373a8c1bb5823e3f6"
-  integrity sha512-JbX+ggBBXPYzHhBgKJCFjd8xiuFjWiwhCqO0XhIXQhK5EHsFW+MHzbVIEQfNcLmyTJ949s1WG3L5NC7bvPtmBQ==
+"@nevermined-io/styles@^0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/styles/-/styles-0.1.9.tgz#33cd2b8e1ca2939844f2052bfeed77933ed895d6"
+  integrity sha512-nW019L4rtJfT0yq7HyDhnPPXOaoRcIp69Lox6h2d4Nn/QNwzbHaf+rIvin2xejTLjq2sXD4W4OdppS/ZfINGHQ==
 
 "@nevermined-io/subgraphs@0.4.1":
   version "0.4.1"
@@ -8891,7 +8882,7 @@ node-domexception@^1.0.0:
   resolved "https://registry.yarnpkg.com/node-domexception/-/node-domexception-1.0.0.tgz#6888db46a1f71c0b76b3f7555016b63fe64766e5"
   integrity sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==
 
-node-fetch@2.6.7, node-fetch@^2.6.0, node-fetch@^2.6.1:
+node-fetch@2.6.7, node-fetch@^2.6.1:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
@@ -10597,7 +10588,7 @@ react-scripts@5.0.0:
   optionalDependencies:
     fsevents "^2.3.2"
 
-react@*, react@^18.2.0:
+react@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==

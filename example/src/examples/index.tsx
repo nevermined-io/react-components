@@ -1,8 +1,7 @@
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards';
 import React, { useEffect, useState } from 'react';
 import { MetaData, Logger, DDO } from '@nevermined-io/nevermined-sdk-js';
-import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber';
-import { Catalog, AssetService, RoyaltyKind, RoyaltyAttributes, getRoyaltyScheme } from '@nevermined-io/catalog-core';
+import { Catalog, AssetService, RoyaltyKind, BigNumber, getRoyaltyScheme } from '@nevermined-io/catalog-core';
 import { getCurrentAccount } from '@nevermined-io/catalog-core'
 import { MetaMask } from '@nevermined-io/catalog-providers';
 import { UiText, UiLayout, BEM, UiButton } from '@nevermined-io/styles';
@@ -107,7 +106,7 @@ const BuyAsset = ({ddo}: {ddo: DDO}) => {
     }
 
     const currentAccount = await getCurrentAccount(sdk);
-    const response = await subscription.buySubscription(ddo.id, currentAccount, owner, 1, 1155);
+    const response = await subscription.buySubscription(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
     setIsBought(Boolean(response));
   };
 
@@ -162,7 +161,6 @@ const App = () => {
       author: '',
       license: '',
       dateCreated: new Date().toISOString(),
-      price: ''
     }
   };
 
@@ -185,9 +183,9 @@ const App = () => {
         gatewayAddress: String(appConfig.gatewayAddress),
         assetRewards,
         metadata,
-        nftAmount: 1,
+        nftAmount: BigNumber.from(1),
         preMint: true,
-        cap: 100,
+        cap: BigNumber.from(100),
         royaltyAttributes,
         erc20TokenAddress,
       });
