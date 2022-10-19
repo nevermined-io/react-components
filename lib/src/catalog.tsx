@@ -254,7 +254,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         if (isEmptyObject(sdk)) return {} as DDO
         const ddo: DDO = await sdk.assets.resolve(String(did))
         return ddo
-      } catch (e) {
+      } catch (error) {
         verbose && Logger.error(error)
         return {} as DDO
       }
