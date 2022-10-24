@@ -77,11 +77,10 @@ export const getAddressTokenSigner = () => {
   try {
     const { token } = fetchMarketplaceApiTokenFromLocalStorage()
     if (token) {
-      const decodedToken = jwt.decode(token)
+      const decodedToken = jwt.decode(token) as JwtPayload
 
-      if(decodedToken) {
-        return (decodedToken as JwtPayload)?.iss
-      }
+      return decodedToken?.iss
+      
     }
 
   } catch (error) {
