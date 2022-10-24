@@ -80,9 +80,7 @@ export const getAddressTokenSigner = () => {
       const decodedToken = jwt.decode(token) as JwtPayload
 
       return decodedToken?.iss
-      
     }
-
   } catch (error) {
     Logger.error(error)
   }
