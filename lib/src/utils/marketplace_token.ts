@@ -84,10 +84,8 @@ export const getAddressTokenSigner = () => {
       }
     }
 
-    return ''
   } catch (error) {
     Logger.error(error)
-    return ''
   }
 }
 
