@@ -9,6 +9,7 @@
 ### Functions
 
 - [fetchMarketplaceApiTokenFromLocalStorage](AuthToken.md#fetchmarketplaceapitokenfromlocalstorage)
+- [getAddressTokenSigner](AuthToken.md#getaddresstokensigner)
 - [isTokenValid](AuthToken.md#istokenvalid)
 - [newMarketplaceApiToken](AuthToken.md#newmarketplaceapitoken)
 - [saveMarketplaceApiTokenToLocalStorage](AuthToken.md#savemarketplaceapitokentolocalstorage)
@@ -21,7 +22,7 @@
 
 #### Defined in
 
-[utils/marketplace_token.ts:5](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/utils/marketplace_token.ts#L5)
+[utils/marketplace_token.ts:5](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/utils/marketplace_token.ts#L5)
 
 ## Functions
 
@@ -39,7 +40,25 @@ Auth token object which generated from Marketplace API
 
 #### Defined in
 
-[utils/marketplace_token.ts:20](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/utils/marketplace_token.ts#L20)
+[utils/marketplace_token.ts:20](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/utils/marketplace_token.ts#L20)
+
+___
+
+### getAddressTokenSigner
+
+▸ **getAddressTokenSigner**(): `string`
+
+Return the address that sign the token
+
+#### Returns
+
+`string`
+
+The address token signer
+
+#### Defined in
+
+[utils/marketplace_token.ts:76](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/utils/marketplace_token.ts#L76)
 
 ___
 
@@ -57,7 +76,7 @@ Return `true` if token is valid
 
 #### Defined in
 
-[utils/marketplace_token.ts:54](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/utils/marketplace_token.ts#L54)
+[utils/marketplace_token.ts:54](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/utils/marketplace_token.ts#L54)
 
 ___
 
@@ -81,7 +100,7 @@ Auth token object which generated from Marketplace API
 
 #### Defined in
 
-[utils/marketplace_token.ts:36](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/utils/marketplace_token.ts#L36)
+[utils/marketplace_token.ts:36](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/utils/marketplace_token.ts#L36)
 
 ___
 
@@ -103,4 +122,4 @@ Save Marketplace API token to local storage
 
 #### Defined in
 
-[utils/marketplace_token.ts:11](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/utils/marketplace_token.ts#L11)
+[utils/marketplace_token.ts:11](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/utils/marketplace_token.ts#L11)

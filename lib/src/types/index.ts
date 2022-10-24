@@ -457,6 +457,11 @@ export interface AccountModule {
    */
   isTokenValid: () => boolean;
   /**
+  * Return the address that sign the token
+  * @return The address token signer 
+  */
+  getAddressTokenSigner: () => string;
+  /**
    * This method validates if an user is an asset holder.
    *
    * @param did The unique identifier of the asset

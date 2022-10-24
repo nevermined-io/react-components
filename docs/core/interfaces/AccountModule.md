@@ -8,6 +8,7 @@ under 'account' object
 ### Properties
 
 - [generateToken](AccountModule.md#generatetoken)
+- [getAddressTokenSigner](AccountModule.md#getaddresstokensigner)
 - [getCollection](AccountModule.md#getcollection)
 - [getReleases](AccountModule.md#getreleases)
 - [isAssetHolder](AccountModule.md#isassetholder)
@@ -35,7 +36,29 @@ The new generated token
 
 #### Defined in
 
-[types/index.ts:453](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L453)
+[types/index.ts:453](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L453)
+
+___
+
+### getAddressTokenSigner
+
+• **getAddressTokenSigner**: () => `string`
+
+#### Type declaration
+
+▸ (): `string`
+
+Return the address that sign the token
+
+##### Returns
+
+`string`
+
+The address token signer
+
+#### Defined in
+
+[types/index.ts:463](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L463)
 
 ___
 
@@ -63,7 +86,7 @@ List of assets which was bought by the address given as argument
 
 #### Defined in
 
-[types/index.ts:448](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L448)
+[types/index.ts:448](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L448)
 
 ___
 
@@ -91,7 +114,7 @@ List of assets which was published by the address given
 
 #### Defined in
 
-[types/index.ts:442](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L442)
+[types/index.ts:442](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L442)
 
 ___
 
@@ -120,7 +143,7 @@ true if the user owns at least one edition of the NFT
 
 #### Defined in
 
-[types/index.ts:466](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L466)
+[types/index.ts:471](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L471)
 
 ___
 
@@ -151,7 +174,7 @@ true if the user owns at least one edition of the NFT
 
 #### Defined in
 
-[types/index.ts:476](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L476)
+[types/index.ts:481](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L481)
 
 ___
 
@@ -182,7 +205,7 @@ true if the user holds the NFT
 
 #### Defined in
 
-[types/index.ts:486](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L486)
+[types/index.ts:491](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L491)
 
 ___
 
@@ -204,4 +227,4 @@ if token is valid it will return true
 
 #### Defined in
 
-[types/index.ts:458](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L458)
+[types/index.ts:458](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L458)

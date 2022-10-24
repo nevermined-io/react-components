@@ -160,6 +160,55 @@ describe('Nevermined account', () => {
     })
   })
 
+  it('should get the signer address which issued the token', async () => {
+    const { result } = renderHook(
+      () => {
+        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [ signer, setSigner] = useState('')
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
+          }
+
+          (async () => {
+            try {
+              const token = jwt.sign({
+                iss: walletAddress,
+                sub: `u-${faker.datatype.uuid()}`,
+                role: [],
+              },
+              'secret')
+
+              AuthToken.saveMarketplaceApiTokenToLocalStorage({
+                token,
+              })
+
+              const result = account.getAddressTokenSigner()
+
+              setSigner(result)
+            } catch (error: any) {
+              console.error(error.message)
+            }
+          })()
+        }, [isLoadingSDK])
+
+        return signer
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    )
+
+    await waitFor(() => {
+      expect(result.current).toBe(walletAddress)
+    }, {
+      timeout: 5000
+    }) 
+  })
+
   it('should be an asset holder', async () => {
     const { result } = renderHook(
       () => {
