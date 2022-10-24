@@ -150,7 +150,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
   const account: AccountModule = {
     isTokenValid: (): boolean => isTokenValid(),
-    getAddressTokenSigner: (): string => getAddressTokenSigner(),
+    getAddressTokenSigner: (): string => String(getAddressTokenSigner()),
     generateToken: async (): Promise<MarketplaceAPIToken> => {
       const tokenData = await newMarketplaceApiToken(sdk)
       const { data } = await initializeNevermined({

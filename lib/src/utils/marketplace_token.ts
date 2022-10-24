@@ -76,9 +76,12 @@ export const isTokenValid = () => {
 export const getAddressTokenSigner = () => {
   try {
     const { token } = fetchMarketplaceApiTokenFromLocalStorage()
-    if (token && jwt.decode(token)) {
+    if (token) {
       const decodedToken = jwt.decode(token)
-      return (decodedToken as JwtPayload)?.iss || ''
+
+      if(decodedToken) {
+        return (decodedToken as JwtPayload)?.iss
+      }
     }
 
     return ''
