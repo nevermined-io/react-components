@@ -1,4 +1,4 @@
-import { Nevermined } from '@nevermined-io/nevermined-sdk-js'
+import { Nevermined, Logger } from '@nevermined-io/nevermined-sdk-js'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { MarketplaceAPIToken } from '../types'
 
@@ -41,7 +41,7 @@ export const newMarketplaceApiToken = async (sdk: Nevermined): Promise<Marketpla
     saveMarketplaceApiTokenToLocalStorage({ token })
     return { token }
   } catch (error) {
-    console.log(error)
+    Logger.error(error)
     return { token: '' }
   }
 }
@@ -64,6 +64,25 @@ export const isTokenValid = () => {
     }
     return false
   } catch (error) {
+    Logger.error(error)
     return false
   }
 }
+
+/**
+ * Return the address that sign the token
+ * @return The address token signer 
+ */
+export const getAddressTokenSigner = () => {
+  try {
+    const { token } = fetchMarketplaceApiTokenFromLocalStorage()
+    if (token) {
+      const decodedToken = jwt.decode(token) as JwtPayload
+
+      return decodedToken?.iss
+    }
+  } catch (error) {
+    Logger.error(error)
+  }
+}
+

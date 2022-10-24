@@ -26,7 +26,7 @@ Additional information of the user like picture, profesional profire, etc...
 
 #### Defined in
 
-[types/index.ts:414](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L414)
+[types/index.ts:414](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L414)
 
 ___
 
@@ -38,7 +38,7 @@ When the user was created
 
 #### Defined in
 
-[types/index.ts:410](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L410)
+[types/index.ts:410](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L410)
 
 ___
 
@@ -50,7 +50,7 @@ The email of the user
 
 #### Defined in
 
-[types/index.ts:408](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L408)
+[types/index.ts:408](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L408)
 
 ___
 
@@ -62,7 +62,7 @@ The user can be shown
 
 #### Defined in
 
-[types/index.ts:400](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L400)
+[types/index.ts:400](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L400)
 
 ___
 
@@ -74,7 +74,7 @@ The real name of the user
 
 #### Defined in
 
-[types/index.ts:406](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L406)
+[types/index.ts:406](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L406)
 
 ___
 
@@ -86,7 +86,7 @@ The nickname of the user
 
 #### Defined in
 
-[types/index.ts:404](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L404)
+[types/index.ts:404](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L404)
 
 ___
 
@@ -98,7 +98,7 @@ The state of the user account
 
 #### Defined in
 
-[types/index.ts:402](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L402)
+[types/index.ts:402](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L402)
 
 ___
 
@@ -110,7 +110,7 @@ When was the last user profile updated
 
 #### Defined in
 
-[types/index.ts:412](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L412)
+[types/index.ts:412](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L412)
 
 ___
 
@@ -122,4 +122,4 @@ Id of the user
 
 #### Defined in
 
-[types/index.ts:398](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L398)
+[types/index.ts:398](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L398)

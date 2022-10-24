@@ -65,7 +65,7 @@ const Example = (props: ExampleProps) => {
 
 #### Defined in
 
-[types/index.ts:273](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L273)
+[types/index.ts:273](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L273)
 
 ___
 
@@ -177,7 +177,7 @@ const Example = () => {
 
 #### Defined in
 
-[types/index.ts:236](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L236)
+[types/index.ts:236](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L236)
 
 ___
 
@@ -189,7 +189,7 @@ True if sdk is loading
 
 #### Defined in
 
-[types/index.ts:52](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L52)
+[types/index.ts:52](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L52)
 
 ___
 
@@ -201,7 +201,7 @@ Nevermined sdk instance which has all the core functionalities
 
 #### Defined in
 
-[types/index.ts:48](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L48)
+[types/index.ts:48](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L48)
 
 ___
 
@@ -213,7 +213,7 @@ Error message from sdk
 
 #### Defined in
 
-[types/index.ts:50](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L50)
+[types/index.ts:50](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L50)
 
 ___
 
@@ -271,7 +271,7 @@ const Example = () => {
 
 #### Defined in
 
-[types/index.ts:132](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L132)
+[types/index.ts:132](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L132)
 
 ___
 
@@ -334,7 +334,7 @@ const BuyAsset = ({ddo}: {ddo: DDO}) => {
 
 #### Defined in
 
-[types/index.ts:327](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L327)
+[types/index.ts:327](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L327)
 
 ___
 
@@ -387,4 +387,4 @@ const Example = (props: ExampleProps) => {
 
 #### Defined in
 
-[types/index.ts:83](https://github.com/nevermined-io/components-catalog/blob/a83ee34/lib/src/types/index.ts#L83)
+[types/index.ts:83](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L83)
