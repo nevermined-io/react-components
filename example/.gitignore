@@ -66,3 +66,5 @@ dist/
 
 # cypress videos
 cypress/videos
+
+public/contracts
