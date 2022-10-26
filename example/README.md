@@ -1,5 +1,9 @@
 # Example using Catalog
 
+### Download the artifacts
+
+- `yarn artifacts:download`
+
 ### Start the app
 
 - `yarn && yarn start` Runs the app in the development mode.

@@ -10,7 +10,8 @@
     "build:tsc": "tsc --noEmit false",
     "clean": "rm -rf dist",
     "eject": "react-scripts eject",
-    "ts:lint": "npx eslint . --ext .ts,.tsx"
+    "ts:lint": "npx eslint . --ext .ts,.tsx",
+    "artifacts:download": "sh ./scripts/download-artifacts.sh v2.1.0 mumbai"
   },
   "main": "./dist/node/index.js",
   "types": "./dist/node/index.d.ts",
@@ -32,8 +33,8 @@
     ]
   },
   "dependencies": {
-    "@nevermined-io/catalog-core": "0.2.0",
-    "@nevermined-io/catalog-providers": "0.2.0",
+    "@nevermined-io/catalog-core": "0.3.1",
+    "@nevermined-io/catalog-providers": "0.3.1",
     "@nevermined-io/styles": "^0.1.7",
     "axios": "^0.24.0",
     "babel-eslint": "^10.1.0",
