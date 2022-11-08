@@ -1,5 +1,4 @@
 import {
-  Account,
   Config,
   DDO,
   MetaData,
@@ -93,12 +92,7 @@ export interface NeverminedProviderContext {
    *  const { paymentEvent, setPaymentEvent } = useState<ContractEventSubscription>();
    * 
    *  const buy = async () => {
-   *   if (!account.isTokenValid()) {
-   *     await account.generateToken();
-   *   }
-   *
-   *   const currentAccount = await getCurrentAccount(sdk);
-   *   const response = await nfts.access(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
+   *   const response = await nfts.access(ddo.id, owner, BigNumber.from(1), 1155);
    *  };
    * 
    *  const stopLog = () => {
@@ -204,9 +198,6 @@ export interface NeverminedProviderContext {
    *       amount: 0,
    *     };
    *  
-   *     if (!account.isTokenValid()) {
-   *       await account.generateToken();
-   *     }
    *     const response = await publishNFT1155({
    *       gatewayAddress: String(appConfig.gatewayAddress),
    *       assetRewards,
@@ -293,12 +284,7 @@ export interface NeverminedProviderContext {
    *  }, [walletAddress, isBought])
    *  
    *  const buy = async () => {
-   *    if (!account.isTokenValid()) {
-   *      await account.generateToken();
-   *    }
-   *  
-   *    const currentAccount = await getCurrentAccount(sdk);
-   *    const response = await nfts.access(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
+   *    const response = await nfts.access(ddo.id, owner, BigNumber.from(1), 1155);
    *    setIsBought(response);
    *  };
    *  
@@ -585,12 +571,8 @@ export interface AssetsModule {
  *  const { paymentEvent, setPaymentEvent } = useState<ContractEventSubscription>();
  * 
  *  const buy = async () => {
- *   if (!account.isTokenValid()) {
- *     await account.generateToken();
- *   }
- *
  *   const currentAccount = await getCurrentAccount(sdk);
- *   const response = await nfts.access(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
+ *   const response = await nfts.access(ddo.id, owner, BigNumber.from(1), 1155);
  *  };
  * 
  *  const stopLog = () => {
@@ -744,7 +726,6 @@ export interface NFTSModule {
   /**
    * Order a NFT asset and transfer and delegate it to the buyer
    * @param did Id of the NFT to subscribe
-   * @param buyer The account who buy the subscription of the NFT asset
    * @param nftHolder The owner of the NFT asset
    * @param nftAmount The amount of NFT asset to buy
    * @param ercType NFT asset type which can be 721 or 1155
@@ -752,7 +733,6 @@ export interface NFTSModule {
    */
   access: (
     did: string,
-    buyer: Account,
     nftHolder: string,
     nftAmount: BigNumber,
     ercType: ERCType

@@ -10,11 +10,11 @@
 
 ### access
 
-• **access**: (`did`: `string`, `buyer`: `default`, `nftHolder`: `string`, `nftAmount`: `default`, `ercType`: `ERCType`) => `Promise`<`string`\>
+• **access**: (`did`: `string`, `nftHolder`: `string`, `nftAmount`: `default`, `ercType`: `ERCType`) => `Promise`<`string`\>
 
 #### Type declaration
 
-▸ (`did`, `buyer`, `nftHolder`, `nftAmount`, `ercType`): `Promise`<`string`\>
+▸ (`did`, `nftHolder`, `nftAmount`, `ercType`): `Promise`<`string`\>
 
 Order a NFT asset and transfer and delegate it to the buyer
 
@@ -23,7 +23,6 @@ Order a NFT asset and transfer and delegate it to the buyer
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `did` | `string` | Id of the NFT to subscribe |
-| `buyer` | `default` | The account who buy the subscription of the NFT asset |
 | `nftHolder` | `string` | The owner of the NFT asset |
 | `nftAmount` | `default` | The amount of NFT asset to buy |
 | `ercType` | `ERCType` | NFT asset type which can be 721 or 1155 |
@@ -36,4 +35,4 @@ It is true if the subscription was successfully completed
 
 #### Defined in
 
-[types/index.ts:753](https://github.com/nevermined-io/components-catalog/blob/0f39118/lib/src/types/index.ts#L753)
+[types/index.ts:734](https://github.com/nevermined-io/components-catalog/blob/136388c/lib/src/types/index.ts#L734)

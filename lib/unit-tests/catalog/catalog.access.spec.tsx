@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { renderHook, waitFor } from '@testing-library/react'
 import { generateTestingUtils } from 'eth-testing'
 import { appConfig } from '../config'
-import { agreementId, ddo, walletAddress, nevermined } from '../mockups'
-import { Catalog, Account, BigNumber } from '../../src'
+import { agreementId, ddo, nevermined } from '../mockups'
+import { Catalog, BigNumber } from '../../src'
 
 
 jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
@@ -53,7 +53,6 @@ describe('Nevermined subscription', () => {
             try {
               const result = await nfts.access(
                 ddo.id,
-                new Account(walletAddress),
                 '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
                 BigNumber.from(1),
                 721,
@@ -116,7 +115,6 @@ describe('Nevermined subscription', () => {
             try {
               const result = await nfts.access(
                 ddo.id,
-                new Account(walletAddress),
                 '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
                 BigNumber.from(1),
                 1155,

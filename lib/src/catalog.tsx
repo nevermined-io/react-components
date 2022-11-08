@@ -479,10 +479,20 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   }
 
   const nfts = {
-    access: async (did: string, buyer: Account, nftHolder: string, nftAmount: BigNumber, ercType: ERCType): Promise<string> => {
+    access: async (did: string, nftHolder: string, nftAmount: BigNumber, ercType: ERCType): Promise<string> => {
       let agreementId
       let transferResult
+
       try {
+        const buyer = await getCurrentAccount(sdk)
+
+        if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== buyer.getId().toLowerCase()) {
+          Logger.error(
+            'Your login is expired. Please first sign with your wallet and after try again'
+          )
+          await account.generateToken()
+        }
+
         agreementId = ercType === 721 ? await sdk.nfts.order721(did, buyer): await sdk.nfts.order(did, BigNumber.from(nftAmount), buyer)
         transferResult = await sdk.nfts.transferForDelegate(
           agreementId,

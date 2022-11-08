@@ -65,7 +65,7 @@ const Example = (props: ExampleProps) => {
 
 #### Defined in
 
-[types/index.ts:273](https://github.com/nevermined-io/components-catalog/blob/0f39118/lib/src/types/index.ts#L273)
+[types/index.ts:264](https://github.com/nevermined-io/components-catalog/blob/136388c/lib/src/types/index.ts#L264)
 
 ___
 
@@ -147,9 +147,6 @@ const Example = () => {
       amount: 0,
     };
  
-    if (!account.isTokenValid()) {
-      await account.generateToken();
-    }
     const response = await publishNFT1155({
       gatewayAddress: String(appConfig.gatewayAddress),
       assetRewards,
@@ -177,7 +174,7 @@ const Example = () => {
 
 #### Defined in
 
-[types/index.ts:236](https://github.com/nevermined-io/components-catalog/blob/0f39118/lib/src/types/index.ts#L236)
+[types/index.ts:227](https://github.com/nevermined-io/components-catalog/blob/136388c/lib/src/types/index.ts#L227)
 
 ___
 
@@ -189,7 +186,7 @@ True if sdk is loading
 
 #### Defined in
 
-[types/index.ts:52](https://github.com/nevermined-io/components-catalog/blob/0f39118/lib/src/types/index.ts#L52)
+[types/index.ts:51](https://github.com/nevermined-io/components-catalog/blob/136388c/lib/src/types/index.ts#L51)
 
 ___
 
@@ -219,12 +216,7 @@ const BuyAsset = ({ddo}: {ddo: DDO}) => {
  }, [walletAddress, isBought])
  
  const buy = async () => {
-   if (!account.isTokenValid()) {
-     await account.generateToken();
-   }
- 
-   const currentAccount = await getCurrentAccount(sdk);
-   const response = await nfts.access(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
+   const response = await nfts.access(ddo.id, owner, BigNumber.from(1), 1155);
    setIsBought(response);
  };
  
@@ -252,7 +244,7 @@ const BuyAsset = ({ddo}: {ddo: DDO}) => {
 
 #### Defined in
 
-[types/index.ts:327](https://github.com/nevermined-io/components-catalog/blob/0f39118/lib/src/types/index.ts#L327)
+[types/index.ts:313](https://github.com/nevermined-io/components-catalog/blob/136388c/lib/src/types/index.ts#L313)
 
 ___
 
@@ -264,7 +256,7 @@ Nevermined sdk instance which has all the core functionalities
 
 #### Defined in
 
-[types/index.ts:48](https://github.com/nevermined-io/components-catalog/blob/0f39118/lib/src/types/index.ts#L48)
+[types/index.ts:47](https://github.com/nevermined-io/components-catalog/blob/136388c/lib/src/types/index.ts#L47)
 
 ___
 
@@ -276,7 +268,7 @@ Error message from sdk
 
 #### Defined in
 
-[types/index.ts:50](https://github.com/nevermined-io/components-catalog/blob/0f39118/lib/src/types/index.ts#L50)
+[types/index.ts:49](https://github.com/nevermined-io/components-catalog/blob/136388c/lib/src/types/index.ts#L49)
 
 ___
 
@@ -296,12 +288,7 @@ const Example = () => {
  const { paymentEvent, setPaymentEvent } = useState<ContractEventSubscription>();
 
  const buy = async () => {
-  if (!account.isTokenValid()) {
-    await account.generateToken();
-  }
-
-  const currentAccount = await getCurrentAccount(sdk);
-  const response = await nfts.access(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
+  const response = await nfts.access(ddo.id, owner, BigNumber.from(1), 1155);
  };
 
  const stopLog = () => {
@@ -334,7 +321,7 @@ const Example = () => {
 
 #### Defined in
 
-[types/index.ts:132](https://github.com/nevermined-io/components-catalog/blob/0f39118/lib/src/types/index.ts#L132)
+[types/index.ts:126](https://github.com/nevermined-io/components-catalog/blob/136388c/lib/src/types/index.ts#L126)
 
 ___
 
@@ -387,4 +374,4 @@ const Example = (props: ExampleProps) => {
 
 #### Defined in
 
-[types/index.ts:83](https://github.com/nevermined-io/components-catalog/blob/0f39118/lib/src/types/index.ts#L83)
+[types/index.ts:82](https://github.com/nevermined-io/components-catalog/blob/136388c/lib/src/types/index.ts#L82)
