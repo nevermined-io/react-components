@@ -479,11 +479,11 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   }
 
   const nfts = {
-    access: async (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: BigNumber, ercType: ERCType): Promise<string> => {
+    access: async (did: string, buyer: Account, nftHolder: string, nftAmount: BigNumber, ercType: ERCType): Promise<string> => {
       let agreementId
       let transferResult
       try {
-        agreementId = ercType === 721 ? await sdk.nfts.order721(subscriptionDid, buyer): await sdk.nfts.order(subscriptionDid, BigNumber.from(nftAmount), buyer)
+        agreementId = ercType === 721 ? await sdk.nfts.order721(did, buyer): await sdk.nfts.order(did, BigNumber.from(nftAmount), buyer)
         transferResult = await sdk.nfts.transferForDelegate(
           agreementId,
           nftHolder,
