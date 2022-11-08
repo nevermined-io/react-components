@@ -488,7 +488,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
         if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== buyer.getId().toLowerCase()) {
           Logger.error(
-            'Your login is expired. Please first sign with your wallet and after try again'
+            'Your login is expired or not valid'
           )
           await account.generateToken()
         }

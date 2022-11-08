@@ -202,8 +202,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       const accountWallet = await getCurrentAccount(sdk)
 
       if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== accountWallet.getId().toLowerCase()) {
-        setErrorAssetMessage(
-          'Your login is expired. Please first sign with your wallet and after try again'
+        Logger.error(
+          'Your login is expired or not valid'
         )
 
         await account.generateToken()
