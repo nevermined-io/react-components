@@ -8,7 +8,7 @@ Subcribe payment event:
 
 ```tsx
 const Example = () => {
- const { subscribe, subscription, account, isLoadingSDK} = Catalog.useNevermined();
+ const { nfts, subscription, account, isLoadingSDK} = Catalog.useNevermined();
  const { paymentEvent, setPaymentEvent } = useState<ContractEventSubscription>();
 
  const buy = async () => {
@@ -17,7 +17,7 @@ const Example = () => {
   }
 
   const currentAccount = await getCurrentAccount(sdk);
-  const response = await subscription.buySubscription(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
+  const response = await nfts.access(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
  };
 
  const stopLog = () => {
@@ -81,7 +81,7 @@ return the `payment` event with a functionality to unsubscribe
 
 #### Defined in
 
-[types/index.ts:630](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L630)
+[types/index.ts:630](https://github.com/nevermined-io/components-catalog/blob/0f39118/lib/src/types/index.ts#L630)
 
 ___
 
@@ -110,4 +110,4 @@ return the `transfer` event with a functionality to unsubscribe
 
 #### Defined in
 
-[types/index.ts:637](https://github.com/nevermined-io/components-catalog/blob/23aab4e/lib/src/types/index.ts#L637)
+[types/index.ts:637](https://github.com/nevermined-io/components-catalog/blob/0f39118/lib/src/types/index.ts#L637)

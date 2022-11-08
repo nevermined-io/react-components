@@ -89,7 +89,7 @@ export interface NeverminedProviderContext {
    * 
    * ```tsx
    * const Example = () => {
-   *  const { subscribe, subscription, account, isLoadingSDK} = Catalog.useNevermined();
+   *  const { nfts, subscription, account, isLoadingSDK} = Catalog.useNevermined();
    *  const { paymentEvent, setPaymentEvent } = useState<ContractEventSubscription>();
    * 
    *  const buy = async () => {
@@ -98,7 +98,7 @@ export interface NeverminedProviderContext {
    *   }
    *
    *   const currentAccount = await getCurrentAccount(sdk);
-   *   const response = await subscription.buySubscription(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
+   *   const response = await nfts.access(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
    *  };
    * 
    *  const stopLog = () => {
@@ -581,7 +581,7 @@ export interface AssetsModule {
  * 
  * ```tsx
  * const Example = () => {
- *  const { subscribe, subscription, account, isLoadingSDK} = Catalog.useNevermined();
+ *  const { nfts, subscription, account, isLoadingSDK} = Catalog.useNevermined();
  *  const { paymentEvent, setPaymentEvent } = useState<ContractEventSubscription>();
  * 
  *  const buy = async () => {
@@ -590,7 +590,7 @@ export interface AssetsModule {
  *   }
  *
  *   const currentAccount = await getCurrentAccount(sdk);
- *   const response = await subscription.buySubscription(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
+ *   const response = await nfts.access(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
  *  };
  * 
  *  const stopLog = () => {
