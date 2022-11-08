@@ -478,8 +478,8 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     }
   }
 
-  const subscription = {
-    buySubscription: async (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: BigNumber, ercType: ERCType): Promise<string> => {
+  const nfts = {
+    access: async (subscriptionDid: string, buyer: Account, nftHolder: string, nftAmount: BigNumber, ercType: ERCType): Promise<string> => {
       let agreementId
       let transferResult
       try {
@@ -514,7 +514,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     assets,
     account,
     updateSDK,
-    subscription
+    nfts
   }
 
   return <NeverminedContext.Provider value={IState}>{children}</NeverminedContext.Provider>

@@ -39,7 +39,7 @@ describe('Nevermined subscription', () => {
 
     const { result } = renderHook(
       () => {
-        const { subscription, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { nfts, isLoadingSDK, updateSDK } = Catalog.useNevermined()
         const [ agreementIdResult, setAgreementId] = useState<string>('')
 
         useEffect(() => {
@@ -51,7 +51,7 @@ describe('Nevermined subscription', () => {
 
           (async () => {
             try {
-              const result = await subscription.buySubscription(
+              const result = await nfts.access(
                 ddo.id,
                 new Account(walletAddress),
                 '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
@@ -86,7 +86,7 @@ describe('Nevermined subscription', () => {
     })
   })
 
-  it('should buy subscription NFT1155', async () => {
+  it('should buy NFT1155', async () => {
     const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     const sdkSpy = jest.spyOn(nevermined, 'getInstance')
 
@@ -102,7 +102,7 @@ describe('Nevermined subscription', () => {
 
     const { result } = renderHook(
       () => {
-        const { subscription, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { nfts, isLoadingSDK, updateSDK } = Catalog.useNevermined()
         const [ agreementIdResult, setAgreementId] = useState<string>('')
 
         useEffect(() => {
@@ -114,7 +114,7 @@ describe('Nevermined subscription', () => {
 
           (async () => {
             try {
-              const result = await subscription.buySubscription(
+              const result = await nfts.access(
                 ddo.id,
                 new Account(walletAddress),
                 '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',

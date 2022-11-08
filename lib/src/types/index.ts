@@ -272,14 +272,14 @@ export interface NeverminedProviderContext {
    */
   account: AccountModule;
   /**
-   * `subscription` contains all the functionalities to handle asset subscritions by payment
+   * `nfts` contains all the functionalities to handle nfts by payment
    * 
    * @example
-   * Buy subscription example
+   * Buy nfts example
    * 
    * ```tsx
    * const BuyAsset = ({ddo}: {ddo: DDO}) => {
-   *  const { assets, account, isLoadingSDK, subscription, sdk } = Catalog.useNevermined();
+   *  const { assets, account, isLoadingSDK, nfts, sdk } = Catalog.useNevermined();
    *  const { walletAddress } = MetaMask.useWallet();
    *  const [ownNFT1155, setOwnNFT1155] = useState(false);
    *  const [isBought, setIsBought] = useState(false);
@@ -298,7 +298,7 @@ export interface NeverminedProviderContext {
    *    }
    *  
    *    const currentAccount = await getCurrentAccount(sdk);
-   *    const response = await subscription.buySubscription(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
+   *    const response = await nfts.access(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
    *    setIsBought(response);
    *  };
    *  
@@ -324,7 +324,7 @@ export interface NeverminedProviderContext {
    * }
    * ```
    */
-  subscription: SubscriptionActions;
+  nfts: NFTSModule;
 }
 
 /**
@@ -740,18 +740,18 @@ export interface Transfer {
   _receiver: string;
 }
 
-export interface SubscriptionActions {
+export interface NFTSModule {
   /**
-   * Order a NFT asset and transfer and delegate it to the subscription buyer
-   * @param subscriptionDid Id of the NFT to subscribe
+   * Order a NFT asset and transfer and delegate it to the buyer
+   * @param did Id of the NFT to subscribe
    * @param buyer The account who buy the subscription of the NFT asset
    * @param nftHolder The owner of the NFT asset
    * @param nftAmount The amount of NFT asset to buy
    * @param ercType NFT asset type which can be 721 or 1155
    * @returns It is true if the subscription was successfully completed
    */
-  buySubscription: (
-    subscriptionDid: string,
+  access: (
+    did: string,
     buyer: Account,
     nftHolder: string,
     nftAmount: BigNumber,

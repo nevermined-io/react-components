@@ -1741,10 +1741,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@nevermined-io/nevermined-sdk-js@^0.25.0":
-  version "0.25.0"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.25.0.tgz#620a8b9287bc2dcc63360d1104cbf2f618d3add3"
-  integrity sha512-U3qgMBUoKgJgNQ8ZsitvJxmyF9bIkIY28ktXFUBinmDgDc4AsVpJmiVZfCFpeF5/S8iF4sKJ2gjQrqHC/ETCaA==
+"@nevermined-io/nevermined-sdk-js@^0.25.2":
+  version "0.25.2"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-0.25.2.tgz#2eabc65e12abfb8d541b2b53262b9cbf1f28b377"
+  integrity sha512-AiIg1jCEtrexFSY2Z/UU8v9UMPgik6pmbFECrEAWSd/8YbjBgGyMO9djVHtpdnd6jjWakd1mmPGV/bICZYEMlA==
   dependencies:
     "@nevermined-io/subgraphs" "0.4.1"
     assert "^2.0.0"
