@@ -236,10 +236,6 @@ export interface NeverminedProviderContext {
    *  const { assets, account, isLoadingSDK } = Catalog.useNevermined();
    *  
    *  const buy = async () => {
-   *    if (!account.isTokenValid()) {
-   *      await account.generateToken();
-   *    }
-   *  
    *    (...)
    *  };
    * }
