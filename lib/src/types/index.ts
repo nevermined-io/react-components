@@ -1,5 +1,4 @@
 import {
-  Account,
   Config,
   DDO,
   MetaData,
@@ -89,16 +88,11 @@ export interface NeverminedProviderContext {
    * 
    * ```tsx
    * const Example = () => {
-   *  const { subscribe, subscription, account, isLoadingSDK} = Catalog.useNevermined();
+   *  const { nfts, subscription, account, isLoadingSDK} = Catalog.useNevermined();
    *  const { paymentEvent, setPaymentEvent } = useState<ContractEventSubscription>();
    * 
    *  const buy = async () => {
-   *   if (!account.isTokenValid()) {
-   *     await account.generateToken();
-   *   }
-   *
-   *   const currentAccount = await getCurrentAccount(sdk);
-   *   const response = await subscription.buySubscription(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
+   *   const response = await nfts.access(ddo.id, owner, BigNumber.from(1), 1155);
    *  };
    * 
    *  const stopLog = () => {
@@ -204,9 +198,6 @@ export interface NeverminedProviderContext {
    *       amount: 0,
    *     };
    *  
-   *     if (!account.isTokenValid()) {
-   *       await account.generateToken();
-   *     }
    *     const response = await publishNFT1155({
    *       gatewayAddress: String(appConfig.gatewayAddress),
    *       assetRewards,
@@ -245,10 +236,6 @@ export interface NeverminedProviderContext {
    *  const { assets, account, isLoadingSDK } = Catalog.useNevermined();
    *  
    *  const buy = async () => {
-   *    if (!account.isTokenValid()) {
-   *      await account.generateToken();
-   *    }
-   *  
    *    (...)
    *  };
    * }
@@ -272,14 +259,14 @@ export interface NeverminedProviderContext {
    */
   account: AccountModule;
   /**
-   * `subscription` contains all the functionalities to handle asset subscritions by payment
+   * `nfts` contains all the functionalities to handle nfts by payment
    * 
    * @example
-   * Buy subscription example
+   * Buy nfts example
    * 
    * ```tsx
    * const BuyAsset = ({ddo}: {ddo: DDO}) => {
-   *  const { assets, account, isLoadingSDK, subscription, sdk } = Catalog.useNevermined();
+   *  const { assets, account, isLoadingSDK, nfts, sdk } = Catalog.useNevermined();
    *  const { walletAddress } = MetaMask.useWallet();
    *  const [ownNFT1155, setOwnNFT1155] = useState(false);
    *  const [isBought, setIsBought] = useState(false);
@@ -293,12 +280,7 @@ export interface NeverminedProviderContext {
    *  }, [walletAddress, isBought])
    *  
    *  const buy = async () => {
-   *    if (!account.isTokenValid()) {
-   *      await account.generateToken();
-   *    }
-   *  
-   *    const currentAccount = await getCurrentAccount(sdk);
-   *    const response = await subscription.buySubscription(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
+   *    const response = await nfts.access(ddo.id, owner, BigNumber.from(1), 1155);
    *    setIsBought(response);
    *  };
    *  
@@ -324,7 +306,7 @@ export interface NeverminedProviderContext {
    * }
    * ```
    */
-  subscription: SubscriptionActions;
+  nfts: NFTSModule;
 }
 
 /**
@@ -581,16 +563,12 @@ export interface AssetsModule {
  * 
  * ```tsx
  * const Example = () => {
- *  const { subscribe, subscription, account, isLoadingSDK} = Catalog.useNevermined();
+ *  const { nfts, subscription, account, isLoadingSDK} = Catalog.useNevermined();
  *  const { paymentEvent, setPaymentEvent } = useState<ContractEventSubscription>();
  * 
  *  const buy = async () => {
- *   if (!account.isTokenValid()) {
- *     await account.generateToken();
- *   }
- *
  *   const currentAccount = await getCurrentAccount(sdk);
- *   const response = await subscription.buySubscription(ddo.id, currentAccount, owner, BigNumber.from(1), 1155);
+ *   const response = await nfts.access(ddo.id, owner, BigNumber.from(1), 1155);
  *  };
  * 
  *  const stopLog = () => {
@@ -740,19 +718,17 @@ export interface Transfer {
   _receiver: string;
 }
 
-export interface SubscriptionActions {
+export interface NFTSModule {
   /**
-   * Order a NFT asset and transfer and delegate it to the subscription buyer
-   * @param subscriptionDid Id of the NFT to subscribe
-   * @param buyer The account who buy the subscription of the NFT asset
+   * Order a NFT asset and transfer and delegate it to the buyer
+   * @param did Id of the NFT to subscribe
    * @param nftHolder The owner of the NFT asset
    * @param nftAmount The amount of NFT asset to buy
    * @param ercType NFT asset type which can be 721 or 1155
    * @returns It is true if the subscription was successfully completed
    */
-  buySubscription: (
-    subscriptionDid: string,
-    buyer: Account,
+  access: (
+    did: string,
     nftHolder: string,
     nftAmount: BigNumber,
     ercType: ERCType

@@ -201,9 +201,9 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
 
       const accountWallet = await getCurrentAccount(sdk)
 
-      if (!account.isTokenValid()) {
-        setErrorAssetMessage(
-          'Your login is expired. Please first sign with your wallet and after try again'
+      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== accountWallet.getId().toLowerCase()) {
+        Logger.error(
+          'Your login is expired or not valid'
         )
 
         await account.generateToken()
@@ -289,7 +289,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
 
       const accountWallet = await getCurrentAccount(sdk)
 
-      if (!account.isTokenValid()) {
+      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== accountWallet.getId().toLowerCase()) {
         setErrorAssetMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
         )
@@ -381,7 +381,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
 
       const accountWallet = await getCurrentAccount(sdk)
 
-      if (!account.isTokenValid()) {
+      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== accountWallet.getId().toLowerCase()) {
         setErrorAssetMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
         )
@@ -398,11 +398,11 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       const transferNftConditionContractReceipt = await sdk.nfts.setApprovalForAll(transferNftCondition.address, true, accountWallet)
 
       Logger.log(`Contract Receipt for approved transfer NFT: ${transferNftConditionContractReceipt}`)
+      
 
       const gateawayContractReceipt = await sdk.nfts.setApprovalForAll(gatewayAddress, true, accountWallet)
 
       Logger.log(`Contract Receipt for approved gateway: ${gateawayContractReceipt}`)
-
 
       const ddo = await sdk.nfts.createWithRoyalties(
         metadata,
