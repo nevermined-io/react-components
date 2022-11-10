@@ -1,6 +1,6 @@
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards'
 import React, { useEffect, useState } from 'react'
-import { Catalog, AssetService, RoyaltyKind, BigNumber, getRoyaltyScheme, getCurrentAccount, MetaData, DDO, Logger } from '@nevermined-io/catalog-core'
+import { Catalog, AssetService, RoyaltyKind, BigNumber, getRoyaltyScheme, MetaData, DDO } from '@nevermined-io/catalog-core'
 import { MetaMask } from '@nevermined-io/catalog-providers'
 import { UiText, UiLayout, BEM, UiButton } from '@nevermined-io/styles'
 import styles from './example.module.scss'
