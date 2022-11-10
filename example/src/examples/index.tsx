@@ -124,9 +124,8 @@ const App = () => {
 
   const onPublish = async () => {
     try {
-      const publisher = await getCurrentAccount(sdk)
       const assetRewardsMap = new Map([
-        [publisher.getId(), BigNumber.from(1)]
+        [walletAddress, BigNumber.from(1)]
       ])
       const assetRewards = new AssetRewards(assetRewardsMap)
 
