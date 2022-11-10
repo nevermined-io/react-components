@@ -10,11 +10,11 @@ import {
   EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events'
 import { QueryResult, EncryptionMethod } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata'
-import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards'
+import AssetRewardsSDK from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards'
 import { RoyaltyAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets'
 import { ServiceCommon, ServiceType } from '@nevermined-io/nevermined-sdk-js/dist/node/ddo/Service'
 import { ERCType, NeverminedNFT1155Type } from '@nevermined-io/nevermined-sdk-js/dist/node/models/NFTAttributes'
-import BigNumberUtils from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber'
+import BigNumberSDK from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber'
 import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase'
 export * from '@nevermined-io/nevermined-sdk-js'
 export { RoyaltyKind } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets'
@@ -30,8 +30,10 @@ export type { QueryResult, EncryptionMethod } from '@nevermined-io/nevermined-sd
 export type { RoyaltyAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets'
 export { getRoyaltyScheme } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/Assets'
 
-export const BigNumber = BigNumberUtils
-export type BigNumber = BigNumberUtils
+export const BigNumber = BigNumberSDK
+export type BigNumber = BigNumberSDK
+export const AssetRewards = AssetRewardsSDK
+export type AssetRewards = AssetRewardsSDK
 
 /**
  * Values returns from the main NVM context
@@ -406,7 +408,7 @@ export interface CustomErc20Token {
   /** Name of the token */
   name: string;
   /** Amount of tokens holded by the wallet account */
-  balance: BigNumberUtils;
+  balance: BigNumber;
   /** Decimals of the token */
   decimals: number;
 }
