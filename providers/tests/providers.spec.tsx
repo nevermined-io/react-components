@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { render, screen, renderHook, waitFor } from '@testing-library/react'
 import { generateTestingUtils } from "eth-testing"
-import { MetaMask } from '../src'
-import { ChainConfig } from './chainConfig'
-import { MetamaskProvider } from '../src/metamask'
+import { WalletProvider, useWallet, Ethers } from '../src'
+import ChainConfig from './chainConfig'
 
 const WALLET_ADDRESS = "0xf61B443A155b07D2b2cAeA2d99715dC84E839EEf"
 
 const setup = () => render(
-    <MetaMask.WalletProvider externalChainConfig={ChainConfig} correctNetworkId='0x13881' nodeUri='http://localhost:8545'>
+    <WalletProvider externalChainConfig={ChainConfig} correctNetworkId={80001}>
       <div>Hello metamask</div>
-    </MetaMask.WalletProvider>
+    </WalletProvider>
 )
 
 const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
-  <MetaMask.WalletProvider externalChainConfig={ChainConfig} correctNetworkId='0x13881' nodeUri='http://localhost:8545'>
+  <WalletProvider externalChainConfig={ChainConfig} correctNetworkId={80001}>
     {children}
-  </MetaMask.WalletProvider>
+  </WalletProvider>
 )
 
 
 describe('Metamask context', () => {
   const testingUtils = generateTestingUtils({ providerType: "MetaMask" })
   beforeAll(() => {
-    global.window.ethereum = testingUtils.getProvider()
+    // eslint-disable-next-line
+    (global.window as any).ethereum = testingUtils.getProvider()
   })
 
   afterEach(() => {
@@ -42,12 +42,12 @@ describe('Metamask context', () => {
 
     const { result } = renderHook(
       () => {
-        const { walletAddress, loginMetamask } = MetaMask.useWallet()
+        const { walletAddress, login } = useWallet()
 
         useEffect(() => {
           (async () => {
             if(!walletAddress) {
-              await loginMetamask()
+              await login()
             }
           })()
         }, [walletAddress])
@@ -69,12 +69,12 @@ describe('Metamask context', () => {
 
     const { result } = renderHook(
       () => {
-        const { walletAddress, loginMetamask, logout } = MetaMask.useWallet()
+        const { walletAddress, login, logout } = useWallet()
 
         useEffect(() => {
           (async () => {
             if(!walletAddress) {
-              await loginMetamask()
+              await login()
             } else {
               await logout()
             }
@@ -98,13 +98,13 @@ describe('Metamask context', () => {
 
     const { result } = renderHook(
       () => {
-        const { walletAddress, loginMetamask, getProvider } = MetaMask.useWallet()
-        const [provider, setProvider] = useState<MetamaskProvider>()
+        const { walletAddress, login, getProvider } = useWallet()
+        const [provider, setProvider] = useState<Ethers.providers.Provider>()
 
         useEffect(() => {
           (async () => {
             if(!walletAddress) {
-              await loginMetamask()
+              await login()
             } else {
               const result = getProvider()
               setProvider(result)
@@ -120,24 +120,24 @@ describe('Metamask context', () => {
     )
 
     await waitFor(async () => {
-      expect(result.current?._network.name).toBe('homestead')
+      expect((await result.current?.getNetwork())?.name).toBe('homestead')
     })
   })
 
-  it("should return checkIsLogged true if the wallet is connected", async () => {
+  it("should return getStatus connected if the wallet is connected", async () => {
     testingUtils.mockConnectedWallet([WALLET_ADDRESS])
 
     const { result } = renderHook(
       () => {
-        const { walletAddress, loginMetamask, checkIsLogged } = MetaMask.useWallet()
-        const [logged, setLogged] = useState(false)
+        const { walletAddress, login, getStatus } = useWallet()
+        const [logged, setLogged] = useState<"connecting" | "connected" | "reconnecting" | "disconnected" | undefined>()
 
         useEffect(() => {
           (async () => {
             if(!walletAddress) {
-              await loginMetamask()
+              await login()
             } else {
-              const result = await checkIsLogged()
+              const result = getStatus()
               setLogged(result)
             }
           })()
@@ -151,21 +151,21 @@ describe('Metamask context', () => {
     )
 
     await waitFor(async () => {
-      expect(result.current).toBe(true)
+      expect(result.current).toBe('connected')
     })
   })
 
-  it("should return checkIsLogged false if the wallet is not connected", async () => {
+  it("should return getStatus disconnected if the wallet is not connected", async () => {
     testingUtils.mockConnectedWallet([WALLET_ADDRESS])
 
     const { result } = renderHook(
       () => {
-        const { walletAddress, checkIsLogged } = MetaMask.useWallet()
-        const [logged, setLogged] = useState(false)
+        const { walletAddress, getStatus } = useWallet()
+        const [logged, setLogged] = useState<"connecting" | "connected" | "reconnecting" | "disconnected" | undefined>()
 
         useEffect(() => {
           (async () => {
-            const result = await checkIsLogged()
+            const result = await getStatus()
             setLogged(result)
           })()
         }, [ walletAddress ])
@@ -178,7 +178,7 @@ describe('Metamask context', () => {
     )
 
     await waitFor(async () => {
-      expect(result.current).toBe(false)
+      expect(result.current).toBe("disconnected")
     })
   })
 })
