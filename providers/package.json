@@ -8,7 +8,7 @@
     "build": "npm run clean && npm run build:tsc",
     "build:tsc": "tsc --noEmit false",
     "clean": "rm -rf dist",
-    "test:unit": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "eject": "react-scripts eject",
     "lint": "eslint ./",
     "lint:fix": "yarn run lint -- --fix",

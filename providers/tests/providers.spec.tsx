@@ -18,12 +18,15 @@ const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
   </WalletProvider>
 )
 
-
 describe('Metamask context', () => {
   const testingUtils = generateTestingUtils({ providerType: "MetaMask" })
   beforeAll(() => {
     // eslint-disable-next-line
     (global.window as any).ethereum = testingUtils.getProvider()
+  })
+
+  beforeEach(() => {
+    jest.useFakeTimers()
   })
 
   afterEach(() => {
