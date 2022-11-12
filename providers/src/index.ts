@@ -1,5 +1,6 @@
 export { zeroX } from './utils'
 export * from "./providers"
+export * from "./client"
 export * as Wagmi from "wagmi"
 export * as WalletConnect from "wagmi/connectors/walletConnect"
 export * as Metamask from 'wagmi/connectors/metaMask'

@@ -1,45 +1,14 @@
 import React, {
     useState,
-    createContext,
     useEffect,
-    useContext,
 } from "react"
-import { WagmiConfig, createClient, configureChains, Client, Chain, useAccount, useNetwork, useSwitchNetwork } from "wagmi"
-import type { ConnectorData } from 'wagmi'
+import { createClient, configureChains, Client, Chain, WagmiConfig } from "wagmi"
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
-import { ConnectKitProvider } from 'connectkit'
 import DefaultChainConfig from "./chain-config"
-import { Provider } from "@ethersproject/abstract-provider"
-  
-/**
- * This component is a layer of [Wagmi](https://wagmi.sh/docs/getting-started) and [ConnectKit](https://docs.family.co/connectkit)
- * which allow to handle Metamask, WalletConnect and Coinbase without needing to set any config 
- */
-export interface WalletProviderState {
-    /** All the wagmi client functionalities
-     * @see [wagmi](https://wagmi.sh/docs/getting-started)
-     */
-    client: Client
-    /** Metamask provider for example web3 or ethers */
-    getProvider: () => Provider;
-    /** Logout from the wallet */
-    logout: () => void;
-    /** Get the status of the wallet */
-    getStatus: () => "connecting" | "connected" | "reconnecting" | "disconnected" | undefined;
-    /** Get all the available chains */
-    getAllAvailableChains: () => Chain[];
-    /** The address of the wallet account */
-    walletAddress: string;
-    /** Login in Provider */
-    login: () => Promise<Required<ConnectorData<any>>> | undefined; // eslint-disable-line
-    /** If chain is between the available networks supported */
-    checkIsChainCorrect: () => boolean;
-}
-
-export const WalletContext = createContext({} as WalletProviderState)
+import { ClientComp } from './client'
 
 /**
  * Wallet provider for Metamask, WalletConnect and Coinbase with all the functionalities to handle the wallet in dapp 
@@ -92,10 +61,6 @@ export const WalletProvider = ({
 }) => {
     // eslint-disable-next-line
     const [client, setClient] = useState<Client<any>>()
-    const [walletAddress, setWalletAddress] = useState<string>('')
-    const { address, status } = useAccount()
-    const { chain, chains } = useNetwork()
-    const { switchNetwork } = useSwitchNetwork()
     const chainsConfig = DefaultChainConfig || externalChainConfig
 
     useEffect(() => {
@@ -145,58 +110,16 @@ export const WalletProvider = ({
         
     }, [])
 
-    useEffect(() => {
-        if(chain?.unsupported && switchNetwork) {
-            switchNetwork(correctNetworkId || chainsConfig[0].id)
-        }
-    }, [chain])
-
-    useEffect(() => {
-        setWalletAddress(address || '')
-    }, [address])
-
-    const login = (config?: {chainId: number}) => client?.connector?.connect(config)
-
-    const logout = () => client?.connector?.disconnect()
-
-    const getProvider = (bust?: boolean, chainId?: number) => client?.getProvider({bust, chainId})
-
-    const getStatus = () => status
-
-    const checkIsChainCorrect = () => !chain?.unsupported
-
-    const getAllAvailableChains =  () => chains
-
     return (
         <>
-            {client?.status ? <WagmiConfig client={client}>
-                <ConnectKitProvider>                
-                    <WalletContext.Provider value={{
-                        client,
-                        walletAddress,
-                        login,
-                        logout,
-                        getProvider,
-                        getStatus,
-                        checkIsChainCorrect,
-                        getAllAvailableChains,
-                    }}>
+            {client?.status ?
+                <WagmiConfig client={client}>
+                    <ClientComp client={client} correctNetworkId={correctNetworkId} chainsConfig={chainsConfig}>
                         {children}
-                    </WalletContext.Provider>
-                </ConnectKitProvider>
-            </WagmiConfig> : <></>}
+                    </ClientComp>
+                </WagmiConfig> 
+                : <></>          
+            }
         </>
     )
-}
-
-export const useWallet = (): WalletProviderState => {
-    const contextValue = useContext(WalletContext)
-
-  if (!contextValue) {
-    throw new Error(
-      'could not find MetaMask context value; please ensure the component is wrapped in a <WalletProvider>'
-    )
-  }
-
-  return contextValue
 }
