@@ -21,7 +21,7 @@ The size of the content
 
 #### Defined in
 
-[types/index.ts:684](https://github.com/nevermined-io/components-catalog/blob/26f2225/lib/src/types/index.ts#L684)
+[types/index.ts:686](https://github.com/nevermined-io/components-catalog/blob/95bbb52/lib/src/types/index.ts#L686)
 
 ___
 
@@ -33,7 +33,7 @@ Format of the contet file: Json, txt, etc...
 
 #### Defined in
 
-[types/index.ts:680](https://github.com/nevermined-io/components-catalog/blob/26f2225/lib/src/types/index.ts#L680)
+[types/index.ts:682](https://github.com/nevermined-io/components-catalog/blob/95bbb52/lib/src/types/index.ts#L682)
 
 ___
 
@@ -45,7 +45,7 @@ Index given to the file once it was created
 
 #### Defined in
 
-[types/index.ts:678](https://github.com/nevermined-io/components-catalog/blob/26f2225/lib/src/types/index.ts#L678)
+[types/index.ts:680](https://github.com/nevermined-io/components-catalog/blob/95bbb52/lib/src/types/index.ts#L680)
 
 ___
 
@@ -57,4 +57,4 @@ Url where is located the file
 
 #### Defined in
 
-[types/index.ts:682](https://github.com/nevermined-io/components-catalog/blob/26f2225/lib/src/types/index.ts#L682)
+[types/index.ts:684](https://github.com/nevermined-io/components-catalog/blob/95bbb52/lib/src/types/index.ts#L684)

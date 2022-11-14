@@ -6,5 +6,5 @@
     "plugin": ["typedoc-plugin-markdown"],
     "out": "../docs/providers",
     "hideBreadcrumbs": true,
-    "skipOffline": true
+    "excludeExternals": true
 }
