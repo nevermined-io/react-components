@@ -11,6 +11,6 @@ for i in "${DOCS[@]}"; do
   if [ "$i" == "$CORE_DOCS_DIR" ]; then
     mv -t "$i/API" "$i/enums" "$i/interfaces" "$i/modules" "$i/modules.md"
   else
-    mv -t "$i/API" "$i/interfaces" "$i/modules" "$i/modules.md"
+    mv -t "$i/API" "$i/interfaces" "$i/modules.md"
   fi
 done
