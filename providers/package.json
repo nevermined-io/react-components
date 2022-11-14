@@ -9,7 +9,6 @@
     "build:tsc": "tsc --noEmit false",
     "clean": "rm -rf dist",
     "test:unit": "jest",
-    "vitest": "vitest",
     "eject": "react-scripts eject",
     "lint": "eslint ./",
     "lint:fix": "yarn run lint -- --fix",
