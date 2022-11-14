@@ -23,7 +23,7 @@ export type {
   EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events'
 export { zeroX } from '@nevermined-io/nevermined-sdk-js/dist/node/utils'
-export type { ERCType, NeverminedNFT1155Type } from '@nevermined-io/nevermined-sdk-js/dist/node/models/NFTAttributes'
+export { ERCType, NeverminedNFT1155Type } from '@nevermined-io/nevermined-sdk-js/dist/node/models/NFTAttributes'
 export type { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase'
 export type { ServiceCommon, ServiceType } from '@nevermined-io/nevermined-sdk-js/dist/node/ddo/Service'
 export type { QueryResult, EncryptionMethod } from '@nevermined-io/nevermined-sdk-js/dist/node/metadata/Metadata'
@@ -38,7 +38,7 @@ export type AssetRewards = AssetRewardsSDK
 /**
  * Values returns from the main NVM context
  * Can be consumed after wrapping your project with the catalog(see setup steps)
- * 
+ *
  * example:
  *
  * option 1: const { sdk, sdkError, isLoadingSdk, ...others } = useContext(Catalog.NeverminedContext)
@@ -54,13 +54,13 @@ export interface NeverminedProviderContext {
   /**
    * Rebuild Nevermined sdk with new config values
    * @param newConfig - Config object to rebuild Nevermined SDK
-   * 
+   *
    * @example
    * Update Nevermined sdk again:
    * ```ts
    * const Example = (props: ExampleProps) => {
    *  const { updateSDK, isLoadingSDK } = Catalog.useNevermined();
-   * 
+   *
    *  const reloadSdk = async() => {
    *     const config = {
    *         web3Provider: window.ethereum,
@@ -77,30 +77,30 @@ export interface NeverminedProviderContext {
    *     }
    *
    *     updateSDK(config)
-   *   } 
-   * } 
+   *   }
+   * }
    * ```
    */
   updateSDK: (newConfig: Config) => Promise<boolean>;
   /**
    * `subscribe` contains all the functionalities to handle events
-   * 
+   *
    * @example
    * Subcribe payment event:
-   * 
+   *
    * ```tsx
    * const Example = () => {
    *  const { nfts, subscription, account, isLoadingSDK} = Catalog.useNevermined();
    *  const { paymentEvent, setPaymentEvent } = useState<ContractEventSubscription>();
-   * 
+   *
    *  const buy = async () => {
    *   const response = await nfts.access(ddo.id, owner, BigNumber.from(1), 1155);
    *  };
-   * 
+   *
    *  const stopLog = () => {
    *    paymentEvent.unsuscribe();
    *  }
-   * 
+   *
    *  useEffect(() => {
    *    if(isLoadingSDK) {
    *     return;
@@ -111,7 +111,7 @@ export interface NeverminedProviderContext {
    *      }))
    *    })()
    *  }, [isLoadingSDK])
-   *  
+   *
    *  return (
    *    <div>
    *        <button onClick={buy} disabled={isLoadingSDK}>
@@ -127,17 +127,17 @@ export interface NeverminedProviderContext {
    */
   subscribe: SubscribeModule;
   /**
-   * `assets` contains all the functionalities to handle assets for example get, 
+   * `assets` contains all the functionalities to handle assets for example get,
    * mint, transfer, order or download asset
-   * 
+   *
    * @example
    * Publish an asset example:
-   * 
+   *
    * ```tsx
    * const Example = () => {
    *  const { isLoadingSDK, sdk, account, assets } = Catalog.useNevermined();
    *  const [ddo, setDDO] = useState<DDO>({} as DDO)
-   *  
+   *
    *  const metadata: MetaData = {
    *    main: {
    *      name: '',
@@ -153,7 +153,7 @@ export interface NeverminedProviderContext {
    *      price: ''
    *    }
    *  };
-   *  
+   *
    *  const constructRewardMap = (
    *    recipientsData: any[],
    *    priceWithoutFee: number,
@@ -171,7 +171,7 @@ export interface NeverminedProviderContext {
    *      ];
    *    }
    *    let totalWithoutUser = 0;
-   *  
+   *
    *    recipients.forEach((recipient: any) => {
    *      if (recipient.split && recipient.split > 0) {
    *        const ownSplit = ((priceWithoutFee * recipient.split) / 100).toFixed();
@@ -179,15 +179,15 @@ export interface NeverminedProviderContext {
    *        totalWithoutUser += recipient.split;
    *      }
    *    });
-   *  
+   *
    *    if (!rewardMap.has(ownerWalletAddress)) {
    *      const ownSplitReinforced = +((priceWithoutFee * (100 - totalWithoutUser)) / 100).toFixed();
    *      rewardMap.set(ownerWalletAddress, BigNumber.from(ownSplitReinforced));
    *    }
-   *  
+   *
    *    return rewardMap;
    *  };
-   *  
+   *
    *  const onPublish = async () => {
    *   try {
    *     const publisher = await getCurrentAccount(sdk);
@@ -199,7 +199,7 @@ export interface NeverminedProviderContext {
    *       scheme: getRoyaltyScheme(sdk, RoyaltyKind.Standard),
    *       amount: 0,
    *     };
-   *  
+   *
    *     const response = await publishNFT1155({
    *       gatewayAddress: String(appConfig.gatewayAddress),
    *       assetRewards,
@@ -210,62 +210,62 @@ export interface NeverminedProviderContext {
    *       royaltyAttributes,
    *       erc20TokenAddress,
    *     });
-   *  
+   *
    *     setDDO(response as DDO);
    *   } catch (error) {
    *     console.log('error', error);
    *   }
    *  };
-   *  
+   *
    *  return (
    *    <>
-   *      ...     
+   *      ...
    *    </>
    *  );
-   * };  
+   * };
    * ```
-   * 
+   *
    */
   assets: AssetsModule;
   /**
    * `account` contains all the functionalities to handle authentications and
    * collections belonged to an account
-   * 
+   *
    * @example
    * Authorization example:
    * ```ts
    * const Example = (props: ExampleProps) => {
    *  const { assets, account, isLoadingSDK } = Catalog.useNevermined();
-   *  
+   *
    *  const buy = async () => {
    *    (...)
    *  };
    * }
    * ```
-   * 
+   *
    * Check NFT1155 holder example
    * ```ts
    * const Example = (props: ExampleProps) => {
    *  const { account, isLoadingSDK } = Catalog.useNevermined();
    *  const [ownNFT1155, setOwnNFT1155] = useState(false);
-   *  
+   *
    *  useEffect(() => {
    *    (async () => {
    *      const response = await account.isNFT1155Holder(ddo.id, walletAddress);
    *      setOwnNFT1155(response);
    *    })()
    *  }, [walletAddress])
-   *  
+   *
    * }
    * ```
    */
   account: AccountModule;
   /**
    * `nfts` contains all the functionalities to handle nfts by payment
-   * 
+   *
    * @example
    * Buy nfts example
-   * 
+   *
    * ```tsx
    * const BuyAsset = ({ddo}: {ddo: DDO}) => {
    *  const { assets, account, isLoadingSDK, nfts, sdk } = Catalog.useNevermined();
@@ -273,23 +273,23 @@ export interface NeverminedProviderContext {
    *  const [ownNFT1155, setOwnNFT1155] = useState(false);
    *  const [isBought, setIsBought] = useState(false);
    *  const [owner, setOwner] = useState('');
-   *  
+   *
    *  useEffect(() => {
    *    (async () => {
    *      setOwnNFT1155(await account.isNFT1155Holder(ddo.id, walletAddress));
    *      setOwner(await sdk.assets.owner(ddo.id))
    *    })()
    *  }, [walletAddress, isBought])
-   *  
+   *
    *  const buy = async () => {
    *    const response = await nfts.access(ddo.id, owner, BigNumber.from(1), 1155);
    *    setIsBought(response);
    *  };
-   *  
+   *
    *  const download = async () => {
    *    await assets.downloadNFT(ddo.id);
    *  };
-   *  
+   *
    *  return (
    *    <div>
    *      {ownNFT1155 ? (
@@ -442,7 +442,7 @@ export interface AccountModule {
   isTokenValid: () => boolean;
   /**
   * Return the address that sign the token
-  * @return The address token signer 
+  * @return The address token signer
   */
   getAddressTokenSigner: () => string;
   /**
@@ -457,7 +457,7 @@ export interface AccountModule {
    * This method validates if a user is a NFT (ERC-1155 based) holder for a specific `tokenId`.
    * For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
    * of a NFT (limitted by the NFT cap).
-   * 
+   *
    * @param did The unique identifier of the NFT within a NFT ERC-1155 contract
    * @param walletAddress The public address of the user
    * @returns true if the user owns at least one edition of the NFT
@@ -467,7 +467,7 @@ export interface AccountModule {
    * This method validates if a user is a NFT (ERC-721 based) holder for a specific NFT contract address.
    * For ERC-721 tokens, we use the DID as tokenId. A user can between zero an multiple editions
    * of a NFT (limitted by the NFT cap).
-   * 
+   *
    * @param nftAddress The contract address of the ERC-721 NFT contract
    * @param walletAddress The public address of the user
    * @returns true if the user holds the NFT
@@ -486,7 +486,7 @@ export interface AssetsModule {
    */
   findOne: (did: DID) => Promise<DDO>;
   /**
-   * 
+   *
    * @param q Query to custom the search: order result, filtering, etc...
    * @returns List of assets according with the query given
    */
@@ -495,7 +495,7 @@ export interface AssetsModule {
    * Transfer the ownership of the asset to other account
    * @param assetInfo
    * @param assetInfo.did The id of the asset
-   * @param assetInfo.amount The amount of asset to transfer 
+   * @param assetInfo.amount The amount of asset to transfer
    * @returns Return true if asset was transferred successfully
    */
   transfer: ({ did, amount }: { did: string; amount: number }) => Promise<boolean>;
@@ -559,24 +559,24 @@ export interface AssetsModule {
 
 /**
  * `subscribe` contains all the functionalities to handle events
- * 
+ *
  * @example
  * Subcribe payment event:
- * 
+ *
  * ```tsx
  * const Example = () => {
  *  const { nfts, subscription, account, isLoadingSDK} = Catalog.useNevermined();
  *  const { paymentEvent, setPaymentEvent } = useState<ContractEventSubscription>();
- * 
+ *
  *  const buy = async () => {
  *   const currentAccount = await getCurrentAccount(sdk);
  *   const response = await nfts.access(ddo.id, owner, BigNumber.from(1), 1155);
  *  };
- * 
+ *
  *  const stopLog = () => {
  *    paymentEvent.unsuscribe();
  *  }
- * 
+ *
  *  useEffect(() => {
  *    if(isLoadingSDK) {
  *     return;
@@ -587,7 +587,7 @@ export interface AssetsModule {
  *      }))
  *    })()
  *  }, [isLoadingSDK])
- *  
+ *
  *  return (
  *    <div>
  *        <button onClick={buy} disabled={isLoadingSDK}>
@@ -605,14 +605,14 @@ export interface SubscribeModule {
   /**
    * Subscribe a `payment` event and execute callbacks once that this event is listened
    * @param cb Callback event
-   * @returns return the `payment` event with a functionality to unsubscribe 
+   * @returns return the `payment` event with a functionality to unsubscribe
    */
   paymentEvents: (cb: (events: EventResult[]) => void) => ContractEventSubscription;
   /**
    * Subscribe a `transfer` event and execute callbacks once that this event is listened
    * @param cb Callback to execute
    * @param nftType NFT asset type which can be 721 or 1155
-   * @returns return the `transfer` event with a functionality to unsubscribe 
+   * @returns return the `transfer` event with a functionality to unsubscribe
    */
   transferEvents: (cb: (events: EventResult[]) => void, nftType?: ERCType) => ContractEventSubscription;
 }
@@ -767,11 +767,11 @@ export interface AssetPublishProviderState {
    */
   reset: (resetAssetPublish: AssetPublishParams) => void;
   /**
-   * Nevermined is a network where users register digital assets and attach to 
+   * Nevermined is a network where users register digital assets and attach to
    * them services (like data sharing, nfts minting, etc).
-   * With this method a user can register an asset in Nevermined giving a piece of metadata. 
+   * With this method a user can register an asset in Nevermined giving a piece of metadata.
    * This will return the DDO created (including the unique identifier of the asset - aka DID).
-   * 
+   *
    * @param asset
    * @param asset.metadata The metadata object describing the asset
    * @param asset.assetRewards The price of the asset that the owner will receive
@@ -784,7 +784,7 @@ export interface AssetPublishProviderState {
    * @param asset.txParameters Trasaction number of the asset creation
    * @returns The DDO object including the asset metadata and the DID
    */
-  publishAsset: ({ 
+  publishAsset: ({
     metadata,
     assetRewards,
     serviceTypes,
@@ -794,8 +794,8 @@ export interface AssetPublishProviderState {
     erc20TokenAddress,
     appId,
     txParameters,
-  }: 
-  { 
+  }:
+  {
     metadata: MetaData;
     assetRewards?: AssetRewards;
     serviceTypes?: ServiceType[];
@@ -807,12 +807,12 @@ export interface AssetPublishProviderState {
     txParameters?: TxParameters,
   }) => Promise<DDO | undefined>;
   /**
-   * In Nevermined is possible to register a digital asset that allow users pay for having a 
-   * NFT (ERC-721). This typically allows content creators to provide access to exclusive 
+   * In Nevermined is possible to register a digital asset that allow users pay for having a
+   * NFT (ERC-721). This typically allows content creators to provide access to exclusive
    * contents for NFT holders.
-   * It will create a new digital asset associated to a ERC-721 NFT contract 
+   * It will create a new digital asset associated to a ERC-721 NFT contract
    * (given the `nftAddress` parameter)
-   * 
+   *
    * @param nft721
    * @param nft721.nftAddress The contract address of the ERC-721 NFT
    * @param nft721.metadata The metadata object describing the asset
@@ -859,13 +859,13 @@ export interface AssetPublishProviderState {
     duration?: number;
   }) => Promise<DDO | undefined>;
   /**
-   * In Nevermined is possible to register a digital asset that allow users pay for having a 
-   * NFT (ERC-1155). This typically allows content creators to provide access to exclusive 
+   * In Nevermined is possible to register a digital asset that allow users pay for having a
+   * NFT (ERC-1155). This typically allows content creators to provide access to exclusive
    * contents for NFT holders.
    * ERC-1155 NFTs are semi-fungible, meaning that a NFT can have multiple editions.
-   * 
-   * This method will create a new digital asset associated to a ERC-1155 NFT contract. 
-   * 
+   *
+   * This method will create a new digital asset associated to a ERC-1155 NFT contract.
+   *
    * @param nft1155
    * @param nft1155.gatewayAddress Gateway address to approve to handle the NFT
    * @param nft1155.metadata The metadata object describing the asset
