@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: "17.x"
+          node-version: "16.x"
           registry-url: https://registry.npmjs.org/
       - run: cd lib && yarn install --ignore-engines
       - run: cd lib && yarn build:tsc
