@@ -1,32 +1,66 @@
 import React, { useEffect, useState } from 'react'
-import { render, screen, renderHook, waitFor } from '@testing-library/react'
-import { generateTestingUtils } from "eth-testing"
+import { configureChains, createClient, Chain } from 'wagmi'
+import { MockConnector } from 'wagmi/connectors/mock'
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+import { renderHook, waitFor, render, act, screen } from '@testing-library/react'
+import { generateTestingUtils } from 'eth-testing'
+import { ethers } from 'ethers'
 import { WalletProvider, useWallet, Ethers } from '../src'
-import ChainConfig from './chainConfig'
+import ChainsConfig from './chainConfig'
 
-const WALLET_ADDRESS = "0xf61B443A155b07D2b2cAeA2d99715dC84E839EEf"
+// const setup = (client: Client<any>) => {
+//   <WalletProvider client={client} correctNetworkId={80001}>
+//     <div>Hello Metamask</div>
+//   </WalletProvider>
+// } 
 
-const setup = () => render(
-    <WalletProvider externalChainConfig={ChainConfig} correctNetworkId={80001}>
-      <div>Hello metamask</div>
-    </WalletProvider>
-)
-
-const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
-  <WalletProvider externalChainConfig={ChainConfig} correctNetworkId={80001}>
-    {children}
-  </WalletProvider>
-)
+const wrapperProvider = ({ children, signer }: { children: React.ReactElement, signer: ethers.Signer }) => {
+  try {
+    const { provider, chains} = configureChains(
+      ChainsConfig,
+      [
+          jsonRpcProvider({
+              rpc: (chain) => {
+                  if(!ChainsConfig.some(c => c.id === chain.id)) return null
+  
+                  return {
+                      http: chain.rpcUrls.default
+                  }
+              }
+          })
+      ]    
+    )
+  
+    const connectors = [new MockConnector({
+      chains,
+      options: {
+        signer,
+      }
+    })]
+  
+    const client = createClient({
+      autoConnect: true,
+      connectors,
+      provider,
+    })
+  
+    return (
+      <WalletProvider client={client}>
+        {children}
+      </WalletProvider>
+    )
+  } catch (error) {
+    console.error(error)
+    return <></>
+  }
+}
 
 describe('Metamask context', () => {
   const testingUtils = generateTestingUtils({ providerType: "MetaMask" })
+  
   beforeAll(() => {
     // eslint-disable-next-line
     (global.window as any).ethereum = testingUtils.getProvider()
-  })
-
-  beforeEach(() => {
-    jest.useFakeTimers()
   })
 
   afterEach(() => {
@@ -34,14 +68,22 @@ describe('Metamask context', () => {
   })
 
 
-  it('Component load', () => {
-    testingUtils.mockConnectedWallet([WALLET_ADDRESS])
-    setup()
-    expect(screen.getByText('Hello metamask')).toBeInTheDocument()
+  it('should component load', async () => {
+    const mockWallet = ethers.Wallet.createRandom()
+    testingUtils.mockConnectedWallet([mockWallet.address])
+
+    act(() => {
+      render(wrapperProvider({children: <div>Hello Metamask</div>, signer: mockWallet}))
+    })
+
+    await waitFor(async () => {
+      expect(screen.getByText('Hello Metamask')).toBeInTheDocument()
+    })
   })
 
   it('should login metamask', async () => {
-    testingUtils.mockConnectedWallet([WALLET_ADDRESS])
+    const mockWallet = ethers.Wallet.createRandom()
+    testingUtils.mockConnectedWallet([mockWallet.address])
 
     const { result } = renderHook(
       () => {
@@ -58,17 +100,20 @@ describe('Metamask context', () => {
         return walletAddress
       },
       {
-        wrapper: wrapperProvider
+        wrapper: (props: {
+          children: React.ReactElement
+        }) => wrapperProvider({children: props.children, signer: mockWallet})
       }
     )
 
     await waitFor(async () => {
-      expect(result.current).toBe(WALLET_ADDRESS)
+      expect(result.current).toBe(mockWallet.address)
     })
   })
 
   it('should logout', async() => {
-    testingUtils.mockConnectedWallet([WALLET_ADDRESS])
+    const mockWallet = ethers.Wallet.createRandom()
+    testingUtils.mockConnectedWallet([mockWallet.address])
 
     const { result } = renderHook(
       () => {
@@ -87,7 +132,9 @@ describe('Metamask context', () => {
         return walletAddress
       },
       {
-        wrapper: wrapperProvider
+        wrapper: (props: {
+          children: React.ReactElement
+        }) => wrapperProvider({children: props.children, signer: mockWallet})
       }
     )
 
@@ -97,7 +144,8 @@ describe('Metamask context', () => {
   })
 
   it('should get provider', async () => {
-    testingUtils.mockConnectedWallet([WALLET_ADDRESS])
+    const mockWallet = ethers.Wallet.createRandom()
+    testingUtils.mockConnectedWallet([mockWallet.address])
 
     const { result } = renderHook(
       () => {
@@ -118,22 +166,25 @@ describe('Metamask context', () => {
         return provider
       },
       {
-        wrapper: wrapperProvider
+        wrapper: (props: {
+          children: React.ReactElement
+        }) => wrapperProvider({children: props.children, signer: mockWallet})
       }
     )
 
     await waitFor(async () => {
-      expect((await result.current?.getNetwork())?.name).toBe('homestead')
+      expect((await result.current?.getNetwork())?.name).toBe('matic')
     })
   })
 
   it("should return getStatus connected if the wallet is connected", async () => {
-    testingUtils.mockConnectedWallet([WALLET_ADDRESS])
+    const mockWallet = ethers.Wallet.createRandom()
+    testingUtils.mockConnectedWallet([mockWallet.address])
 
     const { result } = renderHook(
       () => {
         const { walletAddress, login, getStatus } = useWallet()
-        const [logged, setLogged] = useState<"connecting" | "connected" | "reconnecting" | "disconnected" | undefined>()
+        const [status, setStatus] = useState<"connecting" | "connected" | "reconnecting" | "disconnected" | undefined>()
 
         useEffect(() => {
           (async () => {
@@ -141,15 +192,17 @@ describe('Metamask context', () => {
               await login()
             } else {
               const result = getStatus()
-              setLogged(result)
+              setStatus(result)
             }
           })()
         }, [ walletAddress ])
 
-        return logged
+        return status
       },
       {
-        wrapper: wrapperProvider
+        wrapper: (props: {
+          children: React.ReactElement
+        }) => wrapperProvider({children: props.children, signer: mockWallet})
       }
     )
 
@@ -158,25 +211,63 @@ describe('Metamask context', () => {
     })
   })
 
-  it("should return getStatus disconnected if the wallet is not connected", async () => {
-    testingUtils.mockConnectedWallet([WALLET_ADDRESS])
+  it('should get all the available chains', async() => {
+    const mockWallet = ethers.Wallet.createRandom()
+    testingUtils.mockConnectedWallet([mockWallet.address])
 
     const { result } = renderHook(
       () => {
-        const { walletAddress, getStatus } = useWallet()
-        const [logged, setLogged] = useState<"connecting" | "connected" | "reconnecting" | "disconnected" | undefined>()
+        const { walletAddress, login, getAllAvailableChains } = useWallet()
+        const [chains, setChains] = useState<Chain[]>([])
 
         useEffect(() => {
           (async () => {
-            const result = await getStatus()
-            setLogged(result)
+            if(!walletAddress) {
+              await login()
+            } else {
+              const result = getAllAvailableChains()
+              setChains(result)
+            }
           })()
         }, [ walletAddress ])
 
-        return logged
+        return chains
       },
       {
-        wrapper: wrapperProvider
+        wrapper: (props: {
+          children: React.ReactElement
+        }) => wrapperProvider({children: props.children, signer: mockWallet})
+      }
+    )
+
+    await waitFor(async () => {
+      expect(result.current).toStrictEqual(ChainsConfig)
+    })
+  })
+
+  it("should return getStatus disconnected if the wallet is not connected", async () => {
+    const mockWallet = ethers.Wallet.createRandom()
+    testingUtils.mockConnectedWallet([mockWallet.address])
+
+    const { result } = renderHook(
+      () => {
+        const { walletAddress, logout, getStatus } = useWallet()
+        const [status, setStatus] = useState<"connecting" | "connected" | "reconnecting" | "disconnected" | undefined>()
+
+        useEffect(() => {
+          (async () => {
+            await logout()
+            const result = await getStatus()
+            setStatus(result)
+          })()
+        }, [ walletAddress ])
+
+        return status
+      },
+      {
+        wrapper: (props: {
+          children: React.ReactElement
+        }) => wrapperProvider({children: props.children, signer: mockWallet})
       }
     )
 

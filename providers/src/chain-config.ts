@@ -1,6 +1,6 @@
 import { chain, Chain } from "wagmi"
 
-const ChainConfig: Chain[] = [
+const ChainsConfig: Chain[] = [
   chain.polygon,
   chain.polygonMumbai,
   {
@@ -19,4 +19,4 @@ const ChainConfig: Chain[] = [
   },
 ]
 
-export default ChainConfig
+export default ChainsConfig
