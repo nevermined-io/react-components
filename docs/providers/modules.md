@@ -26,7 +26,7 @@
 
 #### Defined in
 
-[src/client.tsx:95](https://github.com/nevermined-io/components-catalog/blob/95bbb52/providers/src/client.tsx#L95)
+[src/client.tsx:106](https://github.com/nevermined-io/components-catalog/blob/830d916/providers/src/client.tsx#L106)
 
 ## Functions
 
@@ -49,7 +49,7 @@
 
 #### Defined in
 
-[src/client.tsx:97](https://github.com/nevermined-io/components-catalog/blob/95bbb52/providers/src/client.tsx#L97)
+[src/client.tsx:108](https://github.com/nevermined-io/components-catalog/blob/830d916/providers/src/client.tsx#L108)
 
 ___
 
@@ -108,7 +108,7 @@ All the functionalities to handle the wallet in dapp
 
 #### Defined in
 
-[src/providers.tsx:41](https://github.com/nevermined-io/components-catalog/blob/95bbb52/providers/src/providers.tsx#L41)
+[src/providers.tsx:41](https://github.com/nevermined-io/components-catalog/blob/830d916/providers/src/providers.tsx#L41)
 
 ___
 
@@ -132,7 +132,7 @@ function that build and return the wagmi client
 
 #### Defined in
 
-[src/client.tsx:24](https://github.com/nevermined-io/components-catalog/blob/95bbb52/providers/src/client.tsx#L24)
+[src/client.tsx:33](https://github.com/nevermined-io/components-catalog/blob/830d916/providers/src/client.tsx#L33)
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-[src/client.tsx:151](https://github.com/nevermined-io/components-catalog/blob/95bbb52/providers/src/client.tsx#L151)
+[src/client.tsx:189](https://github.com/nevermined-io/components-catalog/blob/830d916/providers/src/client.tsx#L189)
 
 ___
 
@@ -166,4 +166,4 @@ ___
 
 #### Defined in
 
-[src/utils/index.ts:1](https://github.com/nevermined-io/components-catalog/blob/95bbb52/providers/src/utils/index.ts#L1)
+[src/utils/index.ts:1](https://github.com/nevermined-io/components-catalog/blob/830d916/providers/src/utils/index.ts#L1)

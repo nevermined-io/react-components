@@ -4,8 +4,17 @@ import React, {
   createContext,
   useContext
 } from "react"
-import { configureChains, Chain, createClient, Client, useAccount, useNetwork, useSwitchNetwork } from "wagmi"
-import type { ConnectorData } from 'wagmi'
+import { configureChains,
+    Chain,
+    createClient,
+    Client,
+    useAccount,
+    useConnect,
+    useNetwork,
+    useSwitchNetwork,
+    Connector,
+    useDisconnect,
+} from "wagmi"
 import { ConnectKitProvider } from 'connectkit'
 import { Provider } from "@ethersproject/abstract-provider"
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
@@ -78,6 +87,8 @@ export interface WalletProviderState {
 client: Client
 /** Metamask provider for example web3 or ethers */
 getProvider: () => Provider;
+/** Get all the connectors available */
+getConnectors: () => Connector<any, any, any>[] //eslint-disable-line
 /** Logout from the wallet */
 logout: () => void;
 /** Get the status of the wallet */
@@ -87,7 +98,7 @@ getAllAvailableChains: () => Chain[];
 /** The address of the wallet account */
 walletAddress: string;
 /** Login in Provider */
-login: () => Promise<Required<ConnectorData<any>>> | undefined; // eslint-disable-line
+login: (connector: Connector<any, any, any>) => void; // eslint-disable-line
 /** If chain is between the available networks supported */
 checkIsChainCorrect: () => boolean;
 }
@@ -105,8 +116,31 @@ export const ClientComp = ({
   }) => {
   const [walletAddress, setWalletAddress] = useState<string>('')
   const { address, status } = useAccount()
+  const { connect, connectors } = useConnect({
+    onError(error) {
+        console.error(`Error connect: ${error}`)
+    },
+    onSuccess(data) {
+        console.log(`Wallet is connected: ${data}`)
+    }
+  })
+  const { disconnect } = useDisconnect({
+    onError(error) {
+        console.error(`Error disconnect: ${error}`)
+    },
+    onSuccess() {
+        console.log(`Wallet is disconnected`)
+    }
+  })
   const { chain, chains } = useNetwork()
-  const { switchNetwork } = useSwitchNetwork()
+  const { switchNetwork } = useSwitchNetwork({
+    onError(error) {
+        console.error(`Error switch network: ${error}`)
+    },
+    onSuccess(data) {
+        console.log(`New network is selected: ${data.name}`)
+    }
+  })
 
   useEffect(() => {
       if(chain?.unsupported && client.chains && switchNetwork) {
@@ -118,9 +152,12 @@ export const ClientComp = ({
       setWalletAddress(address || '')
   }, [address])
 
-  const login = (config?: {chainId: number}) => client?.connector?.connect(config)
+  //eslint-disable-next-line
+  const login = (connector: Connector<any, any, any>) => connect({connector})
 
-  const logout = () => client?.connector?.disconnect()
+  const logout = () => disconnect()
+
+  const getConnectors = () => connectors
 
   const getProvider = (bust?: boolean, chainId?: number) => client?.getProvider({bust, chainId})
 
@@ -136,6 +173,7 @@ export const ClientComp = ({
             client,
             walletAddress,
             login,
+            getConnectors,
             logout,
             getProvider,
             getStatus,
