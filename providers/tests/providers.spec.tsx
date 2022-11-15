@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { configureChains, createClient, Chain } from 'wagmi'
+import { configureChains, createClient, Chain, Connector } from 'wagmi'
 import { MockConnector } from 'wagmi/connectors/mock'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { renderHook, waitFor, render, act, screen } from '@testing-library/react'
@@ -7,12 +7,6 @@ import { generateTestingUtils } from 'eth-testing'
 import { ethers } from 'ethers'
 import { WalletProvider, useWallet, Ethers } from '../src'
 import ChainsConfig from './chainConfig'
-
-// const setup = (client: Client<any>) => {
-//   <WalletProvider client={client} correctNetworkId={80001}>
-//     <div>Hello Metamask</div>
-//   </WalletProvider>
-// } 
 
 const wrapperProvider = ({ children, signer }: { children: React.ReactElement, signer: ethers.Signer }) => {
   try {
@@ -87,12 +81,12 @@ describe('Metamask context', () => {
 
     const { result } = renderHook(
       () => {
-        const { walletAddress, login } = useWallet()
+        const { walletAddress, login, getConnectors } = useWallet()
 
         useEffect(() => {
           (async () => {
             if(!walletAddress) {
-              await login()
+              await login(getConnectors()[0])
             }
           })()
         }, [walletAddress])
@@ -117,12 +111,12 @@ describe('Metamask context', () => {
 
     const { result } = renderHook(
       () => {
-        const { walletAddress, login, logout } = useWallet()
+        const { walletAddress, login, logout, getConnectors } = useWallet()
 
         useEffect(() => {
           (async () => {
             if(!walletAddress) {
-              await login()
+              await login(getConnectors()[0])
             } else {
               await logout()
             }
@@ -149,13 +143,13 @@ describe('Metamask context', () => {
 
     const { result } = renderHook(
       () => {
-        const { walletAddress, login, getProvider } = useWallet()
+        const { walletAddress, login, getProvider, getConnectors } = useWallet()
         const [provider, setProvider] = useState<Ethers.providers.Provider>()
 
         useEffect(() => {
           (async () => {
             if(!walletAddress) {
-              await login()
+              await login(getConnectors()[0])
             } else {
               const result = getProvider()
               setProvider(result)
@@ -183,13 +177,13 @@ describe('Metamask context', () => {
 
     const { result } = renderHook(
       () => {
-        const { walletAddress, login, getStatus } = useWallet()
+        const { walletAddress, login, getStatus, getConnectors } = useWallet()
         const [status, setStatus] = useState<"connecting" | "connected" | "reconnecting" | "disconnected" | undefined>()
 
         useEffect(() => {
           (async () => {
             if(!walletAddress) {
-              await login()
+              await login(getConnectors()[0])
             } else {
               const result = getStatus()
               setStatus(result)
@@ -217,13 +211,13 @@ describe('Metamask context', () => {
 
     const { result } = renderHook(
       () => {
-        const { walletAddress, login, getAllAvailableChains } = useWallet()
+        const { walletAddress, login, getAllAvailableChains, getConnectors } = useWallet()
         const [chains, setChains] = useState<Chain[]>([])
 
         useEffect(() => {
           (async () => {
             if(!walletAddress) {
-              await login()
+              await login(getConnectors()[0])
             } else {
               const result = getAllAvailableChains()
               setChains(result)
@@ -242,6 +236,40 @@ describe('Metamask context', () => {
 
     await waitFor(async () => {
       expect(result.current).toStrictEqual(ChainsConfig)
+    })
+  })
+
+  it('should get all the connectors', async() => {
+    const mockWallet = ethers.Wallet.createRandom()
+    testingUtils.mockConnectedWallet([mockWallet.address])
+
+    const { result } = renderHook(
+      () => {
+        const { walletAddress, login, getConnectors } = useWallet()
+        const [connectors, setConnectors] = useState<Connector[]>([])
+
+        useEffect(() => {
+          (async () => {
+            if(!walletAddress) {
+              await login(getConnectors()[0])
+            } else {
+              const result = getConnectors()
+              setConnectors(result)
+            }
+          })()
+        }, [ walletAddress ])
+
+        return connectors
+      },
+      {
+        wrapper: (props: {
+          children: React.ReactElement
+        }) => wrapperProvider({children: props.children, signer: mockWallet})
+      }
+    )
+
+    await waitFor(async () => {
+      expect(result.current[0].name).toStrictEqual('Mock')
     })
   })
 
