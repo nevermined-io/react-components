@@ -198,7 +198,7 @@ describe('Assets Service', () => {
 
           (async () => {
             const result = await publishNFT1155({
-              gatewayAddress: String(appConfig.gatewayAddress),
+              neverminedNodeAddress: String(appConfig.neverminedNodeAddress),
               metadata,
               cap: BigNumber.from(100),
               royaltyAttributes: royaltyAttributes(sdk)
@@ -226,10 +226,10 @@ describe('Assets Service', () => {
     })
   })
 
-  it('should not mint if gateway address is not set', async () => {
+  it('should not mint if node address is not set', async () => {
     const logSpy = jest.spyOn(Logger, 'error')
     const appConfigCopy = {...appConfig }
-    appConfig.gatewayAddress = ''
+    appConfig.neverminedNodeAddress = ''
 
     renderHook(
       () => {
@@ -246,7 +246,7 @@ describe('Assets Service', () => {
           (async () => {
             try {
               await publishNFT1155({
-                gatewayAddress: '',
+                neverminedNodeAddress: '',
                 metadata,
                 cap: BigNumber.from(100),
                 royaltyAttributes: royaltyAttributes(sdk),
@@ -264,10 +264,10 @@ describe('Assets Service', () => {
     )
 
     await waitFor(async () => {
-      expect(logSpy).toBeCalledWith('Gateway address from config is required to mint NFT1155 asset')
+      expect(logSpy).toBeCalledWith('neverminedNodeAddress from config is required to mint NFT1155 asset')
     })
 
-    appConfig.gatewayAddress = appConfigCopy.gatewayAddress
+    appConfig.neverminedNodeAddress = appConfigCopy.neverminedNodeAddress
   })
 
   it('should update asset to publish after call handleChange function', async() => {

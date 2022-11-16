@@ -335,7 +335,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * This method will create a new digital asset associated to a ERC-1155 NFT contract. 
    * 
    * @param nft1155
-   * @param nft1155.gatewayAddress Gateway address to approve to handle the NFT
+   * @param nft1155.neverminedNodeAddress Node address to approve to handle the NFT
    * @param nft1155.metadata The metadata object describing the asset
    * @param nft1155.cap The maximum number of editions that can be minted. If `0` means there is no limit (uncapped)
    * @param nft1155.assetRewards The price of the asset that the owner will receive
@@ -350,7 +350,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishNFT1155 = async ({
-    gatewayAddress,
+    neverminedNodeAddress,
     metadata,
     cap,
     assetRewards = new AssetRewards(),
@@ -363,7 +363,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     appId,
     txParameters,
   }: {
-    gatewayAddress: string,
+    neverminedNodeAddress: string,
     metadata: MetaData,
     cap: BigNumber,
     assetRewards?: AssetRewards;
@@ -388,8 +388,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         await account.generateToken()
       }
 
-      if (!gatewayAddress) {
-        Logger.error('Gateway address from config is required to mint NFT1155 asset')
+      if (!neverminedNodeAddress) {
+        Logger.error('neverminedNodeAddress from config is required to mint NFT1155 asset')
         return
       }
 
@@ -400,9 +400,9 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       Logger.log(`Contract Receipt for approved transfer NFT: ${transferNftConditionContractReceipt}`)
       
 
-      const gateawayContractReceipt = await sdk.nfts.setApprovalForAll(gatewayAddress, true, accountWallet)
+      const gateawayContractReceipt = await sdk.nfts.setApprovalForAll(neverminedNodeAddress, true, accountWallet)
 
-      Logger.log(`Contract Receipt for approved gateway: ${gateawayContractReceipt}`)
+      Logger.log(`Contract Receipt for approved node: ${gateawayContractReceipt}`)
 
       const ddo = await sdk.nfts.createWithRoyalties(
         metadata,

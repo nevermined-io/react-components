@@ -52,7 +52,7 @@ const neverminedReducer = (
 
 export const initializeNevermined = async (
   config: Config
-): Promise<GenericOutput<Nevermined, any>> => {
+): Promise<GenericOutput<Nevermined, any>> => { // eslint-disable-line
   try {
     Logger.log('Loading SDK Started..')
     const nvmSdk: Nevermined = await Nevermined.getInstance({
@@ -88,13 +88,11 @@ export const initializeNevermined = async (
  * ReactDOM.render(
  *   <div>
  *     <Catalog.NeverminedProvider config={appConfig} verbose={true}>
- *       <MetaMask.WalletProvider
- *         externalChainConfig={chainConfig}
- *         correctNetworkId={mumbaiChainId}
- *         nodeUri={String(appConfig.nodeUri)}
+ *       <WalletProvider
+ *          client={getClient()}
  *       >
  *         <Example />
- *       </MetaMask.WalletProvider>
+ *       </WalletProvider>
  *     </Catalog.NeverminedProvider>
  *   </div>,
  *   document.getElementById('root') as HTMLElement
@@ -120,11 +118,12 @@ export const initializeNevermined = async (
 export const NeverminedProvider = ({ children, config, verbose }: NeverminedProviderProps) => {
   const [{ sdk }, dispatch] = useReducer(neverminedReducer, initialState)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  // eslint-disable-next-line
   const [error, setError] = useState<any>(undefined)
 
   useEffect(() => {
     const loadNevermined = async (): Promise<void> => {
-      if (!config.web3Provider && !config.nodeUri) {
+      if (!config.web3Provider && !config.neverminedNodeUri) {
         Logger.log('Please include web3 provider in your sdk config. aborting.')
         return
       }
@@ -274,11 +273,11 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
     transfer: async ({ did, amount }: { did: string; amount: number }): Promise<boolean> => {
       try {
-        if (!config.gatewayAddress || !config.gatewayUri) {
-          Logger.log('gatewayAddress or gatewayUri is not set. abort.')
+        if (!config.neverminedNodeAddress || !config.neverminedNodeUri) {
+          Logger.log('neverminedNodeAddress or neverminedNodeUri is not set. Abort.')
           return false
         }
-        const transferEndpoint = `${config.gatewayUri}/api/v1/gateway/services/nft-transfer`
+        const transferEndpoint = `${config.neverminedNodeUri}/api/v1/node/services/nft-transfer`
         const [newOwner] = await sdk.accounts.list()
         if (!newOwner) {
           Logger.log('Users need to be connected to perform a transfer. abort.')
@@ -289,7 +288,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         const agreementId = await conductOrder({
           sdk,
           ddo,
-          gatewayAddress: config.gatewayAddress,
+          neverminedNodeAddress: config.neverminedNodeAddress,
           newOwner
         })
         await new Promise((r) => setTimeout(r, 3000)) // await two seconds to allow the transaction to be processed
@@ -426,9 +425,9 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       const form = new FormData()
       form.append('file', file)
 
-      const gatewayUploadUrl = `${config.gatewayUri}${filecoinUrl}`
+      const nodeUploadUrl = `${config.neverminedNodeUri}${filecoinUrl}`
 
-      const response = await handlePostRequest(gatewayUploadUrl, form)
+      const response = await handlePostRequest(nodeUploadUrl, form)
 
       return response.url
     }

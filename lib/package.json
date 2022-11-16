@@ -1,6 +1,6 @@
 {
   "name": "@nevermined-io/catalog-core",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "private": false,
   "scripts": {
     "watch": "./node_modules/.bin/nodemon",
@@ -40,7 +40,7 @@
     "react": ">=17.0.0"
   },
   "dependencies": {
-    "@nevermined-io/nevermined-sdk-js": "^0.25.2",
+    "@nevermined-io/nevermined-sdk-js": "^0.26.0",
     "@types/jsonwebtoken": "^8.5.8",
     "axios": "^0.27.2",
     "axios-retry": "^3.3.1",
