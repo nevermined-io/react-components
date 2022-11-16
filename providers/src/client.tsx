@@ -30,7 +30,7 @@ import ChainsConfig from './chain-config'
  * @param chainsConfig Config with all the available chains that can be used in the dapp. Default chains supported `Polygon Mainnet`, `Polygon Mumbai`, `spree (localhost)
  * @returns 
  */
-export const getClient = (appName?: string, autoConnect = true, chainsConfig=ChainsConfig) => {
+export const getClient = (appName = 'Nevermined', autoConnect = true, chainsConfig=ChainsConfig) => {
   const { provider, chains} = configureChains(
     chainsConfig,
     [
@@ -56,16 +56,12 @@ export const getClient = (appName?: string, autoConnect = true, chainsConfig=Cha
               qrcode: true
           }
       }),
-  ]
-
-  if(appName) {
-      connectors.push(new CoinbaseWalletConnector({
-          chains,
-          options: {
-              appName,
-          }
-      }))
-  }
+      new CoinbaseWalletConnector({
+        chains,
+        options: {
+            appName,
+        }
+  })]
 
   const clientbuilt = createClient({
       autoConnect,
