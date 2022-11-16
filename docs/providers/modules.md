@@ -26,7 +26,7 @@
 
 #### Defined in
 
-[src/client.tsx:106](https://github.com/nevermined-io/components-catalog/blob/830d916/providers/src/client.tsx#L106)
+[src/client.tsx:106](https://github.com/nevermined-io/components-catalog/blob/ff28f62/providers/src/client.tsx#L106)
 
 ## Functions
 
@@ -49,7 +49,7 @@
 
 #### Defined in
 
-[src/client.tsx:108](https://github.com/nevermined-io/components-catalog/blob/830d916/providers/src/client.tsx#L108)
+[src/client.tsx:108](https://github.com/nevermined-io/components-catalog/blob/ff28f62/providers/src/client.tsx#L108)
 
 ___
 
@@ -108,13 +108,13 @@ All the functionalities to handle the wallet in dapp
 
 #### Defined in
 
-[src/providers.tsx:41](https://github.com/nevermined-io/components-catalog/blob/830d916/providers/src/providers.tsx#L41)
+[src/providers.tsx:41](https://github.com/nevermined-io/components-catalog/blob/ff28f62/providers/src/providers.tsx#L41)
 
 ___
 
 ### getClient
 
-▸ **getClient**(`chainsConfig?`, `autoConnect?`, `appName?`): `Client`<`FallbackProvider` & {} & `JsonRpcProvider` & `FallbackProviderConfig` & {}, `WebSocketProvider`\> & {}
+▸ **getClient**(`appName?`, `autoConnect?`, `chainsConfig?`): `Client`<`FallbackProvider` & {} & `JsonRpcProvider` & `FallbackProviderConfig` & {}, `WebSocketProvider`\> & {}
 
 function that build and return the wagmi client
 
@@ -122,9 +122,9 @@ function that build and return the wagmi client
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `chainsConfig` | `Chain`[] | `ChainsConfig` | Config with all the available chains that can be used in the dapp. Default chains supported `Polygon Mainnet`, `Polygon Mumbai`, `spree (localhost) @param autoConnect If it is true once that the dapp start to run it will try to connect to the wallet automatically. Default `true` |
-| `autoConnect` | `boolean` | `true` | - |
 | `appName?` | `string` | `undefined` | App name required for Coinbase wallet. If appName is undefined Coinbase wallet won't be supported |
+| `autoConnect` | `boolean` | `true` | If it is true once that the dapp start to run it will try to connect to the wallet automatically. Default `true` |
+| `chainsConfig` | `Chain`[] | `ChainsConfig` | Config with all the available chains that can be used in the dapp. Default chains supported `Polygon Mainnet`, `Polygon Mumbai`, `spree (localhost) |
 
 #### Returns
 
@@ -132,7 +132,7 @@ function that build and return the wagmi client
 
 #### Defined in
 
-[src/client.tsx:33](https://github.com/nevermined-io/components-catalog/blob/830d916/providers/src/client.tsx#L33)
+[src/client.tsx:33](https://github.com/nevermined-io/components-catalog/blob/ff28f62/providers/src/client.tsx#L33)
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-[src/client.tsx:189](https://github.com/nevermined-io/components-catalog/blob/830d916/providers/src/client.tsx#L189)
+[src/client.tsx:189](https://github.com/nevermined-io/components-catalog/blob/ff28f62/providers/src/client.tsx#L189)
 
 ___
 
@@ -166,4 +166,4 @@ ___
 
 #### Defined in
 
-[src/utils/index.ts:1](https://github.com/nevermined-io/components-catalog/blob/830d916/providers/src/utils/index.ts#L1)
+[src/utils/index.ts:1](https://github.com/nevermined-io/components-catalog/blob/ff28f62/providers/src/utils/index.ts#L1)
