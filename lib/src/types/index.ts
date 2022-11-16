@@ -64,11 +64,11 @@ export interface NeverminedProviderContext {
    *  const reloadSdk = async() => {
    *     const config = {
    *         web3Provider: window.ethereum,
-   *         nodeUri: network,
-   *         marketplaceUri,
-   *         gatewayUri,
+   *         web3ProviderUri: network,
+   *         web3ProviderUri,
+   *         neverminedNodeUri,
+   *         neverminedNodeAddress,
    *         faucetUri,
-   *         gatewayAddress,
    *         secretStoreUri,
    *         verbose,
    *         marketplaceAuthToken: Catalog.fetchMarketplaceApiTokenFromLocalStorage().token || '',
@@ -154,45 +154,13 @@ export interface NeverminedProviderContext {
    *    }
    *  };
    *
-   *  const constructRewardMap = (
-   *    recipientsData: any[],
-   *    priceWithoutFee: number,
-   *    ownerWalletAddress: string
-   *  ): Map<string, BigNumber> => {
-   *    const rewardMap: Map<string, BigNumber> = new Map();
-   *    let recipients: any = [];
-   *    if (recipientsData.length === 1 && recipientsData[0].split === 0) {
-   *      recipients = [
-   *        {
-   *          name: ownerWalletAddress,
-   *          split: 100,
-   *          walletAddress: ownerWalletAddress
-   *        }
-   *      ];
-   *    }
-   *    let totalWithoutUser = 0;
-   *
-   *    recipients.forEach((recipient: any) => {
-   *      if (recipient.split && recipient.split > 0) {
-   *        const ownSplit = ((priceWithoutFee * recipient.split) / 100).toFixed();
-   *        rewardMap.set(recipient.walletAddress, BigNumber.from(+ownSplit));
-   *        totalWithoutUser += recipient.split;
-   *      }
-   *    });
-   *
-   *    if (!rewardMap.has(ownerWalletAddress)) {
-   *      const ownSplitReinforced = +((priceWithoutFee * (100 - totalWithoutUser)) / 100).toFixed();
-   *      rewardMap.set(ownerWalletAddress, BigNumber.from(ownSplitReinforced));
-   *    }
-   *
-   *    return rewardMap;
-   *  };
-   *
    *  const onPublish = async () => {
    *   try {
    *     const publisher = await getCurrentAccount(sdk);
    *     const rewardsRecipients: any[] = [];
-   *     const assetRewardsMap = constructRewardMap(rewardsRecipients, 100, publisher.getId());
+   *     const assetRewardsMap = new Map([
+   *        [walletAddress, BigNumber.from(1)]
+   *     ])
    *     const assetRewards = new AssetRewards(assetRewardsMap);
    *     const royaltyAttributes = {
    *       royaltyKind: RoyaltyKind.Standard,
@@ -201,7 +169,7 @@ export interface NeverminedProviderContext {
    *     };
    *
    *     const response = await publishNFT1155({
-   *       gatewayAddress: String(appConfig.gatewayAddress),
+   *       neverminedNodeAddress: String(appConfig.neverminedNodeAddress),
    *       assetRewards,
    *       metadata,
    *       nftAmount: BigNumber.from(1),
@@ -867,7 +835,7 @@ export interface AssetPublishProviderState {
    * This method will create a new digital asset associated to a ERC-1155 NFT contract.
    *
    * @param nft1155
-   * @param nft1155.gatewayAddress Gateway address to approve to handle the NFT
+   * @param nft1155.neverminedNodeAddress Node address to approve to handle the NFT
    * @param nft1155.metadata The metadata object describing the asset
    * @param nft1155.cap The maximum number of editions that can be minted. If `0` means there is no limit (uncapped)
    * @param nft1155.assetRewards The price of the asset that the owner will receive
@@ -882,7 +850,7 @@ export interface AssetPublishProviderState {
    * @returns The DDO object including the asset metadata and the DID
    */
   publishNFT1155: ({
-    gatewayAddress,
+    neverminedNodeAddress,
     metadata,
     cap,
     assetRewards,
@@ -895,7 +863,7 @@ export interface AssetPublishProviderState {
     appId,
     txParameters,
     }: {
-      gatewayAddress: string,
+      neverminedNodeAddress: string,
       metadata: MetaData,
       cap: BigNumber,
       assetRewards?: AssetRewards;

@@ -32,11 +32,6 @@ npm install --save @nevermined-io/catalog-providers
 ```typescript
 import { WalletProvider, getClient, useWallet } from "@nevermined-io/catalog-providers";
 import App from "app";
-import { Config } from "@nevermined-io/nevermined-sdk-js";
-
-const appConfig: Config = {
-    nodeUri,
-};
 
 ReactDOM.render(
     <div>

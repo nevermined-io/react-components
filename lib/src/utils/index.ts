@@ -36,18 +36,18 @@ type Condition = 'accessCondition' | 'nftAccessCondition'
  * @param orderParams
  * @param orderParams.sdk Instance of SDK object
  * @param orderParams.ddo Asset object
- * @param orderParams.gatewayAddress Address of gateway to allow handle the asset transaction
+ * @param orderParams.neverminedNodeAddress Address of Node to allow handle the asset transaction
  * @param orderParams.newOwner Address of the new owner who will be transferred the asset
  * @return Agreement id generated after order an asset
  */
 export const conductOrder = async ({
   sdk,
   ddo,
-  gatewayAddress,
+  neverminedNodeAddress,
   newOwner
 }: {
   sdk: Nevermined;
-  gatewayAddress: string;
+  neverminedNodeAddress: string;
   ddo: DDO;
   newOwner: Account;
 }): Promise<string> => {
@@ -55,10 +55,10 @@ export const conductOrder = async ({
     Logger.log('Checking if USDC spending is approved.')
     const isApproved = await sdk.keeper.nftUpgradeable.isApprovedForAll(
       newOwner.getId(),
-      gatewayAddress
+      neverminedNodeAddress
     )
     if (!isApproved) {
-      const receipt = await sdk.nfts.setApprovalForAll(gatewayAddress, true, newOwner)
+      const receipt = await sdk.nfts.setApprovalForAll(neverminedNodeAddress, true, newOwner)
       Logger.log('Approval receipt:', receipt)
     }
     Logger.log('USDC spending is approved.')

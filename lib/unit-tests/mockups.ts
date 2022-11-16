@@ -118,7 +118,7 @@ export const ddo = {
     {
       type: 'access',
       index: 1,
-      serviceEndpoint: 'http://localhost:8030/api/v1/gateway/services/consume',
+      serviceEndpoint: 'http://localhost:8030/api/v1/node/services/consume',
       templateId: '0x1234',
       attributes: {
         main: {

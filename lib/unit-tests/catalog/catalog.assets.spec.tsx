@@ -759,9 +759,9 @@ describe('Nevermined assets', () => {
     expect(setApprovalForAllSpy).toBeCalled()
   })
 
-  it("should not transfer ownership if gateway address is not set", async () => {
+  it("should not transfer ownership if neverminedNodeAddress address is not set", async () => {
     const appConfigCopy = {...appConfig }
-    appConfig.gatewayAddress = ''
+    appConfig.neverminedNodeAddress = ''
     const logSpy = jest.spyOn(Logger, 'log')
 
     const { result } = renderHook(
@@ -797,14 +797,14 @@ describe('Nevermined assets', () => {
     )
 
     await waitFor(async () => {
-      expect(logSpy).toHaveBeenCalledWith("gatewayAddress or gatewayUri is not set. abort.")
+      expect(logSpy).toHaveBeenCalledWith("neverminedNodeAddress or neverminedNodeUri is not set. Abort.")
     })
 
     await waitFor(async () => {
       expect(result.current).toBe(false)
     })
 
-    appConfig.gatewayAddress = appConfigCopy.gatewayAddress
+    appConfig.neverminedNodeAddress = appConfigCopy.neverminedNodeAddress
   })
 
   it("should not transfer ownership if owner is not found", async () => {
