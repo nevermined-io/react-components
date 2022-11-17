@@ -6,6 +6,11 @@
 
 - [WalletProviderState](interfaces/WalletProviderState.md)
 
+### Type Aliases
+
+- [ConnectKitOptions](modules.md#connectkitoptions)
+- [ConnectKitProviderProps](modules.md#connectkitproviderprops)
+
 ### Variables
 
 - [WalletContext](modules.md#walletcontext)
@@ -18,6 +23,55 @@
 - [useWallet](modules.md#usewallet)
 - [zeroX](modules.md#zerox)
 
+## Type Aliases
+
+### ConnectKitOptions
+
+Ƭ **ConnectKitOptions**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `avoidLayoutShift?` | `boolean` |
+| `bufferPolyfill?` | `boolean` |
+| `customAvatar?` | `React.FC`<`CustomAvatarProps`\> |
+| `disclaimer?` | `ReactNode` \| `string` |
+| `embedGoogleFonts?` | `boolean` |
+| `hideNoWalletCTA?` | `boolean` |
+| `hideQuestionMarkCTA?` | `boolean` |
+| `hideTooltips?` | `boolean` |
+| `initialChainId?` | `number` |
+| `language?` | `Languages` |
+| `reducedMotion?` | `boolean` |
+| `truncateLongENSAddress?` | `boolean` |
+| `walletConnectCTA?` | ``"modal"`` \| ``"link"`` \| ``"both"`` |
+| `walletConnectName?` | `string` |
+
+#### Defined in
+
+src/types.ts:4
+
+___
+
+### ConnectKitProviderProps
+
+Ƭ **ConnectKitProviderProps**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `children?` | `React.ReactNode` |
+| `customTheme?` | `CustomTheme` |
+| `mode?` | `Mode` |
+| `options?` | [`ConnectKitOptions`](modules.md#connectkitoptions) |
+| `theme?` | `Theme` |
+
+#### Defined in
+
+src/types.ts:21
+
 ## Variables
 
 ### WalletContext
@@ -26,7 +80,7 @@
 
 #### Defined in
 
-[src/client.tsx:106](https://github.com/nevermined-io/components-catalog/blob/ff28f62/providers/src/client.tsx#L106)
+[src/client.tsx:103](https://github.com/nevermined-io/components-catalog/blob/0a32f2b/providers/src/client.tsx#L103)
 
 ## Functions
 
@@ -41,6 +95,7 @@
 | `__namedParameters` | `Object` |
 | `__namedParameters.children` | `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\> |
 | `__namedParameters.client` | `Client`<`any`, `WebSocketProvider`\> |
+| `__namedParameters.connectKitProps?` | [`ConnectKitProviderProps`](modules.md#connectkitproviderprops) |
 | `__namedParameters.correctNetworkId?` | `number` |
 
 #### Returns
@@ -49,7 +104,7 @@
 
 #### Defined in
 
-[src/client.tsx:108](https://github.com/nevermined-io/components-catalog/blob/ff28f62/providers/src/client.tsx#L108)
+[src/client.tsx:105](https://github.com/nevermined-io/components-catalog/blob/0a32f2b/providers/src/client.tsx#L105)
 
 ___
 
@@ -98,6 +153,7 @@ ReactDOM.render(
 | `config` | `Object` |  |
 | `config.children` | `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\> | - |
 | `config.client` | `Client`<`any`, `WebSocketProvider`\> | The wagmi client object |
+| `config.connectKitProps?` | [`ConnectKitProviderProps`](modules.md#connectkitproviderprops) | Parameter to pass the options to customize [ConnectKit](https://docs.family.co/connectkit/customization) |
 | `config.correctNetworkId?` | `number` | Id of the default blockchain network in Hexadecimal. Default the fist chain configured |
 
 #### Returns
@@ -108,7 +164,7 @@ All the functionalities to handle the wallet in dapp
 
 #### Defined in
 
-[src/providers.tsx:41](https://github.com/nevermined-io/components-catalog/blob/ff28f62/providers/src/providers.tsx#L41)
+[src/providers.tsx:43](https://github.com/nevermined-io/components-catalog/blob/0a32f2b/providers/src/providers.tsx#L43)
 
 ___
 
@@ -122,7 +178,7 @@ function that build and return the wagmi client
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `appName?` | `string` | `undefined` | App name required for Coinbase wallet. If appName is undefined Coinbase wallet won't be supported |
+| `appName` | `string` | `'Nevermined'` | App name required for Coinbase wallet. If appName is undefined Coinbase wallet won't be supported |
 | `autoConnect` | `boolean` | `true` | If it is true once that the dapp start to run it will try to connect to the wallet automatically. Default `true` |
 | `chainsConfig` | `Chain`[] | `ChainsConfig` | Config with all the available chains that can be used in the dapp. Default chains supported `Polygon Mainnet`, `Polygon Mumbai`, `spree (localhost) |
 
@@ -132,7 +188,7 @@ function that build and return the wagmi client
 
 #### Defined in
 
-[src/client.tsx:33](https://github.com/nevermined-io/components-catalog/blob/ff28f62/providers/src/client.tsx#L33)
+[src/client.tsx:34](https://github.com/nevermined-io/components-catalog/blob/0a32f2b/providers/src/client.tsx#L34)
 
 ___
 
@@ -146,7 +202,7 @@ ___
 
 #### Defined in
 
-[src/client.tsx:189](https://github.com/nevermined-io/components-catalog/blob/ff28f62/providers/src/client.tsx#L189)
+[src/client.tsx:188](https://github.com/nevermined-io/components-catalog/blob/0a32f2b/providers/src/client.tsx#L188)
 
 ___
 
@@ -166,4 +222,4 @@ ___
 
 #### Defined in
 
-[src/utils/index.ts:1](https://github.com/nevermined-io/components-catalog/blob/ff28f62/providers/src/utils/index.ts#L1)
+[src/utils/index.ts:1](https://github.com/nevermined-io/components-catalog/blob/0a32f2b/providers/src/utils/index.ts#L1)

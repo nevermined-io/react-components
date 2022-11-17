@@ -1,6 +1,7 @@
 import React from "react"
 import { Client, WagmiConfig } from "wagmi"
 import { ClientComp } from './client'
+import { ConnectKitProviderProps } from './types'
 
 /** 
  * This component is a layer of [Wagmi](https://wagmi.sh/docs/getting-started) and [ConnectKit](https://docs.family.co/connectkit)
@@ -9,6 +10,7 @@ import { ClientComp } from './client'
  * @param config
  * @param config.client The wagmi client object @see [wagmi](https://wagmi.sh/docs/getting-started)
  * @param config.correctNetworkId Id of the default blockchain network in Hexadecimal. Default the fist chain configured
+ * @param config.connectKitProps Parameter to pass the options to customize [ConnectKit](https://docs.family.co/connectkit/customization)
  * @returns All the functionalities to handle the wallet in dapp
  * 
  * @example
@@ -42,10 +44,12 @@ export const WalletProvider = ({
   children,
   client,
   correctNetworkId,
+  connectKitProps,
 }: {
   children: React.ReactElement,
   client: Client<any>, // eslint-disable-line
   correctNetworkId?: number
+  connectKitProps?: ConnectKitProviderProps
 }) => {
   // eslint-disable-next-line
 
@@ -53,7 +57,7 @@ export const WalletProvider = ({
       <>
           {client?.status ?
               <WagmiConfig client={client}>
-                  <ClientComp client={client} correctNetworkId={correctNetworkId}>
+                  <ClientComp client={client} connectKitProps={connectKitProps} correctNetworkId={correctNetworkId}>
                       {children}
                   </ClientComp>
               </WagmiConfig> 
