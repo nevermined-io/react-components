@@ -11,9 +11,9 @@ import { configureChains,
     useAccount,
     useConnect,
     useNetwork,
-    useSwitchNetwork,
     Connector,
     useDisconnect,
+    useSwitchNetwork
 } from "wagmi"
 import { ConnectKitProvider } from 'connectkit'
 import { Provider } from "@ethersproject/abstract-provider"
@@ -22,6 +22,7 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import ChainsConfig from './chain-config'
+import { ConnectKitProviderProps } from './types'
 
 /**
  * function that build and return the wagmi client
@@ -105,10 +106,12 @@ export const ClientComp = ({
     children,
     client,
     correctNetworkId,
+    connectKitProps
   }: {
     children: React.ReactElement
     client: Client<any>, // eslint-disable-line
     correctNetworkId?: number
+    connectKitProps?: ConnectKitProviderProps
   }) => {
   const [walletAddress, setWalletAddress] = useState<string>('')
   const { address, status } = useAccount()
@@ -128,7 +131,6 @@ export const ClientComp = ({
         console.log(`Wallet is disconnected`)
     }
   })
-  const { chain, chains } = useNetwork()
   const { switchNetwork } = useSwitchNetwork({
     onError(error) {
         console.error(`Error switch network: ${error}`)
@@ -137,16 +139,17 @@ export const ClientComp = ({
         console.log(`New network is selected: ${data.name}`)
     }
   })
-
-  useEffect(() => {
-      if(chain?.unsupported && client.chains && switchNetwork) {
-          switchNetwork(correctNetworkId || client.chains[0].id)
-      }
-  }, [chain])
+  const { chain, chains } = useNetwork()
 
   useEffect(() => {
       setWalletAddress(address || '')
   }, [address])
+
+  useEffect(() => {
+    if(chain?.unsupported && client.chains && switchNetwork) {
+        switchNetwork(correctNetworkId || client.chains[0].id)
+    }
+}, [chain])
 
   //eslint-disable-next-line
   const login = (connector: Connector<any, any, any>) => connect({connector})
@@ -164,7 +167,7 @@ export const ClientComp = ({
   const getAllAvailableChains =  () => chains
 
   return ( 
-    <ConnectKitProvider>             
+    <ConnectKitProvider {...connectKitProps}>             
         <WalletContext.Provider value={{
             client,
             walletAddress,

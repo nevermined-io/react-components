@@ -32,16 +32,18 @@ npm install --save @nevermined-io/catalog-providers
 ```typescript
 import { WalletProvider, getClient, useWallet } from "@nevermined-io/catalog-providers";
 import App from "app";
-import { Config } from "@nevermined-io/nevermined-sdk-js";
-
-const appConfig: Config = {
-    nodeUri,
-};
 
 ReactDOM.render(
     <div>
         <WalletProvider
             client={getClient()}
+            correctNetworkId={80001}
+            connectKitProps={
+                {
+                    theme: 'auto',
+                    mode: 'dark',
+                }
+            }
         >
             <App />
         </WalletProvider>
@@ -67,4 +69,4 @@ const ConnectToMetaMask = () => {
 };
 ```
 
-Here you can find [here a complete example](https://docs.nevermined.io/docs/catalog/example)
+You can find [here a example](https://docs.nevermined.io/docs/catalog/example)
