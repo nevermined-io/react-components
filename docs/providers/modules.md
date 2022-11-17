@@ -50,7 +50,7 @@
 
 #### Defined in
 
-src/types.ts:4
+[src/types.ts:4](https://github.com/nevermined-io/components-catalog/blob/a3cb7cc/providers/src/types.ts#L4)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-src/types.ts:21
+[src/types.ts:21](https://github.com/nevermined-io/components-catalog/blob/a3cb7cc/providers/src/types.ts#L21)
 
 ## Variables
 
@@ -80,7 +80,7 @@ src/types.ts:21
 
 #### Defined in
 
-[src/client.tsx:103](https://github.com/nevermined-io/components-catalog/blob/0a32f2b/providers/src/client.tsx#L103)
+[src/client.tsx:103](https://github.com/nevermined-io/components-catalog/blob/a3cb7cc/providers/src/client.tsx#L103)
 
 ## Functions
 
@@ -104,7 +104,7 @@ src/types.ts:21
 
 #### Defined in
 
-[src/client.tsx:105](https://github.com/nevermined-io/components-catalog/blob/0a32f2b/providers/src/client.tsx#L105)
+[src/client.tsx:105](https://github.com/nevermined-io/components-catalog/blob/a3cb7cc/providers/src/client.tsx#L105)
 
 ___
 
@@ -164,7 +164,7 @@ All the functionalities to handle the wallet in dapp
 
 #### Defined in
 
-[src/providers.tsx:43](https://github.com/nevermined-io/components-catalog/blob/0a32f2b/providers/src/providers.tsx#L43)
+[src/providers.tsx:43](https://github.com/nevermined-io/components-catalog/blob/a3cb7cc/providers/src/providers.tsx#L43)
 
 ___
 
@@ -188,7 +188,7 @@ function that build and return the wagmi client
 
 #### Defined in
 
-[src/client.tsx:34](https://github.com/nevermined-io/components-catalog/blob/0a32f2b/providers/src/client.tsx#L34)
+[src/client.tsx:34](https://github.com/nevermined-io/components-catalog/blob/a3cb7cc/providers/src/client.tsx#L34)
 
 ___
 
@@ -202,7 +202,7 @@ ___
 
 #### Defined in
 
-[src/client.tsx:188](https://github.com/nevermined-io/components-catalog/blob/0a32f2b/providers/src/client.tsx#L188)
+[src/client.tsx:188](https://github.com/nevermined-io/components-catalog/blob/a3cb7cc/providers/src/client.tsx#L188)
 
 ___
 
@@ -222,4 +222,4 @@ ___
 
 #### Defined in
 
-[src/utils/index.ts:1](https://github.com/nevermined-io/components-catalog/blob/0a32f2b/providers/src/utils/index.ts#L1)
+[src/utils/index.ts:1](https://github.com/nevermined-io/components-catalog/blob/a3cb7cc/providers/src/utils/index.ts#L1)

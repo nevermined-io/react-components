@@ -69,4 +69,4 @@ const ConnectToMetaMask = () => {
 };
 ```
 
-You can find [here a tutorial](https://docs.nevermined.io/docs/tutorials/login-wallet-provider)
+You can find [here a example](https://docs.nevermined.io/docs/catalog/example)
