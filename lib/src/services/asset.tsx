@@ -1,3 +1,4 @@
+import { CryptoConfig } from '@nevermined-io/nevermined-sdk-dtp/dist'
 import { DDO, MetaData, SearchQuery, ClientError, Logger } from '@nevermined-io/nevermined-sdk-js'
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards'
 import React, { useContext, useEffect, useState, createContext } from 'react'
@@ -16,6 +17,7 @@ import {
   NeverminedNFT1155Type,
 } from '../types'
 import { getCurrentAccount } from '../utils'
+import {_getDTPInstance, _encryptFileMetadata} from '../utils/dtp'
 
 /**
  * Get all assets
@@ -129,7 +131,7 @@ export const AssetPublishContext = createContext({} as AssetPublishProviderState
  * @see {@link https://github.com/nevermined-io/defi-marketplace/tree/main/client/src/%2Bassets/user-publish-steps}
  */
 export const AssetPublishProvider = ({ children }: { children: React.ReactElement }) => {
-  const { sdk, account } = useNevermined()
+  const { sdk, account, config } = useNevermined()
   const [errorAssetMessage, setErrorAssetMessage] = useState('')
   const [isPublished, setIsPublished] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -184,6 +186,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     erc20TokenAddress,
     appId,
     txParameters,
+    password,
+    cryptoConfig
   }: 
   { 
     metadata: MetaData;
@@ -195,6 +199,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     erc20TokenAddress?: string,
     appId?: string,
     txParameters?: TxParameters,
+    password?: string,
+    cryptoConfig?: CryptoConfig
   }) => {
     try {
       setIsProcessing(true)
@@ -207,6 +213,11 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         )
 
         await account.generateToken()
+      }
+
+      if (password && method) {
+        const dtp = await _getDTPInstance(sdk, config, cryptoConfig || null as any)
+        metadata = await _encryptFileMetadata(sdk, dtp, metadata, password)
       }
 
       const ddo = await sdk.assets.create(
@@ -264,12 +275,14 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     method = 'PSK-RSA',
     providers,
     erc20TokenAddress,
-    preMint = false,
+    preMint = true,
     royaltyAttributes,
     nftMetadata,
     services = ['nft-access'],
     nftTransfer = false,
-    duration = 0
+    duration = 0,
+    password,
+    cryptoConfig,
   }: {
     nftAddress: string;
     metadata: MetaData;
@@ -283,6 +296,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     services?: ServiceType[];
     nftTransfer?: boolean;
     duration?: number;
+    password?: string;
+    cryptoConfig?: CryptoConfig
   }) => {
     try {
       setIsProcessing(true)
@@ -294,6 +309,11 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
           'Your login is expired. Please first sign with your wallet and after try again'
         )
         await account.generateToken()
+      }
+
+      if (password && method) {
+        const dtp = await _getDTPInstance(sdk, config, cryptoConfig || null as any)
+        metadata = await _encryptFileMetadata(sdk, dtp, metadata, password)
       }
     
       const ddo = await sdk.assets.createNft721(
@@ -353,20 +373,26 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     neverminedNodeAddress,
     metadata,
     cap,
+    method,
+    providers,
     assetRewards = new AssetRewards(),
     royaltyAttributes,
     nftAmount,
     erc20TokenAddress,
-    preMint = false,
+    preMint = true,
     nftMetadata,
     neverminedNFT1155Type,
     appId,
     txParameters,
+    password,
+    cryptoConfig,
   }: {
     neverminedNodeAddress: string,
     metadata: MetaData,
     cap: BigNumber,
+    method?: EncryptionMethod,
     assetRewards?: AssetRewards;
+    providers?: string[];
     royaltyAttributes: RoyaltyAttributes,
     nftAmount?: BigNumber,
     erc20TokenAddress?: string,
@@ -375,6 +401,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     neverminedNFT1155Type?: NeverminedNFT1155Type,
     appId?: string,
     txParameters?: TxParameters,
+    password?: string,
+    cryptoConfig?: CryptoConfig
   }) => {
     try {
       setIsProcessing(true)
@@ -404,13 +432,20 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
 
       Logger.log(`Contract Receipt for approved node: ${gateawayContractReceipt}`)
 
-      const ddo = await sdk.nfts.createWithRoyalties(
+      if (password && method) {
+        const dtp = await _getDTPInstance(sdk, config, cryptoConfig || null as any)
+        metadata = await _encryptFileMetadata(sdk, dtp, metadata, password)
+      }
+
+      const ddo = await sdk.assets.createNftWithRoyalties(
         metadata,
         accountWallet,
-        cap,
-        royaltyAttributes,
         assetRewards,
+        method,
+        cap,
+        providers,
         nftAmount,
+        royaltyAttributes,
         erc20TokenAddress,
         preMint,
         nftMetadata,

@@ -22,7 +22,7 @@ export type {
   ContractEventSubscription,
   EventResult
 } from '@nevermined-io/nevermined-sdk-js/dist/node/events'
-export { zeroX } from '@nevermined-io/nevermined-sdk-js/dist/node/utils'
+export { zeroX, generateId, makeAccounts } from '@nevermined-io/nevermined-sdk-js/dist/node/utils'
 export { ERCType, NeverminedNFT1155Type } from '@nevermined-io/nevermined-sdk-js/dist/node/models/NFTAttributes'
 export type { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase'
 export type { ServiceCommon, ServiceType } from '@nevermined-io/nevermined-sdk-js/dist/node/ddo/Service'
@@ -34,6 +34,8 @@ export const BigNumber = BigNumberSDK
 export type BigNumber = BigNumberSDK
 export const AssetRewards = AssetRewardsSDK
 export type AssetRewards = AssetRewardsSDK
+export { generateIntantiableConfigFromConfig } from '@nevermined-io/nevermined-sdk-js/dist/node/Instantiable.abstract'
+export * as DTP from '@nevermined-io/nevermined-sdk-dtp/dist'
 
 /**
  * Values returns from the main NVM context
@@ -49,6 +51,8 @@ export interface NeverminedProviderContext {
   sdk: Nevermined;
   /** Error message from sdk */
   sdkError: any;
+  /** Config object used to initialize Nevermined */
+  config: Config;
   /** True if sdk is loading */
   isLoadingSDK: boolean;
   /**
@@ -750,6 +754,7 @@ export interface AssetPublishProviderState {
    * @param asset.erc20TokenAddress The erc20 token address which the buyer will pay the price
    * @param asset.appId The id of the application creating the asset
    * @param asset.txParameters Trasaction number of the asset creation
+   * @param asset.password Password to encrypt metadata
    * @returns The DDO object including the asset metadata and the DID
    */
   publishAsset: ({
@@ -762,6 +767,7 @@ export interface AssetPublishProviderState {
     erc20TokenAddress,
     appId,
     txParameters,
+    password
   }:
   {
     metadata: MetaData;
@@ -773,6 +779,7 @@ export interface AssetPublishProviderState {
     erc20TokenAddress?: string,
     appId?: string,
     txParameters?: TxParameters,
+    password?: string
   }) => Promise<DDO | undefined>;
   /**
    * In Nevermined is possible to register a digital asset that allow users pay for having a
@@ -795,6 +802,7 @@ export interface AssetPublishProviderState {
    * @param nft721.services List of services associate with the asset
    * @param nft721.nftTransfer if the nft will be transfered to other address after published
    * @param nft721.duration When expire the NFT721. The default 0 value means never
+   * @param nft721.password Password to encrypt metadata
    * @returns The DDO object including the asset metadata and the DID
    */
     publishNFT721: ({
@@ -810,7 +818,8 @@ export interface AssetPublishProviderState {
     txParameters,
     services,
     nftTransfer,
-    duration
+    duration,
+    password,
   }: {
     nftAddress: string;
     metadata: MetaData;
@@ -825,6 +834,7 @@ export interface AssetPublishProviderState {
     services?: ServiceType[];
     nftTransfer?: boolean;
     duration?: number;
+    password?: string
   }) => Promise<DDO | undefined>;
   /**
    * In Nevermined is possible to register a digital asset that allow users pay for having a
@@ -847,6 +857,7 @@ export interface AssetPublishProviderState {
    * @param nft1155.neverminedNFTType the type of the NFT1155
    * @param nft1155.appId The id of the application creating the NFT
    * @param nft1155.txParameters Trasaction number of the asset creation
+   * @param nft1155.password Password to encrypt metadata
    * @returns The DDO object including the asset metadata and the DID
    */
   publishNFT1155: ({
@@ -862,6 +873,7 @@ export interface AssetPublishProviderState {
     neverminedNFT1155Type,
     appId,
     txParameters,
+    password
     }: {
       neverminedNodeAddress: string,
       metadata: MetaData,
@@ -875,5 +887,6 @@ export interface AssetPublishProviderState {
       neverminedNFT1155Type?: NeverminedNFT1155Type,
       appId?: string,
       txParameters?: TxParameters,
+      password?: string
     }) => Promise<DDO | undefined>;
 }

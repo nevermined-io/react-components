@@ -1,4 +1,4 @@
-import { Account, DDO, Nevermined, Logger, ClientError } from '@nevermined-io/nevermined-sdk-js'
+import { Account, DDO, Nevermined, Logger, ClientError } from '../'
 import { BigNumber } from '../types'
 import axios from 'axios'
 import axiosRetry from 'axios-retry'

@@ -19,11 +19,14 @@
       "remark-preset-lint-recommended",
       [
         "remark-lint-no-dead-urls",
-        ["error", {
-          "skipUrlPatterns": [
-            "^(http://|https://)?([github.com]+.)*github+.[a-zA-Z]{2,11}.*"
-          ]
-        }]
+        [
+          "error",
+          {
+            "skipUrlPatterns": [
+              "^(http://|https://)?([github.com]+.)*github+.[a-zA-Z]{2,11}.*"
+            ]
+          }
+        ]
       ],
       [
         "remark-lint-list-item-indent",
@@ -33,10 +36,15 @@
         "remark-message-control",
         {
           "name": "catalog",
-          "known": ["heading-style"],
-          "disable": ["heading-style"]
+          "known": [
+            "heading-style"
+          ],
+          "disable": [
+            "heading-style"
+          ]
         }
       ]
     ]
-  }
+  },
+  "dependencies": {}
 }

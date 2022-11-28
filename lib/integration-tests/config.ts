@@ -26,5 +26,6 @@ export const appConfig: Config = {
   neverminedNodeAddress,
   marketplaceAuthToken: AuthToken.fetchMarketplaceApiTokenFromLocalStorage().token,
   marketplaceUri,
+  newGateway: true,
   artifactsFolder: path.join(__dirname, '/artifacts')
 }
