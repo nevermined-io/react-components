@@ -18,8 +18,9 @@
     "outDir": "./dist/node",
     "noEmit": true,
     "downlevelIteration": true,
-    "sourceMap": false
+    "sourceMap": false,
+    "types": ["jest", "@testing-library/jest-dom"]
   },
-  "include": ["src/"],
-  "exclude": ["node_modules", "**/*.spec.ts", "**/*.spec.tsx"]
+  "include": ["src", "tests"],
+  "exclude": ["node_modules"]
 }
