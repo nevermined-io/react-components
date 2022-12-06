@@ -112,12 +112,12 @@ ___
 
 ▸ **WalletProvider**(`config`): `Element`
 
-This component is a layer of [Wagmi](https://wagmi.sh/docs/getting-started) and [ConnectKit](https://docs.family.co/connectkit)
+This component is a layer of [Wagmi](https://wagmi.sh/react/getting-started) and [ConnectKit](https://docs.family.co/connectkit)
 which allow to handle Metamask, WalletConnect and Coinbase without needing to set any config
 
 **`See`**
 
-[wagmi](https://wagmi.sh/docs/getting-started)
+[wagmi](https://wagmi.sh/react/getting-started)
 
 **`Example`**
 

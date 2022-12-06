@@ -21,6 +21,6 @@
     "sourceMap": false,
     "types": ["jest", "@testing-library/jest-dom"]
   },
-  "include": ["src", "tests"],
+  "include": ["src/", "tests/"],
   "exclude": ["node_modules"]
 }
