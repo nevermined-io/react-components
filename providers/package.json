@@ -1,5 +1,5 @@
 {
-  "name": "nevermined-io-catalog-providers",
+  "name": "@nevermined-io/catalog-providers",
   "version": "0.6.4",
   "private": false,
   "scripts": {
@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@wagmi/core": "^0.6.12",
-    "connectkit": "^1.0.0",
+    "connectkit": "^1.1.1",
     "ethers": "^5.6.9",
     "nodemon": "^2.0.16",
     "wagmi": "^0.7.15"
@@ -59,6 +59,7 @@
     "@typescript-eslint/parser": "^5.31.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "8.1.0",
+    "core-js": "^3.26.1",
     "eslint": "^8.20.0",
     "eslint-config-nevermined": "^0.2.0",
     "eslint-config-next": "^12.3.1",

@@ -15,7 +15,7 @@ import { configureChains,
     useDisconnect,
     useSwitchNetwork
 } from "wagmi"
-import { ConnectKitProvider } from 'connectkit/build/index'
+import { ConnectKitProvider } from 'connectkit'
 import { Provider } from "@ethersproject/abstract-provider"
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
