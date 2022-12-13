@@ -1,6 +1,6 @@
 {
-  "name": "catalog-providers-iurii-fork",
-  "version": "0.0.15",
+  "name": "@nevermined-io/catalog-providers",
+  "version": "0.6.4",
   "private": false,
   "scripts": {
     "watch": "./node_modules/.bin/nodemon",
