@@ -4,4 +4,8 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/tests/jest-setup.ts'],
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': ['ts-jest'],
+  },
+  transformIgnorePatterns: ['/node_modules/(?!connectkit)'],
 }
