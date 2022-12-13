@@ -74,12 +74,12 @@ export const getClient = (appName = 'Nevermined', autoConnect = true, chainsConf
 }
 
 /**
- * This component is a layer of [Wagmi](https://wagmi.sh/docs/getting-started) and [ConnectKit](https://docs.family.co/connectkit)
+ * This component is a layer of [Wagmi](https://wagmi.sh/react/getting-started) and [ConnectKit](https://docs.family.co/connectkit)
  * which allow to handle Metamask, WalletConnect and Coinbase without needing to set any config 
  */
 export interface WalletProviderState {
 /** All the wagmi client functionalities
- * @see [wagmi](https://wagmi.sh/docs/getting-started)
+ * @see [wagmi](https://wagmi.sh/react/getting-started)
  */
 client: Client
 /** Metamask provider for example web3 or ethers */

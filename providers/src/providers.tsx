@@ -4,11 +4,11 @@ import { ClientComp } from './client'
 import { ConnectKitProviderProps } from './types'
 
 /** 
- * This component is a layer of [Wagmi](https://wagmi.sh/docs/getting-started) and [ConnectKit](https://docs.family.co/connectkit)
+ * This component is a layer of [Wagmi](https://wagmi.sh/react/getting-started) and [ConnectKit](https://docs.family.co/connectkit)
  * which allow to handle Metamask, WalletConnect and Coinbase without needing to set any config 
  * 
  * @param config
- * @param config.client The wagmi client object @see [wagmi](https://wagmi.sh/docs/getting-started)
+ * @param config.client The wagmi client object @see [wagmi](https://wagmi.sh/react/getting-started)
  * @param config.correctNetworkId Id of the default blockchain network in Hexadecimal. Default the fist chain configured
  * @param config.connectKitProps Parameter to pass the options to customize [ConnectKit](https://docs.family.co/connectkit/customization)
  * @returns All the functionalities to handle the wallet in dapp

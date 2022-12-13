@@ -1,12 +1,12 @@
 {
   "name": "@nevermined-io/catalog-providers",
-  "version": "0.6.1",
+  "version": "0.6.4",
   "private": false,
   "scripts": {
     "watch": "./node_modules/.bin/nodemon",
     "start": "npx tsc --watch",
     "build": "npm run clean && npm run build:tsc",
-    "build:tsc": "tsc --noEmit false",
+    "build:tsc": "tsc --noEmit false --project tsconfig.build.json",
     "clean": "rm -rf dist",
     "test:unit": "jest",
     "eject": "react-scripts eject",
