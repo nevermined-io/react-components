@@ -7,5 +7,5 @@ module.exports = {
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': ['ts-jest'],
   },
-  transformIgnorePatterns: ['/node_modules/(?!connectkit)'],
+  transformIgnorePatterns: ['<rootDir>/node_modules/(?!wagmi|@wagmi/core|connectkit)'],
 }
