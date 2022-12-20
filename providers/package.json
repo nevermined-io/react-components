@@ -1,12 +1,12 @@
 {
-  "name": "catalog-providers-test",
-  "version": "0.0.13",
+  "name": "@nevermined-io/catalog-providers",
+  "version": "0.6.3",
   "private": false,
   "scripts": {
     "watch": "./node_modules/.bin/nodemon",
     "start": "npx tsc --watch",
     "build": "npm run clean && npm run build:tsc",
-    "build:tsc": "tsc --noEmit false",
+    "build:tsc": "tsc --noEmit false --project tsconfig.build.json",
     "clean": "rm -rf dist",
     "test:unit": "jest",
     "eject": "react-scripts eject",
@@ -38,27 +38,29 @@
     "react": ">=17.0.0"
   },
   "dependencies": {
-    "@wagmi/core": "^0.6.12",
-    "connectkit": "^1.0.0",
+    "@wagmi/core": "^0.7.9",
+    "connectkit": "^1.1.0",
     "ethers": "^5.6.9",
     "nodemon": "^2.0.16",
-    "wagmi": "^0.7.15"
+    "wagmi": "^0.8.1"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
     "@babel/plugin-syntax-flow": "^7.14.5",
     "@babel/plugin-transform-react-jsx": "^7.14.9",
-    "@babel/preset-env": "^7.16.5",
+    "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.16.5",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
-    "@types/jest": "^27.0.3",
+    "@types/jest": "^29.2.4",
     "@types/react": "17.0.2",
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^29.3.1",
     "babel-loader": "8.1.0",
+    "core-js": "^3.26.1",
     "eslint": "^8.20.0",
     "eslint-config-nevermined": "^0.2.0",
     "eslint-config-next": "^12.3.1",
@@ -80,5 +82,9 @@
     "typedoc": "^0.23.10",
     "typedoc-plugin-markdown": "^3.13.4",
     "typescript": "^4.6.2"
+  },
+  "resolutions": {
+    "connectkit/react": "^18.2.0",
+    "connectkit/react-dom": "^18.2.0"
   }
 }
