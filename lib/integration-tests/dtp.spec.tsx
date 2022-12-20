@@ -1,8 +1,9 @@
-import { encryptMetadata, Nevermined, MetaData, Account, BigNumber, AssetRewards, DDO, makeAccounts, DTP, 
-  generateIntantiableConfigFromConfig, generateId, zeroX, getGrantAccess } from '../src'
+import { Nevermined, MetaData, Account, BigNumber, AssetPrice, NFTAttributes, DDO, makeAccounts, DTP, 
+  generateIntantiableConfigFromConfig, generateId, zeroX } from '../src'
 import { appConfig, walletAddress } from './config'
 import { getMetadata } from './metadata.mock'
 import { faker } from '@faker-js/faker'
+import { _getGrantAccess, _encryptFileMetadata } from '../src/utils/dtp'
 
 describe('DTP', () => {
   let sdk: Nevermined
@@ -37,13 +38,13 @@ describe('DTP', () => {
 
     const clientAssertion = await sdk.utils.jwt.generateClientAssertion(publisher)
 
-    await sdk.marketplace.login(clientAssertion)
+    await sdk.services.marketplace.login(clientAssertion)
   })
 
   it('should encrypt metadata', async () => {
     const metadata = await getMetadata(faker.name.fullName())
 
-    metadataEncrypted = await encryptMetadata(sdk, dtp, metadata, password)
+    metadataEncrypted = await _encryptFileMetadata(sdk, dtp, metadata, password)
 
     console.log(metadataEncrypted.main)
 
@@ -60,25 +61,19 @@ describe('DTP', () => {
       [walletAddress, BigNumber.from(0)]
     ])
 
-    const assetRewards = new AssetRewards(assetRewardsMap)
+    const assetPrice = new AssetPrice(assetRewardsMap)
     const networkFee = await sdk.keeper.nvmConfig.getNetworkFee()
     const feeReceiver = await sdk.keeper.nvmConfig.getFeeReceiver()
+    assetPrice.addNetworkFees(feeReceiver, BigNumber.from(networkFee))
+
+    const nftAttributes = new NFTAttributes()
+    nftAttributes.metadata = metadataEncrypted,
+    nftAttributes.price = assetPrice,
+    nftAttributes.encryptionMethod = 'PSK-RSA'
     
-    assetRewards.addNetworkFees(feeReceiver, BigNumber.from(networkFee))
-    ddo = await sdk.assets.createNft(
-      metadataEncrypted,
+    ddo = await sdk.nfts1155.create(
+      nftAttributes,
       publisher,
-      assetRewards,
-      'PSK-RSA',
-      BigNumber.from(100),
-      undefined,
-      BigNumber.from(1),
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      ['nft-access', 'nft-sales'],
     )
 
     console.log(ddo.findServiceById(0).attributes)
@@ -87,7 +82,7 @@ describe('DTP', () => {
   })
 
   it('should order the file', async () => {
-    const response = await getGrantAccess({
+    const response = await _getGrantAccess({
       did: ddo.id,
       account: consumer,
       password,
@@ -99,7 +94,7 @@ describe('DTP', () => {
 
     console.log(response.getId())
 
-    agreementId = await sdk.nfts.order(ddo.id, BigNumber.from(1), consumer)
+    agreementId = await sdk.nfts1155.order(ddo.id, BigNumber.from(1), consumer)
 
     expect(response.babySecret).toBe(password)
     expect(agreementId).toBeTruthy()
@@ -123,7 +118,7 @@ describe('DTP', () => {
   })
 
   it('should download the file', async () => {
-    const file = await sdk.nfts.access(ddo.id, consumer, undefined, undefined, agreementId, false)
+    const file = await sdk.nfts1155.access(ddo.id, consumer, undefined, undefined, agreementId, false)
 
     console.log(file)
 

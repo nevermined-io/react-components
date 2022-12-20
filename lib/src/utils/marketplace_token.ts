@@ -37,7 +37,7 @@ export const newMarketplaceApiToken = async (sdk: Nevermined): Promise<Marketpla
   try {
     const [account] = await sdk.accounts.list()
     const credential = await sdk.utils.jwt.generateClientAssertion(account)
-    const token = await sdk.marketplace.login(credential)
+    const token = await sdk.services.marketplace.login(credential)
     saveMarketplaceApiTokenToLocalStorage({ token })
     return { token }
   } catch (error) {

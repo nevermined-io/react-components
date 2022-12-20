@@ -1,10 +1,10 @@
-import { Account, Config, DTP, MetaData, MetaDataMain, Nevermined, ServiceType } from '../types'
+import { Account, NeverminedOptions, DTP, MetaData, MetaDataMain, Nevermined, ServiceType } from '../types'
 import { generateIntantiableConfigFromConfig } from '@nevermined-io/nevermined-sdk-js/dist/node/Instantiable.abstract'
 import { CryptoConfig } from '@nevermined-io/nevermined-sdk-dtp/dist'
 import { aes_decryption_256 } from '@nevermined-io/nevermined-sdk-dtp/dist/utils'
 import fileDownload from 'js-file-download'
 
-export const _getDTPInstance = async (sdk: Nevermined, config: Config, cryptoConfig: CryptoConfig) => {
+export const _getDTPInstance = async (sdk: Nevermined, config: NeverminedOptions, cryptoConfig: CryptoConfig) => {
   const instanceConfig = {
     ...generateIntantiableConfigFromConfig(config),
     nevermined: sdk,
@@ -14,7 +14,7 @@ export const _getDTPInstance = async (sdk: Nevermined, config: Config, cryptoCon
 }
 
 export const _getCryptoConfig = async (sdk: Nevermined) => {
-  const nodeInfo = await sdk.node.getNeverminedNodeInfo()
+  const nodeInfo = await sdk.services.node.getNeverminedNodeInfo()
 
   return {
     provider_key: '',
@@ -47,7 +47,7 @@ export const _encryptFileMetadata = async (sdk: Nevermined, dtp: DTP.Dtp, metada
 
   metadata.main = { ...metadata.main, isDTP: true, files }
 
-  const nodeInfo = await sdk.node.getNeverminedNodeInfo()
+  const nodeInfo = await sdk.services.node.getNeverminedNodeInfo()
   const providerKey = nodeInfo['babyjub-public-key']
 
   metadata.additionalInformation = { 

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { renderHook, waitFor } from '@testing-library/react'
 import { generateTestingUtils } from 'eth-testing'
 import { appConfig } from '../config'
-import { Catalog, AssetService, DDO, RoyaltyKind, getRoyaltyScheme, MarketplaceAPIToken, Logger, Nevermined, BigNumber } from '../../src'
-import { ddo as assetObject, metadata, nftTokenAddress, walletAddress } from '../mockups'
+import { Catalog, AssetService, AssetAttributes, NFTAttributes, DDO, RoyaltyKind, getRoyaltyScheme, MarketplaceAPIToken, Logger, Nevermined, BigNumber } from '../../src'
+import { ddo as assetObject, metadata, walletAddress } from '../mockups'
 import { faker } from '@faker-js/faker'
 import jwt from 'jsonwebtoken'
 
@@ -27,6 +27,12 @@ describe('Assets Service', () => {
     scheme: getRoyaltyScheme(sdk, RoyaltyKind.Standard),
     amount: 0,
   })
+  const assetAttributes = new AssetAttributes()
+  assetAttributes.metadata = metadata
+
+  const nftAttributes = new NFTAttributes()
+  nftAttributes.metadata = metadata
+  nftAttributes.cap = BigNumber.from(100)
 
   afterEach(() => {
     testingUtils.clearAllMocks()
@@ -67,7 +73,7 @@ describe('Assets Service', () => {
     const { result } = renderHook(
       () => {
         const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const { ddo, metadata } = AssetService.useAsset(assetObject.id)
+        const { ddo, metadata } = AssetService.useAsset(assetObject.id, 1155)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -113,7 +119,7 @@ describe('Assets Service', () => {
 
           (async () => {
             const result = await publishAsset({
-              metadata,
+              assetAttributes,
             }) as DDO
 
             setDDO(result)
@@ -153,11 +159,9 @@ describe('Assets Service', () => {
           }
 
           (async () => {
+            nftAttributes.royaltyAttributes = royaltyAttributes(sdk)
             const result = await publishNFT721({
-              nftAddress: nftTokenAddress,
-              metadata,
-              providers: undefined,
-              royaltyAttributes: royaltyAttributes(sdk)
+              nftAttributes
             }) as DDO
 
             setDDO(result)
@@ -185,7 +189,7 @@ describe('Assets Service', () => {
   it('should publish an nft1155', async() => {
     const { result } = renderHook(
       () => {
-        const { isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
+        const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
         const { publishNFT1155, isPublished } = AssetService.useAssetPublish()
         const [ddo, setDDO ] = useState<DDO>({} as DDO)
 
@@ -198,10 +202,7 @@ describe('Assets Service', () => {
 
           (async () => {
             const result = await publishNFT1155({
-              neverminedNodeAddress: String(appConfig.neverminedNodeAddress),
-              metadata,
-              cap: BigNumber.from(100),
-              royaltyAttributes: royaltyAttributes(sdk)
+              nftAttributes
             }) as DDO
 
             setDDO(result)
@@ -233,7 +234,7 @@ describe('Assets Service', () => {
 
     renderHook(
       () => {
-        const { isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
+        const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
         const { publishNFT1155 } = AssetService.useAssetPublish()
 
         useEffect(() => {
@@ -246,10 +247,7 @@ describe('Assets Service', () => {
           (async () => {
             try {
               await publishNFT1155({
-                neverminedNodeAddress: '',
-                metadata,
-                cap: BigNumber.from(100),
-                royaltyAttributes: royaltyAttributes(sdk),
+                nftAttributes
             })
               
             } catch (error: any) {
@@ -408,7 +406,7 @@ describe('Assets Service', () => {
 
           (async () => {
             await publishAsset({
-              metadata,
+              assetAttributes,
             }) as DDO
           })()
         }, [isLoadingSDK, errorAssetMessage])

@@ -350,12 +350,12 @@ export const useUserProfile = (walletAddress: string): {
       let accountToAdd = accounts?.find((a) => a.getId() === newAddress)
 
       if (!accountToAdd) {
-        accounts = await sdk.accounts.requestList()
+        accounts = await sdk.accounts.list()
         accountToAdd = accounts?.find((a) => a.getId() === newAddress)
       }
 
       const credential = await sdk.utils.jwt.generateClientAssertion(accountToAdd as Account)
-      const token = await sdk.marketplace.addNewAddress(credential)
+      const token = await sdk.services.marketplace.addNewAddress(credential)
 
       saveMarketplaceApiTokenToLocalStorage({ token })
       setAddresses([...addresses, newAddress])
@@ -376,7 +376,7 @@ export const useUserProfile = (walletAddress: string): {
         setInputError('Nickname is required')
         return
       }
-      await sdk.profiles.update(userId, userProfile)
+      await sdk.services.profiles.update(userId, userProfile)
       setIsUpated(true)
       setSuccessMessage('Your profile is updated successfully')
       setInputError('')
@@ -399,11 +399,11 @@ export const useUserProfile = (walletAddress: string): {
   useEffect(() => {
     (async () => {
       try {
-        if (!walletAddress || !sdk.profiles) {
+        if (!walletAddress || !sdk.services.profiles) {
           return
         }
 
-        const userProfileData = await sdk.profiles.findOneByAddress(walletAddress)
+        const userProfileData = await sdk.services.profiles.findOneByAddress(walletAddress)
         setUserId(userProfileData.userId)
 
         if (userProfileData.addresses.some((a) => a === walletAddress)) {
@@ -426,7 +426,7 @@ export const useUserProfile = (walletAddress: string): {
         } else if (error.message.includes('"statusCode":404')) {
           await account.generateToken()
           setTimeout(async () => {
-            const userProfileData = await sdk.profiles.findOneByAddress(walletAddress)
+            const userProfileData = await sdk.services.profiles.findOneByAddress(walletAddress)
             setUserProfile({
               nickname: userProfileData.nickname
             })
@@ -438,7 +438,7 @@ export const useUserProfile = (walletAddress: string): {
         }
       }
     })()
-  }, [sdk.profiles, walletAddress])
+  }, [sdk.services.profiles, walletAddress])
 
   return {
     inputError,
@@ -516,7 +516,7 @@ export const useIsNFT1155Holder = (
     (async () => {
       const walletAccount = new Account(walletAddress)
       if (walletAccount) {
-        const balance = await sdk.nfts.balance(did, walletAccount)
+        const balance = await sdk.nfts1155.balance(did, walletAccount)
         const nftBalance = BigNumber.from(balance).toNumber()
         setOwnNFT1155(nftBalance > 0)
       }

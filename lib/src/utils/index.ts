@@ -1,5 +1,5 @@
 import { Account, DDO, Nevermined, Logger, ClientError } from '../'
-import { BigNumber } from '../types'
+import { BigNumber, ERCType } from '../types'
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
 
@@ -19,9 +19,6 @@ export const getCurrentAccount = async (sdk: Nevermined) => {
   let accounts: Account[] = []
   if (sdk.accounts) {
     accounts = await sdk.accounts.list()
-    if (!accounts?.length) {
-      accounts = await sdk.accounts.requestList()
-    }
   }
 
   return accounts[0]
@@ -38,18 +35,21 @@ type Condition = 'accessCondition' | 'nftAccessCondition'
  * @param orderParams.ddo Asset object
  * @param orderParams.neverminedNodeAddress Address of Node to allow handle the asset transaction
  * @param orderParams.newOwner Address of the new owner who will be transferred the asset
+ * @param orderParams.ercType NFT Type
  * @return Agreement id generated after order an asset
  */
 export const conductOrder = async ({
   sdk,
   ddo,
   neverminedNodeAddress,
-  newOwner
+  newOwner,
+  ercType,
 }: {
   sdk: Nevermined;
   neverminedNodeAddress: string;
   ddo: DDO;
   newOwner: Account;
+  ercType?: ERCType
 }): Promise<string> => {
   try {
     Logger.log('Checking if USDC spending is approved.')
@@ -58,12 +58,16 @@ export const conductOrder = async ({
       neverminedNodeAddress
     )
     if (!isApproved) {
-      const receipt = await sdk.nfts.setApprovalForAll(neverminedNodeAddress, true, newOwner)
+      const receipt = ercType === 721 
+        ? await sdk.nfts721.setApprovalForAll(neverminedNodeAddress, true, newOwner)
+        : await sdk.nfts1155.setApprovalForAll(neverminedNodeAddress, true, newOwner)
       Logger.log('Approval receipt:', receipt)
     }
     Logger.log('USDC spending is approved.')
     Logger.log(`Asking for approval and locking payment for USDC.`)
-    const agreementId: string = await sdk.nfts.order(ddo.id, BigNumber.from(1), newOwner)
+    const agreementId: string = ercType === 721 
+      ? await sdk.nfts721.order(ddo.id, newOwner)
+      : await sdk.nfts1155.order(ddo.id, BigNumber.from(1), newOwner)
     Logger.log('Transferring the NFT.')
     Logger.log('Order agreement ID', agreementId)
     return agreementId

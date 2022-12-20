@@ -678,6 +678,7 @@ describe('Nevermined assets', () => {
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
+                ercType: 1155
               })
               setTransfered(result)
             } catch (error: any) {
@@ -735,6 +736,7 @@ describe('Nevermined assets', () => {
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
+                ercType: 1155
               })
               setTransfered(result)
             } catch (error: any) {
@@ -781,6 +783,7 @@ describe('Nevermined assets', () => {
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
+                ercType: 1155,
               })
               setTransfered(result)
             } catch (error: any) {
@@ -836,6 +839,7 @@ describe('Nevermined assets', () => {
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
+                ercType: 1155
               })
               setTransfered(result)
             } catch (error: any) {
@@ -897,6 +901,7 @@ describe('Nevermined assets', () => {
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
+                ercType: 1155,
               })
               setTransfered(result)
             } catch (error: any) {
@@ -975,6 +980,7 @@ describe('Nevermined assets', () => {
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
+                ercType: 1155
               })
               setTransfered(result)
             } catch (error: any) {
@@ -1016,7 +1022,7 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.nftDetails(ddo.id)
+              const result = await assets.nftDetails(ddo.id, 1155)
               setNFTDetails(result)
             } catch (error: any) {
               console.error(error.message)
