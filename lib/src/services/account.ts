@@ -399,7 +399,7 @@ export const useUserProfile = (walletAddress: string): {
   useEffect(() => {
     (async () => {
       try {
-        if (!walletAddress || !sdk.services.profiles) {
+        if (!walletAddress || !sdk?.services?.profiles) {
           return
         }
 
@@ -438,7 +438,7 @@ export const useUserProfile = (walletAddress: string): {
         }
       }
     })()
-  }, [sdk.services.profiles, walletAddress])
+  }, [sdk.services?.profiles, walletAddress])
 
   return {
     inputError,

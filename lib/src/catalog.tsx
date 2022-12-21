@@ -240,7 +240,8 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     ): Promise<boolean> => {
       if (walletAddress) {
         const walletAccount = new Account(walletAddress)
-        const balance = await sdk.nfts721.balanceOf(walletAccount)
+        const nft721 = await sdk.contracts.loadNft721(nftAddress)
+        const balance = await nft721.balanceOf(walletAccount)
         return balance.gt(0)
       }
 

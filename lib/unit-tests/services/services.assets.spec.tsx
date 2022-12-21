@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { renderHook, waitFor } from '@testing-library/react'
 import { generateTestingUtils } from 'eth-testing'
 import { appConfig } from '../config'
-import { Catalog, AssetService, AssetAttributes, NFTAttributes, DDO, RoyaltyKind, getRoyaltyScheme, MarketplaceAPIToken, Logger, Nevermined, BigNumber } from '../../src'
+import { Catalog, AssetService, AssetAttributes, NFTAttributes, DDO, RoyaltyKind, getRoyaltyScheme, MarketplaceAPIToken, Nevermined, BigNumber } from '../../src'
 import { ddo as assetObject, metadata, walletAddress } from '../mockups'
 import { faker } from '@faker-js/faker'
 import jwt from 'jsonwebtoken'
@@ -225,47 +225,6 @@ describe('Assets Service', () => {
         isPublished: true,
       })
     })
-  })
-
-  it('should not mint if node address is not set', async () => {
-    const logSpy = jest.spyOn(Logger, 'error')
-    const appConfigCopy = {...appConfig }
-    appConfig.neverminedNodeAddress = ''
-
-    renderHook(
-      () => {
-        const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const { publishNFT1155 } = AssetService.useAssetPublish()
-
-        useEffect(() => {
-          if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider()
-            updateSDK(appConfig)
-            return
-          }
-
-          (async () => {
-            try {
-              await publishNFT1155({
-                nftAttributes
-            })
-              
-            } catch (error: any) {
-              console.error(error.message)
-            }
-          })()
-        }, [isLoadingSDK])
-      },
-      {
-        wrapper: wrapperProvider
-      }
-    )
-
-    await waitFor(async () => {
-      expect(logSpy).toBeCalledWith('neverminedNodeAddress from config is required to mint NFT1155 asset')
-    })
-
-    appConfig.neverminedNodeAddress = appConfigCopy.neverminedNodeAddress
   })
 
   it('should update asset to publish after call handleChange function', async() => {

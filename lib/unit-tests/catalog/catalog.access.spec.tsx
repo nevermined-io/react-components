@@ -33,9 +33,9 @@ describe('Nevermined subscription', () => {
 
     const sdkInstance: any = await sdkSpy.getMockImplementation()?.()
 
-    const orderNFT721Spy = jest.spyOn(sdkInstance.nfts, 'order721')
+    const orderNFT721Spy = jest.spyOn(sdkInstance.nfts721, 'order')
 
-    const orderNFT1155Spy = jest.spyOn(sdkInstance.nfts, 'order')
+    const orderNFT1155Spy = jest.spyOn(sdkInstance.nfts1155, 'order')
 
     const { result } = renderHook(
       () => {
@@ -95,9 +95,9 @@ describe('Nevermined subscription', () => {
 
     const sdkInstance: any = await sdkSpy.getMockImplementation()?.()
 
-    const orderNFT721Spy = jest.spyOn(sdkInstance.nfts, 'order721')
+    const orderNFT721Spy = jest.spyOn(sdkInstance.nfts721, 'order')
 
-    const orderNFT1155Spy = jest.spyOn(sdkInstance.nfts, 'order')
+    const orderNFT1155Spy = jest.spyOn(sdkInstance.nfts1155, 'order')
 
     const { result } = renderHook(
       () => {
