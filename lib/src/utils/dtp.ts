@@ -1,8 +1,7 @@
-import { Account, NeverminedOptions, DTP, MetaData, MetaDataMain, Nevermined, ServiceType } from '../types'
+import { Account, NeverminedOptions, DTP, MetaData, MetaDataMain, Nevermined, BabyjubPublicKey } from '../types'
 import { generateIntantiableConfigFromConfig } from '@nevermined-io/nevermined-sdk-js/dist/node/Instantiable.abstract'
-import { CryptoConfig } from '@nevermined-io/nevermined-sdk-dtp/dist'
-import { aes_decryption_256 } from '@nevermined-io/nevermined-sdk-dtp/dist/utils'
-import fileDownload from 'js-file-download'
+import { CryptoConfig, makeKeyTransfer } from '@nevermined-io/nevermined-sdk-dtp/dist'
+
 
 export const _getDTPInstance = async (sdk: Nevermined, config: NeverminedOptions, cryptoConfig: CryptoConfig) => {
   const instanceConfig = {
@@ -21,6 +20,27 @@ export const _getCryptoConfig = async (sdk: Nevermined) => {
     provider_password: '',
     provider_rsa_public: nodeInfo['rsa-public-key'],
     provider_rsa_private: ''
+  }
+}
+
+export const _getCredentials = async ({ did, account, agreementId, password, dtp, sdk}: {
+  did: string,
+  account: Account,
+  agreementId: string,
+  password: string,
+  dtp: DTP.Dtp,
+  sdk: Nevermined
+}) => {
+  const keyTransfer = await makeKeyTransfer()
+  const accountGranted = await _getGrantAccess({did, account, password, sdk, dtp}) as Account
+  const babySig = await dtp.signBabyjub(accountGranted, BigInt(password))
+  const buyer = await dtp.readKey(agreementId,
+    keyTransfer.makeKey(password),
+    new BabyjubPublicKey(accountGranted.babyX as string, accountGranted.babyY as string))
+  
+  return {
+    buyer,
+    babySig,
   }
 }
 
@@ -86,16 +106,4 @@ export const _getGrantAccess = async ({
   account.babyY = babyAccount.babyY
 
   return account
-}
-
-export const _downloadDescryptedFile = async (did: string, dtp: DTP.Dtp, account: Account, agreementId: string, files: File[], serviceType: ServiceType) => {
-  const key = await dtp.consumeProof(agreementId, did, account, serviceType)
-  const encryptedPassword = Buffer.from(key as string, 'hex').toString()
-
-  files.forEach(async (file) => {
-    const buff = await file.arrayBuffer()
-
-    const descrypted = aes_decryption_256(buff, encryptedPassword)
-    fileDownload(descrypted, file.name)
-  })
 }

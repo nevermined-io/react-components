@@ -19,7 +19,7 @@ import { NFTAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/models
 import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase'
 import { CryptoConfig } from '@nevermined-io/nevermined-sdk-dtp/dist'
 export * from '@nevermined-io/nevermined-sdk-js'
-export { RoyaltyKind, type RoyaltyAttributes, getRoyaltyScheme, PublishMetadata } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/api/AssetsApi'
+export { RoyaltyKind, type RoyaltyAttributes, getRoyaltyScheme, getRoyaltyAttributes, PublishMetadata } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/api/AssetsApi'
 export type {
   ContractEventSubscription,
   EventResult
@@ -30,6 +30,7 @@ export { AssetAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/mode
 export type { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase'
 export type { ServiceCommon, ServiceType } from '@nevermined-io/nevermined-sdk-js/dist/node/ddo/Service'
 export type { QueryResult, EncryptionMethod } from '@nevermined-io/nevermined-sdk-js/dist/node/services/metadata/MetadataService'
+export * from '@nevermined-io/nevermined-sdk-js/dist/node/models/KeyTransfer'
 
 export const BigNumber = BigNumberSDK
 export type BigNumber = BigNumberSDK

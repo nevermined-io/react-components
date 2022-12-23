@@ -24,5 +24,5 @@ export const appConfig: NeverminedOptions = {
   neverminedNodeAddress,
   marketplaceAuthToken: AuthToken.fetchMarketplaceApiTokenFromLocalStorage().token,
   marketplaceUri,
-  artifactsFolder: path.join(__dirname, '/artifacts')
+  artifactsFolder: path.join(__dirname, '../artifacts')
 }

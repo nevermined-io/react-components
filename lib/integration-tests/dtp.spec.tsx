@@ -1,5 +1,5 @@
 import { Nevermined, MetaData, Account, BigNumber, AssetPrice, NFTAttributes, DDO, makeAccounts, DTP, 
-  generateIntantiableConfigFromConfig, generateId, zeroX } from '../src'
+  generateIntantiableConfigFromConfig, generateId, zeroX, getRoyaltyAttributes, RoyaltyKind } from '../src'
 import { appConfig, walletAddress } from './config'
 import { getMetadata } from './metadata.mock'
 import { faker } from '@faker-js/faker'
@@ -17,15 +17,15 @@ describe('DTP', () => {
   const password = 'passwd_32_letters_1234567890asdF'
 
   beforeAll(async() => {
-    // appConfig.web3ProviderUri = 'http://localhost:8545'
-    // appConfig.marketplaceUri = 'http://nevermined-metadata:3100'
-    // appConfig.faucetUri = 'http://localhost:3001'
-    // appConfig.neverminedNodeUri = 'http://localhost:8030'
-    // appConfig.neverminedNodeAddress = '0x068ed00cf0441e4829d9784fcbe7b9e26d4bd8d0'
-    // appConfig.web3Provider = undefined
+    appConfig.web3ProviderUri = 'http://localhost:8545'
+    appConfig.marketplaceUri = 'http://nevermined-metadata:3100'
+    appConfig.neverminedNodeUri = 'http://localhost:8030'
+    appConfig.neverminedNodeAddress = '0x068ed00cf0441e4829d9784fcbe7b9e26d4bd8d0'
+    appConfig.web3Provider = undefined
     if (process.env.SEED_WORDS) {
       appConfig.accounts = makeAccounts(process.env.SEED_WORDS)
     }
+
     sdk = await Nevermined.getInstance(appConfig);
     [publisher, consumer] = await sdk.accounts.list()
 
@@ -41,6 +41,11 @@ describe('DTP', () => {
     await sdk.services.marketplace.login(clientAssertion)
   })
 
+  it('should authenticate the accounts', async () => {
+    await publisher.authenticate()
+    await consumer.authenticate()
+  })
+
   it('should encrypt metadata', async () => {
     const metadata = await getMetadata(faker.name.fullName())
 
@@ -51,25 +56,30 @@ describe('DTP', () => {
     expect(metadataEncrypted.main.isDTP).toBe(true)
   })
 
-  it('should authenticate the accounts', async () => {
-    await publisher.authenticate()
-    await consumer.authenticate()
-  })
-
   it('should publish asset', async () => {
     const assetRewardsMap = new Map([
       [walletAddress, BigNumber.from(0)]
     ])
 
     const assetPrice = new AssetPrice(assetRewardsMap)
-    const networkFee = await sdk.keeper.nvmConfig.getNetworkFee()
-    const feeReceiver = await sdk.keeper.nvmConfig.getFeeReceiver()
-    assetPrice.addNetworkFees(feeReceiver, BigNumber.from(networkFee))
 
-    const nftAttributes = new NFTAttributes()
-    nftAttributes.metadata = metadataEncrypted,
-    nftAttributes.price = assetPrice,
-    nftAttributes.encryptionMethod = 'PSK-RSA'
+    const royaltyAttributes = getRoyaltyAttributes(
+      sdk,
+      RoyaltyKind.Standard,
+      0,
+    )
+
+    const nftAttributes = NFTAttributes.getNFT1155Instance({
+      metadata: metadataEncrypted,
+      encryptionMethod: 'PSK-RSA',
+      price: assetPrice,
+      serviceTypes: ['nft-access', 'nft-sales'],
+      cap: BigNumber.from(100),
+      amount: BigNumber.from(1),
+      preMint: true,
+      nftContractAddress: sdk.keeper.nftUpgradeable.address,
+      royaltyAttributes,
+    })
     
     ddo = await sdk.nfts1155.create(
       nftAttributes,

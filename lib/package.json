@@ -14,7 +14,7 @@
     "lint": "eslint ./",
     "lint:fix": "yarn run lint -- --fix",
     "docs": "npx typedoc && rm ../docs/core/.nojekyll",
-    "artifacts:download": "./scripts/download-artifacts.sh v2.1.0 mumbai"
+    "artifacts:download": "./scripts/wait-nevermined.sh"
   },
   "main": "./dist/node/index.js",
   "types": "./dist/node/index.d.ts",
