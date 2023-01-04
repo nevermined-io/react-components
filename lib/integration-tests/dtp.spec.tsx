@@ -3,7 +3,7 @@ import { Nevermined, MetaData, Account, BigNumber, AssetPrice, NFTAttributes, DD
 import { appConfig, walletAddress } from './config'
 import { getMetadata } from './metadata.mock'
 import { faker } from '@faker-js/faker'
-import { _getGrantAccess, _encryptFileMetadata } from '../src/utils/dtp'
+import { _getGrantAccess, _encryptFileMetadata, _getCredentials, _getCryptoConfig } from '../src/utils/dtp'
 
 describe('DTP', () => {
   let sdk: Nevermined
@@ -34,7 +34,9 @@ describe('DTP', () => {
       nevermined: sdk,
     }
 
-    dtp = await DTP.Dtp.getInstance(instanceConfig, null as any)
+    const cryptoConfig = await _getCryptoConfig(sdk, password)
+
+    dtp = await DTP.Dtp.getInstance(instanceConfig, cryptoConfig)
 
     const clientAssertion = await sdk.utils.jwt.generateClientAssertion(publisher)
 
@@ -128,10 +130,17 @@ describe('DTP', () => {
   })
 
   it('should download the file', async () => {
-    const file = await sdk.nfts1155.access(ddo.id, consumer, undefined, undefined, agreementId, false)
+    const credentials = await _getCredentials({
+      did: ddo.id,
+      account: consumer,
+      password,
+      dtp,
+      sdk
+    })
+    const response = await sdk.nfts1155.access(ddo.id, consumer, undefined, undefined, agreementId, credentials.buyer, credentials.babySig)
 
-    console.log(file)
+    console.log(response)
 
-    expect(file).toBeTruthy()
+    expect(response).toBeTruthy()
   })
 })

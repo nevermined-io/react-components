@@ -23,6 +23,8 @@ import {
   SubscribeModule,
   TransferNFTConditionMethod,
   BigNumber,
+  Babysig,
+  Credentials,
 } from './types'
 import {
   conductOrder,
@@ -385,31 +387,28 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
     downloadNFT: async ({ did,
       ercType,
-      agreementId, 
       password
     }:
     { did: string,
       ercType?: ERCType,
-      agreementId?: string,
       password?: string
     }): Promise<boolean> => {
       try {
         const account = await getCurrentAccount(sdk)
-        let args: [string, Account, string?, number?, boolean?] = [did, account]
+        let args: [string, Account, string?, number?, string?, string?, Babysig?] = [did, account]
 
-        if(password && agreementId) {
-          const cryptoConfig = await _getCryptoConfig(sdk)
+        if(password) {
+          const cryptoConfig = await _getCryptoConfig(sdk, password)
           const dtp = await _getDTPInstance(sdk, config, cryptoConfig)
           const credentials = await _getCredentials({
             did,
             account,
-            agreementId,
             password,
             dtp,
             sdk
           })
 
-          args = [args[0], args[1], undefined, undefined, credentials.buyer.toString('hex'), credentials.babySig]
+          args = [args[0], args[1], undefined, undefined, undefined, credentials.buyer, credentials.babySig]
         }
 
         return ercType === 721
@@ -423,32 +422,34 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
     downloadAsset: async (did: string, password?: string): Promise<boolean> => {
       try {
+        let credentials: Credentials
         const account = await getCurrentAccount(sdk)
 
         const agreementId = await getAgreementId(sdk, 'accessTemplate', did)
 
-        let args: [string, Account, string?, number?, boolean?] = [did, account]
-
         if(password && agreementId) {
-          const cryptoConfig = await _getCryptoConfig(sdk)
+          const cryptoConfig = await _getCryptoConfig(sdk, password)
           const dtp = await _getDTPInstance(sdk, config, cryptoConfig)
-          const credentials = await _getCredentials({
+          credentials = await _getCredentials({
             did,
             account,
-            agreementId,
             password,
             dtp,
             sdk
           })
 
-          args = [args[0], args[1], undefined, undefined, credentials.buyer.toString('hex'), credentials.babySig]
+          if ((await sdk.assets.owner(did)) === account.getId()) {
+            return sdk.assets.access(agreementId, did, account, undefined, undefined, credentials.buyer, credentials.babySig) as Promise<boolean>
+          }
+
+          return Boolean(sdk.assets.download(did, account, undefined, undefined, undefined, credentials.buyer, credentials.babySig))
         }
 
         if ((await sdk.assets.owner(did)) === account.getId()) {
-          return Boolean(sdk.assets.download(...args))
+          return sdk.assets.access(agreementId, did, account) as Promise<boolean>
         }
 
-        return sdk.assets.access(agreementId, ...args)
+        return Boolean(sdk.assets.download(did, account))
       } catch (error) {
         verbose && Logger.error(error)
         return false
@@ -541,7 +542,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         agreementId = ercType === 721 ? await sdk.nfts721.order(did, buyer): await sdk.nfts1155.order(did, BigNumber.from(nftAmount), buyer)
 
         if(password) {
-          const cryptoConfig = await _getCryptoConfig(sdk)
+          const cryptoConfig = await _getCryptoConfig(sdk, password)
           const dtp = await _getDTPInstance(sdk, config, cryptoConfig)
 
           const buyerGranted = await _getGrantAccess({

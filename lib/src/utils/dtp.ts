@@ -1,6 +1,6 @@
-import { Account, NeverminedOptions, DTP, MetaData, MetaDataMain, Nevermined, BabyjubPublicKey } from '../types'
+import { Account, NeverminedOptions, DTP, MetaData, MetaDataMain, Nevermined } from '../types'
 import { generateIntantiableConfigFromConfig } from '@nevermined-io/nevermined-sdk-js/dist/node/Instantiable.abstract'
-import { CryptoConfig, makeKeyTransfer } from '@nevermined-io/nevermined-sdk-dtp/dist'
+import { CryptoConfig } from '@nevermined-io/nevermined-sdk-dtp/dist'
 
 
 export const _getDTPInstance = async (sdk: Nevermined, config: NeverminedOptions, cryptoConfig: CryptoConfig) => {
@@ -12,31 +12,27 @@ export const _getDTPInstance = async (sdk: Nevermined, config: NeverminedOptions
   return DTP.Dtp.getInstance(instanceConfig, cryptoConfig)
 }
 
-export const _getCryptoConfig = async (sdk: Nevermined) => {
+export const _getCryptoConfig = async (sdk: Nevermined, password: string) => {
   const nodeInfo = await sdk.services.node.getNeverminedNodeInfo()
 
   return {
-    provider_key: '',
-    provider_password: '',
+    provider_key: nodeInfo['babyjub-public-key'],
+    provider_password: password,
     provider_rsa_public: nodeInfo['rsa-public-key'],
     provider_rsa_private: ''
   }
 }
 
-export const _getCredentials = async ({ did, account, agreementId, password, dtp, sdk}: {
+export const _getCredentials = async ({ did, account, password, dtp, sdk}: {
   did: string,
   account: Account,
-  agreementId: string,
   password: string,
   dtp: DTP.Dtp,
   sdk: Nevermined
 }) => {
-  const keyTransfer = await makeKeyTransfer()
   const accountGranted = await _getGrantAccess({did, account, password, sdk, dtp}) as Account
-  const babySig = await dtp.signBabyjub(accountGranted, BigInt(password))
-  const buyer = await dtp.readKey(agreementId,
-    keyTransfer.makeKey(password),
-    new BabyjubPublicKey(accountGranted.babyX as string, accountGranted.babyY as string))
+  const babySig = await dtp.signBabyjub(accountGranted, BigInt(accountGranted.getId()))
+  const buyer = await accountGranted.getPublic()
   
   return {
     buyer,

@@ -321,6 +321,7 @@ export const useUserProfile = (walletAddress: string): {
 
   const [userId, setUserId] = useState('')
   const [userProfile, setUserProfile] = useState<Partial<UserProfileParams>>({
+    userId: '',
     nickname: '',
     name: '',
     email: '',
@@ -415,9 +416,12 @@ export const useUserProfile = (walletAddress: string): {
         setAddresses([...userProfileData.addresses])
 
         setUserProfile({
+          userId: userProfile.userId,
           nickname: userProfileData.nickname,
           name: userProfileData.name,
           email: userProfileData.email,
+          updateDate: userProfileData.updateDate?.toDateString(),
+          state: userProfile.state,
           additionalInformation: userProfileData.additionalInformation
         })
       } catch (error: any) {

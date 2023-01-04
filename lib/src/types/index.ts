@@ -18,6 +18,7 @@ import { AssetAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/mode
 import { NFTAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/models/NFTAttributes'
 import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase'
 import { CryptoConfig } from '@nevermined-io/nevermined-sdk-dtp/dist'
+import { Babysig } from '@nevermined-io/nevermined-sdk-js/dist/node/models/KeyTransfer'
 export * from '@nevermined-io/nevermined-sdk-js'
 export { RoyaltyKind, type RoyaltyAttributes, getRoyaltyScheme, getRoyaltyAttributes, PublishMetadata } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/api/AssetsApi'
 export type {
@@ -508,9 +509,19 @@ export interface AssetsModule {
    * Download a NFT asset already ordered and transfered to the buyer,
    * if the user is the owner of the asset
    * @param did id of the NFT (721 & 1155) asset
+   * @param ercType NFT type. By default 1155
+   * @param password Password to download a NFT
    * @returns if the NFT is downloaded successfully the method will return a true
    */
-  downloadNFT: (did: string) => Promise<boolean>;
+  downloadNFT: ({
+    did,
+    ercType,
+    password,
+  }:{
+    did: string,
+    ercType?: ERCType,
+    password?: string
+  }) => Promise<boolean>;
   /**
    * Get all the details about a custom erc20 token
    * @param customErc20TokenAddress The custom token address
@@ -832,4 +843,9 @@ export interface AssetPublishProviderState {
     password?: string,
     cryptoConfig?: CryptoConfig
   }) => Promise<DDO | undefined>;
+}
+
+export interface Credentials {
+  buyer: string,
+  babySig: Babysig,
 }
