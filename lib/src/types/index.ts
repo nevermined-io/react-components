@@ -3,42 +3,23 @@ import {
   DDO,
   MetaData,
   Nevermined,
-  SearchQuery
+  SearchQuery,
+  ContractEventSubscription,
+  EventResult,
+  QueryResult,
+  EncryptionMethod,
+  BigNumber,
+  PublishMetadata,
+  ERCType,
+  AssetAttributes,
+  NFTAttributes,
+  TxParameters,
+  Babysig,
 } from '@nevermined-io/nevermined-sdk-js'
-import {
-  ContractEventSubscription,
-  EventResult
-} from '@nevermined-io/nevermined-sdk-js/dist/node/events'
-import { QueryResult, EncryptionMethod } from '@nevermined-io/nevermined-sdk-js/dist/node/services/metadata/MetadataService'
-import AssetPriceSdk from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetPrice'
-import { PublishMetadata } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/api/AssetsApi'
-import { ERCType } from '@nevermined-io/nevermined-sdk-js/dist/node/models/NFTAttributes'
-import BigNumberSDK from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumber'
-import { AssetAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetAttributes'
-import { NFTAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/models/NFTAttributes'
-import { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase'
 import { CryptoConfig } from '@nevermined-io/nevermined-sdk-dtp/dist'
-import { Babysig } from '@nevermined-io/nevermined-sdk-js/dist/node/models/KeyTransfer'
-export * from '@nevermined-io/nevermined-sdk-js'
-export { RoyaltyKind, type RoyaltyAttributes, getRoyaltyScheme, getRoyaltyAttributes, PublishMetadata } from '@nevermined-io/nevermined-sdk-js/dist/node/nevermined/api/AssetsApi'
-export type {
-  ContractEventSubscription,
-  EventResult
-} from '@nevermined-io/nevermined-sdk-js/dist/node/events'
-export { zeroX, generateId, makeAccounts } from '@nevermined-io/nevermined-sdk-js/dist/node/utils'
-export { ERCType, NeverminedNFT1155Type, NeverminedNFT721Type, NFTAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/models/NFTAttributes'
-export { AssetAttributes } from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetAttributes'
-export type { TxParameters } from '@nevermined-io/nevermined-sdk-js/dist/node/keeper/contracts/ContractBase'
-export type { ServiceCommon, ServiceType } from '@nevermined-io/nevermined-sdk-js/dist/node/ddo/Service'
-export type { QueryResult, EncryptionMethod } from '@nevermined-io/nevermined-sdk-js/dist/node/services/metadata/MetadataService'
-export * from '@nevermined-io/nevermined-sdk-js/dist/node/models/KeyTransfer'
 
-export const BigNumber = BigNumberSDK
-export type BigNumber = BigNumberSDK
-export const AssetPrice = AssetPriceSdk
-export type AssetPrice = AssetPriceSdk
-export { generateIntantiableConfigFromConfig } from '@nevermined-io/nevermined-sdk-js/dist/node/Instantiable.abstract'
-export * as DTP from '@nevermined-io/nevermined-sdk-dtp/dist'
+export * from '@nevermined-io/nevermined-sdk-js'
+export * from '@nevermined-io/nevermined-sdk-dtp'
 
 /**
  * Values returns from the main NVM context
@@ -51,13 +32,13 @@ export * as DTP from '@nevermined-io/nevermined-sdk-dtp/dist'
  */
 export interface NeverminedProviderContext {
   /** Nevermined sdk instance which has all the core functionalities */
-  sdk: Nevermined;
+  sdk: Nevermined
   /** Error message from sdk */
-  sdkError: any;
+  sdkError: any
   /** Config object used to initialize Nevermined */
-  config: NeverminedOptions;
+  config: NeverminedOptions
   /** True if sdk is loading */
-  isLoadingSDK: boolean;
+  isLoadingSDK: boolean
   /**
    * Rebuild Nevermined sdk with new config values
    * @param newConfig - Config object to rebuild Nevermined SDK
@@ -88,7 +69,7 @@ export interface NeverminedProviderContext {
    * }
    * ```
    */
-  updateSDK: (newConfig: NeverminedOptions) => Promise<boolean>;
+  updateSDK: (newConfig: NeverminedOptions) => Promise<boolean>
   /**
    * `subscribe` contains all the functionalities to handle events
    *
@@ -132,7 +113,7 @@ export interface NeverminedProviderContext {
    * }
    * ```
    */
-  subscribe: SubscribeModule;
+  subscribe: SubscribeModule
   /**
    * `assets` contains all the functionalities to handle assets for example get,
    * mint, transfer, order or download asset
@@ -201,7 +182,7 @@ export interface NeverminedProviderContext {
    * ```
    *
    */
-  assets: AssetsModule;
+  assets: AssetsModule
   /**
    * `account` contains all the functionalities to handle authentications and
    * collections belonged to an account
@@ -234,7 +215,7 @@ export interface NeverminedProviderContext {
    * }
    * ```
    */
-  account: AccountModule;
+  account: AccountModule
   /**
    * `nfts` contains all the functionalities to handle nfts by payment
    *
@@ -283,7 +264,7 @@ export interface NeverminedProviderContext {
    * }
    * ```
    */
-  nfts: NFTSModule;
+  nfts: NFTSModule
 }
 
 /**
@@ -291,11 +272,11 @@ export interface NeverminedProviderContext {
  */
 export interface NeverminedProviderProps {
   /** This provider require children elements */
-  children: any;
+  children: any
   /** The config needed to build Nevermined SDK */
-  verbose?: boolean;
+  verbose?: boolean
   /** Show Catalog logs in console logs if it sets to `true` */
-  config: NeverminedOptions;
+  config: NeverminedOptions
 }
 
 /**
@@ -303,11 +284,11 @@ export interface NeverminedProviderProps {
  */
 export interface GenericOutput<T, E> {
   /** Data from the promise */
-  data: T;
+  data: T
   /** If the promise throw an error */
-  error: E;
+  error: E
   /** If the promise resolve was success */
-  success: boolean;
+  success: boolean
 }
 
 /** Id of the asset */
@@ -318,23 +299,23 @@ export type DID = string
  */
 export interface NFTDetails {
   /** The owner of the asset */
-  owner: string;
+  owner: string
   /** The last checksum generated to verify the sources */
-  lastChecksum: string;
+  lastChecksum: string
   /** Url where is located the asset */
-  url: string;
+  url: string
   /** The modification of the asset */
-  lastUpdatedBy: string;
+  lastUpdatedBy: string
   /** The block number from blockchain where the asset was updated */
-  blockNumberUpdated: number;
+  blockNumberUpdated: number
   /** Which services provide the asset */
-  providers: any;
+  providers: any
   /** The amount of ntfs that are in circulation */
   nftSupply: number
   /** The amount limit of nft which can be minted */
-  mintCap: number;
+  mintCap: number
   /** The rewards that the owner can get for every sale */
-  royalties: number;
+  royalties: number
 }
 
 export enum State {
@@ -343,34 +324,34 @@ export enum State {
   /** Entity not validated yet or incomplete */
   Unconfirmed = 'unconfirmed',
   /** Entity created */
-  Confirmed = 'confirmed'
+  Confirmed = 'confirmed',
 }
 
 export enum TransferNFTConditionMethod {
-  nft1155 = "transferNftCondition",
-  nft721 = "transferNft721Condition"
+  nft1155 = 'transferNftCondition',
+  nft721 = 'transferNft721Condition',
 }
 
 /** User profile parameters based of the user profile entity */
 export interface UserProfileParams {
   /** Id of the user */
-  userId: string;
+  userId: string
   /** The user can be shown */
-  isListed: boolean;
+  isListed: boolean
   /** The state of the user account */
-  state: State;
+  state: State
   /** The nickname of the user */
-  nickname: string;
+  nickname: string
   /** The real name of the user */
-  name: string;
+  name: string
   /** The email of the user */
-  email: string;
+  email: string
   /** When the user was created */
-  creationDate: string;
+  creationDate: string
   /** When was the last user profile updated*/
-  updateDate: string;
+  updateDate: string
   /** Additional information of the user like picture, profesional profire, etc... */
-  additionalInformation: unknown;
+  additionalInformation: unknown
 }
 
 /** Custom token detail */
@@ -379,13 +360,13 @@ export interface CustomErc20Token {
    * @example
    * Ethereum -> ETH
    */
-  symbol: string;
+  symbol: string
   /** Name of the token */
-  name: string;
+  name: string
   /** Amount of tokens holded by the wallet account */
-  balance: BigNumber;
+  balance: BigNumber
   /** Decimals of the token */
-  decimals: number;
+  decimals: number
 }
 
 /**
@@ -398,28 +379,28 @@ export interface AccountModule {
    * @param address The address owner of the assets that we want to get
    * @returns List of assets which was published by the address given
    */
-  getReleases: (address: string) => Promise<DID[]>;
+  getReleases: (address: string) => Promise<DID[]>
   /**
    * Get the assets bought by the address given
    * @param address The address which bought the assets returned
    * @returns List of assets which was bought by the address given as argument
    */
-  getCollection: (address: string) => Promise<DID[]>;
+  getCollection: (address: string) => Promise<DID[]>
   /**
    * Generate a token for authentication in the Marketplace API
    * @returns The new generated token
    */
-  generateToken: () => Promise<MarketplaceAPIToken>;
+  generateToken: () => Promise<MarketplaceAPIToken>
   /**
    * check if the token for Marketplace API is valid
    * @returns if token is valid it will return true
    */
-  isTokenValid: () => boolean;
+  isTokenValid: () => boolean
   /**
-  * Return the address that sign the token
-  * @return The address token signer
-  */
-  getAddressTokenSigner: () => string;
+   * Return the address that sign the token
+   * @return The address token signer
+   */
+  getAddressTokenSigner: () => string
   /**
    * This method validates if an user is an asset holder.
    *
@@ -427,7 +408,7 @@ export interface AccountModule {
    * @param walletAddress The public address of the user
    * @returns true if the user owns at least one edition of the NFT
    */
-  isAssetHolder: (did: string, walletAddress: string) => Promise<boolean>;
+  isAssetHolder: (did: string, walletAddress: string) => Promise<boolean>
   /**
    * This method validates if a user is a NFT (ERC-1155 based) holder for a specific `tokenId`.
    * For ERC-1155 tokens, we use the DID as tokenId. A user can between zero an multiple editions
@@ -436,8 +417,8 @@ export interface AccountModule {
    * @param did The unique identifier of the NFT within a NFT ERC-1155 contract
    * @param walletAddress The public address of the user
    * @returns true if the user owns at least one edition of the NFT
-  */
-  isNFT1155Holder: (did: string, walletAddress: string) => Promise<boolean>;
+   */
+  isNFT1155Holder: (did: string, walletAddress: string) => Promise<boolean>
   /**
    * This method validates if a user is a NFT (ERC-721 based) holder for a specific NFT contract address.
    * For ERC-721 tokens, we use the DID as tokenId. A user can between zero an multiple editions
@@ -447,7 +428,7 @@ export interface AccountModule {
    * @param walletAddress The public address of the user
    * @returns true if the user holds the NFT
    */
-  isNFT721Holder: (nftAddress: string, walletAddress: string) => Promise<boolean>;
+  isNFT721Holder: (nftAddress: string, walletAddress: string) => Promise<boolean>
 }
 
 /**
@@ -459,13 +440,13 @@ export interface AssetsModule {
    * Get the asset object by the did given
    * @param did id of the asset
    */
-  findOne: (did: DID) => Promise<DDO>;
+  findOne: (did: DID) => Promise<DDO>
   /**
    *
    * @param q Query to custom the search: order result, filtering, etc...
    * @returns List of assets according with the query given
    */
-  query: (q: SearchQuery) => Promise<QueryResult>;
+  query: (q: SearchQuery) => Promise<QueryResult>
   /**
    * Transfer the ownership of the asset to other account
    * @param assetInfo
@@ -474,21 +455,29 @@ export interface AssetsModule {
    * @param assetInfo.ercType NFT asset type which can be 721 or 1155
    * @returns Return true if asset was transferred successfully
    */
-  transfer: ({ did, amount, ercType }: { did: string; amount: number, ercType: ERCType }) => Promise<boolean>;
+  transfer: ({
+    did,
+    amount,
+    ercType,
+  }: {
+    did: string
+    amount: number
+    ercType: ERCType
+  }) => Promise<boolean>
   /**
    * Get the aggreement details of the NFT asset (owner, nfts supplay, royalties, etc...)
    * @param did id of the NFT (721 & 1155) asset
    * @param ercType NFT asset type which can be 721 or 1155
    * @returns Agreement details of the NFT asset
    */
-  nftDetails: (did: string, ercType: ERCType) => Promise<NFTDetails>;
+  nftDetails: (did: string, ercType: ERCType) => Promise<NFTDetails>
   /**
    * This method order a asset to allow after transfer to the buyer (the method only order but not transfer)
    * @param did id of the asset
    * @returns In case the order is completed successfully it returns the agreementId
    * which is needed to transfer the asset to the buyer
    */
-  orderAsset: (did: string) => Promise<string>;
+  orderAsset: (did: string) => Promise<string>
   /**
    * This method order a NFT721 asset to allow after transfer to the buyer (the method only order but not transfer)
    * @param did id of the NFT721 asset
@@ -496,7 +485,7 @@ export interface AssetsModule {
    * @returns In case the order is completed successfully it returns the agreementId
    * which is needed to transfer the NFT721 asset to the buyer
    */
-  orderNFT721: (did: string, nftTokenAddress: string) => Promise<string>;
+  orderNFT721: (did: string, nftTokenAddress: string) => Promise<string>
   /**
    * This method order a NFT1155 asset to allow after transfer to the buyer (the method only order but not transfer)
    * @param did id of the NFT1155 asset
@@ -504,44 +493,63 @@ export interface AssetsModule {
    * @returns In case the order is completed successfully it returns the agreementId
    * which is needed to transfer the NFT1155 asset to the buyer
    */
-  orderNFT1155: (did: string, amount: BigNumber) => Promise<string>;
+  orderNFT1155: (did: string, amount: BigNumber) => Promise<string>
   /**
    * Download a NFT asset already ordered and transfered to the buyer,
    * if the user is the owner of the asset
    * @param did id of the NFT (721 & 1155) asset
    * @param ercType NFT type. By default 1155
-   * @param password Password to download a NFT
+   * @param path Destination of downloaded file
+   * @param fileIndex The file to download. If not given or is -1 it will download all of them
+   * @param password Password to download a encrypted NFT
    * @returns if the NFT is downloaded successfully the method will return a true
    */
   downloadNFT: ({
     did,
     ercType,
+    path,
+    fileIndex,
     password,
-  }:{
-    did: string,
-    ercType?: ERCType,
+  }: {
+    did: string
+    ercType?: ERCType
+    path: string
+    fileIndex: number
     password?: string
-  }) => Promise<boolean>;
+  }) => Promise<boolean>
   /**
    * Get all the details about a custom erc20 token
    * @param customErc20TokenAddress The custom token address
    * @returns Custom token details
    */
-  getCustomErc20Token: (customErc20TokenAddress: string) => Promise<CustomErc20Token>;
+  getCustomErc20Token: (customErc20TokenAddress: string) => Promise<CustomErc20Token>
   /**
    * Download an asset already ordered and transfered to the buyer,
    * if the user is the owner of the asset
    * @param did id of the NFT (721 & 1155) asset
+   * @param path Destination of downloaded file
+   * @param fileIndex The file to download. If not given or is -1 it will download all of them
+   * @param password Password to download a encrypted NFT
    * @returns if the NFT is downloaded successfully the method will return a true
-  */
-  downloadAsset: (did: string) => Promise<boolean>;
+   */
+  downloadAsset: ({
+    did,
+    fileIndex,
+    path,
+    password,
+  }: {
+    did: string
+    fileIndex?: number
+    path?: string
+    password?: string
+  }) => Promise<boolean>
   /**
    * Upload files to Filecoin
    * @param file The file to upload to Filecoin
    * @param filecoinUrl The url of the Filecoin server
    * @returns The url where is located the file already uploaded
    */
-  uploadAssetToFilecoin: (File: File, filecoinUrl: string) => Promise<string>;
+  uploadAssetToFilecoin: (File: File, filecoinUrl: string) => Promise<string>
 }
 
 /**
@@ -594,31 +602,33 @@ export interface SubscribeModule {
    * @param cb Callback event
    * @returns return the `payment` event with a functionality to unsubscribe
    */
-  paymentEvents: (cb: (events: EventResult[]) => void) => ContractEventSubscription;
+  paymentEvents: (cb: (events: EventResult[]) => void) => ContractEventSubscription
   /**
    * Subscribe a `transfer` event and execute callbacks once that this event is listened
    * @param cb Callback to execute
    * @param ercType NFT asset type which can be 721 or 1155
    * @returns return the `transfer` event with a functionality to unsubscribe
    */
-  transferEvents: (cb: (events: EventResult[]) => void, nftType?: ERCType) => ContractEventSubscription;
+  transferEvents: (
+    cb: (events: EventResult[]) => void,
+    nftType?: ERCType,
+  ) => ContractEventSubscription
 }
-
 
 /**
  * Response from "useAsset"
  */
 export interface AssetState {
   /** Asset object */
-  ddo: DDO;
+  ddo: DDO
   /** Metada of the asset with the basic information */
-  metadata: MetaData;
+  metadata: MetaData
   /** Error message from some operation with asset */
-  error: string;
+  error: string
   /** True if asset object is loaded */
-  isLoading: boolean;
+  isLoading: boolean
   /** Details of the asset agreement */
-  nftDetails: NFTDetails;
+  nftDetails: NFTDetails
 }
 
 /**
@@ -628,49 +638,49 @@ export interface MarketplaceAPIToken {
   /**
    * Token generated by Marketplace Api after login
    */
-  token: string;
+  token: string
 }
 
 /** The asset file detail */
 export interface AssetFile {
   /** custom parameters for the Asset file */
-  [key: string]: any;
+  [key: string]: any
   /** File type: json, txt, etc... */
-  type: string;
+  type: string
   /** File title */
-  label: string;
+  label: string
 }
 
 /** Asset parameters needed to publish */
 export interface AssetPublishParams {
-    /** custom parameters for the Asset */
-  [key: string]: any;
+  /** custom parameters for the Asset */
+  [key: string]: any
   /** Name of the asset */
-  name: string;
+  name: string
   /** Who create the asset */
-  author: string;
+  author: string
   /** Description about what is the utility of the asset */
   description: string
   /** The type of the asset */
-  type: string;
+  type: string
   /** The category that belong the asset */
-  category: string;
+  category: string
   /** Price of the asset */
-  price: number;
+  price: number
   /** Files to download after buy the asset */
-  assetFiles: AssetFile[];
+  assetFiles: AssetFile[]
 }
 
 /** Metadata of the file */
 export interface FileMetadata {
   /** Index given to the file once it was created */
-  index: number;
+  index: number
   /** Format of the contet file: Json, txt, etc... */
-  contentType: string;
+  contentType: string
   /** Url where is located the file */
-  url: string;
+  url: string
   /** The size of the content */
-  contentLength: string;
+  contentLength: string
 }
 
 /**
@@ -678,7 +688,7 @@ export interface FileMetadata {
  */
 export interface FulfilledOrders {
   /** Document id of the event */
-  _documentId: string;
+  _documentId: string
 }
 
 /**
@@ -686,25 +696,25 @@ export interface FulfilledOrders {
  */
 export interface RegisterEvent {
   /** Id of the asset */
-  _did: string;
+  _did: string
   /** Owner of the asset */
-  _owner: string;
+  _owner: string
   /** The last modification of the asset */
-  _lastUpdatedBy: string;
+  _lastUpdatedBy: string
   /** The block number of the blockchain which the asset was updated */
-  _blockNumberUpdated: any; //Wei
+  _blockNumberUpdated: any //Wei
 }
 
 /** Transfer envent */
 export interface Transfer {
   /** Id of the transfer event */
-  id: string;
+  id: string
   /** Id of the asset */
-  _did: string;
+  _did: string
   /** Agreement Id of the asset */
-  _agreementId: string;
+  _agreementId: string
   /** Which account receive the asset */
-  _receiver: string;
+  _receiver: string
 }
 
 export interface NFTSModule {
@@ -720,8 +730,8 @@ export interface NFTSModule {
     did: string,
     nftHolder: string,
     nftAmount: BigNumber,
-    ercType: ERCType
-  ) => Promise<string>;
+    ercType: ERCType,
+  ) => Promise<string>
 }
 
 /**
@@ -729,30 +739,30 @@ export interface NFTSModule {
  */
 export interface AssetPublishProviderState {
   /** Handle error publish asset message */
-  errorAssetMessage: string;
+  errorAssetMessage: string
   /** Handle publish asset message */
-  assetMessage: string;
+  assetMessage: string
   /** If the asset was published correctly */
-  isPublished: boolean;
+  isPublished: boolean
   /** If the asset is publishing*/
-  isProcessing: boolean;
+  isProcessing: boolean
   /** All the parameters needed to publish an asset */
-  assetPublish: AssetPublishParams;
+  assetPublish: AssetPublishParams
   /** Set parameters needed to publish an asset */
-  setAssetPublish: React.Dispatch<React.SetStateAction<AssetPublishParams>>;
+  setAssetPublish: React.Dispatch<React.SetStateAction<AssetPublishParams>>
   /** Set asset message */
-  setAssetMessage: React.Dispatch<React.SetStateAction<string>>;
+  setAssetMessage: React.Dispatch<React.SetStateAction<string>>
   /** Set error asset message */
-  setErrorAssetMessage: React.Dispatch<React.SetStateAction<string>>;
+  setErrorAssetMessage: React.Dispatch<React.SetStateAction<string>>
   /** Update asset parameters when some input changes
    * @param value Parameter value
    * @param input Input where come the changes which match with the parameters
    */
-  handleChange: (value: string, input: string) => void;
+  handleChange: (value: string, input: string) => void
   /** Reset all the parameters of the asset
    * @param resetAssetPublish Initial parameters used for reset
    */
-  reset: (resetAssetPublish: AssetPublishParams) => void;
+  reset: (resetAssetPublish: AssetPublishParams) => void
   /**
    * Nevermined is a network where users register digital assets and attach to
    * them services (like data sharing, nfts minting, etc).
@@ -773,15 +783,14 @@ export interface AssetPublishProviderState {
     txParameters,
     password,
     cryptoConfig,
-  }:
-  {
-    assetAttributes: AssetAttributes;
-    publishMetadata?: PublishMetadata;
-    txParameters?: TxParameters,
-    method?: EncryptionMethod,
-    password?: string,
+  }: {
+    assetAttributes: AssetAttributes
+    publishMetadata?: PublishMetadata
+    txParameters?: TxParameters
+    method?: EncryptionMethod
+    password?: string
     cryptoConfig?: CryptoConfig
-  }) => Promise<DDO | undefined>;
+  }) => Promise<DDO | undefined>
   /**
    * In Nevermined is possible to register a digital asset that allow users pay for having a
    * NFT (ERC-721). This typically allows content creators to provide access to exclusive
@@ -803,15 +812,14 @@ export interface AssetPublishProviderState {
     txParameters,
     password,
     cryptoConfig,
-  }:
-  {
-    nftAttributes: NFTAttributes;
-    publishMetadata?: PublishMetadata;
-    txParameters?: TxParameters,
-    method?: EncryptionMethod,
-    password?: string,
+  }: {
+    nftAttributes: NFTAttributes
+    publishMetadata?: PublishMetadata
+    txParameters?: TxParameters
+    method?: EncryptionMethod
+    password?: string
     cryptoConfig?: CryptoConfig
-  }) => Promise<DDO | undefined>;
+  }) => Promise<DDO | undefined>
   /**
    * In Nevermined is possible to register a digital asset that allow users pay for having a
    * NFT (ERC-1155). This typically allows content creators to provide access to exclusive
@@ -834,18 +842,17 @@ export interface AssetPublishProviderState {
     txParameters,
     password,
     cryptoConfig,
-  }:
-  {
-    nftAttributes: NFTAttributes;
-    publishMetadata?: PublishMetadata;
-    txParameters?: TxParameters,
-    method?: EncryptionMethod,
-    password?: string,
+  }: {
+    nftAttributes: NFTAttributes
+    publishMetadata?: PublishMetadata
+    txParameters?: TxParameters
+    method?: EncryptionMethod
+    password?: string
     cryptoConfig?: CryptoConfig
-  }) => Promise<DDO | undefined>;
+  }) => Promise<DDO | undefined>
 }
 
 export interface Credentials {
-  buyer: string,
-  babySig: Babysig,
+  buyer: string
+  babySig: Babysig
 }

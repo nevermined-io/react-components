@@ -23,8 +23,6 @@ import {
   SubscribeModule,
   TransferNFTConditionMethod,
   BigNumber,
-  Babysig,
-  Credentials,
 } from './types'
 import {
   conductOrder,
@@ -34,7 +32,7 @@ import {
   getAgreementId,
   handlePostRequest,
 } from './utils'
-import { _getCryptoConfig, _getCredentials, _getDTPInstance, _getGrantAccess } from './utils/dtp'
+import { _getCryptoConfig, _getDTPInstance, _grantAccess } from './utils/dtp'
 import { getAddressTokenSigner, isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token'
 
 const initialState = {
@@ -387,42 +385,54 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
     downloadNFT: async ({ did,
       ercType,
-      password
+      password,
+      path,
+      fileIndex,
     }:
     { did: string,
       ercType?: ERCType,
-      password?: string
+      path?: string,
+      fileIndex?: number,
+      password?: string,
     }): Promise<boolean> => {
       try {
         const account = await getCurrentAccount(sdk)
-        let args: [string, Account, string?, number?, string?, string?, Babysig?] = [did, account]
+        
 
         if(password) {
           const cryptoConfig = await _getCryptoConfig(sdk, password)
           const dtp = await _getDTPInstance(sdk, config, cryptoConfig)
-          const credentials = await _getCredentials({
+          const consumer = await _grantAccess({
             did,
             account,
             password,
+            sdk,
             dtp,
-            sdk
-          })
+          }) as Account
 
-          args = [args[0], args[1], undefined, undefined, undefined, credentials.buyer, credentials.babySig]
+          sdk.assets.download(did, consumer, path, fileIndex, 'nft-sales-proof')
         }
 
         return ercType === 721
-          ? sdk.nfts721.access(...args) as Promise<boolean>
-          : sdk.nfts1155.access(...args) as Promise<boolean>
+          ? sdk.nfts721.access(did, account, path, fileIndex) as Promise<boolean>
+          : sdk.nfts1155.access(did, account, path, fileIndex) as Promise<boolean>
       } catch (error) {
         verbose && Logger.error(error)
         return false
       }
     },
 
-    downloadAsset: async (did: string, password?: string): Promise<boolean> => {
+    downloadAsset: async ({ 
+      did,
+      fileIndex,
+      path,
+      password 
+    }: {
+      did: string,
+      fileIndex?: number,
+      path?: string,
+      password?: string}): Promise<boolean> => {
       try {
-        let credentials: Credentials
         const account = await getCurrentAccount(sdk)
 
         const agreementId = await getAgreementId(sdk, 'accessTemplate', did)
@@ -430,26 +440,23 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         if(password && agreementId) {
           const cryptoConfig = await _getCryptoConfig(sdk, password)
           const dtp = await _getDTPInstance(sdk, config, cryptoConfig)
-          credentials = await _getCredentials({
+
+          const consumer = await _grantAccess({
             did,
             account,
             password,
+            sdk,
             dtp,
-            sdk
-          })
+          }) as Account
 
-          if ((await sdk.assets.owner(did)) === account.getId()) {
-            return sdk.assets.access(agreementId, did, account, undefined, undefined, credentials.buyer, credentials.babySig) as Promise<boolean>
-          }
-
-          return Boolean(sdk.assets.download(did, account, undefined, undefined, undefined, credentials.buyer, credentials.babySig))
+          return Boolean(sdk.assets.download(did, consumer, path, fileIndex, 'nft-sales-proof'))
         }
 
         if ((await sdk.assets.owner(did)) === account.getId()) {
-          return sdk.assets.access(agreementId, did, account) as Promise<boolean>
+          return sdk.assets.access(agreementId, did, account, path, fileIndex) as Promise<boolean>
         }
 
-        return Boolean(sdk.assets.download(did, account))
+        return Boolean(sdk.assets.download(did, account, path, fileIndex))
       } catch (error) {
         verbose && Logger.error(error)
         return false
@@ -530,7 +537,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       let transferResult
 
       try {
-        let buyer = await getCurrentAccount(sdk)
+        const buyer = await getCurrentAccount(sdk)
 
         if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== buyer.getId().toLowerCase()) {
           Logger.error(
@@ -539,41 +546,40 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
           await account.generateToken()
         }
 
-        agreementId = ercType === 721 ? await sdk.nfts721.order(did, buyer): await sdk.nfts1155.order(did, BigNumber.from(nftAmount), buyer)
-
         if(password) {
           const cryptoConfig = await _getCryptoConfig(sdk, password)
           const dtp = await _getDTPInstance(sdk, config, cryptoConfig)
 
-          const buyerGranted = await _getGrantAccess({
+          const consumer = await _grantAccess({
             did,
             account: buyer,
             password,
             sdk,
             dtp,
-          })
+          }) as Account
 
-          if (buyerGranted) {
-            buyer = {...buyer, ...buyerGranted} as Account
-          }
+          agreementId = await dtp.order(did, nftAmount, consumer, nftHolder)
 
-        }
+          transferResult = await dtp.transferForDelegate(did, agreementId, consumer, nftAmount, nftHolder)
+        } else {
+          agreementId = ercType === 721 ? await sdk.nfts721.order(did, buyer): await sdk.nfts1155.order(did, BigNumber.from(nftAmount), buyer)
 
-        transferResult = ercType === 721 
-          ? await sdk.nfts721.transferForDelegate(
+          transferResult = ercType === 721 
+            ? await sdk.nfts721.transferForDelegate(
+                agreementId,
+                nftHolder,
+                buyer.getId(),
+                nftAmount,
+                ercType
+              )
+            : await sdk.nfts1155.transferForDelegate(
               agreementId,
               nftHolder,
               buyer.getId(),
               nftAmount,
               ercType
             )
-          : await sdk.nfts1155.transferForDelegate(
-            agreementId,
-            nftHolder,
-            buyer.getId(),
-            nftAmount,
-            ercType
-          )
+          }
       } catch (error) {
         verbose && Logger.error(error)
         throw error

@@ -1,27 +1,24 @@
-import { Nevermined, MetaData, Account, BigNumber, AssetPrice, NFTAttributes, DDO, makeAccounts, DTP, 
-  generateIntantiableConfigFromConfig, generateId, zeroX, getRoyaltyAttributes, RoyaltyKind } from '../src'
-import { appConfig, walletAddress } from './config'
+import { Nevermined, MetaData, Account, BigNumber, NFTAttributes, DDO, makeAccounts, Dtp, 
+  generateIntantiableConfigFromConfig, generateId, zeroX, Token } from '../src'
+import { appConfig } from './config'
 import { getMetadata } from './metadata.mock'
 import { faker } from '@faker-js/faker'
-import { _getGrantAccess, _encryptFileMetadata, _getCredentials, _getCryptoConfig } from '../src/utils/dtp'
+import { _grantAccess, _encryptFileMetadata, _getCryptoConfig } from '../src/utils/dtp'
 
 describe('DTP', () => {
   let sdk: Nevermined
   let publisher: Account
   let consumer: Account
   let ddo: DDO
-  let dtp: DTP.Dtp
+  let dtp: Dtp
   let metadataEncrypted: MetaData
   let agreementId: string
+  let token: Token
+  global.URL.createObjectURL = jest.fn()
 
   const password = 'passwd_32_letters_1234567890asdF'
 
   beforeAll(async() => {
-    appConfig.web3ProviderUri = 'http://localhost:8545'
-    appConfig.marketplaceUri = 'http://nevermined-metadata:3100'
-    appConfig.neverminedNodeUri = 'http://localhost:8030'
-    appConfig.neverminedNodeAddress = '0x068ed00cf0441e4829d9784fcbe7b9e26d4bd8d0'
-    appConfig.web3Provider = undefined
     if (process.env.SEED_WORDS) {
       appConfig.accounts = makeAccounts(process.env.SEED_WORDS)
     }
@@ -36,16 +33,11 @@ describe('DTP', () => {
 
     const cryptoConfig = await _getCryptoConfig(sdk, password)
 
-    dtp = await DTP.Dtp.getInstance(instanceConfig, cryptoConfig)
+    dtp = await Dtp.getInstance(instanceConfig, cryptoConfig)
 
     const clientAssertion = await sdk.utils.jwt.generateClientAssertion(publisher)
 
     await sdk.services.marketplace.login(clientAssertion)
-  })
-
-  it('should authenticate the accounts', async () => {
-    await publisher.authenticate()
-    await consumer.authenticate()
   })
 
   it('should encrypt metadata', async () => {
@@ -59,28 +51,17 @@ describe('DTP', () => {
   })
 
   it('should publish asset', async () => {
-    const assetRewardsMap = new Map([
-      [walletAddress, BigNumber.from(0)]
-    ])
-
-    const assetPrice = new AssetPrice(assetRewardsMap)
-
-    const royaltyAttributes = getRoyaltyAttributes(
-      sdk,
-      RoyaltyKind.Standard,
-      0,
-    )
+    token = sdk.keeper.token
+    await sdk.nfts1155.setApprovalForAll(appConfig.neverminedNodeAddress as string, true, publisher)
 
     const nftAttributes = NFTAttributes.getNFT1155Instance({
       metadata: metadataEncrypted,
-      encryptionMethod: 'PSK-RSA',
-      price: assetPrice,
-      serviceTypes: ['nft-access', 'nft-sales'],
+      serviceTypes: ['nft-sales-proof', 'nft-access'],
       cap: BigNumber.from(100),
       amount: BigNumber.from(1),
       preMint: true,
-      nftContractAddress: sdk.keeper.nftUpgradeable.address,
-      royaltyAttributes,
+      nftContractAddress: token.address,
+  
     })
     
     ddo = await sdk.nfts1155.create(
@@ -94,19 +75,27 @@ describe('DTP', () => {
   })
 
   it('should order the file', async () => {
-    const response = await _getGrantAccess({
+    const response = await _grantAccess({
       did: ddo.id,
       account: consumer,
       password,
       sdk,
       dtp
     }) as Account
+    const lockPaymentCondition = sdk.keeper.conditions.lockPaymentCondition
 
     consumer = response
 
     console.log(response.getId())
 
-    agreementId = await sdk.nfts1155.order(ddo.id, BigNumber.from(1), consumer)
+    try {
+      await consumer.requestTokens(BigNumber.from(12))
+    } catch(error) {
+      console.log(error)
+    }
+
+    await token.approve(lockPaymentCondition.getAddress(), BigNumber.from(12), consumer)
+    agreementId = await dtp.order(ddo.id, BigNumber.from(1), consumer, publisher.getId())
 
     expect(response.babySecret).toBe(password)
     expect(agreementId).toBeTruthy()
@@ -129,15 +118,21 @@ describe('DTP', () => {
     expect(hash).toBeTruthy()
   })
 
+  it('should transfer delegation to consumer', async() => {
+    const result = await dtp.transferForDelegate(
+      ddo.id,
+      agreementId,
+      consumer,
+      BigNumber.from(1),
+      publisher.getId(),
+    )
+
+    expect(result).toBeTruthy()
+  })
+
   it('should download the file', async () => {
-    const credentials = await _getCredentials({
-      did: ddo.id,
-      account: consumer,
-      password,
-      dtp,
-      sdk
-    })
-    const response = await sdk.nfts1155.access(ddo.id, consumer, undefined, undefined, agreementId, credentials.buyer, credentials.babySig)
+    global.URL.createObjectURL = jest.fn(() => 'nft')
+    const response = await sdk.assets.download(ddo.id, consumer, undefined, 1, 'nft-sales-proof')
 
     console.log(response)
 

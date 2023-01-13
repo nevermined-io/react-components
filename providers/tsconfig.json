@@ -11,7 +11,7 @@
     "noFallthroughCasesInSwitch": true,
     "declaration": true,
     "moduleResolution": "Node",
-    "module": "CommonJS",
+    "module": "ESNext",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react",
