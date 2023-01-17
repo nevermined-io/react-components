@@ -550,7 +550,7 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.downloadNFT(ddo.id)
+              const result = await assets.downloadNFT({did: ddo.id})
               setIsDownloaded(result)
             } catch (error: any) {
               console.error(error.message)

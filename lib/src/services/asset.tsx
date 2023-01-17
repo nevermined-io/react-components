@@ -7,7 +7,6 @@ import {
   AssetPublishProviderState,
   TxParameters,
   QueryResult,
-  EncryptionMethod,
   DDO,
   MetaData,
   SearchQuery,
@@ -178,7 +177,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     assetAttributes,
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
-    method,
     password,
     cryptoConfig
   }:
@@ -186,7 +184,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     assetAttributes: AssetAttributes;
     publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
-    method?: EncryptionMethod,
     password?: string,
     cryptoConfig?: CryptoConfig 
   }) => {
@@ -203,7 +200,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         await account.generateToken()
       }
 
-      if (password && method) {
+      if (password) {
         const dtp = await _getDTPInstance(sdk, config, cryptoConfig || null as any)
         const metadata = await _encryptFileMetadata(sdk, dtp, assetAttributes.metadata, password)
         assetAttributes.metadata = {...metadata}
@@ -213,7 +210,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         assetAttributes,
         accountWallet,
         publishMetadata,
-        txParameters
+        txParameters,
       )
       setIsProcessing(false)
       setIsPublished(true)
@@ -248,7 +245,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     nftAttributes,
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
-    method,
     password,
     cryptoConfig
   }:
@@ -256,7 +252,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     nftAttributes: NFTAttributes;
     publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
-    method?: EncryptionMethod,
     password?: string,
     cryptoConfig?: CryptoConfig 
   }) => {
@@ -272,7 +267,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         await account.generateToken()
       }
 
-      if (password && method) {
+      if (password) {
         const dtp = await _getDTPInstance(sdk, config, cryptoConfig || null as any)
         const metadata = await _encryptFileMetadata(sdk, dtp, nftAttributes.metadata, password)
         nftAttributes.metadata = {...metadata}
@@ -282,7 +277,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         nftAttributes,
         accountWallet,
         publishMetadata,
-        txParameters
+        txParameters,
     )
 
       setIsProcessing(false)
@@ -326,7 +321,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     nftAttributes,
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
-    method,
     password,
     cryptoConfig
   }:
@@ -334,7 +328,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     nftAttributes: NFTAttributes;
     publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
-    method?: EncryptionMethod,
     password?: string,
     cryptoConfig?: CryptoConfig 
   }) => {
@@ -350,18 +343,22 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         await account.generateToken()
       }
 
-      // const transferNftCondition = sdk.keeper.conditions.transferNftCondition
+      if (!config.neverminedNodeAddress) {
+        Logger.error('neverminedNodeAddress from config is required to mint NFT1155 asset')
+        return
+      }
 
-      // const transferNftConditionContractReceipt = await sdk.nfts1155.setApprovalForAll(transferNftCondition.address, true, accountWallet)
+      const transferNftCondition = sdk.keeper.conditions.transferNftCondition
 
-      // Logger.log(`Contract Receipt for approved transfer NFT: ${transferNftConditionContractReceipt}`)
+      const transferNftConditionContractReceipt = await sdk.nfts1155.setApprovalForAll(transferNftCondition.address, true, accountWallet)
+
+      Logger.log(`Contract Receipt for approved transfer NFT: ${transferNftConditionContractReceipt}`)
       
+      const gateawayContractReceipt = await sdk.nfts1155.setApprovalForAll(config.neverminedNodeAddress, true, accountWallet)
 
-      // const gateawayContractReceipt = await sdk.nfts1155.setApprovalForAll(ga, true, accountWallet)
+      Logger.log(`Contract Receipt for approved node: ${gateawayContractReceipt}`)
 
-      // Logger.log(`Contract Receipt for approved node: ${gateawayContractReceipt}`)
-
-      if (password && method) {
+      if (password) {
         const dtp = await _getDTPInstance(sdk, config, cryptoConfig || null as any)
         const metadata = await _encryptFileMetadata(sdk, dtp, nftAttributes.metadata, password)
         nftAttributes.metadata = {...metadata}

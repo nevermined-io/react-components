@@ -10,25 +10,24 @@ import axiosRetry from 'axios-retry'
  */
 export const isEmptyObject = (i: any) => !i || Object.keys(i).length < 1
 
-
 /**
  * Returns current account registered in SDK
  * @param sdk Instance of SDK object
  */
-export const getCurrentAccount = async (sdk: Nevermined) => {
+export const getCurrentAccount = async (sdk: Nevermined, index = 0) => {
   let accounts: Account[] = []
   if (sdk.accounts) {
     accounts = await sdk.accounts.list()
   }
 
-  return accounts[0]
+  return accounts[index]
 }
 
 type Template = 'accessTemplate' | 'nft721AccessTemplate' | 'nftAccessTemplate'
 
 type Condition = 'accessCondition' | 'nftAccessCondition'
 
-/** 
+/**
  * Order transfer asset to a new owner
  * @param orderParams
  * @param orderParams.sdk Instance of SDK object
@@ -45,29 +44,31 @@ export const conductOrder = async ({
   newOwner,
   ercType,
 }: {
-  sdk: Nevermined;
-  neverminedNodeAddress: string;
-  ddo: DDO;
-  newOwner: Account;
+  sdk: Nevermined
+  neverminedNodeAddress: string
+  ddo: DDO
+  newOwner: Account
   ercType?: ERCType
 }): Promise<string> => {
   try {
     Logger.log('Checking if USDC spending is approved.')
     const isApproved = await sdk.keeper.nftUpgradeable.isApprovedForAll(
       newOwner.getId(),
-      neverminedNodeAddress
+      neverminedNodeAddress,
     )
     if (!isApproved) {
-      const receipt = ercType === 721 
-        ? await sdk.nfts721.setApprovalForAll(neverminedNodeAddress, true, newOwner)
-        : await sdk.nfts1155.setApprovalForAll(neverminedNodeAddress, true, newOwner)
+      const receipt =
+        ercType === 721
+          ? await sdk.nfts721.setApprovalForAll(neverminedNodeAddress, true, newOwner)
+          : await sdk.nfts1155.setApprovalForAll(neverminedNodeAddress, true, newOwner)
       Logger.log('Approval receipt:', receipt)
     }
     Logger.log('USDC spending is approved.')
     Logger.log(`Asking for approval and locking payment for USDC.`)
-    const agreementId: string = ercType === 721 
-      ? await sdk.nfts721.order(ddo.id, newOwner)
-      : await sdk.nfts1155.order(ddo.id, BigNumber.from(1), newOwner)
+    const agreementId: string =
+      ercType === 721
+        ? await sdk.nfts721.order(ddo.id, newOwner)
+        : await sdk.nfts1155.order(ddo.id, BigNumber.from(1), newOwner)
     Logger.log('Transferring the NFT.')
     Logger.log('Order agreement ID', agreementId)
     return agreementId
@@ -93,13 +94,13 @@ export const loadFulfilledEvents = async (
     eventName: 'Fulfilled',
     filterSubgraph: {
       where: {
-        _grantee: account
-      }
+        _grantee: account,
+      },
     },
     filterJsonRpc: { _grantee: account },
     result: {
-      _documentId: true
-    }
+      _documentId: true,
+    },
   })
 
   return fulfilled.map((doc) => ({ documentId: doc._documentId }))
@@ -123,12 +124,12 @@ export const getAgreementId = async (
     filterSubgraph: {
       where: {
         _did: did,
-      }
+      },
     },
     filterJsonRpc: {},
     result: {
       _agreementId: true,
-    }
+    },
   })
 
   return agreements[0]?._agreementId
@@ -149,14 +150,14 @@ export const handlePostRequest = async (url: string, formData: FormData, retries
       console.log(`retry attempt: ${retryCount}`)
       return retryCount * 2000
     },
-    retryCondition: () => true
+    retryCondition: () => true,
   })
 
   try {
     const response = await axios.post(url, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     })
 
     return response?.data

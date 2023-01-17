@@ -14,7 +14,6 @@ describe('DTP', () => {
   let metadataEncrypted: MetaData
   let agreementId: string
   let token: Token
-  global.URL.createObjectURL = jest.fn()
 
   const password = 'passwd_32_letters_1234567890asdF'
 
@@ -61,7 +60,6 @@ describe('DTP', () => {
       amount: BigNumber.from(1),
       preMint: true,
       nftContractAddress: token.address,
-  
     })
     
     ddo = await sdk.nfts1155.create(

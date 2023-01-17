@@ -388,17 +388,17 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       password,
       path,
       fileIndex,
+      accountIndex
     }:
     { did: string,
       ercType?: ERCType,
       path?: string,
       fileIndex?: number,
       password?: string,
-    }): Promise<boolean> => {
+      accountIndex?: number
+    }): Promise<boolean | string> => {
       try {
-        const account = await getCurrentAccount(sdk)
-        
-
+        const account = await getCurrentAccount(sdk, accountIndex)
         if(password) {
           const cryptoConfig = await _getCryptoConfig(sdk, password)
           const dtp = await _getDTPInstance(sdk, config, cryptoConfig)
@@ -410,7 +410,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
             dtp,
           }) as Account
 
-          sdk.assets.download(did, consumer, path, fileIndex, 'nft-sales-proof')
+          return sdk.assets.download(did, consumer, path, fileIndex, 'nft-sales-proof')
         }
 
         return ercType === 721
@@ -426,14 +426,17 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       did,
       fileIndex,
       path,
-      password 
+      password,
+      accountIndex
     }: {
       did: string,
       fileIndex?: number,
       path?: string,
-      password?: string}): Promise<boolean> => {
+      password?: string,
+      accountIndex?: number
+    }): Promise<boolean> => {
       try {
-        const account = await getCurrentAccount(sdk)
+        const account = await getCurrentAccount(sdk, accountIndex)
 
         const agreementId = await getAgreementId(sdk, 'accessTemplate', did)
 
@@ -532,12 +535,13 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   }
 
   const nfts = {
-    access: async (did: string, nftHolder: string, nftAmount: BigNumber, ercType: ERCType, password?: string): Promise<string> => {
+    access: async ({ did, nftHolder, nftAmount, ercType, password, accountIndex } :
+      {did: string, nftHolder: string, nftAmount: BigNumber, ercType: ERCType, password?: string, accountIndex?: number}): Promise<string> => {
       let agreementId
       let transferResult
 
       try {
-        const buyer = await getCurrentAccount(sdk)
+        const buyer = await getCurrentAccount(sdk, accountIndex)
 
         if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== buyer.getId().toLowerCase()) {
           Logger.error(

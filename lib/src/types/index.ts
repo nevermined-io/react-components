@@ -510,13 +510,15 @@ export interface AssetsModule {
     path,
     fileIndex,
     password,
+    accountIndex,
   }: {
     did: string
     ercType?: ERCType
-    path: string
-    fileIndex: number
+    path?: string
+    fileIndex?: number
     password?: string
-  }) => Promise<boolean>
+    accountIndex?: number
+  }) => Promise<boolean | string>
   /**
    * Get all the details about a custom erc20 token
    * @param customErc20TokenAddress The custom token address
@@ -537,11 +539,13 @@ export interface AssetsModule {
     fileIndex,
     path,
     password,
+    accountIndex,
   }: {
     did: string
     fileIndex?: number
     path?: string
     password?: string
+    accountIndex?: number
   }) => Promise<boolean>
   /**
    * Upload files to Filecoin
@@ -724,14 +728,24 @@ export interface NFTSModule {
    * @param nftHolder The owner of the NFT asset
    * @param nftAmount The amount of NFT asset to buy
    * @param ercType NFT asset type which can be 721 or 1155
+   * @param password Password to desencrypt metadata
    * @returns It is true if the subscription was successfully completed
    */
-  access: (
-    did: string,
-    nftHolder: string,
-    nftAmount: BigNumber,
-    ercType: ERCType,
-  ) => Promise<string>
+  access: ({
+    did,
+    nftHolder,
+    nftAmount,
+    ercType,
+    password,
+    accountIndex,
+  }: {
+    did: string
+    nftHolder: string
+    nftAmount: BigNumber
+    ercType: ERCType
+    password?: string
+    accountIndex?: number
+  }) => Promise<string>
 }
 
 /**
@@ -773,7 +787,6 @@ export interface AssetPublishProviderState {
    * @param asset.assetAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
    * @param asset.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param asset.txParams Optional transaction parameters
-   * @param asset.method Method used to encrypt the urls
    * @param asset.password Password to encrypt metadata
    * @returns The DDO object including the asset metadata and the DID
    */
@@ -802,7 +815,6 @@ export interface AssetPublishProviderState {
    * @param nft721.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
    * @param nft721.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param nft721.txParams Optional transaction parameters
-   * @param nft721.method Method used to encrypt the urls
    * @param nft721.password Password to encrypt metadata
    * @returns The DDO object including the asset metadata and the DID
    */
@@ -832,7 +844,6 @@ export interface AssetPublishProviderState {
    * @param nft1155.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
    * @param nft1155.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param nft1155.txParams Optional transaction parameters
-   * @param nft1155.method Method used to encrypt the urls
    * @param nft1155.password Password to encrypt metadata
    * @returns The DDO object including the asset metadata and the DID
    */

@@ -51,12 +51,12 @@ describe('Nevermined subscription', () => {
 
           (async () => {
             try {
-              const result = await nfts.access(
-                ddo.id,
-                '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
-                BigNumber.from(1),
-                721,
-              )
+              const result = await nfts.access({
+                did: ddo.id,
+                nftHolder: '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
+                nftAmount: BigNumber.from(1),
+                ercType: 721,
+              })
 
               setAgreementId(result)
             } catch (error: any) {
@@ -113,12 +113,12 @@ describe('Nevermined subscription', () => {
 
           (async () => {
             try {
-              const result = await nfts.access(
-                ddo.id,
-                '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
-                BigNumber.from(1),
-                1155,
-              )
+              const result = await nfts.access({
+                did: ddo.id,
+                nftHolder: '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
+                nftAmount: BigNumber.from(1),
+                ercType: 1155,
+              })
 
               setAgreementId(result)
             } catch (error: any) {
