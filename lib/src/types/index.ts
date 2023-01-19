@@ -311,9 +311,9 @@ export interface NFTDetails {
   /** Which services provide the asset */
   providers: any
   /** The amount of ntfs that are in circulation */
-  nftSupply: number
+  nftSupply: BigNumber
   /** The amount limit of nft which can be minted */
-  mintCap: number
+  mintCap: BigNumber
   /** The rewards that the owner can get for every sale */
   royalties: number
 }

@@ -37,6 +37,8 @@ describe('DTP', () => {
     const clientAssertion = await sdk.utils.jwt.generateClientAssertion(publisher)
 
     await sdk.services.marketplace.login(clientAssertion)
+
+    token = sdk.keeper.token
   })
 
   it('should encrypt metadata', async () => {
@@ -50,16 +52,13 @@ describe('DTP', () => {
   })
 
   it('should publish asset', async () => {
-    token = sdk.keeper.token
-    await sdk.nfts1155.setApprovalForAll(appConfig.neverminedNodeAddress as string, true, publisher)
-
     const nftAttributes = NFTAttributes.getNFT1155Instance({
       metadata: metadataEncrypted,
       serviceTypes: ['nft-sales-proof', 'nft-access'],
       cap: BigNumber.from(100),
       amount: BigNumber.from(1),
       preMint: true,
-      nftContractAddress: token.address,
+      nftContractAddress: sdk.nfts1155.nftContract.address,
     })
     
     ddo = await sdk.nfts1155.create(

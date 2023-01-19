@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Catalog, makeAccounts, Nevermined, Token, Account, DDO, MetaData, AssetService, NFTAttributes, BigNumber, CryptoConfig, AuthToken } from '../src'
+import { Catalog, makeAccounts, Nevermined, Account, DDO, MetaData, AssetService, NFTAttributes, BigNumber, CryptoConfig, AuthToken, Nft1155Contract } from '../src'
 import { faker } from '@faker-js/faker'
 import { _grantAccess, _encryptFileMetadata, _getCryptoConfig } from '../src/utils/dtp'
 import { appConfig } from "./config"
@@ -21,13 +21,7 @@ describe('DTP', () => {
   let consumer: Account
   let metadata: MetaData
   let cryptoConfig: CryptoConfig
-  let token: Token
-  // delete (window as any).location
-
-  // ;(window as any).location = {
-  //   assign: jest.fn(),
-  //   replace: jest.fn()
-  // }
+  let token: Nft1155Contract
 
   const password = 'passwd_32_letters_1234567890asdF'
 
@@ -57,7 +51,7 @@ describe('DTP', () => {
   })
 
   it('should publish the dtp assets', async () => {
-    token = sdk.keeper.token
+    token = sdk.nfts1155.nftContract
     await sdk.nfts1155.setApprovalForAll(appConfig.neverminedNodeAddress as string, true, publisher)
 
     const nftAttributes = NFTAttributes.getNFT1155Instance({
