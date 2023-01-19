@@ -431,14 +431,13 @@ describe('Nevermined assets', () => {
         owner: async () => walletAddress,
         order: async () => agreementId,
         download: async () => true,
-        consume: async () => true
       }
     })
 
     const sdkInstance: any = await sdkSpy.getMockImplementation()?.()
 
     const downloadSpy = jest.spyOn(sdkInstance.assets, 'download')
-    const consumeSpy = jest.spyOn(sdkInstance.assets, 'consume')
+    const accessSpy = jest.spyOn(sdkInstance.assets, 'access')
 
     const { result } = renderHook(
       () => {
@@ -454,7 +453,7 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.downloadAsset(ddo.id)
+              const result = await assets.downloadAsset({did: ddo.id})
               setIsDownloaded(result)
             } catch (error: any) {
               console.error(error.message)
@@ -474,10 +473,10 @@ describe('Nevermined assets', () => {
     })
 
     expect(downloadSpy).toBeCalled()
-    expect(consumeSpy).not.toBeCalled()
+    expect(accessSpy).not.toBeCalled()
   })
 
-  it('should consume the asset if the user is not the owner', async () => {
+  it('should access the asset if the user is not the owner', async () => {
     const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     const sdkSpy = jest.spyOn(nevermined, 'getInstance')
 
@@ -512,7 +511,7 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.downloadAsset(ddo.id)
+              const result = await assets.downloadAsset({ did: ddo.id})
               setIsDownloaded(result)
             } catch (error: any) {
               console.error(error.message)
@@ -551,7 +550,7 @@ describe('Nevermined assets', () => {
           (async () => {
             try {
               const result = await assets.downloadNFT({did: ddo.id})
-              setIsDownloaded(result)
+              setIsDownloaded(result as boolean)
             } catch (error: any) {
               console.error(error.message)
             }

@@ -175,6 +175,8 @@ describe('Account Service', () => {
 
         }, [isLoadingSDK, userProfile])
 
+        console.log(userProfile)
+
         return userProfile
       },
       {

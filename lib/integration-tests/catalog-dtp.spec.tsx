@@ -52,7 +52,6 @@ describe('DTP', () => {
 
   it('should publish the dtp assets', async () => {
     token = sdk.nfts1155.nftContract
-    await sdk.nfts1155.setApprovalForAll(appConfig.neverminedNodeAddress as string, true, publisher)
 
     const nftAttributes = NFTAttributes.getNFT1155Instance({
       metadata,

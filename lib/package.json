@@ -10,6 +10,7 @@
     "clean": "rm -rf dist",
     "test:unit": "jest --testPathPattern=unit-tests",
     "test:integrations": "jest --testPathPattern=integration-tests",
+    "test:subgraph": "jest --testPathPattern=integration-subgraph",
     "eject": "react-scripts eject",
     "lint": "eslint ./",
     "lint:fix": "yarn run lint -- --fix",

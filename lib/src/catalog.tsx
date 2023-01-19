@@ -396,7 +396,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       fileIndex?: number,
       password?: string,
       accountIndex?: number
-    }): Promise<boolean | string> => {
+    }): Promise<boolean> => {
       try {
         const account = await getCurrentAccount(sdk, accountIndex)
         if(password) {
@@ -410,7 +410,10 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
             dtp,
           }) as Account
 
-          return sdk.assets.download(did, consumer, path, fileIndex, 'nft-sales-proof')
+
+          const response = await sdk.assets.download(did, consumer, path, fileIndex, 'nft-sales-proof')
+
+          return Boolean(response)
         }
 
         return ercType === 721
@@ -452,14 +455,17 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
             dtp,
           }) as Account
 
-          return Boolean(sdk.assets.download(did, consumer, path, fileIndex, 'nft-sales-proof'))
+          const response = await sdk.assets.download(did, consumer, path, fileIndex, 'nft-sales-proof')
+
+          return Boolean(response)
         }
 
         if ((await sdk.assets.owner(did)) === account.getId()) {
-          return sdk.assets.access(agreementId, did, account, path, fileIndex) as Promise<boolean>
+          const response = await sdk.assets.download(did, account, path, fileIndex)
+          return Boolean(response)
         }
 
-        return Boolean(sdk.assets.download(did, account, path, fileIndex))
+        return sdk.assets.access(agreementId, did, account, path, fileIndex) as Promise<boolean>
       } catch (error) {
         verbose && Logger.error(error)
         return false

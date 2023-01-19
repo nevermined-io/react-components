@@ -31,7 +31,7 @@ import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumbe
  * ```
  */
 export const useAccountReleases = (
-  walletAddress: string
+  walletAddress: string,
 ): { isLoading: boolean; accountReleases: string[] } => {
   const [accountReleases, setAccountReleases] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -75,12 +75,13 @@ export const useAccountReleases = (
  * ```
  */
 export const useAccountCollection = (
-  walletAddress: string
-): { 
+  walletAddress: string,
+): {
   /** If the nfts are still loading */
-  isLoading: boolean;
+  isLoading: boolean
   /** All the nfts owned by the account */
-  accountCollection: string[] } => {
+  accountCollection: string[]
+} => {
   const { sdk, account } = useContext(NeverminedContext)
   const [isLoading, setLoading] = useState<boolean>(true)
   const [accountCollection, setAccountCollection] = useState<string[]>([])
@@ -101,7 +102,7 @@ export const useAccountCollection = (
 
 /** Custom hook to handle User Profile: login, profile description, add new accounts, etc...
  * @param walletAddress Address of the wallet account
- * 
+ *
  * @example
  * Profile dashboard example:
  * ```tsx
@@ -124,13 +125,13 @@ export const useAccountCollection = (
  * } from '@nevermined-io/styles'
  * import { NextPage } from 'next'
  * import styles from './user-profile.module.scss'
- * 
+ *
  * const b = BEM('user-profile', styles)
- * 
+ *
  * interface AdditionalInformation {
  *   linkedinProfile: string
  * }
- * 
+ *
  * export const UserProfile: NextPage = () => {
  *   const { walletAddress } = MetaMask.useWallet()
  *   const {
@@ -146,20 +147,20 @@ export const useAccountCollection = (
  *     submitUserProfile,
  *     addAddress
  *   } = AccountService.useUserProfile(walletAddress)
- * 
+ *
  *   const popupRef = useRef<UiPopupHandlers>()
- * 
+ *
  *   const closePopup = (event: any) => {
  *     popupRef.current?.close()
  *     event.preventDefault()
  *   }
- * 
+ *
  *   useEffect(() => {
  *     if (errorMessage) {
  *       popupRef.current?.open()
  *     }
  *   }, [errorMessage])
- * 
+ *
  *   return (
  *     <UiLayout type="container">
  *       <NotificationPopup closePopup={closePopup} message={errorMessage} popupRef={popupRef} />
@@ -247,7 +248,7 @@ export const useAccountCollection = (
  *               Change your wallet account to add more address to your profile
  *             </UiText>
  *           </div>
- * 
+ *
  *           <div className={b('profile-current-addresses-container')}>
  *             {addresses.map((a) => (
  *               <div key={a} className={b('profile-current-address')}>
@@ -255,7 +256,7 @@ export const useAccountCollection = (
  *               </div>
  *             ))}
  *           </div>
- * 
+ *
  *           {newAddress && (
  *             <UiFormGroup orientation={Orientation.Vertical} className={b('profile-add-address')}>
  *               <UiFormItem
@@ -266,7 +267,7 @@ export const useAccountCollection = (
  *               />
  *             </UiFormGroup>
  *           )}
- * 
+ *
  *           <div className={b('profile-submit-container')}>
  *             <div className={b('profile-submit-container', ['updated-message'])}>
  *               {isAddressAdded ? (
@@ -282,32 +283,34 @@ export const useAccountCollection = (
  *   )
  * }
  * ```
- * 
+ *
  * @see {@link https://github.com/nevermined-io/defi-marketplace/blob/main/client/src/%2Bassets/user-profile.tsx}
  */
-export const useUserProfile = (walletAddress: string): {
+export const useUserProfile = (
+  walletAddress: string,
+): {
   /** Input error message */
-  inputError: string,
+  inputError: string
   /** Error messages that come from sdk*/
-  errorMessage: string,
+  errorMessage: string
   /** Success messages */
-  successMessage: string,
+  successMessage: string
   /** If profile is updated */
-  isUpdated: boolean,
+  isUpdated: boolean
   /** If new address is added */
-  isAddressAdded: boolean,
+  isAddressAdded: boolean
   /** If token has been generated */
-  isTokenGenerated: boolean,
+  isTokenGenerated: boolean
   /** User profile parameters */
-  userProfile: Partial<UserProfileParams>,
+  userProfile: Partial<UserProfileParams>
   /** Addresses wallet accounts included in the user profile */
-  addresses: string[],
+  addresses: string[]
   /** New address to add in the user profile */
-  newAddress: string,
+  newAddress: string
   /** Set parameters to user profile */
-  setUserProfile: React.Dispatch<React.SetStateAction<Partial<UserProfileParams>>>,
+  setUserProfile: React.Dispatch<React.SetStateAction<Partial<UserProfileParams>>>
   /** Add new address */
-  addAddress: () => Promise<void>,
+  addAddress: () => Promise<void>
   /** Submit user profile */
   submitUserProfile: () => Promise<void>
 } => {
@@ -326,19 +329,18 @@ export const useUserProfile = (walletAddress: string): {
     name: '',
     email: '',
     additionalInformation: {
-      linkedinProfile: ''
-    }
+      linkedinProfile: '',
+    },
   })
   const [newAddress, setNewAddress] = useState('')
 
   const [addresses, setAddresses] = useState<string[]>([])
 
   const checkAuth = async () => {
-    
     if (!account.isTokenValid()) {
       setIsTokenGenerated(false)
       setErrorMessage(
-        'Your login is expired. Please first sign with your wallet before to continue'
+        'Your login is expired. Please first sign with your wallet before to continue',
       )
       await account.generateToken()
       setIsTokenGenerated(true)
@@ -398,7 +400,7 @@ export const useUserProfile = (walletAddress: string): {
   }, [isUpdated, isAddressAdded])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       try {
         if (!walletAddress || !sdk?.services?.profiles) {
           return
@@ -416,13 +418,13 @@ export const useUserProfile = (walletAddress: string): {
         setAddresses([...userProfileData.addresses])
 
         setUserProfile({
-          userId: userProfile.userId,
+          userId: userProfileData.userId,
           nickname: userProfileData.nickname,
           name: userProfileData.name,
           email: userProfileData.email,
           updateDate: userProfileData.updateDate?.toDateString(),
-          state: userProfile.state,
-          additionalInformation: userProfileData.additionalInformation
+          state: userProfileData.state,
+          additionalInformation: userProfileData.additionalInformation,
         })
       } catch (error: any) {
         if (addresses?.length && !addresses.some((a) => a.toLowerCase() === walletAddress)) {
@@ -432,7 +434,7 @@ export const useUserProfile = (walletAddress: string): {
           setTimeout(async () => {
             const userProfileData = await sdk.services.profiles.findOneByAddress(walletAddress)
             setUserProfile({
-              nickname: userProfileData.nickname
+              nickname: userProfileData.nickname,
             })
             setUserId(userProfileData.userId)
           }, 1000)
@@ -456,7 +458,7 @@ export const useUserProfile = (walletAddress: string): {
     newAddress,
     setUserProfile,
     addAddress,
-    submitUserProfile
+    submitUserProfile,
   }
 }
 
@@ -467,10 +469,7 @@ export const useUserProfile = (walletAddress: string): {
  * @param walletAddress The public address of the user
  * @returns true if the user owns at least one edition of the NFT
  */
-export const useIsAssetHolder = (
-  did: string,
-  walletAddress: string
-): { ownAsset: boolean } => {
+export const useIsAssetHolder = (did: string, walletAddress: string): { ownAsset: boolean } => {
   const { sdk, isLoadingSDK } = useNevermined()
   const [ownAsset, setOwnAsset] = useState<boolean>(false)
 
@@ -479,11 +478,11 @@ export const useIsAssetHolder = (
       return
     }
 
-    (async () => {
+    ;(async () => {
       const purchased = await loadFulfilledEvents(sdk, walletAddress, 'accessCondition')
 
       const purchasedDDO = await Promise.all(
-        purchased.map((asset) => sdk.assets.resolve(asset.documentId))
+        purchased.map((asset) => sdk.assets.resolve(asset.documentId)),
       )
 
       const asset = purchasedDDO.filter((p) => p).find((p) => p.id === did)
@@ -505,10 +504,7 @@ export const useIsAssetHolder = (
  * @param walletAddress The public address of the user
  * @returns true if the user owns at least one edition of the NFT
  */
-export const useIsNFT1155Holder = (
-  did: string,
-  walletAddress: string
-): { ownNFT1155: boolean } => {
+export const useIsNFT1155Holder = (did: string, walletAddress: string): { ownNFT1155: boolean } => {
   const { sdk, isLoadingSDK } = useNevermined()
   const [ownNFT1155, setOwnNFT1155] = useState<boolean>(false)
 
@@ -517,7 +513,7 @@ export const useIsNFT1155Holder = (
       return
     }
 
-    (async () => {
+    ;(async () => {
       const walletAccount = new Account(walletAddress)
       if (walletAccount) {
         const balance = await sdk.nfts1155.balance(did, walletAccount)
@@ -528,7 +524,7 @@ export const useIsNFT1155Holder = (
   }, [walletAddress, isLoadingSDK])
 
   return {
-    ownNFT1155
+    ownNFT1155,
   }
 }
 
@@ -546,7 +542,7 @@ export const useIsNFT1155Holder = (
  */
 export const useIsNFT721Holder = (
   nftAddress: string,
-  walletAddress: string
+  walletAddress: string,
 ): { ownNFT721: boolean } => {
   const { sdk, isLoadingSDK } = useNevermined()
   const [ownNFT721, setOwnNFT721] = useState<boolean>(false)
@@ -556,9 +552,9 @@ export const useIsNFT721Holder = (
       return
     }
 
-    (async () => {
+    ;(async () => {
       const walletAccount = new Account(walletAddress)
-      if (walletAccount) {     
+      if (walletAccount) {
         const nft721 = await sdk.contracts.loadNft721(nftAddress)
         const balance = await nft721.balanceOf(walletAccount)
         setOwnNFT721(balance.gt(0))
@@ -567,6 +563,6 @@ export const useIsNFT721Holder = (
   }, [walletAddress, isLoadingSDK])
 
   return {
-    ownNFT721
+    ownNFT721,
   }
 }
