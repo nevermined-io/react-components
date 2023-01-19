@@ -55,7 +55,7 @@ jobs:
           export KEEPER_VERSION=v3.0.0-rc5
           export NODE_VERSION=develop
           ./start_nevermined.sh --no-graph --geth 2>&1 | tee nevermined_tools.txt &
-          cd ..
+          cd ../lib
           ./scripts/wait-nevermined.sh
       - name: Integration tests
         env:
