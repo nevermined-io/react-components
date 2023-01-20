@@ -1,9 +1,8 @@
 {
   "name": "@nevermined-io/catalog-providers",
-  "version": "0.6.3",
+  "version": "1.0.0-rc1",
   "private": false,
   "scripts": {
-    "watch": "./node_modules/.bin/nodemon",
     "start": "npx tsc --watch",
     "build": "npm run clean && npm run build:tsc",
     "build:tsc": "tsc --noEmit false --project tsconfig.build.json",
@@ -38,11 +37,10 @@
     "react": ">=17.0.0"
   },
   "dependencies": {
-    "@wagmi/core": "^0.7.9",
+    "@wagmi/core": "^0.8.15",
     "connectkit": "^1.1.1",
-    "ethers": "^5.6.9",
-    "nodemon": "^2.0.16",
-    "wagmi": "^0.10.5"
+    "ethers": "^5.7.2",
+    "wagmi": "^0.10.11"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
@@ -85,6 +83,7 @@
   },
   "resolutions": {
     "connectkit/react": "^18.2.0",
-    "connectkit/react-dom": "^18.2.0"
+    "connectkit/react-dom": "^18.2.0",
+    "wagmi": "^0.10.11"
   }
 }
