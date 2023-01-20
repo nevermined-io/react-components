@@ -169,8 +169,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param asset.assetAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
    * @param asset.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param asset.txParams Optional transaction parameters
-   * @param asset.method Method used to encrypt the urls
    * @param asset.password Password to encrypt metadata
+   * @param asset.cryptoConfig set all the parameters for encryption
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishAsset = async ({
@@ -237,8 +237,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param nft721.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
    * @param nft721.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param nft721.txParams Optional transaction parameters
-   * @param nft721.method Method used to encrypt the urls
    * @param nft721.password Password to encrypt metadata
+   * @param nft721.cryptoConfig set all the parameters for encryption
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishNFT721 = async ({
@@ -303,18 +303,12 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * This method will create a new digital asset associated to a ERC-1155 NFT contract. 
    * 
    * @param nft1155
-   * @param nft1155.neverminedNodeAddress Node address to approve to handle the NFT
-   * @param nft1155.metadata The metadata object describing the asset
-   * @param nft1155.cap The maximum number of editions that can be minted. If `0` means there is no limit (uncapped)
-   * @param nft1155.assetRewards The price of the asset that the owner will receive
-   * @param nft1155.royaltyAttributes The amount of royalties paid back to the original creator in the secondary market
-   * @param nft1155.nftAmount NFT amount to publish
-   * @param nft1155.erc20TokenAddress The erc20 token address which the buyer will pay the price
-   * @param nft1155.preMint If assets are minted in the creation process
-   * @param nft1155.nftMetadata Url to set at publishing time that resolves to the metadata of the nft as expected by opensea
-   * @param nft1155.neverminedNFTType the type of the NFT1155
-   * @param nft1155.appId The id of the application creating the NFT
-   * @param nft1155.txParameters Trasaction number of the asset creation
+   * @param nft1155.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
+   * @param nft1155.publishMetadata Allows to specify if the metadata should be stored in different backends
+   * @param nft1155.txParams Optional transaction parameters
+   * @param nft1155.password Password to encrypt metadata
+   * @param nft1155.cryptoConfig set all the parameters for encryption
+   * @returns The DDO object including the asset metadata and the DID
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishNFT1155 = async ({
