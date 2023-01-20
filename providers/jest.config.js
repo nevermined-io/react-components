@@ -8,5 +8,5 @@ module.exports = {
     '^.+\\.(ts|tsx)?$': 'ts-jest',
     '^.+\\.(js|jsx)$': 'babel-jest',
   },
-  transformIgnorePatterns: ['<rootDir>/node_modules/(?!wagmi|@wagmi/core|connectkit)'],
+  transformIgnorePatterns: ['<rootDir>/node_modules/(?!wagmi|@wagmi/core|@wagmi/chains|@wagmi/connectors|connectkit)'],
 }

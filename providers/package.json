@@ -1,6 +1,6 @@
 {
   "name": "@nevermined-io/catalog-providers",
-  "version": "0.6.3",
+  "version": "1.0.0-rc1",
   "private": false,
   "scripts": {
     "start": "npx tsc --watch",
@@ -84,6 +84,6 @@
   "resolutions": {
     "connectkit/react": "^18.2.0",
     "connectkit/react-dom": "^18.2.0",
-    "wagmi": "^10.0.11"
+    "wagmi": "^0.10.11"
   }
 }
