@@ -18,7 +18,7 @@ const wrapperProvider = ({ children, signer }: { children: React.ReactElement, s
                   if(!ChainsConfig.some(c => c.id === chain.id)) return null
   
                   return {
-                      http: chain.rpcUrls.default
+                      http: chain.rpcUrls.default.http[0]
                   }
               }
           })

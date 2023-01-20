@@ -1,7 +1,9 @@
-import { chain, Chain } from "wagmi"
+import { Chain } from 'wagmi'
+import { polygon, polygonMumbai } from 'wagmi/chains'
 
 const ChainsConfig: Chain[] = [
-  chain.polygonMumbai,
+  polygonMumbai,
+  polygon,
   {
     id: 1337,
     name: "Localhost development",
@@ -12,11 +14,12 @@ const ChainsConfig: Chain[] = [
       decimals: 18,
     },
     rpcUrls: {
-      default: "http://localhost:8545"
+      default: {
+        http: ["http://localhost:8545"]
+      }
     },
     testnet: true
   },
-  chain.polygon,
 ]
 
 export default ChainsConfig

@@ -38,7 +38,7 @@ export const getClient = (
         if (!chainsConfig.some((c) => c.id === chain.id)) return null
 
         return {
-          http: chain.rpcUrls.default,
+          http: chain.rpcUrls.default.http[0],
         }
       },
     }),
