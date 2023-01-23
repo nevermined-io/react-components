@@ -383,7 +383,8 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    downloadNFT: async ({ did,
+    downloadNFT: async ({
+      did,
       ercType,
       password,
       path,
@@ -542,7 +543,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
   const nfts = {
     access: async ({ did, nftHolder, nftAmount, ercType, password, accountIndex } :
-      {did: string, nftHolder: string, nftAmount: BigNumber, ercType: ERCType, password?: string, accountIndex?: number}): Promise<string> => {
+      {did: string, nftHolder: string, nftAmount: BigNumber, ercType?: ERCType, password?: string, accountIndex?: number}): Promise<string> => {
       let agreementId
       let transferResult
 

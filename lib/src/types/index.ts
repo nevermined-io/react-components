@@ -56,7 +56,6 @@ export interface NeverminedProviderContext {
    *         web3ProviderUri,
    *         neverminedNodeUri,
    *         neverminedNodeAddress,
-   *         faucetUri,
    *         secretStoreUri,
    *         verbose,
    *         marketplaceAuthToken: Catalog.fetchMarketplaceApiTokenFromLocalStorage().token || '',
@@ -128,23 +127,21 @@ export interface NeverminedProviderContext {
    *
    *  const metadata: MetaData = {
    *    main: {
-   *      name: '',
+   *      name: 'my app',
    *      files: [{
    *        index: 0,
    *        contentType: 'application/json',
    *        url: 'https://github.com/nevermined-io/docs/blob/master/docs/architecture/specs/metadata/examples/ddo-example.json'
    *      }],
    *      type: 'dataset',
-   *      author: '',
+   *      author: 'My company',
    *      license: '',
    *      dateCreated: new Date().toISOString(),
-   *      price: ''
    *    }
    *  };
    *
    *  const onPublish = async () => {
    *   try {
-   *     const publisher = await getCurrentAccount(sdk);
    *     const rewardsRecipients: any[] = [];
    *     const assetPriceMap = new Map([
    *        [walletAddress, BigNumber.from(1)]
@@ -155,16 +152,20 @@ export interface NeverminedProviderContext {
    *       scheme: getRoyaltyScheme(sdk, RoyaltyKind.Standard),
    *       amount: 0,
    *     };
+   * 
+   *     const nftAttributes = NFTAttributes.getNFT1155Instance({
+   *       metadata,
+   *       serviceTypes: ['nft-sales-proof', 'nft-access'],
+   *       cap: BigNumber.from(100),
+   *       amount: BigNumber.from(1),
+   *       preMint: true,
+   *       nftContractAddress: token.address,
+   *       price: assetPrice,
+   *       royaltyAttributes
+   *     })
    *
    *     const response = await publishNFT1155({
-   *       neverminedNodeAddress: String(appConfig.neverminedNodeAddress),
-   *       assetPrice,
-   *       metadata,
-   *       nftAmount: BigNumber.from(1),
-   *       preMint: true,
-   *       cap: BigNumber.from(100),
-   *       royaltyAttributes,
-   *       erc20TokenAddress,
+   *       nftAttributes,
    *     });
    *
    *     setDDO(response as DDO);
@@ -238,12 +239,16 @@ export interface NeverminedProviderContext {
    *  }, [walletAddress, isBought])
    *
    *  const buy = async () => {
-   *    const response = await nfts.access(ddo.id, owner, BigNumber.from(1), 1155);
+   *    const response = await nfts.access({ 
+   *      did:ddo.id,
+   *      nftHolder: owner,
+   *      nftAmount: BigNumber.from(1),
+   *      ercType: 1155});
    *    setIsBought(response);
    *  };
    *
    *  const download = async () => {
-   *    await assets.downloadNFT(ddo.id);
+   *    await assets.downloadNFT({ did: ddo.id });
    *  };
    *
    *  return (
@@ -497,11 +502,13 @@ export interface AssetsModule {
   /**
    * Download a NFT asset already ordered and transfered to the buyer,
    * if the user is the owner of the asset
-   * @param did id of the NFT (721 & 1155) asset
-   * @param ercType NFT type. By default 1155
-   * @param path Destination of downloaded file
-   * @param fileIndex The file to download. If not given or is -1 it will download all of them
-   * @param password Password to download a encrypted NFT
+   * @param nft
+   * @param nft.did id of the NFT (721 & 1155) asset
+   * @param nft.ercType NFT type. By default 1155
+   * @param nft.path Destination of downloaded file
+   * @param nft.fileIndex The file to download. If not given or is -1 it will download all of them
+   * @param nft.password Password to download a encrypted NFT
+   * @param nft.accountIndex account index of the account list wallet, it is used for testing purpose
    * @returns if the NFT is downloaded successfully the method will return a true
    */
   downloadNFT: ({
@@ -528,10 +535,12 @@ export interface AssetsModule {
   /**
    * Download an asset already ordered and transfered to the buyer,
    * if the user is the owner of the asset
-   * @param did id of the NFT (721 & 1155) asset
-   * @param path Destination of downloaded file
-   * @param fileIndex The file to download. If not given or is -1 it will download all of them
-   * @param password Password to download a encrypted NFT
+   * @param asset
+   * @param asset.did id of the NFT (721 & 1155) asset
+   * @param asset.path Destination of downloaded file
+   * @param asset.fileIndex The file to download. If not given or is -1 it will download all of them
+   * @param asset.password Password to download a encrypted NFT
+   * @param asset.accountIndex account index of the account list wallet, it is used for testing purpose
    * @returns if the NFT is downloaded successfully the method will return a true
    */
   downloadAsset: ({
@@ -569,7 +578,12 @@ export interface AssetsModule {
  *
  *  const buy = async () => {
  *   const currentAccount = await getCurrentAccount(sdk);
- *   const response = await nfts.access(ddo.id, owner, BigNumber.from(1), 1155);
+ *   const response = await nfts.access({
+ *      did: ddo.id,
+ *      nftHolder: owner,
+ *      nftAmount: BigNumber.from(1), 
+ *      ercType: 1155
+ *   });
  *  };
  *
  *  const stopLog = () => {
@@ -724,12 +738,14 @@ export interface Transfer {
 export interface NFTSModule {
   /**
    * Order a NFT asset and transfer and delegate it to the buyer
-   * @param did Id of the NFT to subscribe
-   * @param nftHolder The owner of the NFT asset
-   * @param nftAmount The amount of NFT asset to buy
-   * @param ercType NFT asset type which can be 721 or 1155
-   * @param password Password to desencrypt metadata
-   * @returns It is true if the subscription was successfully completed
+   * @param access
+   * @param access.did Id of the NFT to subscribe
+   * @param access.nftHolder The owner of the NFT asset
+   * @param access.nftAmount The amount of NFT asset to buy
+   * @param access.ercType NFT asset type which can be `721` or `1155`
+   * @param access.password Password to desencrypt metadata
+   * @param access.accountIndex account index of the account list wallet, it is used for testing purpose
+   * @returns It is successfully completed will return the `agreementId`
    */
   access: ({
     did,
@@ -788,6 +804,7 @@ export interface AssetPublishProviderState {
    * @param asset.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param asset.txParams Optional transaction parameters
    * @param asset.password Password to encrypt metadata
+   * @param asset.cryptoConfig Setting for encrypting asset
    * @returns The DDO object including the asset metadata and the DID
    */
   publishAsset: ({
@@ -816,6 +833,7 @@ export interface AssetPublishProviderState {
    * @param nft721.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param nft721.txParams Optional transaction parameters
    * @param nft721.password Password to encrypt metadata
+   * @param nft721.cryptoConfig Setting for encrypting asset
    * @returns The DDO object including the asset metadata and the DID
    */
   publishNFT721: ({
@@ -845,6 +863,7 @@ export interface AssetPublishProviderState {
    * @param nft1155.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param nft1155.txParams Optional transaction parameters
    * @param nft1155.password Password to encrypt metadata
+   * @param nft1155.cryptoConfig Setting for encrypting asset
    * @returns The DDO object including the asset metadata and the DID
    */
   publishNFT1155: ({
