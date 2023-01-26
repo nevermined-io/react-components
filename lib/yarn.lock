@@ -1798,12 +1798,12 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@nevermined-io/nevermined-sdk-dtp@^0.3.0-rc11":
-  version "0.3.0-rc11"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-dtp/-/nevermined-sdk-dtp-0.3.0-rc11.tgz#6f117fd65561ef492cc0dcdc453cd1cc8bad564d"
-  integrity sha512-vURO6mtvOiIo0nuXQvSB3IA0aMVFbX417jJrt5DoFceM0f4PjB0SBRUfo7wsq17TzYL4n4sekBoVX6xT1LCC3A==
+"@nevermined-io/nevermined-sdk-dtp@^0.3.0-rc13":
+  version "0.3.0-rc13"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-dtp/-/nevermined-sdk-dtp-0.3.0-rc13.tgz#12d67e49137fab6bc6bc80c78cf920bbef53831b"
+  integrity sha512-3DrbPeRVi/yEzs4JaWaiLhBmeMmZhtQBXX/qkp2s41LAi8Few1nqZmDxnj1Uc9tF92CxnoeTs4Q18hY2Yvk7Aw==
   dependencies:
-    "@nevermined-io/nevermined-sdk-js" "1.0.0-rc12"
+    "@nevermined-io/nevermined-sdk-js" "1.0.0-rc16"
     circomlibjs "^0.1.1"
     eciesjs "^0.3.15"
     ffjavascript "^0.2.55"
@@ -1811,10 +1811,10 @@
     snarkjs "^0.4.26"
     web3-utils "^1.7.4"
 
-"@nevermined-io/nevermined-sdk-js@1.0.0-rc12", "@nevermined-io/nevermined-sdk-js@^1.0.0-rc12":
-  version "1.0.0-rc12"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-1.0.0-rc12.tgz#eaaa8a1a748ad81a97bad314aaf84cc487a3cb9a"
-  integrity sha512-eDZqd3rjVFVAQcJ/iRgixeG9lQFElIwEwR6DHUx6qL/tmSUECOLYUq19CPDy8JDov7UJGjPjp9b+eL1ZsMEyoQ==
+"@nevermined-io/nevermined-sdk-js@1.0.0-rc16", "@nevermined-io/nevermined-sdk-js@^1.0.0-rc16":
+  version "1.0.0-rc16"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/nevermined-sdk-js/-/nevermined-sdk-js-1.0.0-rc16.tgz#8d9197ae1be3e62207eb89063798cc3f7d5e6b82"
+  integrity sha512-9puqk67SSjmsWqJVTxqtbAsii4BqDyAGsveAn7D2oD+10yGYGpotWOlxAmNl/+oQ8SnOHZyhmGZFUu+aOaq8SQ==
   dependencies:
     "@nevermined-io/subgraphs" "0.5.0-rc1"
     assert "^2.0.0"
