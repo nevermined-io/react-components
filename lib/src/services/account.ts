@@ -422,7 +422,7 @@ export const useUserProfile = (
           nickname: userProfileData.nickname,
           name: userProfileData.name,
           email: userProfileData.email,
-          updateDate: userProfileData.updateDate?.toDateString(),
+          updateDate: new Date(userProfileData.updateDate).toDateString(),
           state: userProfileData.state,
           additionalInformation: userProfileData.additionalInformation,
         })

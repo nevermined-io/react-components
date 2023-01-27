@@ -5,9 +5,9 @@ name: Testing
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop"]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "develop"]
 
 jobs:
   unit-test-with-build:
@@ -52,7 +52,7 @@ jobs:
           rm -rf "${HOME}/.nevermined/nevermined-contracts/artifacts"
 
           # TODO: Use the default versions when merged into master
-          export KEEPER_VERSION=v3.0.0-rc5
+          export KEEPER_VERSION=v3.0.0-rc8
           export NODE_VERSION=develop
           ./start_nevermined.sh --no-graph --geth 2>&1 | tee nevermined_tools.txt &
           cd ../lib
