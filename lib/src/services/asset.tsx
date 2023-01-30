@@ -2,7 +2,7 @@ import { DDO, MetaData, SearchQuery, ClientError, Logger } from '@nevermined-io/
 import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards'
 import React, { useContext, useEffect, useState, createContext } from 'react'
 import { NeverminedContext, useNevermined } from '../catalog'
-import { 
+import {
   AssetState,
   AssetPublishParams,
   AssetPublishProviderState,
@@ -14,6 +14,7 @@ import {
   RoyaltyAttributes,
   BigNumber,
   NeverminedNFT1155Type,
+  CreateProgressStep,
 } from '../types'
 import { getCurrentAccount } from '../utils'
 
@@ -124,7 +125,7 @@ export const AssetPublishContext = createContext({} as AssetPublishProviderState
 
 /**
  * Provider with all the functionalities to publish assets (no-nft, nft721, nft1155)
- * 
+ *
  * Here is an example how to implement it
  * @see {@link https://github.com/nevermined-io/defi-marketplace/tree/main/client/src/%2Bassets/user-publish-steps}
  */
@@ -157,11 +158,11 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
   }
 
   /**
-   * Nevermined is a network where users register digital assets and attach to 
+   * Nevermined is a network where users register digital assets and attach to
    * them services (like data sharing, nfts minting, etc).
-   * With this method a user can register an asset in Nevermined giving a piece of metadata. 
+   * With this method a user can register an asset in Nevermined giving a piece of metadata.
    * This will return the DDO created (including the unique identifier of the asset - aka DID).
-   * 
+   *
    * @param asset
    * @param asset.metadata The metadata object describing the asset
    * @param asset.assetRewards The price of the asset that the owner will receive
@@ -172,9 +173,10 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param asset.erc20TokenAddress The erc20 token address which the buyer will pay the price
    * @param asset.appId The id of the application creating the asset
    * @param asset.txParameters Trasaction number of the asset creation
+   * @param asset.onEvent A callback to handle progress events
    * @returns The DDO object including the asset metadata and the DID
    */
-  const publishAsset = async ({ 
+  const publishAsset = async ({
     metadata,
     assetRewards = new AssetRewards(),
     serviceTypes,
@@ -184,8 +186,9 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     erc20TokenAddress,
     appId,
     txParameters,
-  }: 
-  { 
+    onEvent
+  }:
+  {
     metadata: MetaData;
     assetRewards?: AssetRewards;
     serviceTypes?: ServiceType[];
@@ -195,7 +198,10 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     erc20TokenAddress?: string,
     appId?: string,
     txParameters?: TxParameters,
+    onEvent?: (next: CreateProgressStep) => void
   }) => {
+    let subscription: { unsubscribe: () => boolean; } | undefined
+
     try {
       setIsProcessing(true)
 
@@ -209,7 +215,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         await account.generateToken()
       }
 
-      const ddo = await sdk.assets.create(
+      const subscribablePromise =  sdk.assets.create(
         metadata,
         accountWallet,
         assetRewards,
@@ -221,6 +227,10 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         appId,
         txParameters,
       )
+
+      subscription = onEvent ? subscribablePromise.subscribe(onEvent) : undefined
+      const ddo = await subscribablePromise
+
       setIsProcessing(false)
       setIsPublished(true)
       setAssetMessage('The asset has been sucessfully published')
@@ -232,16 +242,18 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       setAssetMessage('')
       setIsProcessing(false)
       throw new ClientError(error.message, 'Catalog')
+    } finally {
+      subscription?.unsubscribe()
     }
   }
 
   /**
-   * In Nevermined is possible to register a digital asset that allow users pay for having a 
-   * NFT (ERC-721). This typically allows content creators to provide access to exclusive 
+   * In Nevermined is possible to register a digital asset that allow users pay for having a
+   * NFT (ERC-721). This typically allows content creators to provide access to exclusive
    * contents for NFT holders.
-   * It will create a new digital asset associated to a ERC-721 NFT contract 
+   * It will create a new digital asset associated to a ERC-721 NFT contract
    * (given the `nftAddress` parameter)
-   * 
+   *
    * @param nft721
    * @param nft721.nftAddress The contract address of the ERC-721 NFT
    * @param nft721.metadata The metadata object describing the asset
@@ -255,6 +267,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param nft721.services List of services associate with the asset
    * @param nft721.nftTransfer if the nft will be transfered to other address after published
    * @param nft721.duration When expire the NFT721. The default 0 value means never
+   * @param nft721.onEvent A callback to handle progress events
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishNFT721 = async ({
@@ -269,7 +282,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     nftMetadata,
     services = ['nft-access'],
     nftTransfer = false,
-    duration = 0
+    duration = 0,
+    onEvent
   }: {
     nftAddress: string;
     metadata: MetaData;
@@ -283,7 +297,10 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     services?: ServiceType[];
     nftTransfer?: boolean;
     duration?: number;
+    onEvent?: (next: CreateProgressStep) => void
   }) => {
+    let subscription: { unsubscribe: () => boolean; } | undefined
+
     try {
       setIsProcessing(true)
 
@@ -295,8 +312,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         )
         await account.generateToken()
       }
-    
-      const ddo = await sdk.assets.createNft721(
+
+      const subscribablePromise = sdk.assets.createNft721(
         metadata,
         accountWallet,
         assetRewards,
@@ -311,6 +328,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         nftTransfer,
         duration,
     )
+      subscription = onEvent ? subscribablePromise.subscribe(onEvent) : undefined
+      const ddo = await subscribablePromise
 
       setIsProcessing(false)
       setIsPublished(true)
@@ -323,17 +342,19 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       setAssetMessage('')
       setIsProcessing(false)
       throw new ClientError(error.message, 'Catalog')
+    } finally {
+      subscription?.unsubscribe()
     }
   }
 
   /**
-   * In Nevermined is possible to register a digital asset that allow users pay for having a 
-   * NFT (ERC-1155). This typically allows content creators to provide access to exclusive 
+   * In Nevermined is possible to register a digital asset that allow users pay for having a
+   * NFT (ERC-1155). This typically allows content creators to provide access to exclusive
    * contents for NFT holders.
    * ERC-1155 NFTs are semi-fungible, meaning that a NFT can have multiple editions.
-   * 
-   * This method will create a new digital asset associated to a ERC-1155 NFT contract. 
-   * 
+   *
+   * This method will create a new digital asset associated to a ERC-1155 NFT contract.
+   *
    * @param nft1155
    * @param nft1155.neverminedNodeAddress Node address to approve to handle the NFT
    * @param nft1155.metadata The metadata object describing the asset
@@ -347,6 +368,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param nft1155.neverminedNFTType the type of the NFT1155
    * @param nft1155.appId The id of the application creating the NFT
    * @param nft1155.txParameters Trasaction number of the asset creation
+   * @param nft1155.onEvent A callback to handle progress events
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishNFT1155 = async ({
@@ -362,6 +384,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     neverminedNFT1155Type,
     appId,
     txParameters,
+    onEvent,
   }: {
     neverminedNodeAddress: string,
     metadata: MetaData,
@@ -375,7 +398,10 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     neverminedNFT1155Type?: NeverminedNFT1155Type,
     appId?: string,
     txParameters?: TxParameters,
+    onEvent?: (next: CreateProgressStep) => void
   }) => {
+    let subscription: { unsubscribe: () => boolean; } | undefined
+
     try {
       setIsProcessing(true)
 
@@ -398,13 +424,12 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       const transferNftConditionContractReceipt = await sdk.nfts.setApprovalForAll(transferNftCondition.address, true, accountWallet)
 
       Logger.log(`Contract Receipt for approved transfer NFT: ${transferNftConditionContractReceipt}`)
-      
 
       const gateawayContractReceipt = await sdk.nfts.setApprovalForAll(neverminedNodeAddress, true, accountWallet)
 
       Logger.log(`Contract Receipt for approved node: ${gateawayContractReceipt}`)
 
-      const ddo = await sdk.nfts.createWithRoyalties(
+      const subscribablePromise = sdk.nfts.createWithRoyalties(
         metadata,
         accountWallet,
         cap,
@@ -418,6 +443,10 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         appId,
         txParameters,
       )
+
+      subscription = onEvent ? subscribablePromise.subscribe(onEvent) : undefined
+      const ddo = await subscribablePromise
+
       setIsProcessing(false)
       setIsPublished(true)
       setAssetMessage('The asset NFT 1155 has been sucessfully published')
@@ -429,6 +458,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       setAssetMessage('')
       setIsProcessing(false)
       throw new ClientError(error.message, 'Catalog')
+    } finally {
+      subscription?.unsubscribe()
     }
   }
 
