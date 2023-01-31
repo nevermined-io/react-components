@@ -347,10 +347,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         Logger.error('neverminedNodeAddress from config is required to mint NFT1155 asset')
         return
       }
-      
-      // const gateawayContractReceipt = await sdk.nfts1155.setApprovalForAll(config.neverminedNodeAddress, true, accountWallet)
-
-      // Logger.log(`Contract Receipt for approved node: ${gateawayContractReceipt}`)
 
       if (password) {
         const dtp = await _getDTPInstance(sdk, config, cryptoConfig)
