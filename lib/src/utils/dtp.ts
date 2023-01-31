@@ -5,7 +5,7 @@ import { CryptoConfig } from '@nevermined-io/nevermined-sdk-dtp/dist'
 export const _getDTPInstance = async (
   sdk: Nevermined,
   config: NeverminedOptions,
-  cryptoConfig: CryptoConfig,
+  cryptoConfig?: CryptoConfig,
 ) => {
   const instanceConfig = {
     ...generateIntantiableConfigFromConfig(config),
