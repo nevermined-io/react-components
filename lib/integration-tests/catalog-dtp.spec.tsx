@@ -56,6 +56,7 @@ describe('DTP', () => {
     const nftAttributes = NFTAttributes.getNFT1155Instance({
       metadata,
       serviceTypes: ['nft-sales-proof', 'nft-access'],
+      providers: [appConfig.neverminedNodeAddress as string],
       cap: BigNumber.from(100),
       amount: BigNumber.from(1),
       preMint: true,
