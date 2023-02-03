@@ -1,6 +1,6 @@
 {
   "name": "@nevermined-io/catalog-providers",
-  "version": "1.0.0-rc3",
+  "version": "1.0.0-rc4",
   "private": false,
   "scripts": {
     "start": "npx tsc --watch",

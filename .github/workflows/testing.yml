@@ -52,7 +52,7 @@ jobs:
           rm -rf "${HOME}/.nevermined/nevermined-contracts/artifacts"
 
           # TODO: Use the default versions when merged into master
-          export KEEPER_VERSION=v3.0.0-rc8
+          export KEEPER_VERSION=v3.0.0
           export NODE_VERSION=develop
           ./start_nevermined.sh --no-graph --geth 2>&1 | tee nevermined_tools.txt &
           cd ../lib

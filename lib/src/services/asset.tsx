@@ -1,4 +1,3 @@
-import { CryptoConfig } from '@nevermined-io/nevermined-sdk-dtp/dist'
 import React, { useContext, useEffect, useState, createContext } from 'react'
 import { NeverminedContext, useNevermined } from '../catalog'
 import { 
@@ -15,7 +14,8 @@ import {
   AssetAttributes,
   NFTAttributes,
   PublishMetadata,
-  ERCType
+  ERCType,
+  CryptoConfig,
 } from '../types'
 import { getCurrentAccount } from '../utils'
 import {_getDTPInstance, _encryptFileMetadata} from '../utils/dtp'
@@ -348,18 +348,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         return
       }
 
-      const transferNftCondition = sdk.keeper.conditions.transferNftCondition
-
-      const transferNftConditionContractReceipt = await sdk.nfts1155.setApprovalForAll(transferNftCondition.address, true, accountWallet)
-
-      Logger.log(`Contract Receipt for approved transfer NFT: ${transferNftConditionContractReceipt}`)
-      
-      const gateawayContractReceipt = await sdk.nfts1155.setApprovalForAll(config.neverminedNodeAddress, true, accountWallet)
-
-      Logger.log(`Contract Receipt for approved node: ${gateawayContractReceipt}`)
-
       if (password) {
-        const dtp = await _getDTPInstance(sdk, config, cryptoConfig || null as any)
+        const dtp = await _getDTPInstance(sdk, config, cryptoConfig)
         const metadata = await _encryptFileMetadata(sdk, dtp, nftAttributes.metadata, password)
         nftAttributes.metadata = {...metadata}
       }
