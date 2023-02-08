@@ -152,7 +152,7 @@ export interface NeverminedProviderContext {
    *       scheme: getRoyaltyScheme(sdk, RoyaltyKind.Standard),
    *       amount: 0,
    *     };
-   * 
+   *
    *     const nftAttributes = NFTAttributes.getNFT1155Instance({
    *       metadata,
    *       serviceTypes: ['nft-sales-proof', 'nft-access'],
@@ -239,7 +239,7 @@ export interface NeverminedProviderContext {
    *  }, [walletAddress, isBought])
    *
    *  const buy = async () => {
-   *    const response = await nfts.access({ 
+   *    const response = await nfts.access({
    *      did:ddo.id,
    *      nftHolder: owner,
    *      nftAmount: BigNumber.from(1),
@@ -354,7 +354,7 @@ export interface UserProfileParams {
   /** When the user was created */
   creationDate: string
   /** When was the last user profile updated*/
-  updateDate: string
+  updateDate: Date
   /** Additional information of the user like picture, profesional profire, etc... */
   additionalInformation: unknown
 }
@@ -581,7 +581,7 @@ export interface AssetsModule {
  *   const response = await nfts.access({
  *      did: ddo.id,
  *      nftHolder: owner,
- *      nftAmount: BigNumber.from(1), 
+ *      nftAmount: BigNumber.from(1),
  *      ercType: 1155
  *   });
  *  };
