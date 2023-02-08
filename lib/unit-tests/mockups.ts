@@ -343,7 +343,7 @@ export const profileResult = {
   name: newProfile.name,
   nickname: newProfile.nickname,
   email: newProfile.email,
-  updateDate: newProfile.updateDate?.toDateString(),
+  updateDate: new Date(newProfile.updateDate || ''),
   state: newProfile.state,
   additionalInformation: {
     linkedinProfile: '',

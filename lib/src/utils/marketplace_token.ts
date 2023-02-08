@@ -9,22 +9,33 @@ export const MARKETPLACE_API_TOKEN = 'marketplaceApiToken'
  * @param i Auth token object which is generated from Marketplace API
  */
 export const saveMarketplaceApiTokenToLocalStorage = (i: MarketplaceAPIToken): void => {
+  if (!window?.localStorage) {
+    console.warn('Setting Marketplace Api token: Window object is not ready or it is missed')
+    return
+  }
+
   localStorage.setItem(MARKETPLACE_API_TOKEN, JSON.stringify({ token: i.token }))
 }
 
 /**
  * Get Marketplace API token to local storage
- * 
+ *
  * @return Auth token object which generated from Marketplace API
  */
 export const fetchMarketplaceApiTokenFromLocalStorage = (): MarketplaceAPIToken => {
-  const marketplaceApiTokenItem: string | null = localStorage.getItem('marketplaceApiToken')
+  let marketplaceApiTokenItem: string | null = null
+  if (!window?.localStorage) {
+    console.warn('Fetching Marketplace Api token: Window object is not ready or it is missed')
+  } else {
+    marketplaceApiTokenItem = localStorage.getItem('marketplaceApiToken')
+  }
+
   if (marketplaceApiTokenItem) {
     return JSON.parse(marketplaceApiTokenItem)
-  } else {
-    return {
-      token: ''
-    }
+  }
+
+  return {
+    token: '',
   }
 }
 
@@ -45,7 +56,6 @@ export const newMarketplaceApiToken = async (sdk: Nevermined): Promise<Marketpla
     return { token: '' }
   }
 }
-
 
 /**
  * Check if Marketplace API Token is valid
@@ -71,7 +81,7 @@ export const isTokenValid = () => {
 
 /**
  * Return the address that sign the token
- * @return The address token signer 
+ * @return The address token signer
  */
 export const getAddressTokenSigner = () => {
   try {
@@ -85,4 +95,3 @@ export const getAddressTokenSigner = () => {
     Logger.error(error)
   }
 }
-
