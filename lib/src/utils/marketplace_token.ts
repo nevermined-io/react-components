@@ -25,7 +25,7 @@ export const saveMarketplaceApiTokenToLocalStorage = (i: MarketplaceAPIToken): v
 export const fetchMarketplaceApiTokenFromLocalStorage = (): MarketplaceAPIToken => {
   let marketplaceApiTokenItem: string | null = null
   if (!window?.localStorage) {
-    console.warn('Fetching Marketplace Api token: Window object is not ready or it is missed')
+    console.warn('Fetching Marketplace Api token: Window object is not ready or it is missing')
   } else {
     marketplaceApiTokenItem = localStorage.getItem('marketplaceApiToken')
   }
