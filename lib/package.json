@@ -1,6 +1,6 @@
 {
   "name": "@nevermined-io/catalog-core",
-  "version": "0.6.3",
+  "version": "1.0.0-rc5",
   "private": false,
   "scripts": {
     "watch": "./node_modules/.bin/nodemon",
@@ -10,20 +10,16 @@
     "clean": "rm -rf dist",
     "test:unit": "jest --testPathPattern=unit-tests",
     "test:integrations": "jest --testPathPattern=integration-tests",
+    "test:subgraph": "jest --testPathPattern=integration-subgraph",
     "eject": "react-scripts eject",
     "lint": "eslint ./",
     "lint:fix": "yarn run lint -- --fix",
     "docs": "npx typedoc && rm ../docs/core/.nojekyll",
-    "artifacts:download": "./scripts/download-artifacts.sh v2.0.5 mumbai"
+    "artifacts:download": "./scripts/wait-nevermined.sh",
+    "artifacts:mumbai": "./scripts/download-artifacts.sh v3.0.0 mumbai"
   },
   "main": "./dist/node/index.js",
   "types": "./dist/node/index.d.ts",
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -36,17 +32,30 @@
       "last 1 safari version"
     ]
   },
+  "lint-staged": {
+    "src/**/*.{js,json}": [
+      "prettier --write",
+      "git add"
+    ],
+    "src/**/*.ts": [
+      "tslint --project tsconfig.json",
+      "prettier --write",
+      "git add"
+    ]
+  },
   "peerDependencies": {
     "react": ">=17.0.0"
   },
   "dependencies": {
-    "@nevermined-io/nevermined-sdk-js": "^0.26.0",
+    "@nevermined-io/nevermined-sdk-dtp": "^0.3.0-rc16",
+    "@nevermined-io/nevermined-sdk-js": "^1.0.0-rc20",
     "@types/jsonwebtoken": "^8.5.8",
     "axios": "^0.27.2",
     "axios-retry": "^3.3.1",
     "ethers": "^5.6.9",
     "jest-config": "^28.1.3",
     "jest-environment-jsdom": "^28.1.3",
+    "js-file-download": "^0.4.12",
     "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.16"
   },

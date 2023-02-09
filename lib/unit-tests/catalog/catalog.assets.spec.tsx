@@ -431,14 +431,13 @@ describe('Nevermined assets', () => {
         owner: async () => walletAddress,
         order: async () => agreementId,
         download: async () => true,
-        consume: async () => true
       }
     })
 
     const sdkInstance: any = await sdkSpy.getMockImplementation()?.()
 
     const downloadSpy = jest.spyOn(sdkInstance.assets, 'download')
-    const consumeSpy = jest.spyOn(sdkInstance.assets, 'consume')
+    const accessSpy = jest.spyOn(sdkInstance.assets, 'access')
 
     const { result } = renderHook(
       () => {
@@ -454,7 +453,7 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.downloadAsset(ddo.id)
+              const result = await assets.downloadAsset({did: ddo.id})
               setIsDownloaded(result)
             } catch (error: any) {
               console.error(error.message)
@@ -474,10 +473,10 @@ describe('Nevermined assets', () => {
     })
 
     expect(downloadSpy).toBeCalled()
-    expect(consumeSpy).not.toBeCalled()
+    expect(accessSpy).not.toBeCalled()
   })
 
-  it('should consume the asset if the user is not the owner', async () => {
+  it('should access the asset if the user is not the owner', async () => {
     const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     const sdkSpy = jest.spyOn(nevermined, 'getInstance')
 
@@ -489,14 +488,14 @@ describe('Nevermined assets', () => {
         owner: async () => '0xdF1B443A155b07D2b2cAeA2d99715dC84E812EE2',
         order: async () => agreementId,
         download: async () => true,
-        consume: async () => true
+        access: async () => true
       }
     })
 
     const sdkInstance: any = await sdkSpy.getMockImplementation()?.()
 
     const downloadSpy = jest.spyOn(sdkInstance.assets, 'download')
-    const consumeSpy = jest.spyOn(sdkInstance.assets, 'consume')
+    const accessSpy = jest.spyOn(sdkInstance.assets, 'access')
 
     const { result } = renderHook(
       () => {
@@ -512,7 +511,7 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.downloadAsset(ddo.id)
+              const result = await assets.downloadAsset({ did: ddo.id})
               setIsDownloaded(result)
             } catch (error: any) {
               console.error(error.message)
@@ -532,7 +531,7 @@ describe('Nevermined assets', () => {
     })
 
     expect(downloadSpy).not.toBeCalled()
-    expect(consumeSpy).toBeCalled()
+    expect(accessSpy).toBeCalled()
   })
 
   it('should download the nft', async () => {
@@ -550,8 +549,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.downloadNFT(ddo.id)
-              setIsDownloaded(result)
+              const result = await assets.downloadNFT({did: ddo.id})
+              setIsDownloaded(result as boolean)
             } catch (error: any) {
               console.error(error.message)
             }
@@ -678,6 +677,7 @@ describe('Nevermined assets', () => {
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
+                ercType: 1155
               })
               setTransfered(result)
             } catch (error: any) {
@@ -716,7 +716,7 @@ describe('Nevermined assets', () => {
 
     const sdkInstance: any = await sdkSpy.getMockImplementation()?.()
 
-    const setApprovalForAllSpy = jest.spyOn(sdkInstance.nfts, 'setApprovalForAll')
+    const setApprovalForAllSpy = jest.spyOn(sdkInstance.nfts1155, 'setApprovalForAll')
 
     const { result } = renderHook(
       () => {
@@ -735,6 +735,7 @@ describe('Nevermined assets', () => {
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
+                ercType: 1155
               })
               setTransfered(result)
             } catch (error: any) {
@@ -781,6 +782,7 @@ describe('Nevermined assets', () => {
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
+                ercType: 1155,
               })
               setTransfered(result)
             } catch (error: any) {
@@ -836,6 +838,7 @@ describe('Nevermined assets', () => {
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
+                ercType: 1155
               })
               setTransfered(result)
             } catch (error: any) {
@@ -872,8 +875,8 @@ describe('Nevermined assets', () => {
           }
         ],
       },
-      nfts: {
-        ...sdk.nfts,
+      nfts1155: {
+        ...sdk.nfts1155,
         order: () => undefined
       }
     })
@@ -897,6 +900,7 @@ describe('Nevermined assets', () => {
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
+                ercType: 1155,
               })
               setTransfered(result)
             } catch (error: any) {
@@ -927,8 +931,8 @@ describe('Nevermined assets', () => {
     const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
-      nfts: {
-        ...sdk.nfts,
+      nfts1155: {
+        ...sdk.nfts1155,
         setApprovalForAll: async () => ({
           to: '0xf61B443A155b07D2b2cAeA2d99715dC84E83932f',
           from: walletAddress,
@@ -975,6 +979,7 @@ describe('Nevermined assets', () => {
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
+                ercType: 1155
               })
               setTransfered(result)
             } catch (error: any) {
@@ -1016,7 +1021,7 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.nftDetails(ddo.id)
+              const result = await assets.nftDetails(ddo.id, 1155)
               setNFTDetails(result)
             } catch (error: any) {
               console.error(error.message)

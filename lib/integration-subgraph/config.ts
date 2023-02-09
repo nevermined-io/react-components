@@ -1,4 +1,4 @@
-import { NeverminedOptions, Logger } from '@nevermined-io/nevermined-sdk-js'
+import { NeverminedOptions, Logger, makeAccounts } from '@nevermined-io/nevermined-sdk-js'
 import { AuthToken } from '../src'
 import path from 'path'
 import { ethers } from 'ethers'
@@ -8,6 +8,9 @@ const neverminedNodeAddress =
 const neverminedNodeUri = process.env.NEVERMINED_NODE_URI || 'http://localhost:8030'
 const marketplaceUri = process.env.MARKETPLACE_URI || 'http://nevermined-metadata:3100'
 const web3ProviderUri = process.env.WEB3_PROVIDER_URI || `http://localhost:8545`
+const graphHttpUri =
+  process.env.GRAPH_HTTP_URI || 'https://api.thegraph.com/subgraphs/name/nevermined-io/common'
+const seedWords = process.env.SEED_WORDS
 
 Logger.setLevel(3)
 
@@ -16,8 +19,10 @@ export const appConfig: NeverminedOptions = {
     typeof window !== 'undefined'
       ? (window as any).ethereum
       : new ethers.providers.JsonRpcProvider(web3ProviderUri),
+  accounts: seedWords ? makeAccounts(seedWords) : undefined,
   web3ProviderUri,
   neverminedNodeUri,
+  graphHttpUri,
   verbose: true,
   neverminedNodeAddress,
   marketplaceAuthToken: AuthToken.fetchMarketplaceApiTokenFromLocalStorage().token,

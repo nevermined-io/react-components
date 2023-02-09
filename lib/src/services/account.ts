@@ -31,7 +31,7 @@ import BigNumber from '@nevermined-io/nevermined-sdk-js/dist/node/utils/BigNumbe
  * ```
  */
 export const useAccountReleases = (
-  walletAddress: string
+  walletAddress: string,
 ): { isLoading: boolean; accountReleases: string[] } => {
   const [accountReleases, setAccountReleases] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -75,12 +75,13 @@ export const useAccountReleases = (
  * ```
  */
 export const useAccountCollection = (
-  walletAddress: string
+  walletAddress: string,
 ): {
   /** If the nfts are still loading */
-  isLoading: boolean;
+  isLoading: boolean
   /** All the nfts owned by the account */
-  accountCollection: string[] } => {
+  accountCollection: string[]
+} => {
   const { sdk, account } = useContext(NeverminedContext)
   const [isLoading, setLoading] = useState<boolean>(true)
   const [accountCollection, setAccountCollection] = useState<string[]>([])
@@ -285,37 +286,39 @@ export const useAccountCollection = (
  *
  * @see {@link https://github.com/nevermined-io/defi-marketplace/blob/main/client/src/%2Bassets/user-profile.tsx}
  */
-export const useUserProfile = (walletAddress: string): {
+export const useUserProfile = (
+  walletAddress: string,
+): {
   /** Input error message */
-  inputError: string,
+  inputError: string
   /** Error messages that come from sdk*/
-  errorMessage: string,
+  errorMessage: string
   /** Success messages */
-  successMessage: string,
+  successMessage: string
   /** If profile is updated */
-  isUpdated: boolean,
+  isUpdated: boolean
   /** If new address is added */
-  isAddressAdded: boolean,
+  isAddressAdded: boolean
   /** If token has been generated */
-  isTokenGenerated: boolean,
+  isTokenGenerated: boolean
   /** User profile parameters */
-  userProfile: Partial<UserProfileParams>,
+  userProfile: Partial<UserProfileParams>
   /** Addresses wallet accounts included in the user profile */
-  addresses: string[],
+  addresses: string[]
   /** New address to add in the user profile */
-  newAddress: string,
+  newAddress: string
   /** Set parameters to user profile */
-  setUserProfile: React.Dispatch<React.SetStateAction<Partial<UserProfileParams>>>,
+  setUserProfile: React.Dispatch<React.SetStateAction<Partial<UserProfileParams>>>
   /** Add new address */
-  addAddress: () => Promise<void>,
+  addAddress: () => Promise<void>
   /** Submit user profile */
-  submitUserProfile: () => Promise<void>,
+  submitUserProfile: () => Promise<void>
   /** Indicates if user profile is being loaded */
-  isLoadingUserProfile: boolean,
+  isLoadingUserProfile: boolean
   /** Indicates if user profile has already been loaded */
-  hasLoadedUserProfile: boolean,
+  hasLoadedUserProfile: boolean
   /** Indicates if user profile has failed loading */
-  hasFailedLoadingUserProfile: boolean,
+  hasFailedLoadingUserProfile: boolean
 } => {
   const { sdk, account } = useNevermined()
   const [inputError, setInputError] = useState('')
@@ -330,23 +333,23 @@ export const useUserProfile = (walletAddress: string): {
 
   const [userId, setUserId] = useState('')
   const [userProfile, setUserProfile] = useState<Partial<UserProfileParams>>({
+    userId: '',
     nickname: '',
     name: '',
     email: '',
     additionalInformation: {
-      linkedinProfile: ''
-    }
+      linkedinProfile: '',
+    },
   })
   const [newAddress, setNewAddress] = useState('')
 
   const [addresses, setAddresses] = useState<string[]>([])
 
   const checkAuth = async () => {
-
     if (!account.isTokenValid()) {
       setIsTokenGenerated(false)
       setErrorMessage(
-        'Your login is expired. Please first sign with your wallet before to continue'
+        'Your login is expired. Please first sign with your wallet before to continue',
       )
       await account.generateToken()
       setIsTokenGenerated(true)
@@ -359,12 +362,12 @@ export const useUserProfile = (walletAddress: string): {
       let accountToAdd = accounts?.find((a) => a.getId() === newAddress)
 
       if (!accountToAdd) {
-        accounts = await sdk.accounts.requestList()
+        accounts = await sdk.accounts.list()
         accountToAdd = accounts?.find((a) => a.getId() === newAddress)
       }
 
       const credential = await sdk.utils.jwt.generateClientAssertion(accountToAdd as Account)
-      const token = await sdk.marketplace.addNewAddress(credential)
+      const token = await sdk.services.marketplace.addNewAddress(credential)
 
       saveMarketplaceApiTokenToLocalStorage({ token })
       setAddresses([...addresses, newAddress])
@@ -385,12 +388,12 @@ export const useUserProfile = (walletAddress: string): {
         setInputError('Nickname is required')
         return
       }
-      await sdk.profiles.update(userId, userProfile)
+      await sdk.services.profiles.update(userId, userProfile)
       setIsUpated(true)
       setSuccessMessage('Your profile is updated successfully')
       setInputError('')
     } catch (error: any) {
-      Logger.error(error.message)
+      Logger.error(error?.message)
       setErrorMessage('Error in updating user profile')
     }
   }
@@ -408,7 +411,7 @@ export const useUserProfile = (walletAddress: string): {
   useEffect(() => {
     (async () => {
       try {
-        if (!walletAddress || !sdk.profiles) {
+        if (!walletAddress || !sdk?.services?.profiles) {
           return
         }
 
@@ -416,7 +419,7 @@ export const useUserProfile = (walletAddress: string): {
         setHasLoadedUserProfile(false)
         setHasFailedLoadingUserProfile(false)
 
-        const userProfileData = await sdk.profiles.findOneByAddress(walletAddress)
+        const userProfileData = await sdk.services.profiles.findOneByAddress(walletAddress)
         setUserId(userProfileData.userId)
 
         if (userProfileData.addresses.some((a) => a === walletAddress)) {
@@ -428,10 +431,13 @@ export const useUserProfile = (walletAddress: string): {
         setAddresses([...userProfileData.addresses])
 
         setUserProfile({
+          userId: userProfileData.userId,
           nickname: userProfileData.nickname,
           name: userProfileData.name,
           email: userProfileData.email,
-          additionalInformation: userProfileData.additionalInformation
+          updateDate: new Date(userProfileData.updateDate),
+          state: userProfileData.state,
+          additionalInformation: userProfileData.additionalInformation,
         })
 
         setIsLoadingUserProfile(false)
@@ -445,16 +451,16 @@ export const useUserProfile = (walletAddress: string): {
           await account.generateToken()
           setTimeout(async () => {
             try {
-            const userProfileData = await sdk.profiles.findOneByAddress(walletAddress)
-            setUserProfile({
-              nickname: userProfileData.nickname
-            })
-            setUserId(userProfileData.userId)
-            setHasLoadedUserProfile(true)
-          } catch {
-            setIsLoadingUserProfile(false)
-            setHasFailedLoadingUserProfile(true)
-          }
+              const userProfileData = await sdk.services.profiles.findOneByAddress(walletAddress)
+              setUserProfile({
+                nickname: userProfileData.nickname,
+              })
+              setUserId(userProfileData.userId)
+              setHasLoadedUserProfile(true)
+            } catch {
+              setIsLoadingUserProfile(false)
+              setHasFailedLoadingUserProfile(true)
+            }
           }, 1000)
         } else {
           Logger.error(error.message)
@@ -464,7 +470,7 @@ export const useUserProfile = (walletAddress: string): {
         }
       }
     })()
-  }, [sdk.profiles, walletAddress])
+  }, [sdk.services?.profiles, walletAddress])
 
   return {
     inputError,
@@ -481,7 +487,7 @@ export const useUserProfile = (walletAddress: string): {
     newAddress,
     setUserProfile,
     addAddress,
-    submitUserProfile
+    submitUserProfile,
   }
 }
 
@@ -492,10 +498,7 @@ export const useUserProfile = (walletAddress: string): {
  * @param walletAddress The public address of the user
  * @returns true if the user owns at least one edition of the NFT
  */
-export const useIsAssetHolder = (
-  did: string,
-  walletAddress: string
-): { ownAsset: boolean } => {
+export const useIsAssetHolder = (did: string, walletAddress: string): { ownAsset: boolean } => {
   const { sdk, isLoadingSDK } = useNevermined()
   const [ownAsset, setOwnAsset] = useState<boolean>(false)
 
@@ -508,7 +511,7 @@ export const useIsAssetHolder = (
       const purchased = await loadFulfilledEvents(sdk, walletAddress, 'accessCondition')
 
       const purchasedDDO = await Promise.all(
-        purchased.map((asset) => sdk.assets.resolve(asset.documentId))
+        purchased.map((asset) => sdk.assets.resolve(asset.documentId)),
       )
 
       const asset = purchasedDDO.filter((p) => p).find((p) => p.id === did)
@@ -530,10 +533,7 @@ export const useIsAssetHolder = (
  * @param walletAddress The public address of the user
  * @returns true if the user owns at least one edition of the NFT
  */
-export const useIsNFT1155Holder = (
-  did: string,
-  walletAddress: string
-): { ownNFT1155: boolean } => {
+export const useIsNFT1155Holder = (did: string, walletAddress: string): { ownNFT1155: boolean } => {
   const { sdk, isLoadingSDK } = useNevermined()
   const [ownNFT1155, setOwnNFT1155] = useState<boolean>(false)
 
@@ -545,7 +545,7 @@ export const useIsNFT1155Holder = (
     (async () => {
       const walletAccount = new Account(walletAddress)
       if (walletAccount) {
-        const balance = await sdk.nfts.balance(did, walletAccount)
+        const balance = await sdk.nfts1155.balance(did, walletAccount)
         const nftBalance = BigNumber.from(balance).toNumber()
         setOwnNFT1155(nftBalance > 0)
       }
@@ -553,7 +553,7 @@ export const useIsNFT1155Holder = (
   }, [walletAddress, isLoadingSDK])
 
   return {
-    ownNFT1155
+    ownNFT1155,
   }
 }
 
@@ -571,7 +571,7 @@ export const useIsNFT1155Holder = (
  */
 export const useIsNFT721Holder = (
   nftAddress: string,
-  walletAddress: string
+  walletAddress: string,
 ): { ownNFT721: boolean } => {
   const { sdk, isLoadingSDK } = useNevermined()
   const [ownNFT721, setOwnNFT721] = useState<boolean>(false)
@@ -592,6 +592,6 @@ export const useIsNFT721Holder = (
   }, [walletAddress, isLoadingSDK])
 
   return {
-    ownNFT721
+    ownNFT721,
   }
 }

@@ -1,5 +1,3 @@
-import { DDO, MetaData, SearchQuery, ClientError, Logger } from '@nevermined-io/nevermined-sdk-js'
-import AssetRewards from '@nevermined-io/nevermined-sdk-js/dist/node/models/AssetRewards'
 import React, { useContext, useEffect, useState, createContext } from 'react'
 import { NeverminedContext, useNevermined } from '../catalog'
 import { 
@@ -7,15 +5,20 @@ import {
   AssetPublishParams,
   AssetPublishProviderState,
   TxParameters,
-  ServiceCommon,
-  ServiceType,
   QueryResult,
-  EncryptionMethod,
-  RoyaltyAttributes,
-  BigNumber,
-  NeverminedNFT1155Type,
+  DDO,
+  MetaData,
+  SearchQuery,
+  ClientError,
+  Logger,
+  AssetAttributes,
+  NFTAttributes,
+  PublishMetadata,
+  ERCType,
+  CryptoConfig,
 } from '../types'
 import { getCurrentAccount } from '../utils'
+import {_getDTPInstance, _encryptFileMetadata} from '../utils/dtp'
 
 /**
  * Get all assets
@@ -92,7 +95,7 @@ export const useAssets = (
  * }
  * ```
  */
-export const useAsset = (did: string): AssetState => {
+export const useAsset = (did: string, ercType: ERCType): AssetState => {
   const { assets } = useContext(NeverminedContext)
   const [state, setState] = useState<AssetState>({} as AssetState)
 
@@ -102,7 +105,7 @@ export const useAsset = (did: string): AssetState => {
         const ddo: DDO | undefined = await assets.findOne(did)
         if (!ddo) return
         const metaData: MetaData = ddo.findServiceByType('metadata').attributes
-        const nftDetails = await assets.nftDetails(did)
+        const nftDetails = await assets.nftDetails(did, ercType)
         setState({
           ddo,
           metadata: metaData,
@@ -129,7 +132,7 @@ export const AssetPublishContext = createContext({} as AssetPublishProviderState
  * @see {@link https://github.com/nevermined-io/defi-marketplace/tree/main/client/src/%2Bassets/user-publish-steps}
  */
 export const AssetPublishProvider = ({ children }: { children: React.ReactElement }) => {
-  const { sdk, account } = useNevermined()
+  const { sdk, account, config } = useNevermined()
   const [errorAssetMessage, setErrorAssetMessage] = useState('')
   const [isPublished, setIsPublished] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -157,44 +160,32 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
   }
 
   /**
-   * Nevermined is a network where users register digital assets and attach to 
+   * Nevermined is a network where users register digital assets and attach to
    * them services (like data sharing, nfts minting, etc).
-   * With this method a user can register an asset in Nevermined giving a piece of metadata. 
+   * With this method a user can register an asset in Nevermined giving a piece of metadata.
    * This will return the DDO created (including the unique identifier of the asset - aka DID).
-   * 
+   *
    * @param asset
-   * @param asset.metadata The metadata object describing the asset
-   * @param asset.assetRewards The price of the asset that the owner will receive
-   * @param asset.servicesTypes List of service types to associate with the asse
-   * @param asset.services List of services associate with the asset
+   * @param asset.assetAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
+   * @param asset.publishMetadata Allows to specify if the metadata should be stored in different backends
+   * @param asset.txParams Optional transaction parameters
    * @param asset.method Method used to encrypt the urls
-   * @param asset.providers Array that contains the provider addreses
-   * @param asset.erc20TokenAddress The erc20 token address which the buyer will pay the price
-   * @param asset.appId The id of the application creating the asset
-   * @param asset.txParameters Trasaction number of the asset creation
+   * @param asset.password Password to encrypt metadata
    * @returns The DDO object including the asset metadata and the DID
    */
-  const publishAsset = async ({ 
-    metadata,
-    assetRewards = new AssetRewards(),
-    serviceTypes,
-    services,
-    method,
-    providers,
-    erc20TokenAddress,
-    appId,
+  const publishAsset = async ({
+    assetAttributes,
+    publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
-  }: 
-  { 
-    metadata: MetaData;
-    assetRewards?: AssetRewards;
-    serviceTypes?: ServiceType[];
-    services?: ServiceCommon[];
-    method?: EncryptionMethod;
-    providers?: string[];
-    erc20TokenAddress?: string,
-    appId?: string,
+    password,
+    cryptoConfig
+  }:
+  {
+    assetAttributes: AssetAttributes;
+    publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
+    password?: string,
+    cryptoConfig?: CryptoConfig 
   }) => {
     try {
       setIsProcessing(true)
@@ -209,16 +200,16 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         await account.generateToken()
       }
 
+      if (password) {
+        const dtp = await _getDTPInstance(sdk, config, cryptoConfig || null as any)
+        const metadata = await _encryptFileMetadata(sdk, dtp, assetAttributes.metadata, password)
+        assetAttributes.metadata = {...metadata}
+      }
+
       const ddo = await sdk.assets.create(
-        metadata,
+        assetAttributes,
         accountWallet,
-        assetRewards,
-        serviceTypes,
-        services,
-        method,
-        providers,
-        erc20TokenAddress,
-        appId,
+        publishMetadata,
         txParameters,
       )
       setIsProcessing(false)
@@ -243,46 +234,26 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * (given the `nftAddress` parameter)
    * 
    * @param nft721
-   * @param nft721.nftAddress The contract address of the ERC-721 NFT
-   * @param nft721.metadata The metadata object describing the asset
-   * @param nft721.assetRewards The price of the asset that the owner will receive
+   * @param nft721.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
+   * @param nft721.publishMetadata Allows to specify if the metadata should be stored in different backends
+   * @param nft721.txParams Optional transaction parameters
    * @param nft721.method Method used to encrypt the urls
-   * @param nft721.providers Array that contains the provider addreses
-   * @param nft721.erc20TokenAddress The erc20 token address which the buyer will pay the price
-   * @param nft721.preMint If assets are minted in the creation process
-   * @param nft721.royaltyAttributes The amount of royalties paid back to the original creator in the secondary market
-   * @param nft721.nftMetadata Url to set at publishing time that resolves to the metadata of the nft as expected by opensea
-   * @param nft721.services List of services associate with the asset
-   * @param nft721.nftTransfer if the nft will be transfered to other address after published
-   * @param nft721.duration When expire the NFT721. The default 0 value means never
+   * @param nft721.password Password to encrypt metadata
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishNFT721 = async ({
-    nftAddress,
-    metadata,
-    assetRewards = new AssetRewards(),
-    method = 'PSK-RSA',
-    providers,
-    erc20TokenAddress,
-    preMint = false,
-    royaltyAttributes,
-    nftMetadata,
-    services = ['nft-access'],
-    nftTransfer = false,
-    duration = 0
-  }: {
-    nftAddress: string;
-    metadata: MetaData;
-    assetRewards?: AssetRewards;
-    method?: EncryptionMethod,
-    providers?: string[];
-    erc20TokenAddress?: string;
-    preMint?: boolean;
-    royaltyAttributes: RoyaltyAttributes;
-    nftMetadata?: string;
-    services?: ServiceType[];
-    nftTransfer?: boolean;
-    duration?: number;
+    nftAttributes,
+    publishMetadata = PublishMetadata.OnlyMetadataAPI,
+    txParameters,
+    password,
+    cryptoConfig
+  }:
+  {
+    nftAttributes: NFTAttributes;
+    publishMetadata?: PublishMetadata;
+    txParameters?: TxParameters,
+    password?: string,
+    cryptoConfig?: CryptoConfig 
   }) => {
     try {
       setIsProcessing(true)
@@ -295,21 +266,18 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         )
         await account.generateToken()
       }
+
+      if (password) {
+        const dtp = await _getDTPInstance(sdk, config, cryptoConfig || null as any)
+        const metadata = await _encryptFileMetadata(sdk, dtp, nftAttributes.metadata, password)
+        nftAttributes.metadata = {...metadata}
+      }
     
-      const ddo = await sdk.assets.createNft721(
-        metadata,
+      const ddo = await sdk.nfts721.create(
+        nftAttributes,
         accountWallet,
-        assetRewards,
-        method,
-        nftAddress,
-        erc20TokenAddress,
-        preMint,
-        providers,
-        royaltyAttributes,
-        nftMetadata,
-        services,
-        nftTransfer,
-        duration,
+        publishMetadata,
+        txParameters,
     )
 
       setIsProcessing(false)
@@ -350,31 +318,18 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishNFT1155 = async ({
-    neverminedNodeAddress,
-    metadata,
-    cap,
-    assetRewards = new AssetRewards(),
-    royaltyAttributes,
-    nftAmount,
-    erc20TokenAddress,
-    preMint = false,
-    nftMetadata,
-    neverminedNFT1155Type,
-    appId,
+    nftAttributes,
+    publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
-  }: {
-    neverminedNodeAddress: string,
-    metadata: MetaData,
-    cap: BigNumber,
-    assetRewards?: AssetRewards;
-    royaltyAttributes: RoyaltyAttributes,
-    nftAmount?: BigNumber,
-    erc20TokenAddress?: string,
-    preMint?: boolean,
-    nftMetadata?: string,
-    neverminedNFT1155Type?: NeverminedNFT1155Type,
-    appId?: string,
+    password,
+    cryptoConfig
+  }:
+  {
+    nftAttributes: NFTAttributes;
+    publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
+    password?: string,
+    cryptoConfig?: CryptoConfig 
   }) => {
     try {
       setIsProcessing(true)
@@ -388,35 +343,22 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         await account.generateToken()
       }
 
-      if (!neverminedNodeAddress) {
+      if (!config.neverminedNodeAddress) {
         Logger.error('neverminedNodeAddress from config is required to mint NFT1155 asset')
         return
       }
 
-      const transferNftCondition = sdk.keeper.conditions.transferNftCondition
+      if (password) {
+        const dtp = await _getDTPInstance(sdk, config, cryptoConfig)
+        const metadata = await _encryptFileMetadata(sdk, dtp, nftAttributes.metadata, password)
+        nftAttributes.metadata = {...metadata}
+      }
 
-      const transferNftConditionContractReceipt = await sdk.nfts.setApprovalForAll(transferNftCondition.address, true, accountWallet)
-
-      Logger.log(`Contract Receipt for approved transfer NFT: ${transferNftConditionContractReceipt}`)
-      
-
-      const gateawayContractReceipt = await sdk.nfts.setApprovalForAll(neverminedNodeAddress, true, accountWallet)
-
-      Logger.log(`Contract Receipt for approved node: ${gateawayContractReceipt}`)
-
-      const ddo = await sdk.nfts.createWithRoyalties(
-        metadata,
+      const ddo = await sdk.nfts1155.create(
+        nftAttributes,
         accountWallet,
-        cap,
-        royaltyAttributes,
-        assetRewards,
-        nftAmount,
-        erc20TokenAddress,
-        preMint,
-        nftMetadata,
-        neverminedNFT1155Type,
-        appId,
-        txParameters,
+        publishMetadata,
+        txParameters
       )
       setIsProcessing(false)
       setIsPublished(true)

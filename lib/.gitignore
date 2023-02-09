@@ -71,4 +71,5 @@ cypress/videos
 temp-docs
 
 # artifacts for integration
-integration-tests/artifacts
+artifacts
+circuits

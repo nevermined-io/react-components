@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import { MetaData, Profile } from '../src'
+import { MetaData, Profile, State } from '../src'
 import jwt from 'jsonwebtoken'
 
 export const ddo = {
@@ -8,8 +8,8 @@ export const ddo = {
   authentication: [
     {
       type: 'RsaSignatureAuthentication2018',
-      publicKey: 'did:nv:0c184915b07b44c888d468be85a9b28253e80070e5294b1aaed81c2f0264e430'
-    }
+      publicKey: 'did:nv:0c184915b07b44c888d468be85a9b28253e80070e5294b1aaed81c2f0264e430',
+    },
   ],
   created: '2019-05-22T08:44:27Z',
   updated: '2019-03-08T08:13:49Z',
@@ -22,36 +22,36 @@ export const ddo = {
       '0xbd7b46b3ac664167bc70ac211b1a1da0baed9ead91613a5f02dfc25c1bb6e3ff40861b455017e8a587fd4e37b703436072598c3a81ec88be28bfe33b61554a471b',
     checksum: {
       '0': '0x52b5c93b82dd9e7ecc3d9fdf4755f7f69a54484941897dc517b4adfe3bbc3377',
-      '1': '0x999999952b5c93b82dd9e7ecc3d9fdf4755f7f69a54484941897dc517b4adfe4'
-    }
+      '1': '0x999999952b5c93b82dd9e7ecc3d9fdf4755f7f69a54484941897dc517b4adfe4',
+    },
   },
   publicKey: [
     {
       id: 'did:nv:0c184915b07b44c888d468be85a9b28253e80070e5294b1aaed81c2f0264e430',
       type: 'EthereumECDSAKey',
-      owner: '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e'
-    }
+      owner: '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
+    },
   ],
   verifiableCredential: [
     {
       '@context': [
         'https://www.w3.org/2018/credentials/v1',
-        'https://www.w3.org/2018/credentials/examples/v1'
+        'https://www.w3.org/2018/credentials/examples/v1',
       ],
       id: '1872',
       type: ['read', 'update', 'deactivate'],
       issuer: '0x610D9314EDF2ced7681BA1633C33fdb8cF365a12',
       issuanceDate: '2019-01-01T19:73:24Z',
       credentialSubject: {
-        id: '0x89328493849328493284932'
+        id: '0x89328493849328493284932',
       },
       proof: {
         type: 'RsaSignature2018',
         created: '2019-01-01T19:73:24Z',
         proofPurpose: 'assertionMethod',
-        signatureValue: 'ABCJSDAO23...1tzjn4w=='
-      }
-    }
+        signatureValue: 'ABCJSDAO23...1tzjn4w==',
+      },
+    },
   ],
   service: [
     {
@@ -71,13 +71,13 @@ export const ddo = {
               contentLength: '4535431',
               contentType: 'text/csv',
               encoding: 'UTF-8',
-              compression: 'zip'
-            }
+              compression: 'zip',
+            },
           ],
           license: 'CC-BY',
           name: 'UK Weather information 2011',
           price: '1',
-          type: 'dataset'
+          type: 'dataset',
         },
         additionalInformation: {
           description: 'Weather information of UK including temperature and humidity',
@@ -87,33 +87,33 @@ export const ddo = {
           links: [
             {
               name: 'Sample of Asset Data',
-              type: 'sample'
+              type: 'sample',
             },
             {
               name: 'Data Format Definition',
-              type: 'format'
-            }
+              type: 'format',
+            },
           ],
           inLanguage: 'en',
           updateFrequency: 'yearly',
           structuredMarkup: [
             {
               uri: 'http://skos.um.es/unescothes/C01194/jsonld',
-              mediaType: 'application/ld+json'
+              mediaType: 'application/ld+json',
             },
             {
               uri: 'http://skos.um.es/unescothes/C01194/turtle',
-              mediaType: 'text/turtle'
-            }
-          ]
+              mediaType: 'text/turtle',
+            },
+          ],
         },
         curation: {
           numVotes: 123,
           rating: 0,
           schema: 'Binary Votting',
-          isListed: true
-        }
-      }
+          isListed: true,
+        },
+      },
     },
     {
       type: 'access',
@@ -126,10 +126,10 @@ export const ddo = {
           creator: '',
           datePublished: '2019-02-08T08:13:49Z',
           price: '10',
-          timeout: 36000
+          timeout: 36000,
         },
         additionalInformation: {
-          description: ''
+          description: '',
         },
         serviceAgreementTemplate: {
           contractName: 'EscrowAccessSecretStoreTemplate',
@@ -140,15 +140,15 @@ export const ddo = {
               handler: {
                 moduleName: 'escrowAccessSecretStoreTemplate',
                 functionName: 'fulfillLockPaymentCondition',
-                version: '0.1'
-              }
-            }
+                version: '0.1',
+              },
+            },
           ],
           fulfillmentOrder: ['lockPayment.fulfill', 'access.fulfill', 'escrowPayment.fulfill'],
           conditionDependency: {
             lockPayment: [],
             grantSecretStoreAccess: [],
-            releaseReward: ['lockPayment', 'access']
+            releaseReward: ['lockPayment', 'access'],
           },
           conditions: [
             {
@@ -161,31 +161,31 @@ export const ddo = {
                 {
                   name: '_did',
                   type: 'bytes32',
-                  value: ''
+                  value: '',
                 },
                 {
                   name: '_rewardAddress',
                   type: 'address',
-                  value: ''
+                  value: '',
                 },
                 {
                   name: '_tokenAddress',
                   type: 'address',
-                  value: ''
+                  value: '',
                 },
                 {
                   name: '_amounts',
                   type: 'uint256[]',
-                  value: ['10', '2']
+                  value: ['10', '2'],
                 },
                 {
                   name: '_receivers',
                   type: 'address[]',
                   value: [
                     '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
-                    '0x068ed00cf0441e4829d9784fcbe7b9e26d4bd8d0'
-                  ]
-                }
+                    '0x068ed00cf0441e4829d9784fcbe7b9e26d4bd8d0',
+                  ],
+                },
               ],
               events: [
                 {
@@ -194,10 +194,10 @@ export const ddo = {
                   handler: {
                     moduleName: 'lockPaymentConditon',
                     functionName: 'fulfillAccessCondition',
-                    version: '0.1'
-                  }
-                }
-              ]
+                    version: '0.1',
+                  },
+                },
+              ],
             },
             {
               name: 'access',
@@ -209,13 +209,13 @@ export const ddo = {
                 {
                   name: '_did',
                   type: 'bytes32',
-                  value: ''
+                  value: '',
                 },
                 {
                   name: '_grantee',
                   type: 'address',
-                  value: ''
-                }
+                  value: '',
+                },
               ],
               events: [
                 {
@@ -224,8 +224,8 @@ export const ddo = {
                   handler: {
                     moduleName: 'access',
                     functionName: 'fulfillEscrowPaymentCondition',
-                    version: '0.1'
-                  }
+                    version: '0.1',
+                  },
                 },
                 {
                   name: 'TimedOut',
@@ -233,10 +233,10 @@ export const ddo = {
                   handler: {
                     moduleName: 'access',
                     functionName: 'fulfillEscrowPaymentCondition',
-                    version: '0.1'
-                  }
-                }
-              ]
+                    version: '0.1',
+                  },
+                },
+              ],
             },
             {
               name: 'escrowPayment',
@@ -248,41 +248,41 @@ export const ddo = {
                 {
                   name: '_did',
                   type: 'bytes32',
-                  value: ''
+                  value: '',
                 },
                 {
                   name: '_amounts',
                   type: 'uint256[]',
-                  value: ['10', '2']
+                  value: ['10', '2'],
                 },
                 {
                   name: '_receivers',
                   type: 'address[]',
                   value: [
                     '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
-                    '0x068ed00cf0441e4829d9784fcbe7b9e26d4bd8d0'
-                  ]
+                    '0x068ed00cf0441e4829d9784fcbe7b9e26d4bd8d0',
+                  ],
                 },
                 {
                   name: '_sender',
                   type: 'address',
-                  value: ''
+                  value: '',
                 },
                 {
                   name: '_tokenAddress',
                   type: 'address',
-                  value: ''
+                  value: '',
                 },
                 {
                   name: '_lockCondition',
                   type: 'bytes32',
-                  value: ''
+                  value: '',
                 },
                 {
                   name: '_releaseCondition',
                   type: 'bytes32',
-                  value: ''
-                }
+                  value: '',
+                },
               ],
               events: [
                 {
@@ -291,14 +291,14 @@ export const ddo = {
                   handler: {
                     moduleName: 'escrowPaymentConditon',
                     functionName: 'verifyRewardTokens',
-                    version: '0.1'
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      }
+                    version: '0.1',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
     },
     {
       index: 2,
@@ -307,12 +307,12 @@ export const ddo = {
         main: {
           service: 'PSK-ECDSA',
           publicKey:
-            '0xd793eb43ef7d191bf64f127c9f1a2c9037406d72706d3be7dc564fb9a9f08f21156b32d1ee3afbe64cc9f676f6facffac1377f7804daf932d3b8aa04fdeb0630'
-        }
+            '0xd793eb43ef7d191bf64f127c9f1a2c9037406d72706d3be7dc564fb9a9f08f21156b32d1ee3afbe64cc9f676f6facffac1377f7804daf932d3b8aa04fdeb0630',
+        },
       },
-      serviceEndpoint: 'http://localhost:8030/'
-    }
-  ]
+      serviceEndpoint: 'http://localhost:8030/',
+    },
+  ],
 }
 
 export const walletAddress = '0xf61B443A155b07D2b2cAeA2d99715dC84E839EEf'
@@ -325,21 +325,29 @@ export const newProfile: Partial<Profile> = {
   name: faker.name.firstName(),
   nickname: faker.internet.userName(),
   email: faker.internet.email(),
+  state: 'confirmed' as State,
+  updateDate: new Date(),
   addresses: [walletAddress],
   additionalInformation: {
-    linkedinProfile: ''
-  }
+    linkedinProfile: '',
+  },
 }
 
-export const updatedProfile: Partial<Profile> = {...newProfile, nickname: faker.internet.userName()}
+export const updatedProfile: Partial<Profile> = {
+  ...newProfile,
+  nickname: faker.internet.userName(),
+}
 
-export const profileResult: Partial<Profile> = {
+export const profileResult = {
+  userId: newProfile.userId,
   name: newProfile.name,
   nickname: newProfile.nickname,
   email: newProfile.email,
+  updateDate: new Date(newProfile.updateDate || ''),
+  state: newProfile.state,
   additionalInformation: {
     linkedinProfile: '',
-  }
+  },
 }
 
 export const nevermined = {
@@ -349,32 +357,56 @@ export const nevermined = {
       owner: async () => '0xdF1B443A155b07D2b2cAeA2d99715dC84E812EE2',
       order: async () => agreementId,
       download: async () => true,
-      consume: async () => true,
-      query: () => ({
-        totalPages: 1,
-        totalResults: 1,
-        page: 1,
-        results: [ddo],
-      }),
       create: async () => ddo,
       createNft721: async () => ddo,
+      access: async () => true,
     },
     accounts: {
       list: async () => [
         {
-          getId: () => walletAddress
-        }
+          getId: () => walletAddress,
+        },
       ],
-      requestList: async () => [
-        {
-          getId: () => walletAddress
-        }
-      ]
     },
-    nfts: {
+    services: {
+      metadata: {
+        queryMetadata: async () => ({
+          totalPages: 1,
+          totalResults: 1,
+          page: 1,
+          results: [ddo],
+        }),
+      },
+      marketplace: {
+        login: () =>
+          jwt.sign(
+            {
+              iss: walletAddress,
+              sub: `u-${faker.datatype.uuid()}`,
+              role: [],
+              exp: faker.date.future().getTime(),
+            },
+            'secret',
+          ),
+        addNewAddress: () =>
+          jwt.sign(
+            {
+              iss: walletAddress,
+              sub: `u-${faker.datatype.uuid()}`,
+              role: [],
+              exp: faker.date.future().getTime(),
+            },
+            'secret',
+          ),
+      },
+      profiles: {
+        update: () => updatedProfile,
+        findOneByAddress: () => newProfile,
+      },
+    },
+    nfts1155: {
       ownerOf: async () => walletAddress,
       balance: async () => 1500000000000000,
-      order721: async () => agreementId,
       order: async () => agreementId,
       access: async () => true,
       details: async () => ({
@@ -408,21 +440,59 @@ export const nevermined = {
       }),
       create: async () => ddo,
       createWithRoyalties: async () => ddo,
-      transferForDelegate: async () => true
+      transferForDelegate: async () => true,
+    },
+    nfts721: {
+      ownerOf: async () => walletAddress,
+      balance: async () => 1500000000000000,
+      order: async () => agreementId,
+      access: async () => true,
+      details: async () => ({
+        owner: ddo.id,
+        lastChecksum: faker.date.past().toDateString(),
+        url: 'https://nevermined.io',
+        lastUpdatedBy: faker.date.past().toDateString(),
+        blockNumberUpdated: 13445,
+        providers: [],
+        nftSupply: 100,
+        mintCap: 100,
+        royalties: 0,
+      }),
+      setApprovalForAll: async () => ({
+        to: walletAddress2,
+        from: walletAddress,
+        contractAddress: nftTokenAddress,
+        transactionIndex: 2,
+        gasUsed: 23433044444,
+        logsBloom: '',
+        blockHash: '',
+        transactionHash: '',
+        logs: [],
+        blockNumber: 133443,
+        confirmations: 43,
+        cumulativeGasUsed: 23433044444,
+        effectiveGasPrice: 23433044444,
+        byzantium: false,
+        type: 2,
+        events: [],
+      }),
+      create: async () => ddo,
+      createWithRoyalties: async () => ddo,
+      transferForDelegate: async () => true,
     },
     keeper: {
       conditions: {
         transferNftCondition: {
-          address: '0x610D9314EDF2ced7681BA1633C33fdb8cF365a12'
-        }, 
+          address: '0x610D9314EDF2ced7681BA1633C33fdb8cF365a12',
+        },
         accessCondition: {
           events: {
             getPastEvents: () => [
               {
-                _documentId: faker.datatype.uuid()
-              }
-            ]
-          }
+                _documentId: faker.datatype.uuid(),
+              },
+            ],
+          },
         },
       },
       templates: {
@@ -432,10 +502,10 @@ export const nevermined = {
               {
                 _creator: walletAddress,
                 _did: ddo.id,
-                _agreementId: agreementId
-              }
-            ]
-          }
+                _agreementId: agreementId,
+              },
+            ],
+          },
         },
         nft721AccessTemplate: {
           events: {
@@ -443,10 +513,10 @@ export const nevermined = {
               {
                 _creator: walletAddress,
                 _did: ddo.id,
-                _agreementId: agreementId
-              }
-            ]
-          }
+                _agreementId: agreementId,
+              },
+            ],
+          },
         },
         nftAccessTemplate: {
           events: {
@@ -454,87 +524,72 @@ export const nevermined = {
               {
                 _creator: walletAddress,
                 _did: ddo.id,
-                _agreementId: agreementId
-              }
-            ]
-          }
-        }
+                _agreementId: agreementId,
+              },
+            ],
+          },
+        },
       },
       nftUpgradeable: {
-        isApprovedForAll: () => true
+        isApprovedForAll: () => true,
       },
       royalties: {
         standard: 'standard',
         curve: 'curve',
-        legacy: 'legacy'
-      }
+        legacy: 'legacy',
+      },
     },
     contracts: {
       loadErc20: async () => ({
         name: async () => 'Nevermined',
         symbol: async () => 'NVM',
         decimals: async () => 18,
-        balanceOf: async () => 1500000000000000000
+        balanceOf: async () => 1500000000000000000,
       }),
       loadNft721: async () => ({
         balanceOf: async () => ({
           gt: () => true,
-        })
-      })
+        }),
+      }),
     },
 
     utils: {
       fetch: {
         post: () => ({
           ok: true,
-        })
+        }),
       },
       jwt: {
         generateClientAssertion: () => faker.internet.password(20),
       },
-
     },
-    marketplace:{
-      login: () => jwt.sign({iss: walletAddress,
-        sub: `u-${faker.datatype.uuid()}`,
-        role: [],
-        exp: faker.date.future().getTime()
-      }, 'secret'),
-      addNewAddress: () => jwt.sign({iss: walletAddress,
-        sub: `u-${faker.datatype.uuid()}`,
-        role: [],
-        exp: faker.date.future().getTime()
-      }, 'secret')
-    },
-    profiles: {
-      update: () => updatedProfile,
-      findOneByAddress: () => newProfile,
-    }
-  })
+  }),
 }
 
 export const metadata: MetaData = {
   main: {
     name: '',
-    files: [{
-      index: 0,
-      contentType: 'application/json',
-      url: 'https://github.com/nevermined-io/docs/blob/master/docs/architecture/specs/metadata/examples/ddo-example.json'
-    }],
-    type: "dataset",
+    files: [
+      {
+        index: 0,
+        contentType: 'application/json',
+        url: 'https://github.com/nevermined-io/docs/blob/master/docs/architecture/specs/metadata/examples/ddo-example.json',
+      },
+    ],
+    type: 'dataset',
     author: '',
     license: '',
     dateCreated: new Date().toISOString(),
-  }
+  },
 }
 
 export const mintNFTInput = {
-    metadata,
-    publisher: walletAddress,
-    cap: 100,
-    royalties: 0,
-    nftAmount: 1,
-    preMint: true,
-    erc20TokenAddress: '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e',
-    assetRewards: {}
+  metadata,
+  publisher: walletAddress,
+  cap: 100,
+  royalties: 0,
+  nftAmount: 1,
+  preMint: true,
+  erc20TokenAddress: '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e',
+  assetRewards: {},
 }

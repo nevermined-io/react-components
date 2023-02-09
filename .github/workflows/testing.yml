@@ -5,9 +5,9 @@ name: Testing
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop"]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "develop"]
 
 jobs:
   unit-test-with-build:
@@ -40,7 +40,25 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Install packages
         run: cd lib && yarn install --ignore-engines
+      - name: Run tools (network)
+        run: |
+          docker login -u ${{ secrets.NEVERMINED_DOCKER_USERNAME }} -p ${{ secrets.NEVERMINED_DOCKER_TOKEN}}
+          sudo chmod go+r /etc/hosts
+          sudo echo "127.0.0.1  nevermined-metadata" | sudo tee -a /etc/hosts
+          git clone https://github.com/nevermined-io/tools
+          cd tools
+
+          export KEEPER_OWNER_ROLE_ADDRESS="0xe2DD09d719Da89e5a3D0F2549c7E24566e947260"
+          rm -rf "${HOME}/.nevermined/nevermined-contracts/artifacts"
+
+          # TODO: Use the default versions when merged into master
+          export KEEPER_VERSION=v3.0.0
+          export NODE_VERSION=develop
+          ./start_nevermined.sh --no-graph --geth 2>&1 | tee nevermined_tools.txt &
+          cd ../lib
+          ./scripts/wait-nevermined.sh
       - name: Integration tests
         env:
           INFURA_TOKEN: ${{ secrets.INFURA_TOKEN }}
+          SEED_WORDS: ${{ secrets.TEST_MNEMONIC }}
         run: cd lib && yarn artifacts:download && yarn test:integrations

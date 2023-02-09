@@ -115,10 +115,13 @@ describe('Account Service', () => {
             try {
               jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
                 ...sdk,
-                profiles: {
-                  ...sdk.profiles,
-                  findOneByAddress: async () => {
-                    throw new Error('Profile cannot be found')
+                services: {
+                  ...sdk.services,
+                  profiles: {
+                    ...sdk.services.profiles,
+                    findOneByAddress: async () => {
+                      throw new Error('Profile cannot be found')
+                    }
                   }
                 }
               })
@@ -149,9 +152,12 @@ describe('Account Service', () => {
     const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
-      profiles: {
-        ...sdk.profiles,
+      services: {
+        ...sdk.services,
+        profiles: {
+        ...sdk.services.profiles,
         findOneByAddress: async () => newProfile
+        }
       }
     })
 
@@ -169,6 +175,8 @@ describe('Account Service', () => {
 
         }, [isLoadingSDK, userProfile])
 
+        console.log(userProfile)
+
         return userProfile
       },
       {
@@ -181,74 +189,20 @@ describe('Account Service', () => {
     })
   })
 
-  it('should request list if get list does not return any address', async () => {
-    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
-    const sdkSpy = jest.spyOn(nevermined, 'getInstance')
-
-    sdkSpy.mockResolvedValue({
-      ...sdk,
-      profiles: {
-        ...sdk.profiles,
-        findOneByAddress: async () => newProfile
-      },
-      accounts: {
-        ...sdk.accounts,
-        list: () => [],
-      }
-    })
-
-    const sdkInstance: any = await sdkSpy.getMockImplementation()?.()
-
-    const requestListSpy = jest.spyOn(sdkInstance.accounts, 'requestList')
-
-    renderHook(
-      () => {
-        const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [wallet, setWallet] = useState<string>(walletAddress)
-        const { addresses, addAddress, newAddress } = AccountService.useUserProfile(wallet)
-
-        useEffect(() => {
-          if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider()
-            updateSDK(appConfig)
-            return
-          }
-
-          (async () => {
-            try {
-              setWallet(walletAddress2)
-              if(!addresses.length && wallet === walletAddress2) addAddress()
-            } catch (error: any) {
-              console.error(error.message)
-            }
-          })()
-        }, [isLoadingSDK, wallet, newAddress])
-
-        return addresses
-      },
-      {
-        wrapper: wrapperProvider
-      }
-    )
-
-    await waitFor(() => {
-      expect(requestListSpy).toBeCalledTimes(1)
-    }, {
-      timeout: 5000
-    })
-  })
-
   it('should throw an error if profile is not found', async () => {
     const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     const sdkSpy = jest.spyOn(nevermined, 'getInstance')
 
     sdkSpy.mockResolvedValue({
       ...sdk,
-      profiles: {
-        ...sdk.profiles,
-        findOneByAddress: async () => {
-          throw new Error('"statusCode":404')
-        }
+      services: {
+        ...sdk.services,
+        profiles: {
+          ...sdk.services.profiles,
+          findOneByAddress: async () => {
+            throw new Error('"statusCode":404')
+          }
+        },
       },
       accounts: {
         ...sdk.accounts,
@@ -258,7 +212,7 @@ describe('Account Service', () => {
 
     const sdkInstance: any = await sdkSpy.getMockImplementation()?.()
 
-    const generateTokenSpy = jest.spyOn(sdkInstance.marketplace, 'login')
+    const generateTokenSpy = jest.spyOn(sdkInstance.services.marketplace, 'login')
 
     renderHook(
       () => {
@@ -290,10 +244,13 @@ describe('Account Service', () => {
     const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
-      profiles: {
-        ...sdk.profiles,
+      services: {
+        ...sdk.services,
+        profiles: {
+        ...sdk.services.profiles,
         findOneByAddress: async () => newProfile
-      }
+        },
+      },
     })
 
     const { result } = renderHook(
@@ -567,8 +524,8 @@ describe('Account Service', () => {
     const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
-      nfts: {
-        ...sdk.ntfs,
+      nfts1155: {
+        ...sdk.ntfs1155,
         balance: () => 0
       }
     })
