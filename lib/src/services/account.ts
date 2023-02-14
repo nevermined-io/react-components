@@ -458,10 +458,7 @@ export const useUserProfile = (
               setHasFailedLoadingUserProfile(true)
             }
           }, 1000)
-        } else if (
-          addresses?.length &&
-          !addresses.some((a) => a.toLowerCase() === walletAddress?.toLowerCase())
-        ) {
+        } else if (addresses?.length && !addresses.some((a) => a.toLowerCase() === walletAddress)) {
           setNewAddress(walletAddress)
           setIsLoadingUserProfile(false)
           setHasFailedLoadingUserProfile(true)
