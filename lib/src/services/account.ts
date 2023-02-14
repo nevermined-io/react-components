@@ -313,12 +313,10 @@ export const useUserProfile = (
   addAddress: () => Promise<void>
   /** Submit user profile */
   submitUserProfile: () => Promise<void>
-  /** Indicates if user profile is being loaded */
-  isLoadingUserProfile: boolean
-  /** Indicates if user profile has already been loaded */
-  hasLoadedUserProfile: boolean
-  /** Indicates if user profile has failed loading */
-  hasFailedLoadingUserProfile: boolean
+  /** Indicates current user profile loading status */
+  userProfileLoadingStatus: null | 'loading' | 'loaded' | 'failed'
+  /** Reload current user profile */
+  reloadUserProfile: () => void
 } => {
   const { sdk, account } = useNevermined()
   const [inputError, setInputError] = useState('')
@@ -327,9 +325,9 @@ export const useUserProfile = (
   const [isUpdated, setIsUpated] = useState(false)
   const [isAddressAdded, setIsAddressAdded] = useState(false)
   const [isTokenGenerated, setIsTokenGenerated] = useState(false)
-  const [isLoadingUserProfile, setIsLoadingUserProfile] = useState<boolean>(false)
-  const [hasLoadedUserProfile, setHasLoadedUserProfile] = useState<boolean>(false)
-  const [hasFailedLoadingUserProfile, setHasFailedLoadingUserProfile] = useState<boolean>(false)
+  const [userProfileLoadingStatus, setUserProfileLoadingStatus] = useState<
+    null | 'loading' | 'loaded' | 'failed'
+  >(null)
 
   const [userId, setUserId] = useState('')
   const [userProfile, setUserProfile] = useState<Partial<UserProfileParams>>({
@@ -342,8 +340,8 @@ export const useUserProfile = (
     },
   })
   const [newAddress, setNewAddress] = useState('')
-
   const [addresses, setAddresses] = useState<string[]>([])
+  const [reloadTrigger, setReloadTrigger] = useState<Date>()
 
   const checkAuth = async () => {
     if (!account.isTokenValid()) {
@@ -398,6 +396,10 @@ export const useUserProfile = (
     }
   }
 
+  const reloadUserProfile = () => {
+    setReloadTrigger(new Date())
+  }
+
   useEffect(() => {
     if (isUpdated || isAddressAdded) {
       setTimeout(() => {
@@ -415,9 +417,7 @@ export const useUserProfile = (
           return
         }
 
-        setIsLoadingUserProfile(true)
-        setHasLoadedUserProfile(false)
-        setHasFailedLoadingUserProfile(false)
+        setUserProfileLoadingStatus('loading')
 
         const userProfileData = await sdk.services.profiles.findOneByAddress(walletAddress)
         setUserId(userProfileData.userId)
@@ -440,10 +440,12 @@ export const useUserProfile = (
           additionalInformation: userProfileData.additionalInformation,
         })
 
-        setIsLoadingUserProfile(false)
-        setHasLoadedUserProfile(true)
+        setUserProfileLoadingStatus('loaded')
       } catch (error: any) {
-        if (error.message.includes('"statusCode":404')) {
+        if (addresses?.length && !addresses.some((a) => a.toLowerCase() === walletAddress)) {
+          setNewAddress(walletAddress)
+          setUserProfileLoadingStatus('failed')
+        } else if (error.message.includes('"statusCode":404')) {
           await account.generateToken()
           setTimeout(async () => {
             try {
@@ -452,33 +454,25 @@ export const useUserProfile = (
                 nickname: userProfileData.nickname,
               })
               setUserId(userProfileData.userId)
-              setHasLoadedUserProfile(true)
+              setUserProfileLoadingStatus('loaded')
             } catch {
-              setIsLoadingUserProfile(false)
-              setHasFailedLoadingUserProfile(true)
+              setUserProfileLoadingStatus('failed')
             }
           }, 1000)
-        } else if (addresses?.length && !addresses.some((a) => a.toLowerCase() === walletAddress)) {
-          setNewAddress(walletAddress)
-          setIsLoadingUserProfile(false)
-          setHasFailedLoadingUserProfile(true)
         } else {
           Logger.error(error.message)
           setErrorMessage('Error getting user profile')
-          setIsLoadingUserProfile(false)
-          setHasFailedLoadingUserProfile(true)
+          setUserProfileLoadingStatus('failed')
         }
       }
     })()
-  }, [sdk.services?.profiles, walletAddress])
+  }, [Object.keys(sdk.services?.profiles || {}).length, walletAddress, reloadTrigger])
 
   return {
     inputError,
     errorMessage,
     successMessage,
-    isLoadingUserProfile,
-    hasLoadedUserProfile,
-    hasFailedLoadingUserProfile,
+    userProfileLoadingStatus,
     isUpdated,
     isAddressAdded,
     isTokenGenerated,
@@ -488,6 +482,7 @@ export const useUserProfile = (
     setUserProfile,
     addAddress,
     submitUserProfile,
+    reloadUserProfile,
   }
 }
 
