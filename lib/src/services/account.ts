@@ -443,11 +443,7 @@ export const useUserProfile = (
         setIsLoadingUserProfile(false)
         setHasLoadedUserProfile(true)
       } catch (error: any) {
-        if (addresses?.length && !addresses.some((a) => a.toLowerCase() === walletAddress)) {
-          setNewAddress(walletAddress)
-          setIsLoadingUserProfile(false)
-          setHasFailedLoadingUserProfile(true)
-        } else if (error.message.includes('"statusCode":404')) {
+        if (error.message.includes('"statusCode":404')) {
           await account.generateToken()
           setTimeout(async () => {
             try {
@@ -462,6 +458,13 @@ export const useUserProfile = (
               setHasFailedLoadingUserProfile(true)
             }
           }, 1000)
+        } else if (
+          addresses?.length &&
+          !addresses.some((a) => a.toLowerCase() === walletAddress?.toLowerCase())
+        ) {
+          setNewAddress(walletAddress)
+          setIsLoadingUserProfile(false)
+          setHasFailedLoadingUserProfile(true)
         } else {
           Logger.error(error.message)
           setErrorMessage('Error getting user profile')
