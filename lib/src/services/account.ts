@@ -413,7 +413,7 @@ export const useUserProfile = (
   useEffect(() => {
     (async () => {
       try {
-        if (!walletAddress || !sdk?.services?.profiles) {
+        if (!walletAddress || !sdk?.services?.profiles || userProfileLoadingStatus === 'loading') {
           return
         }
 
