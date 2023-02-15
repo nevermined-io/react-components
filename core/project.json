@@ -40,12 +40,6 @@
         "command": "npx typedoc core && rm docs/core/.nojekyll"
       }
     },
-    "publish": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "npm publish --access public dist/core"
-      }
-    },
     "artifacts:download": {
       "executor": "nx:run-commands",
       "options": {

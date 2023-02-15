@@ -40,12 +40,6 @@
         "command": "npx typedoc providers && rm docs/providers/.nojekyll"
       }
     },
-    "publish": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "npm publish --access public dist/providers"
-      }
-    },
     "test:unit": {
       "executor": "@nrwl/jest:jest",
       "outputs": [
