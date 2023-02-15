@@ -8,6 +8,6 @@
     "../node_modules/@nrwl/react/typings/cssmodule.d.ts",
     "../node_modules/@nrwl/react/typings/image.d.ts"
   ],
-  "exclude": ["**/*.spec.ts", "**/*.test.ts", "**/*.spec.tsx", "**/*.test.tsx", "**/*.spec.js", "**/*.test.js", "**/*.spec.jsx", "**/*.test.jsx"],
+  "exclude": ["**/*.spec.ts", "**/*.test.ts", "**/*.spec.tsx", "**/*.test.tsx", "**/*.spec.js", "**/*.test.js", "**/*.spec.jsx", "**/*.test.jsx", "./unit-tests/*", "./integration-tests/*", "./integration-subgraph/*"],
   "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"]
 }

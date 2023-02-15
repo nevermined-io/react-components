@@ -1,8 +1,8 @@
 {
   "name": "@nevermined-io/catalog-providers",
-  "version": "1.0.0-rc7",
+  "version": "1.0.0-rc8",
   "main": "./index.js",
-  "types": "./src/index.d.ts",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
       "import": "./index.mjs",
