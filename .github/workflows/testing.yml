@@ -29,29 +29,25 @@ jobs:
   integration-tests-core:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: "17.x"
           registry-url: https://registry.npmjs.org/
+      - uses: nevermined-io/nvm-tools-actions@v0.7.1
+        with:
+          token: ${{ secrets.API_TOKEN_GITHUB }}
+          opengsn: 'true'
+          estuary: 'true'
+          contracts-version: 'v3.0.0'
+          node-version: 'v1.0.0'
       - name: Install packages
         run: yarn install --ignore-engines
-      - name: Run tools (network)
+      - name: Check artifacts
         run: |
-          docker login -u ${{ secrets.NEVERMINED_DOCKER_USERNAME }} -p ${{ secrets.NEVERMINED_DOCKER_TOKEN}}
-          sudo chmod go+r /etc/hosts
-          sudo echo "127.0.0.1 nevermined-metadata" | sudo tee -a /etc/hosts
-          git clone https://github.com/nevermined-io/tools
-          cd tools
-
-          export KEEPER_OWNER_ROLE_ADDRESS="0xe2DD09d719Da89e5a3D0F2549c7E24566e947260"
-          rm -rf "${HOME}/.nevermined/nevermined-contracts/artifacts"
-
-          # TODO: Use the default versions when merged into master
-          export KEEPER_VERSION=v3.0.0
-          export NODE_VERSION=v1.0.0
-          ./start_nevermined.sh --no-graph --geth 2>&1 | tee nevermined_tools.txt &
-          yarn nx artifacts:download core
+          nvm-tools copy-artifacts ./core/artifacts
+          nvm-tools copy-circuits ./core/circuits
+          ls -l ./core/artifacts
       - name: Integration tests
         env:
           INFURA_TOKEN: ${{ secrets.INFURA_TOKEN }}
