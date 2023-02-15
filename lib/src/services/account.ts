@@ -466,7 +466,7 @@ export const useUserProfile = (
         }
       }
     })()
-  }, [Object.keys(sdk.services?.profiles || {}).length, walletAddress, reloadTrigger])
+  }, [sdk.services?.profiles, walletAddress, reloadTrigger])
 
   return {
     inputError,
