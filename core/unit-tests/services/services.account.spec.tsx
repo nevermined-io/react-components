@@ -5,8 +5,8 @@ import { appConfig } from '../config'
 import { Catalog, AccountService } from '../../src'
 import { ddo, walletAddress, walletAddress2, profileResult, nevermined, newProfile, updatedProfile } from '../mockups'
 
-jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
-  ...jest.requireActual('@nevermined-io/nevermined-sdk-js'),
+jest.mock('@nevermined-io/sdk', () => ({
+  ...jest.requireActual('@nevermined-io/sdk'),
   Nevermined: jest.requireActual('../mockups').nevermined
 }))
 

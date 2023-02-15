@@ -15,11 +15,11 @@ import {
   NFTAttributes,
   TxParameters,
   Babysig,
-} from '@nevermined-io/nevermined-sdk-js'
-import { CryptoConfig } from '@nevermined-io/nevermined-sdk-dtp'
+} from '@nevermined-io/sdk'
+import { CryptoConfig } from '@nevermined-io/sdk-dtp'
 
-export * from '@nevermined-io/nevermined-sdk-js'
-export * from '@nevermined-io/nevermined-sdk-dtp'
+export * from '@nevermined-io/sdk'
+export * from '@nevermined-io/sdk-dtp'
 
 /**
  * Values returns from the main NVM context

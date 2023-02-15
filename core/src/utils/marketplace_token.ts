@@ -1,4 +1,4 @@
-import { Nevermined, Logger } from '@nevermined-io/nevermined-sdk-js'
+import { Nevermined, Logger } from '@nevermined-io/sdk'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { MarketplaceAPIToken } from '../types'
 

@@ -4,10 +4,10 @@ import { generateTestingUtils } from 'eth-testing'
 import { appConfig } from '../config'
 import { agreementId, ddo, walletAddress, nevermined, nftTokenAddress } from '../mockups'
 import { Catalog, NFTDetails, BigNumber } from '../../src'
-import { DDO, Logger } from '@nevermined-io/nevermined-sdk-js'
+import { DDO, Logger } from '@nevermined-io/sdk'
 
-jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
-  ...jest.requireActual('@nevermined-io/nevermined-sdk-js'),
+jest.mock('@nevermined-io/sdk', () => ({
+  ...jest.requireActual('@nevermined-io/sdk'),
   Nevermined: jest.requireActual('../mockups').nevermined
 }))
 

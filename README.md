@@ -56,7 +56,7 @@ npm install --save @nevermined-io/catalog-core
 ```typescript
 import { Catalog } from '@nevermined-io/catalog-core';
 import App from 'app';
-import { Config } from '@nevermined-io/nevermined-sdk-js';
+import { Config } from '@nevermined-io/sdk';
 
 const appConfig: Config = {
   web3Provider: new Web3(window.ethereum),

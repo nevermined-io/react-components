@@ -46,7 +46,7 @@ npm install --save @nevermined-io/catalog-core
 import { Catalog, AssetService } from '@nevermined-io/components-catalog';
 import App from 'app';
 import { ethers } from 'ethers'
-import { Config } from '@nevermined-io/nevermined-sdk-js';
+import { Config } from '@nevermined-io/sdk';
 
 const appConfig: Config = {
   web3Provider: typeof window !== 'undefined' ? window.ethereum : new ethers.providers.JsonRpcProvider(nodeUri),

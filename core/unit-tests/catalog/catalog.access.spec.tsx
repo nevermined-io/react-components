@@ -6,8 +6,8 @@ import { agreementId, ddo, nevermined } from '../mockups'
 import { Catalog, BigNumber } from '../../src'
 
 
-jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
-  ...jest.requireActual('@nevermined-io/nevermined-sdk-js'),
+jest.mock('@nevermined-io/sdk', () => ({
+  ...jest.requireActual('@nevermined-io/sdk'),
   Nevermined: jest.requireActual('../mockups').nevermined
 }))
 

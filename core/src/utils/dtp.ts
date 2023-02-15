@@ -1,6 +1,6 @@
 import { Account, NeverminedOptions, Dtp, MetaData, MetaDataMain, Nevermined } from '../types'
-import { generateIntantiableConfigFromConfig } from '@nevermined-io/nevermined-sdk-js'
-import { CryptoConfig } from '@nevermined-io/nevermined-sdk-dtp'
+import { generateIntantiableConfigFromConfig } from '@nevermined-io/sdk'
+import { CryptoConfig } from '@nevermined-io/sdk-dtp'
 
 export const _getDTPInstance = async (
   sdk: Nevermined,

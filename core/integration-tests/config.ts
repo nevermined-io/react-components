@@ -1,4 +1,4 @@
-import { NeverminedOptions, Logger } from '@nevermined-io/nevermined-sdk-js'
+import { NeverminedOptions, Logger } from '@nevermined-io/sdk'
 import { AuthToken } from '../src'
 import path from 'path'
 import { ethers } from 'ethers'

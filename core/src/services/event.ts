@@ -1,4 +1,4 @@
-import { Logger, Nevermined } from '@nevermined-io/nevermined-sdk-js'
+import { Logger, Nevermined } from '@nevermined-io/sdk'
 import {
   FulfilledOrders,
   RegisterEvent,

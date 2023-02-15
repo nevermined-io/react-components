@@ -7,7 +7,7 @@ import {
   SearchQuery,
   ClientError,
   QueryResult
-} from '@nevermined-io/nevermined-sdk-js'
+} from '@nevermined-io/sdk'
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react'
 import {
   AccountModule,

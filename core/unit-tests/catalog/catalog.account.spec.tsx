@@ -7,8 +7,8 @@ import jwt from 'jsonwebtoken'
 import { ddo, walletAddress, nevermined } from '../mockups'
 import { faker } from '@faker-js/faker'
 
-jest.mock('@nevermined-io/nevermined-sdk-js', () => ({
-  ...jest.requireActual('@nevermined-io/nevermined-sdk-js'),
+jest.mock('@nevermined-io/sdk', () => ({
+  ...jest.requireActual('@nevermined-io/sdk'),
   Nevermined: jest.requireActual('../mockups').nevermined
 }))
 
