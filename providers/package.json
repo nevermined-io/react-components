@@ -1,12 +1,23 @@
 {
   "name": "@nevermined-io/catalog-providers",
-  "version": "1.0.0-rc6",
+  "version": "1.0.0-rc7",
   "main": "./index.js",
-  "types": "./index.d.ts",
+  "types": "./src/index.d.ts",
   "exports": {
     ".": {
       "import": "./index.mjs",
       "require": "./index.js"
     }
+  },
+  "dependencies": {
+    "@wagmi/core": "^0.8.15",
+    "connectkit": "^1.1.1",
+    "ethers": "^5.7.2",
+    "wagmi": "^0.10.11"
+  },
+  "resolutions": {
+    "connectkit/react": "^18.2.0",
+    "connectkit/react-dom": "^18.2.0",
+    "wagmi": "^0.10.11"
   }
 }
