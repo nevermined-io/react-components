@@ -40,7 +40,7 @@ jobs:
         run: |
           docker login -u ${{ secrets.NEVERMINED_DOCKER_USERNAME }} -p ${{ secrets.NEVERMINED_DOCKER_TOKEN}}
           sudo chmod go+r /etc/hosts
-          sudo echo "127.0.0.1  nevermined-metadata" | sudo tee -a /etc/hosts
+          sudo echo "127.0.0.1 nevermined-metadata" | sudo tee -a /etc/hosts
           git clone https://github.com/nevermined-io/tools
           cd tools
 
@@ -51,8 +51,9 @@ jobs:
           export KEEPER_VERSION=v3.0.0
           export NODE_VERSION=v1.0.0
           ./start_nevermined.sh --no-graph --geth 2>&1 | tee nevermined_tools.txt &
+          yarn nx artifacts:download core
       - name: Integration tests
         env:
           INFURA_TOKEN: ${{ secrets.INFURA_TOKEN }}
           SEED_WORDS: ${{ secrets.TEST_MNEMONIC }}
-        run: yarn nx artifacts:download core && yarn nx test:integrations core
+        run: yarn nx test:integrations core

@@ -3,3 +3,4 @@ providers/yarn-error.log
 core/artifacts
 core/circuits
 .vscode
+yarn-error.log
