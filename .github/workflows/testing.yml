@@ -49,7 +49,7 @@ jobs:
 
           # TODO: Use the default versions when merged into master
           export KEEPER_VERSION=v3.0.0
-          export NODE_VERSION=develop
+          export NODE_VERSION=v1.0.0
           ./start_nevermined.sh --no-graph --geth 2>&1 | tee nevermined_tools.txt &
       - name: Integration tests
         env:
