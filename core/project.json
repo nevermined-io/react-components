@@ -43,7 +43,7 @@
     "publish": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npm publish dist/core"
+        "command": "npm publish --access public dist/core"
       }
     },
     "artifacts:download": {
