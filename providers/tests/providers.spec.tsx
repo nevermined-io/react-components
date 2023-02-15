@@ -5,17 +5,19 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { renderHook, waitFor, render, act, screen } from '@testing-library/react'
 import { generateTestingUtils } from 'eth-testing'
 import { ethers } from 'ethers'
-import { WalletProvider, useWallet, Ethers } from '../src'
+import { WalletProvider, useWallet, Ethers, ConnectKit } from '../src'
 import ChainsConfig from './chainConfig'
 
 const wrapperProvider = ({ children, signer }: { children: React.ReactElement, signer: ethers.Signer }) => {
   try {
-    const { provider, chains} = configureChains(
+    const { chains } = configureChains(
       ChainsConfig,
       [
           jsonRpcProvider({
               rpc: (chain) => {
-                  if(!ChainsConfig.some(c => c.id === chain.id)) return null
+                  if(!ChainsConfig.some(c => c.id === chain.id)) return {
+                    http: ''
+                  }
   
                   return {
                       http: chain.rpcUrls.default.http[0]
@@ -32,11 +34,13 @@ const wrapperProvider = ({ children, signer }: { children: React.ReactElement, s
       }
     })]
   
-    const client = createClient({
-      autoConnect: true,
-      connectors,
-      provider,
-    })
+    const client = createClient(
+      ConnectKit.getDefaultClient({
+        appName: 'Nevermined One',
+        chains: ChainsConfig,
+        connectors,
+      })
+    )
   
     return (
       <WalletProvider client={client}>

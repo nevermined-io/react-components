@@ -1,5 +1,5 @@
 {
-  "name": "@nevermined-io/catalog-providers",
+  "name": "@nevermined-io/catalog-core",
   "version": "1.0.0-rc6",
   "main": "./index.js",
   "types": "./index.d.ts",
@@ -9,4 +9,6 @@
       "require": "./index.js"
     }
   }
+
+
 }
