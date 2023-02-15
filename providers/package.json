@@ -1,14 +1,9 @@
 {
   "name": "@nevermined-io/catalog-providers",
-  "version": "1.0.0-rc8",
-  "main": "./index.js",
-  "types": "./index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.js"
-    }
-  },
+  "private": false,
+  "version": "1.0.0-rc9",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "dependencies": {
     "@wagmi/core": "^0.8.15",
     "connectkit": "^1.1.1",

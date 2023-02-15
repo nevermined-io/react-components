@@ -1,14 +1,8 @@
 {
   "name": "@nevermined-io/catalog-core",
-  "version": "1.0.0-rc8",
-  "main": "./index.js",
-  "types": "./index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.js"
-    }
-  },
+  "version": "1.0.0-rc9",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "dependencies": {
     "@nevermined-io/sdk-dtp": "^0.3.0",
     "@nevermined-io/sdk": "^1.0.0",

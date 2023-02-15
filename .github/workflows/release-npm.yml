@@ -19,9 +19,9 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: yarn install --ignore-engines
       - run: yarn nx run-many --target=build --parallel=false
-      - run: cd dist/core && npm publish --access public
+      - run: cd core && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-      - run: cd dist/providers && npm publish --access public
+      - run: cd providers && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

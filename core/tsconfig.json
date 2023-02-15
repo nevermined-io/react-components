@@ -1,20 +1,10 @@
 {
   "compilerOptions": {
+    "outDir": "./dist",
     "allowJs": false,
-    "types": [
-      "vite/client"
-    ]
   },
   "files": [],
-  "include": [],
+  "include": ["src/"],
   "exclude": [],
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ],
   "extends": "../tsconfig.base.json"
 }
