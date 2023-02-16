@@ -1,5 +1,5 @@
 {
-  "name": "@nevermined-io/catalog-providers",
+  "name": "@nevermined-io/providers",
   "private": false,
   "version": "1.0.0",
   "main": "./dist/index.js",

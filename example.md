@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Config, DDO } from '@nevermined-io/sdk';
-import { Catalog, AssetService } from '@nevermined-io/catalog-core';
+import { Catalog, AssetService } from '@nevermined-io/catalog';
 import App from 'app';
 
 export const appConfig: Config = {

@@ -19,10 +19,10 @@ import { ConnectKitProviderProps } from './types'
  * ```tsx
  * import React from 'react';
  * import ReactDOM from 'react-dom';
- * import { Catalog } from '@nevermined-io/catalog-core';
+ * import { Catalog } from '@nevermined-io/catalog';
  * import { appConfig } from './config';
  * import Example from 'examples';
- * import { WalletProvider, getClient } from '@nevermined-io/catalog-providers';
+ * import { WalletProvider, getClient } from '@nevermined-io/providers';
  * import chainConfig from './chain_config';
  * 
  * 

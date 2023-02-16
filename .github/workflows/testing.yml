@@ -26,7 +26,7 @@ jobs:
         run: yarn nx run-many --target=test:unit
       - name: Build
         run: yarn nx run-many --target=build
-  integration-tests-core:
+  integration-tests-catalog:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -45,11 +45,11 @@ jobs:
         run: yarn install --ignore-engines
       - name: Check artifacts
         run: |
-          nvm-tools copy-artifacts ./core/artifacts
-          nvm-tools copy-circuits ./core/circuits
-          ls -l ./core/artifacts
+          nvm-tools copy-artifacts ./catalog/artifacts
+          nvm-tools copy-circuits ./catalog/circuits
+          ls -l ./catalog/artifacts
       - name: Integration tests
         env:
           INFURA_TOKEN: ${{ secrets.INFURA_TOKEN }}
           SEED_WORDS: ${{ secrets.TEST_MNEMONIC }}
-        run: yarn nx test:integrations core
+        run: yarn nx test:integrations catalog

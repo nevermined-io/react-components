@@ -3,16 +3,16 @@ name: Check documentation
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
 
 jobs:
   check-docs:
     runs-on: ubuntu-latest
     steps:  
       - uses: actions/checkout@v3
-      - name: Generate documentation for core and provider
+      - name: Generate documentation for catalog and provider
         run: |
           yarn install --ignore-engines
           yarn nx run-many --target=docs
