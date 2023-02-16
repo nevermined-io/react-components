@@ -1,8 +1,8 @@
 node_modules
 providers/yarn-error.log
-core/artifacts
-core/circuits
-core/dist
+catalog/artifacts
+catalog/circuits
+catalog/dist
 providers/dist
 .vscode
 yarn-error.log
