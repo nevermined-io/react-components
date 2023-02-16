@@ -16,7 +16,10 @@ const ChainConfig: Chain[] = [
     rpcUrls: {
       default: {
         http: ["http://localhost:8545"]
-      }
+      },
+      public: {
+        http: ['http://localhost:8545'],
+      },
     },
     testnet: true
   },

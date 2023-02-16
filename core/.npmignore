@@ -62,5 +62,8 @@ yarn-error.log*
 # source folder
 .github
 src
-tests
+integration-subgraph
+integration-tests
+unit-tests
+public
 temp-docs

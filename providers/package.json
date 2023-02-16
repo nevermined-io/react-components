@@ -1,85 +1,14 @@
 {
   "name": "@nevermined-io/catalog-providers",
-  "version": "1.0.0-rc5",
   "private": false,
-  "scripts": {
-    "start": "npx tsc --watch",
-    "build": "npm run clean && npm run build:tsc",
-    "build:tsc": "tsc --noEmit false --project tsconfig.build.json",
-    "clean": "rm -rf dist",
-    "test:unit": "jest",
-    "eject": "react-scripts eject",
-    "lint": "eslint ./",
-    "lint:fix": "yarn run lint -- --fix",
-    "docs": "npx typedoc && rm ../docs/providers/.nojekyll"
-  },
-  "main": "./dist/node/index.js",
-  "types": "./dist/node/index.d.ts",
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "peerDependencies": {
-    "react": ">=17.0.0"
-  },
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "dependencies": {
     "@wagmi/core": "^0.8.15",
     "connectkit": "^1.1.1",
     "ethers": "^5.7.2",
     "wagmi": "^0.10.11"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.16.5",
-    "@babel/plugin-syntax-flow": "^7.14.5",
-    "@babel/plugin-transform-react-jsx": "^7.14.9",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-react": "^7.16.5",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@types/jest": "^29.2.4",
-    "@types/react": "17.0.2",
-    "@types/react-dom": "^18.0.6",
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
-    "@typescript-eslint/parser": "^5.31.0",
-    "babel-eslint": "^10.1.0",
-    "babel-jest": "^29.3.1",
-    "babel-loader": "8.1.0",
-    "core-js": "^3.26.1",
-    "eslint": "^8.20.0",
-    "eslint-config-nevermined": "^0.2.0",
-    "eslint-config-next": "^12.3.1",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-import": "^2.26.0",
-    "eth-testing": "^1.4.0",
-    "jest": "^29.3.1",
-    "jest-environment-jsdom": "^29.3.1",
-    "prettier": "^2.5.1",
-    "prettier-eslint": "^13.0.0",
-    "prettier-package-json": "^2.7.0",
-    "prettier-stylelint": "^0.4.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "ts-jest": "^29.0.3",
-    "ts-node": "^10.8.0",
-    "ts-node-dev": "^2.0.0",
-    "typedoc": "^0.23.10",
-    "typedoc-plugin-markdown": "^3.13.4",
-    "typescript": "^4.6.2"
   },
   "resolutions": {
     "connectkit/react": "^18.2.0",

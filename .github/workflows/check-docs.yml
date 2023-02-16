@@ -12,16 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:  
       - uses: actions/checkout@v3
-      - name: Generate documentation for the Catalog core
+      - name: Generate documentation for core and provider
         run: |
-          cd lib
           yarn install --ignore-engines
-          yarn docs
-      - name: Generate documentation for the Catalog providers
-        run: |
-          cd providers
-          yarn install --ignore-engines
-          yarn docs
+          yarn nx run-many --target=docs
       - name: Doc linter
         run: |
           yarn install
