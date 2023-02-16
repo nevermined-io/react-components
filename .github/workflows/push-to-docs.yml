@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:  
       - uses: actions/checkout@v3
-      - name: Generate documentation for the Catalog core and providers
+      - name: Generate documentation for the catalog and providers
         run: |
           yarn install --ignore-engines
           yarn nx run-many --target=docs

@@ -22,10 +22,16 @@
         "command": "rm -rf providers/dist && cd providers && tsc --noEmit false"
       }
     },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd providers && npm publish --access public"
+      }
+    },
     "docs": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx typedoc providers && rm docs/providers/.nojekyll"
+        "command": "yarn typedoc --tsconfig providers/tsconfig.json --options providers/typedoc.json && rm -f ./docs/providers/.nojekyll"
       }
     },
     "test:unit": {

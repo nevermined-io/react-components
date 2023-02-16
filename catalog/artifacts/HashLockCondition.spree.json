@@ -1,0 +1,291 @@
+{
+  "name": "HashLockCondition",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "version",
+          "type": "uint8"
+        }
+      ],
+      "name": "Initialized",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "CONDITION_TYPE",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "signature": "0x15c87f85"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_id",
+          "type": "bytes32"
+        }
+      ],
+      "name": "abortByTimeOut",
+      "outputs": [
+        {
+          "internalType": "enum ConditionStoreLibrary.ConditionState",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0x1ce19185"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_agreementId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_preimage",
+          "type": "bytes32"
+        }
+      ],
+      "name": "fulfill",
+      "outputs": [
+        {
+          "internalType": "enum ConditionStoreLibrary.ConditionState",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0x042f2b65"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_agreementId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "string",
+          "name": "_preimage",
+          "type": "string"
+        }
+      ],
+      "name": "fulfill",
+      "outputs": [
+        {
+          "internalType": "enum ConditionStoreLibrary.ConditionState",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0x37441996"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_agreementId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_preimage",
+          "type": "uint256"
+        }
+      ],
+      "name": "fulfill",
+      "outputs": [
+        {
+          "internalType": "enum ConditionStoreLibrary.ConditionState",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0x4357855e"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_agreementId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_valueHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "generateId",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "signature": "0xcb4e57e8"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_preimage",
+          "type": "bytes32"
+        }
+      ],
+      "name": "hashValues",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function",
+      "signature": "0x80d16806"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_preimage",
+          "type": "uint256"
+        }
+      ],
+      "name": "hashValues",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function",
+      "signature": "0xb613eb5c"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_preimage",
+          "type": "string"
+        }
+      ],
+      "name": "hashValues",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function",
+      "signature": "0xd0ac9b09"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_conditionStoreManagerAddress",
+          "type": "address"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0x485cc955"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "signature": "0x8da5cb5b"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0x715018a6"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0xf2fde38b"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b50610b00806100206000396000f3fe608060405234801561001057600080fd5b50600436106100af5760003560e01c8063042f2b65146100b457806315c87f85146100dd5780631ce191851461011257806337441996146101255780634357855e146100b4578063485cc95514610138578063715018a61461014d57806380d16806146101555780638da5cb5b14610168578063b613eb5c14610155578063cb4e57e814610188578063d0ac9b09146101c8578063f2fde38b146101db575b600080fd5b6100c76100c2366004610755565b6101ee565b6040516100d49190610799565b60405180910390f35b6101047f3037433d5b2b81726e66d6a8ad635cf5dcd8580bfa6ac77d887b5ac7ca62e07a81565b6040519081526020016100d4565b6100c76101203660046107a7565b61020e565b6100c7610133366004610862565b610361565b61014b6101463660046108bf565b610373565b005b61014b610456565b6101046101633660046107a7565b610491565b6101706104c3565b6040516001600160a01b0390911681526020016100d4565b610104610196366004610755565b604080516020808201949094523081830152606080820193909352815180820390930183526080019052805191012090565b6101046101d63660046108f2565b6104d2565b61014b6101e936600461092e565b6104e5565b60006102056102008461019685610491565b610585565b90505b92915050565b606554604051636ed93cc560e01b8152600481018390526000916001600160a01b031690636ed93cc59060240160206040518083038186803b15801561025357600080fd5b505afa158015610267573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061028b9190610949565b6102dc5760405162461bcd60e51b815260206004820152601f60248201527f436f6e646974696f6e206e6565647320746f2062652074696d6564206f75740060448201526064015b60405180910390fd5b60655460405163295e072360e11b81526001600160a01b03909116906352bc0e469061030f908590600390600401610972565b602060405180830381600087803b15801561032957600080fd5b505af115801561033d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906102089190610986565b600061020561020084610196856104d2565b600061037f6001610592565b90508015610397576000805461ff0019166101001790555b6001600160a01b0382166103df5760405162461bcd60e51b815260206004820152600f60248201526e496e76616c6964206164647265737360881b60448201526064016102d3565b6103e761061f565b6103f0836104e5565b606580546001600160a01b0319166001600160a01b0384161790558015610451576000805461ff0019169055604051600181527f7f26b83ff96e1f2b6a682f133852f6798a09c465da95921460cefb38474024989060200160405180910390a15b505050565b3361045f6104c3565b6001600160a01b0316146104855760405162461bcd60e51b81526004016102d3906109a7565b61048f600061064e565b565b6000816040516020016104a691815260200190565b604051602081830303815290604052805190602001209050919050565b6033546001600160a01b031690565b6000816040516020016104a691906109dc565b336104ee6104c3565b6001600160a01b0316146105145760405162461bcd60e51b81526004016102d3906109a7565b6001600160a01b0381166105795760405162461bcd60e51b815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201526564647265737360d01b60648201526084016102d3565b6105828161064e565b50565b60006102088260026106a0565b60008054610100900460ff16156105d9578160ff1660011480156105b55750303b155b6105d15760405162461bcd60e51b81526004016102d390610a31565b506000919050565b60005460ff8084169116106106005760405162461bcd60e51b81526004016102d390610a31565b506000805460ff191660ff92909216919091179055600190565b919050565b600054610100900460ff166106465760405162461bcd60e51b81526004016102d390610a7f565b61048f610725565b603380546001600160a01b038381166001600160a01b0319831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b60655460405163295e072360e11b81526000916001600160a01b0316906352bc0e46906106d39086908690600401610972565b602060405180830381600087803b1580156106ed57600080fd5b505af1158015610701573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906102059190610986565b600054610100900460ff1661074c5760405162461bcd60e51b81526004016102d390610a7f565b61048f3361064e565b6000806040838503121561076857600080fd5b50508035926020909101359150565b6004811061079557634e487b7160e01b600052602160045260246000fd5b9052565b602081016102088284610777565b6000602082840312156107b957600080fd5b5035919050565b634e487b7160e01b600052604160045260246000fd5b600082601f8301126107e757600080fd5b81356001600160401b0380821115610801576108016107c0565b604051601f8301601f19908116603f01168101908282118183101715610829576108296107c0565b8160405283815286602085880101111561084257600080fd5b836020870160208301376000602085830101528094505050505092915050565b6000806040838503121561087557600080fd5b8235915060208301356001600160401b0381111561089257600080fd5b61089e858286016107d6565b9150509250929050565b80356001600160a01b038116811461061a57600080fd5b600080604083850312156108d257600080fd5b6108db836108a8565b91506108e9602084016108a8565b90509250929050565b60006020828403121561090457600080fd5b81356001600160401b0381111561091a57600080fd5b610926848285016107d6565b949350505050565b60006020828403121561094057600080fd5b610205826108a8565b60006020828403121561095b57600080fd5b8151801515811461096b57600080fd5b9392505050565b8281526040810161096b6020830184610777565b60006020828403121561099857600080fd5b81516004811061096b57600080fd5b6020808252818101527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604082015260600190565b600060208083528351808285015260005b81811015610a09578581018301518582016040015282016109ed565b81811115610a1b576000604083870101525b50601f01601f1916929092016040019392505050565b6020808252602e908201527f496e697469616c697a61626c653a20636f6e747261637420697320616c72656160408201526d191e481a5b9a5d1a585b1a5e995960921b606082015260800190565b6020808252602b908201527f496e697469616c697a61626c653a20636f6e7472616374206973206e6f74206960408201526a6e697469616c697a696e6760a81b60608201526080019056fea2646970667358221220cd2a8953066dee95a31c04c2a314c07fb5813f3464b21cca42cce9a87c1daeb364736f6c63430008090033",
+  "address": "0xF400b7e470866a2bcbaEE225bD1eCbF50A8660bf",
+  "implementation": "0xD6d19ed17Ec0893B6979FE6B0B19beeE07849Fec",
+  "version": "v2.0.0",
+  "libraries": {}
+}

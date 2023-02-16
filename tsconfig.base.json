@@ -23,10 +23,10 @@
     "downlevelIteration": true,
     "sourceMap": false,
     "paths": {
-      "@nevermined-io/catalog-core": [
-        "./core/src/index.ts"
+      "@nevermined-io/catalog": [
+        "./catalog/src/index.ts"
       ],
-      "@nevermined-io/catalog-providers": [
+      "@nevermined-io/providers": [
         "./providers/src/index.ts"
       ]
     }

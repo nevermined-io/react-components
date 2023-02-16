@@ -18,7 +18,7 @@ jobs:
           yarn
       - name: Compile
         run: |
-          yarn nx build core
+          yarn nx build catalog
       - name: Setup NVM
         run: |
           docker login -u ${{ secrets.NEVERMINED_DOCKER_USERNAME }} -p ${{ secrets.NEVERMINED_DOCKER_TOKEN}}
@@ -31,15 +31,16 @@ jobs:
           rm -rf "${HOME}/.nevermined/nevermined-contracts/artifacts"
 
           export KEEPER_VERSION=v3.0.0                                                        
-          export SUBGRAPH_VERSION=v0.5.0
+          export SUBGRAPH_VERSION=develop
           export NODE_VERSION=v1.0.0
           ./start_nevermined.sh --opengsn 2>&1 | tee nevermined_tools.txt &
           cd ../lib
           ./scripts/wait-nevermined.sh
+          yarn nx artifacts:download catalog
       - name: Integration subgraph tests
         env:
           INFURA_TOKEN: ${{ secrets.INFURA_TOKEN }}
           SEED_WORDS: ${{ secrets.TEST_MNEMONIC }}
-        run: yarn nx artifacts:download core && yarn nx test:subgraph core
+        run: yarn nx test:subgraph catalog
 
       

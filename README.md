@@ -46,15 +46,15 @@ Steps to integrate:
 ### First: Add the NPM dependency to your project
 
 ```typescript
-yarn add @nevermined-io/catalog-core
+yarn add @nevermined-io/catalog
 or
-npm install --save @nevermined-io/catalog-core
+npm install --save @nevermined-io/catalog
 ```
 
 ### Second: Integrate it in your code
 
 ```typescript
-import { Catalog } from '@nevermined-io/catalog-core';
+import { Catalog } from '@nevermined-io/catalog';
 import App from 'app';
 import { Config } from '@nevermined-io/sdk';
 
