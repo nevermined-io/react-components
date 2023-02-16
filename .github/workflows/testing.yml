@@ -26,7 +26,7 @@ jobs:
         run: yarn nx run-many --target=test:unit
       - name: Build
         run: yarn nx run-many --target=build
-  integration-tests-catalog
+  integration-tests-catalog:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
