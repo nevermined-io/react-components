@@ -22,12 +22,6 @@
         "command": "rm -rf providers/dist && cd providers && tsc --noEmit false"
       }
     },
-    "publish": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "cd providers && npm publish --access public"
-      }
-    },
     "docs": {
       "executor": "nx:run-commands",
       "options": {
