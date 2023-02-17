@@ -2,7 +2,7 @@
 set -e
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
-CORE_DOCS_DIR="$SCRIPT_DIR/../docs/core"
+CORE_DOCS_DIR="$SCRIPT_DIR/../docs/catalog"
 PROVIDERS_DOCS_DIR="$SCRIPT_DIR/../docs/providers"
 DOCS=("$CORE_DOCS_DIR" "$PROVIDERS_DOCS_DIR")
 
