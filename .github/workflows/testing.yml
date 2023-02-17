@@ -5,17 +5,13 @@ name: Testing
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop"]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "develop"]
 
 jobs:
   unit-test-with-build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        module: ['lib', 'providers']
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -23,24 +19,37 @@ jobs:
           node-version: "16.x"
           registry-url: https://registry.npmjs.org/
       - name: Install packages
-        run: cd ${{ matrix.module }} && yarn install --ignore-engines
+        run: yarn install --ignore-engines
       - name: Linter
-        run: cd ${{ matrix.module }} && yarn lint
+        run: yarn nx run-many --target=lint
       - name: Unit tests
-        run: cd ${{ matrix.module }} && yarn test:unit
+        run: yarn nx run-many --target=test:unit
       - name: Build
-        run: cd ${{ matrix.module }} && yarn build:tsc
-  integration-tests-core:
+        run: yarn nx run-many --target=build
+  integration-tests-catalog:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: "17.x"
           registry-url: https://registry.npmjs.org/
+      - uses: nevermined-io/nvm-tools-actions@v0.7.1
+        with:
+          token: ${{ secrets.API_TOKEN_GITHUB }}
+          opengsn: 'true'
+          estuary: 'true'
+          contracts-version: 'v3.0.0'
+          node-version: 'v1.0.0'
       - name: Install packages
-        run: cd lib && yarn install --ignore-engines
+        run: yarn install --ignore-engines
+      - name: Check artifacts
+        run: |
+          nvm-tools copy-artifacts ./catalog/artifacts
+          nvm-tools copy-circuits ./catalog/circuits
+          ls -l ./catalog/artifacts
       - name: Integration tests
         env:
           INFURA_TOKEN: ${{ secrets.INFURA_TOKEN }}
-        run: cd lib && yarn artifacts:download && yarn test:integrations
+          SEED_WORDS: ${{ secrets.TEST_MNEMONIC }}
+        run: yarn nx test:integrations catalog

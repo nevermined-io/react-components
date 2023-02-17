@@ -1,2 +1,11 @@
 node_modules
 providers/yarn-error.log
+catalog/artifacts
+catalog/circuits
+catalog/dist
+providers/dist
+.vscode
+yarn-error.log
+dist
+.env
+.env.*

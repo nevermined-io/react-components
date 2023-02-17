@@ -3,6 +3,7 @@ export * from "./providers"
 export * from "./client"
 export * from './types'
 export * as Wagmi from "wagmi"
+export * as Chains from "wagmi/chains"
 export * as WalletConnect from "wagmi/connectors/walletConnect"
 export * as Metamask from 'wagmi/connectors/metaMask'
 export * as CoinbaseWallet from 'wagmi/connectors/coinbaseWallet'

@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "allowJs": false,
+  },
+  "files": [],
+  "include": ["src/"],
+  "exclude": [],
+  "extends": "../tsconfig.base.json"
+}

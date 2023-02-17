@@ -1,8 +1,8 @@
 ```tsx
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Config, DDO } from '@nevermined-io/nevermined-sdk-js';
-import { Catalog, AssetService } from '@nevermined-io/catalog-core';
+import { Config, DDO } from '@nevermined-io/sdk';
+import { Catalog, AssetService } from '@nevermined-io/catalog';
 import App from 'app';
 
 export const appConfig: Config = {

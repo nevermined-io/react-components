@@ -9,7 +9,7 @@ on:
       - "v*.*"
 
 jobs:
-  publish-npm-catalog-core:
+  publish-catalog:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,21 +17,8 @@ jobs:
         with:
           node-version: "16.x"
           registry-url: https://registry.npmjs.org/
-      - run: cd lib && yarn install --ignore-engines
-      - run: cd lib && yarn build:tsc
-      - run: cd lib && npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-  publish-npm-catalog-providers:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: "17.x"
-          registry-url: https://registry.npmjs.org/
-      - run: cd providers && yarn install --ignore-engines
-      - run: cd providers && yarn build:tsc
-      - run: cd providers && npm publish --access public
+      - run: yarn install --ignore-engines
+      - run: yarn nx run-many --target=build --parallel=false
+      - run: yarn nx run-many --target=publish --parallel=false
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

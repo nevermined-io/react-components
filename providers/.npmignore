@@ -62,6 +62,5 @@ yarn-error.log*
 # source folder
 .github
 src
-test
 tests
-public
+temp-docs
