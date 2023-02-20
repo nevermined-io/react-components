@@ -1,11 +1,11 @@
 ```tsx
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Config, DDO } from '@nevermined-io/sdk';
-import { Catalog, AssetService } from '@nevermined-io/catalog';
+import { WalletProvider, getClient } from "@nevermined-io/providers";
+import { Catalog, AssetService, NeverminedOptions, DDO } from '@nevermined-io/catalog';
 import App from 'app';
 
-export const appConfig: Config = {
+export const appConfig: NeverminedOptions = {
   web3Provider: new Web3(window.ethereum),
   nodeUri,
   gatewayUri,
@@ -45,7 +45,18 @@ const App = () => {
 ReactDOM.render(
   <div>
     <Catalog.NeverminedProvider config={appConfig}>
-      <App />
+      <WalletProvider
+        client={getClient()}
+        correctNetworkId={80001}
+        connectKitProps={
+            {
+                theme: 'auto',
+                mode: 'dark',
+            }
+        }
+      >
+        <App />
+      </WalletProvider>
     </Catalog.NeverminedProvider>
   </div>,
   document.getElementById('root') as HTMLElement
