@@ -1,6 +1,6 @@
 [![banner](https://raw.githubusercontent.com/nevermined-io/assets/main/images/logo/banner_logo.png)](https://nevermined.io)
 
-# Nevermined Components
+# Nevermined React Components
 
 > The framework for building React applications using Nevermined
 > [nevermined.io](https://nevermined.io)
@@ -12,7 +12,7 @@
 
 ## Table of Contents
 
-* [Nevermined Components](#nevermined-components)
+* [Nevermined React Components](#nevermined-react-components)
    * [Table of Contents](#table-of-contents)
    * [What components are avaliable into the catalog?](#what-components-are-avaliable-into-the-catalog)
    * [How can I use it?](#how-can-i-use-it)
@@ -26,7 +26,7 @@
 The Nevermined Catalog is a library of packaged Nevermined functionalities making easier to add web3 capabilities to any existing React application.
 
 
-## What components are avaliable into the Nevermined Components?
+## What components are avaliable into the Nevermined React Components?
 
 Some of the main functionalities that can be found in the catalog are:
 
@@ -38,7 +38,7 @@ Some of the main functionalities that can be found in the catalog are:
 * Wallet management for different providers
 * etc
 
-You can find a full list of all the existing components into the [Components section of the Functionalities page](docs/functionalities.md).
+You can find a full list of all the existing components into the [Components section of the Functionalities page](https://docs.nevermined.io/docs/catalog/functionalities).
 
 ## How can I use it?
 
