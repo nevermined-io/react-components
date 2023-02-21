@@ -8,7 +8,7 @@ This library was generated with [Nx](https://nx.dev).
 
 # Getting started
 
-The `providers` component exposes a package facilitating the interaction with Web3 providers like Metamask. You can see more about in the [documentation](https://docs.nevermined.io/docs/never/intro)
+The `providers` component exposes a package facilitating the interaction with Web3 providers like Metamask. You can see more about in the [documentation](https://docs.nevermined.io/docs/react-components/intro)
 
 ## Providers supported
 
@@ -71,7 +71,7 @@ const ConnectToMetaMask = () => {
 };
 ```
 
-You can find [here a example](https://docs.nevermined.io/docs/nevermined-components/example)
+You can find [here a example](https://docs.nevermined.io/docs/react-components/example)
 
 ## Running unit tests
 

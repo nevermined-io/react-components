@@ -15,7 +15,7 @@
 
 #### Defined in
 
-types/index.ts:336
+[types/index.ts:336](https://github.com/nevermined-io/components-catalog/blob/ca4c968/catalog/src/types/index.ts#L336)
 
 ___
 
@@ -25,4 +25,4 @@ ___
 
 #### Defined in
 
-types/index.ts:337
+[types/index.ts:337](https://github.com/nevermined-io/components-catalog/blob/ca4c968/catalog/src/types/index.ts#L337)
