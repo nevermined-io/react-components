@@ -38,7 +38,7 @@ Some of the main functionalities that can be found in the catalog are:
 * Wallet management for different providers
 * etc
 
-You can find a full list of all the existing components into the [Components section of the Functionalities page](https://docs.nevermined.io/docs/catalog/functionalities).
+You can find a full list of all the existing components into the [Components section of the Functionalities page](https://docs.nevermined.io/docs/react-components/functionalities).
 
 ## How can I use it?
 
