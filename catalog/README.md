@@ -31,7 +31,7 @@ The Services includes custom react hooks and providers to cover specific scenari
 
 ## Pre-requisites
 
-The Nevermined Components Catalog is a package built with React and Typescript.
+The Catalog is a package built with React and Typescript.
 It requires [Node JS](https://nodejs.org/) v14 or higher. You can find online instructions about [How to install Node JS](https://nodejs.dev/en/learn/how-to-install-nodejs/).
 
 ## How to install ?

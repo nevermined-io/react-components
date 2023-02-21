@@ -1,6 +1,6 @@
 [![banner](https://raw.githubusercontent.com/nevermined-io/assets/main/images/logo/banner_logo.png)](https://nevermined.io)
 
-# Nevermined Catalog of Components
+# Nevermined React Components
 
 > The framework for building React applications using Nevermined
 > [nevermined.io](https://nevermined.io)
@@ -12,7 +12,7 @@
 
 ## Table of Contents
 
-* [Nevermined Catalog of Components](#nevermined-catalog-of-components)
+* [Nevermined React Components](#nevermined-react-components)
    * [Table of Contents](#table-of-contents)
    * [What components are avaliable into the catalog?](#what-components-are-avaliable-into-the-catalog)
    * [How can I use it?](#how-can-i-use-it)
@@ -26,7 +26,7 @@
 The Nevermined Catalog is a library of packaged Nevermined functionalities making easier to add web3 capabilities to any existing React application.
 
 
-## What components are avaliable into the catalog?
+## What components are avaliable into the Nevermined React Components?
 
 Some of the main functionalities that can be found in the catalog are:
 
@@ -35,9 +35,10 @@ Some of the main functionalities that can be found in the catalog are:
 * Data Sharing
 * Minting and burning NFTs
 * Exclusive access exclusive contents for NFT holders
+* Wallet management for different providers
 * etc
 
-You can find a full list of all the existing components into the [Components section of the Functionalities page](docs/functionalities.md).
+You can find a full list of all the existing components into the [Components section of the Functionalities page](https://docs.nevermined.io/docs/react-components/functionalities).
 
 ## How can I use it?
 
@@ -54,11 +55,11 @@ npm install --save @nevermined-io/catalog
 ### Second: Integrate it in your code
 
 ```typescript
-import { Catalog } from '@nevermined-io/catalog';
+import { Catalog, NeverminedOptions } from '@nevermined-io/catalog';
+import { WalletProvider, getClient } from "@nevermined-io/providers";
 import App from 'app';
-import { Config } from '@nevermined-io/sdk';
 
-const appConfig: Config = {
+const appConfig: NeverminedOptions = {
   web3Provider: new Web3(window.ethereum),
   nodeUri,
   gatewayUri,
@@ -75,7 +76,18 @@ const appConfig: Config = {
 ReactDOM.render(
   <div>
     <Catalog.NeverminedProvider config={appConfig}>
-      <App />
+      <WalletProvider
+        client={getClient()}
+        correctNetworkId={80001}
+        connectKitProps={
+            {
+                theme: 'auto',
+                mode: 'dark',
+            }
+        }
+      >
+        <App />
+      </WalletProvider>
     </Catalog.NeverminedProvider>
   </div>,
   document.getElementById('root') as HTMLElement
@@ -100,7 +112,7 @@ const SingleAsset = () => {
 
 ## Demo and example
 
-You can find more information in the [examples page](docs/example.md).
+You can find more information in the [examples page](example.md).
 
 
 # License

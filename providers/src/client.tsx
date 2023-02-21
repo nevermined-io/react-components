@@ -22,6 +22,7 @@ import { ConnectKitProviderProps } from './types'
 
 /**
  * function that build and return the wagmi client
+ * @deprecated use `Wagmi.createClient` instead, [see here](https://docs.nevermined.io/docs/tutorials/login-wallet-provider)
  * @param appName App name required for Coinbase wallet. If appName is undefined Coinbase wallet won't be supported
  * @param autoConnect If it is true once that the dapp start to run it will try to connect to the wallet automatically. Default `true`
  * @param chainsConfig Config with all the available chains that can be used in the dapp. Default chains supported `Polygon Mainnet`, `Polygon Mumbai`, `spree (localhost)
