@@ -23,6 +23,7 @@ import {
   SubscribeModule,
   TransferNFTConditionMethod,
   BigNumber,
+  PublishedSubscriptions
 } from './types'
 import {
   conductOrder,
@@ -206,6 +207,33 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
+    getPublishedSubscriptions: async (address: string): Promise<PublishedSubscriptions[]> => {
+      try {
+        const publishedAssets = await account.getReleases(address)
+
+        const ddos = await Promise.all(
+          publishedAssets.map(async (a) => {
+            const subscriptions = await sdk.search.bySubscriptionContractAddress(a)
+
+            if(!subscriptions.results.length) {
+              return undefined
+            }
+
+            return {
+              address: a,
+              ddos: subscriptions.results
+            }
+
+          })
+        )
+
+        return ddos.filter(ddo => Boolean(ddo)) as PublishedSubscriptions[]
+
+      } catch (error) {
+        verbose && Logger.error(error)
+        return []
+      }
+    },
     isAssetHolder: async (
       did: string,
       walletAddress: string,
@@ -259,7 +287,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         verbose && Logger.error(error)
         return {} as DDO
       }
-    },
+    }, 
 
     query: async (q: SearchQuery): Promise<QueryResult> => {
       try {
