@@ -16,6 +16,7 @@ import {
   PublishMetadata,
   ERCType,
   CryptoConfig,
+  CreateProgressStep,
 } from '../types'
 import { getCurrentAccount } from '../utils'
 import {_getDTPInstance, _encryptFileMetadata} from '../utils/dtp'
@@ -171,6 +172,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param asset.txParams Optional transaction parameters
    * @param asset.method Method used to encrypt the urls
    * @param asset.password Password to encrypt metadata
+   * @param asset.onEvent A callback to handle progress events
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishAsset = async ({
@@ -178,15 +180,19 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
     password,
-    cryptoConfig
+    cryptoConfig,
+    onEvent,
   }:
   {
     assetAttributes: AssetAttributes;
     publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
     password?: string,
-    cryptoConfig?: CryptoConfig 
+    cryptoConfig?: CryptoConfig,
+    onEvent?: (next: CreateProgressStep) => void,
   }) => {
+    let subscription: { unsubscribe: () => boolean; } | undefined
+
     try {
       setIsProcessing(true)
 
@@ -206,12 +212,16 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         assetAttributes.metadata = {...metadata}
       }
 
-      const ddo = await sdk.assets.create(
+      const subscribablePromise = sdk.assets.create(
         assetAttributes,
         accountWallet,
         publishMetadata,
         txParameters,
       )
+
+      subscription = onEvent ? subscribablePromise.subscribe(onEvent) : undefined
+      const ddo = await subscribablePromise
+
       setIsProcessing(false)
       setIsPublished(true)
       setAssetMessage('The asset has been sucessfully published')
@@ -223,6 +233,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       setAssetMessage('')
       setIsProcessing(false)
       throw new ClientError(error.message, 'Catalog')
+    } finally {
+      subscription?.unsubscribe()
     }
   }
 
@@ -239,6 +251,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param nft721.txParams Optional transaction parameters
    * @param nft721.method Method used to encrypt the urls
    * @param nft721.password Password to encrypt metadata
+   * @param nft721.onEvent A callback to handle progress events
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishNFT721 = async ({
@@ -246,15 +259,19 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
     password,
-    cryptoConfig
+    cryptoConfig,
+    onEvent,
   }:
   {
     nftAttributes: NFTAttributes;
     publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
     password?: string,
-    cryptoConfig?: CryptoConfig 
+    cryptoConfig?: CryptoConfig,
+    onEvent?: (next: CreateProgressStep) => void
   }) => {
+    let subscription: { unsubscribe: () => boolean; } | undefined
+
     try {
       setIsProcessing(true)
 
@@ -272,13 +289,16 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         const metadata = await _encryptFileMetadata(sdk, dtp, nftAttributes.metadata, password)
         nftAttributes.metadata = {...metadata}
       }
-    
-      const ddo = await sdk.nfts721.create(
+
+      const subscribablePromise = sdk.nfts721.create(
         nftAttributes,
         accountWallet,
         publishMetadata,
         txParameters,
-    )
+      )
+
+      subscription = onEvent ? subscribablePromise.subscribe(onEvent) : undefined
+      const ddo = await subscribablePromise
 
       setIsProcessing(false)
       setIsPublished(true)
@@ -291,6 +311,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       setAssetMessage('')
       setIsProcessing(false)
       throw new ClientError(error.message, 'Catalog')
+    } finally {
+      subscription?.unsubscribe()
     }
   }
 
@@ -315,6 +337,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param nft1155.neverminedNFTType the type of the NFT1155
    * @param nft1155.appId The id of the application creating the NFT
    * @param nft1155.txParameters Trasaction number of the asset creation
+   * @param nft1155.onEvent A callback to handle progress events
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishNFT1155 = async ({
@@ -322,15 +345,19 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
     password,
-    cryptoConfig
+    cryptoConfig,
+    onEvent,
   }:
   {
     nftAttributes: NFTAttributes;
     publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
     password?: string,
-    cryptoConfig?: CryptoConfig 
+    cryptoConfig?: CryptoConfig,
+    onEvent?: (next: CreateProgressStep) => void,
   }) => {
+    let subscription: { unsubscribe: () => boolean; } | undefined
+
     try {
       setIsProcessing(true)
 
@@ -354,12 +381,16 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         nftAttributes.metadata = {...metadata}
       }
 
-      const ddo = await sdk.nfts1155.create(
+      const subscribablePromise = sdk.nfts1155.create(
         nftAttributes,
         accountWallet,
         publishMetadata,
         txParameters
       )
+
+      subscription = onEvent ? subscribablePromise.subscribe(onEvent) : undefined
+      const ddo = await subscribablePromise
+
       setIsProcessing(false)
       setIsPublished(true)
       setAssetMessage('The asset NFT 1155 has been sucessfully published')
@@ -371,6 +402,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       setAssetMessage('')
       setIsProcessing(false)
       throw new ClientError(error.message, 'Catalog')
+    } finally {
+      subscription?.unsubscribe()
     }
   }
 
