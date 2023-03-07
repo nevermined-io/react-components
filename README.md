@@ -110,6 +110,18 @@ const SingleAsset = () => {
 
 ```
 
+## Build
+
+To build the project run:
+
+```
+npx nx run-many --target=build
+
+# or
+
+yarn nx run-many --target=build
+```
+
 ## Demo and example
 
 You can find more information in the [examples page](example.md).
