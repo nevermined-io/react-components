@@ -315,6 +315,14 @@ export const ddo = {
   ],
 }
 
+export const ddo2 = {
+  ...ddo,
+  id: 'did:nv:0c184915b07b44c888d468be85a9b28253e80070e5294b1aaed81c2f0264e300',
+}
+export const ddo3 = {
+  ...ddo,
+  id: 'did:nv:0c184915b07b44c888d468be85a9b28253e80070e5294b1aaed81c2f0264e500',
+}
 export const walletAddress = '0xf61B443A155b07D2b2cAeA2d99715dC84E839EEf'
 export const walletAddress2 = '0xf61B443A155b07D2b2cAeA2d99715dC84E83932f'
 export const agreementId = '0xdB1B443A155b07D2b2cAeA2d99715dC84E839EE4'
@@ -367,6 +375,13 @@ export const nevermined = {
           getId: () => walletAddress,
         },
       ],
+    },
+    search: {
+      bySubscriptionContractAddress: async (id: string) => {
+        return {
+          results: id === ddo.id ? [ddo2, ddo3] : [],
+        }
+      },
     },
     services: {
       metadata: {
@@ -493,6 +508,27 @@ export const nevermined = {
               },
             ],
           },
+        },
+      },
+      didRegistry: {
+        events: {
+          getPastEvents: () => [
+            {
+              _creator: walletAddress,
+              _did: ddo.id,
+              _agreementId: agreementId,
+            },
+            {
+              _creator: walletAddress,
+              _did: ddo2.id,
+              _agreementId: agreementId,
+            },
+            {
+              _creator: walletAddress,
+              _did: ddo3.id,
+              _agreementId: agreementId,
+            },
+          ],
         },
       },
       templates: {
