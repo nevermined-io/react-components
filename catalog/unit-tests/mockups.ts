@@ -643,13 +643,6 @@ export const nevermined = {
         },
       ],
     },
-    search: {
-      bySubscriptionContractAddress: async (id: string) => {
-        return {
-          results: id === nftContract ? [ddo2, ddo3] : [],
-        }
-      },
-    },
     services: {
       metadata: {
         queryMetadata: async () => ({
