@@ -212,46 +212,49 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
         const subscriptions = await Promise.all(
           publishedAssets.map(async (a) => {
-            const subscriptionDDO = await assets.findOne(a)
+            try {
+              const subscriptionDDO = await assets.findOne(a)
 
-            if (!subscriptionDDO) {
-              return undefined
-            }
-
-            const metadata = subscriptionDDO?.findServiceByType('metadata')
-            const isNFTSales = subscriptionDDO?.findServiceByType('nft-sales')
-
-            if(!metadata || !isNFTSales || metadata.attributes.main.nftType !== NeverminedNFT721Type.nft721Subscription) {
-              return undefined
-            }
-
-            const nftInfo = await sdk.keeper.didRegistry.getNFTInfo(subscriptionDDO.id) as string[]
-
-            const services = await Promise.all(publishedAssets.map(async (p) => {
-              try {
-                const serviceDDO = await assets.findOne(p)
-
-                const metadata = serviceDDO?.findServiceByType('metadata')
-                const isNFTAccess = serviceDDO?.findServiceByType('nft-access')
-
-                const nftServiceInfo = await sdk.keeper.didRegistry.getNFTInfo(serviceDDO.id) as string[]
-
-                if(!metadata || !isNFTAccess || metadata.attributes.main.nftType !== NeverminedNFT721Type.nft721Subscription || nftServiceInfo[0] !== nftInfo[0]) {
-                  return undefined
-                }
-
-                return serviceDDO
-
-              } catch (_error) {
+              if (!subscriptionDDO) {
                 return undefined
               }
-            }))
 
-            return {
-              subscription: subscriptionDDO,
-              services: services.filter(service => Boolean(service))
+              const metadata = subscriptionDDO?.findServiceByType('metadata')
+              const isNFTSales = subscriptionDDO?.findServiceByType('nft-sales')
+
+              if(!metadata || !isNFTSales || metadata.attributes.main.nftType !== NeverminedNFT721Type.nft721Subscription) {
+                return undefined
+              }
+
+              const nftInfo = await sdk.keeper.didRegistry.getNFTInfo(subscriptionDDO.id) as string[]
+
+              const services = await Promise.all(publishedAssets.map(async (p) => {
+                try {
+                  const serviceDDO = await assets.findOne(p)
+
+                  const metadata = serviceDDO?.findServiceByType('metadata')
+                  const isNFTAccess = serviceDDO?.findServiceByType('nft-access')
+
+                  const nftServiceInfo = await sdk.keeper.didRegistry.getNFTInfo(serviceDDO.id) as string[]
+
+                  if(!metadata || !isNFTAccess || metadata.attributes.main.nftType !== NeverminedNFT721Type.nft721Subscription || nftServiceInfo[0] !== nftInfo[0]) {
+                    return undefined
+                  }
+
+                  return serviceDDO
+
+                } catch (_error) {
+                  return undefined
+                }
+              }))
+
+              return {
+                subscription: subscriptionDDO,
+                services: services.filter(service => Boolean(service))
+              }
+            } catch (_error) {
+              return undefined
             }
-
           })
         )
 
