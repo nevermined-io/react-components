@@ -532,6 +532,16 @@ describe('Nevermined account', () => {
   })
 
   it('should get all the subscriptions published by the address passed', async () =>{
+    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
+    jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
+      ...sdk,
+      assets: {
+        ...sdk.assets,
+        resolve: (id: string) => [ddo, ddo2, ddo3].find(item => item.id === id)
+      }
+      
+    })
+
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
@@ -564,8 +574,8 @@ describe('Nevermined account', () => {
 
     await waitFor(() => {
       expect(result.current).toStrictEqual([{
-        address: ddo.id,
-        ddos: [ddo2, ddo3]
+        subscription: ddo,
+        services: [ddo2, ddo3]
       }])
     })
   })
