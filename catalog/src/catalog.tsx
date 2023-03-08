@@ -214,8 +214,12 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
           publishedAssets.map(async (a) => {
             const subscriptionDDO = await assets.findOne(a)
 
-            const metadata = subscriptionDDO.findServiceByType('metadata')
-            const isNFTSales = subscriptionDDO.findServiceByType('nft-sales')
+            if (!subscriptionDDO) {
+              return undefined
+            }
+
+            const metadata = subscriptionDDO?.findServiceByType('metadata')
+            const isNFTSales = subscriptionDDO?.findServiceByType('nft-sales')
 
             if(!metadata || !isNFTSales || metadata.attributes.main.nftType !== NeverminedNFT721Type.nft721Subscription) {
               return undefined
