@@ -212,7 +212,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
         const subscriptions = await Promise.all(
           publishedAssets.map(async (a) => {
-            const nftDetails = await assets.nftDetails(a, ERCType.nft721)
             const subscriptionDDO = await assets.findOne(a)
 
             const metadata = subscriptionDDO.findServiceByType('metadata')
@@ -222,7 +221,9 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
               return undefined
             }
 
-            const subscriptions = await sdk.search.bySubscriptionContractAddress(nftDetails.nftContractAddress)
+            const nftInfo = await sdk.keeper.didRegistry.getNFTInfo(subscriptionDDO.id) as string[]
+
+            const subscriptions = await sdk.search.bySubscriptionContractAddress(nftInfo[0])
 
             return {
               subscription: subscriptionDDO,
