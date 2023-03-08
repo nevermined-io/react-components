@@ -1,3 +1,4 @@
+import React, { createContext, useContext, useEffect, useReducer, useState } from 'react'
 import {
   Account,
   NeverminedOptions,
@@ -6,10 +7,8 @@ import {
   Nevermined,
   SearchQuery,
   ClientError,
-  QueryResult
-} from '@nevermined-io/sdk'
-import React, { createContext, useContext, useEffect, useReducer, useState } from 'react'
-import {
+  QueryResult,
+  NeverminedNFT721Type,
   AccountModule,
   AssetsModule,
   ContractEventSubscription,
@@ -211,23 +210,29 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       try {
         const publishedAssets = await account.getReleases(address)
 
-        const ddos = await Promise.all(
+        const subscriptions = await Promise.all(
           publishedAssets.map(async (a) => {
-            const subscriptions = await sdk.search.bySubscriptionContractAddress(a)
+            const nftDetails = await assets.nftDetails(a, ERCType.nft721)
+            const subscriptionDDO = await assets.findOne(a)
 
-            if(!subscriptions.results.length) {
+            const metadata = subscriptionDDO.findServiceByType('metadata')
+            const isNFTSales = subscriptionDDO.findServiceByType('nft-sales')
+
+            if(!metadata || !isNFTSales || metadata.attributes.main.nftType !== NeverminedNFT721Type.nft721Subscription) {
               return undefined
             }
 
+            const subscriptions = await sdk.search.bySubscriptionContractAddress(nftDetails.nftContractAddress)
+
             return {
-              address: a,
-              ddos: subscriptions.results
+              subscription: subscriptionDDO,
+              services: subscriptions.results
             }
 
           })
         )
 
-        return ddos.filter(ddo => Boolean(ddo)) as PublishedSubscriptions[]
+        return subscriptions.filter(ddo => Boolean(ddo)) as PublishedSubscriptions[]
 
       } catch (error) {
         verbose && Logger.error(error)
