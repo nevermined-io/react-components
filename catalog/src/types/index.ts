@@ -15,6 +15,7 @@ import {
   NFTAttributes,
   TxParameters,
   Babysig,
+  CreateProgressStep,
   RoyaltyKind,
 } from '@nevermined-io/sdk'
 import { CryptoConfig } from '@nevermined-io/sdk-dtp'
@@ -819,6 +820,7 @@ export interface AssetPublishProviderState {
    * @param asset.txParams Optional transaction parameters
    * @param asset.password Password to encrypt metadata
    * @param asset.cryptoConfig Setting for encrypting asset
+   * @param asset.onEvent A callback to handle progress events
    * @returns The DDO object including the asset metadata and the DID
    */
   publishAsset: ({
@@ -827,6 +829,7 @@ export interface AssetPublishProviderState {
     txParameters,
     password,
     cryptoConfig,
+    onEvent,
   }: {
     assetAttributes: AssetAttributes
     publishMetadata?: PublishMetadata
@@ -834,6 +837,7 @@ export interface AssetPublishProviderState {
     method?: EncryptionMethod
     password?: string
     cryptoConfig?: CryptoConfig
+    onEvent?: (next: CreateProgressStep) => void
   }) => Promise<DDO | undefined>
   /**
    * In Nevermined is possible to register a digital asset that allow users pay for having a
@@ -848,6 +852,7 @@ export interface AssetPublishProviderState {
    * @param nft721.txParams Optional transaction parameters
    * @param nft721.password Password to encrypt metadata
    * @param nft721.cryptoConfig Setting for encrypting asset
+   * @param nft721.onEvent A callback to handle progress events
    * @returns The DDO object including the asset metadata and the DID
    */
   publishNFT721: ({
@@ -856,6 +861,7 @@ export interface AssetPublishProviderState {
     txParameters,
     password,
     cryptoConfig,
+    onEvent,
   }: {
     nftAttributes: NFTAttributes
     publishMetadata?: PublishMetadata
@@ -863,6 +869,7 @@ export interface AssetPublishProviderState {
     method?: EncryptionMethod
     password?: string
     cryptoConfig?: CryptoConfig
+    onEvent?: (next: CreateProgressStep) => void
   }) => Promise<DDO | undefined>
   /**
    * In Nevermined is possible to register a digital asset that allow users pay for having a
@@ -878,6 +885,7 @@ export interface AssetPublishProviderState {
    * @param nft1155.txParams Optional transaction parameters
    * @param nft1155.password Password to encrypt metadata
    * @param nft1155.cryptoConfig Setting for encrypting asset
+   * @param nft1155.onEvent A callback to handle progress events
    * @returns The DDO object including the asset metadata and the DID
    */
   publishNFT1155: ({
@@ -886,6 +894,7 @@ export interface AssetPublishProviderState {
     txParameters,
     password,
     cryptoConfig,
+    onEvent,
   }: {
     nftAttributes: NFTAttributes
     publishMetadata?: PublishMetadata
@@ -893,6 +902,7 @@ export interface AssetPublishProviderState {
     method?: EncryptionMethod
     password?: string
     cryptoConfig?: CryptoConfig
+    onEvent?: (next: CreateProgressStep) => void
   }) => Promise<DDO | undefined>
 }
 
