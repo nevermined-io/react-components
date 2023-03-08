@@ -798,6 +798,7 @@ export const nevermined = {
             },
           ],
         },
+        getNFTInfo: () => [nftContract],
       },
       templates: {
         accessTemplate: {
