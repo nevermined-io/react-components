@@ -2,9 +2,11 @@ import { faker } from '@faker-js/faker'
 import { MetaData, Profile, State } from '../src'
 import jwt from 'jsonwebtoken'
 
+const nftContract = '0xdF1B443A155b07D2b2cAeA2d99715dC84E812FF5'
+
 export const ddo = {
   '@context': 'https://w3id.org/did/v1',
-  findServiceByType: () => ddo.service[0],
+  findServiceByType: (type: string) => ddo.service.find((s) => s.type === type),
   authentication: [
     {
       type: 'RsaSignatureAuthentication2018',
@@ -78,6 +80,7 @@ export const ddo = {
           name: 'UK Weather information 2011',
           price: '1',
           type: 'dataset',
+          nftType: 'nft721-subscription',
         },
         additionalInformation: {
           description: 'Weather information of UK including temperature and humidity',
@@ -116,7 +119,7 @@ export const ddo = {
       },
     },
     {
-      type: 'access',
+      type: 'nft-sales',
       index: 1,
       serviceEndpoint: 'http://localhost:8030/api/v1/node/services/consume',
       templateId: '0x1234',
@@ -318,10 +321,274 @@ export const ddo = {
 export const ddo2 = {
   ...ddo,
   id: 'did:nv:0c184915b07b44c888d468be85a9b28253e80070e5294b1aaed81c2f0264e300',
+  service: [
+    {
+      index: 0,
+      serviceEndpoint: 'http://localhost:5000/api/v1/metadata/assets/ddo/{did}',
+      type: 'metadata',
+      attributes: {
+        encryptedFiles:
+          '0x2e48ceefcca7abb024f90c87c676fce8f7913f889605a349c08c0c4a822c69ad651e122cc81db4fbb52938ac627786491514f37a2ebfd04fd98ec726f1d9061ed52f13fde132222af34d9af8ec358429cf45fc669f81a607185cb9a8150df3cbb2b4e3e382fb16429be228ddd920f061b78dd54701025fac8aab976239fb31a5b60a57393e96a338324c5ac8a5600a1247339c4835533cecdb5b53caf6b6f9d6478b579b7426f650a4154a20d18a9d49f509770af62647a57fc174741b47af3c8beeaaa76bee276cce8fba1f3fec0e1c',
+        main: {
+          author: 'Met',
+          dateCreated: '2019-02-08T08:13:49Z',
+          files: [
+            {
+              index: 0,
+              checksum: 'efb2c764274b745f5fc37f97c6b0e761',
+              contentLength: '4535431',
+              contentType: 'text/csv',
+              encoding: 'UTF-8',
+              compression: 'zip',
+            },
+          ],
+          license: 'CC-BY',
+          name: 'UK Weather information 2011',
+          price: '1',
+          type: 'dataset',
+          nftType: 'nft721-subscription',
+        },
+        additionalInformation: {
+          description: 'Weather information of UK including temperature and humidity',
+          tags: ['weather', 'uk', '2011', 'temperature', 'humidity'],
+          workExample: '423432fsd,51.509865,-0.118092,2011-01-01T10:55:11+00:00,7.2,68',
+          copyrightHolder: 'Met',
+          links: [
+            {
+              name: 'Sample of Asset Data',
+              type: 'sample',
+            },
+            {
+              name: 'Data Format Definition',
+              type: 'format',
+            },
+          ],
+          inLanguage: 'en',
+          updateFrequency: 'yearly',
+          structuredMarkup: [
+            {
+              uri: 'http://skos.um.es/unescothes/C01194/jsonld',
+              mediaType: 'application/ld+json',
+            },
+            {
+              uri: 'http://skos.um.es/unescothes/C01194/turtle',
+              mediaType: 'text/turtle',
+            },
+          ],
+        },
+        curation: {
+          numVotes: 123,
+          rating: 0,
+          schema: 'Binary Votting',
+          isListed: true,
+        },
+      },
+    },
+    {
+      type: 'nft-access',
+      index: 1,
+      serviceEndpoint: 'http://localhost:8030/api/v1/node/services/consume',
+      templateId: '0x1234',
+      attributes: {
+        main: {
+          name: 'dataAssetAccessServiceAgreement',
+          creator: '',
+          datePublished: '2019-02-08T08:13:49Z',
+          price: '10',
+          timeout: 36000,
+        },
+        additionalInformation: {
+          description: '',
+        },
+        serviceAgreementTemplate: {
+          contractName: 'EscrowAccessSecretStoreTemplate',
+          events: [
+            {
+              name: 'AgreementCreated',
+              actorType: 'consumer',
+              handler: {
+                moduleName: 'escrowAccessSecretStoreTemplate',
+                functionName: 'fulfillLockPaymentCondition',
+                version: '0.1',
+              },
+            },
+          ],
+          fulfillmentOrder: ['lockPayment.fulfill', 'access.fulfill', 'escrowPayment.fulfill'],
+          conditionDependency: {
+            lockPayment: [],
+            grantSecretStoreAccess: [],
+            releaseReward: ['lockPayment', 'access'],
+          },
+          conditions: [
+            {
+              name: 'lockPayment',
+              timelock: 0,
+              timeout: 0,
+              contractName: 'LockPaymentCondition',
+              functionName: 'fulfill',
+              parameters: [
+                {
+                  name: '_did',
+                  type: 'bytes32',
+                  value: '',
+                },
+                {
+                  name: '_rewardAddress',
+                  type: 'address',
+                  value: '',
+                },
+                {
+                  name: '_tokenAddress',
+                  type: 'address',
+                  value: '',
+                },
+                {
+                  name: '_amounts',
+                  type: 'uint256[]',
+                  value: ['10', '2'],
+                },
+                {
+                  name: '_receivers',
+                  type: 'address[]',
+                  value: [
+                    '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
+                    '0x068ed00cf0441e4829d9784fcbe7b9e26d4bd8d0',
+                  ],
+                },
+              ],
+              events: [
+                {
+                  name: 'Fulfilled',
+                  actorType: 'publisher',
+                  handler: {
+                    moduleName: 'lockPaymentConditon',
+                    functionName: 'fulfillAccessCondition',
+                    version: '0.1',
+                  },
+                },
+              ],
+            },
+            {
+              name: 'access',
+              timelock: 0,
+              timeout: 0,
+              contractName: 'AccessCondition',
+              functionName: 'fulfill',
+              parameters: [
+                {
+                  name: '_did',
+                  type: 'bytes32',
+                  value: '',
+                },
+                {
+                  name: '_grantee',
+                  type: 'address',
+                  value: '',
+                },
+              ],
+              events: [
+                {
+                  name: 'Fulfilled',
+                  actorType: 'publisher',
+                  handler: {
+                    moduleName: 'access',
+                    functionName: 'fulfillEscrowPaymentCondition',
+                    version: '0.1',
+                  },
+                },
+                {
+                  name: 'TimedOut',
+                  actorType: 'consumer',
+                  handler: {
+                    moduleName: 'access',
+                    functionName: 'fulfillEscrowPaymentCondition',
+                    version: '0.1',
+                  },
+                },
+              ],
+            },
+            {
+              name: 'escrowPayment',
+              timelock: 0,
+              timeout: 0,
+              contractName: 'EscrowPaymentCondition',
+              functionName: 'fulfill',
+              parameters: [
+                {
+                  name: '_did',
+                  type: 'bytes32',
+                  value: '',
+                },
+                {
+                  name: '_amounts',
+                  type: 'uint256[]',
+                  value: ['10', '2'],
+                },
+                {
+                  name: '_receivers',
+                  type: 'address[]',
+                  value: [
+                    '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
+                    '0x068ed00cf0441e4829d9784fcbe7b9e26d4bd8d0',
+                  ],
+                },
+                {
+                  name: '_sender',
+                  type: 'address',
+                  value: '',
+                },
+                {
+                  name: '_tokenAddress',
+                  type: 'address',
+                  value: '',
+                },
+                {
+                  name: '_lockCondition',
+                  type: 'bytes32',
+                  value: '',
+                },
+                {
+                  name: '_releaseCondition',
+                  type: 'bytes32',
+                  value: '',
+                },
+              ],
+              events: [
+                {
+                  name: 'Fulfilled',
+                  actorType: 'publisher',
+                  handler: {
+                    moduleName: 'escrowPaymentConditon',
+                    functionName: 'verifyRewardTokens',
+                    version: '0.1',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+    },
+    {
+      index: 2,
+      type: 'authorization',
+      attributes: {
+        main: {
+          service: 'PSK-ECDSA',
+          publicKey:
+            '0xd793eb43ef7d191bf64f127c9f1a2c9037406d72706d3be7dc564fb9a9f08f21156b32d1ee3afbe64cc9f676f6facffac1377f7804daf932d3b8aa04fdeb0630',
+        },
+      },
+      serviceEndpoint: 'http://localhost:8030/',
+    },
+  ],
+  findServiceByType: (type: string) => ddo2.service.find((s) => s.type === type),
 }
+
 export const ddo3 = {
-  ...ddo,
+  ...ddo2,
   id: 'did:nv:0c184915b07b44c888d468be85a9b28253e80070e5294b1aaed81c2f0264e500',
+  findServiceByType: (type: string) => ddo3.service.find((s) => s.type === type),
 }
 export const walletAddress = '0xf61B443A155b07D2b2cAeA2d99715dC84E839EEf'
 export const walletAddress2 = '0xf61B443A155b07D2b2cAeA2d99715dC84E83932f'
@@ -379,7 +646,7 @@ export const nevermined = {
     search: {
       bySubscriptionContractAddress: async (id: string) => {
         return {
-          results: id === ddo.id ? [ddo2, ddo3] : [],
+          results: id === nftContract ? [ddo2, ddo3] : [],
         }
       },
     },
@@ -472,6 +739,7 @@ export const nevermined = {
         nftSupply: 100,
         mintCap: 100,
         royalties: 0,
+        nftContractAddress: nftContract,
       }),
       setApprovalForAll: async () => ({
         to: walletAddress2,
@@ -530,6 +798,7 @@ export const nevermined = {
             },
           ],
         },
+        getNFTInfo: () => [nftContract],
       },
       templates: {
         accessTemplate: {

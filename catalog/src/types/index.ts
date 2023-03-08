@@ -16,6 +16,7 @@ import {
   TxParameters,
   Babysig,
   CreateProgressStep,
+  RoyaltyKind,
 } from '@nevermined-io/sdk'
 import { CryptoConfig } from '@nevermined-io/sdk-dtp'
 
@@ -315,13 +316,21 @@ export interface NFTDetails {
   /** The block number from blockchain where the asset was updated */
   blockNumberUpdated: number
   /** Which services provide the asset */
-  providers: any
+  providers: [string]
   /** The amount of ntfs that are in circulation */
   nftSupply: BigNumber
+  /** Contract NFT address which was created the NFT asset*/
+  nftContractAddress: string
+  /** When the NFT asset was initialized*/
+  nftInitialized: string
+  /** Uri of the NFT */
+  nftURI?: string
   /** The amount limit of nft which can be minted */
   mintCap: BigNumber
   /** The rewards that the owner can get for every sale */
   royalties: number
+  /** Royalty scheme of the NFT asset */
+  royaltyScheme: RoyaltyKind
 }
 
 export enum State {
@@ -903,6 +912,6 @@ export interface Credentials {
 }
 
 export interface PublishedSubscriptions {
-  address: string
-  ddos: DDO[]
+  subscription: DDO
+  services: DDO[]
 }

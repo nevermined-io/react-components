@@ -1,3 +1,4 @@
+import React, { createContext, useContext, useEffect, useReducer, useState } from 'react'
 import {
   Account,
   NeverminedOptions,
@@ -6,10 +7,8 @@ import {
   Nevermined,
   SearchQuery,
   ClientError,
-  QueryResult
-} from '@nevermined-io/sdk'
-import React, { createContext, useContext, useEffect, useReducer, useState } from 'react'
-import {
+  QueryResult,
+  NeverminedNFT721Type,
   AccountModule,
   AssetsModule,
   ContractEventSubscription,
@@ -211,23 +210,38 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       try {
         const publishedAssets = await account.getReleases(address)
 
-        const ddos = await Promise.all(
+        const subscriptions = await Promise.all(
           publishedAssets.map(async (a) => {
-            const subscriptions = await sdk.search.bySubscriptionContractAddress(a)
+            try {
+              const subscriptionDDO = await assets.findOne(a)
 
-            if(!subscriptions.results.length) {
+              if (!subscriptionDDO ) {
+                return undefined
+              }
+
+              const metadata = subscriptionDDO?.findServiceByType('metadata')
+              const isNFTSales = subscriptionDDO?.findServiceByType('nft-sales')
+
+              if(!metadata || !isNFTSales || metadata.attributes.main.nftType !== NeverminedNFT721Type.nft721Subscription) {
+                return undefined
+              }
+
+              const nftInfo = await sdk.keeper.didRegistry.getNFTInfo(subscriptionDDO.id) as string[]
+
+              const subscriptions = await sdk.search.bySubscriptionContractAddress(nftInfo[0])
+
+              return {
+                subscription: subscriptionDDO,
+                services: subscriptions.results
+              }
+            } catch (_error) {
               return undefined
-            }
-
-            return {
-              address: a,
-              ddos: subscriptions.results
             }
 
           })
         )
 
-        return ddos.filter(ddo => Boolean(ddo)) as PublishedSubscriptions[]
+        return subscriptions.filter(ddo => Boolean(ddo)) as PublishedSubscriptions[]
 
       } catch (error) {
         verbose && Logger.error(error)
