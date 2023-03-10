@@ -760,6 +760,25 @@ export const nevermined = {
       conditions: {
         transferNftCondition: {
           address: '0x610D9314EDF2ced7681BA1633C33fdb8cF365a12',
+          events: {
+            getPastEvents: () => [
+              {
+                _creator: walletAddress,
+                _did: ddo.id,
+                _agreementId: agreementId,
+              },
+              {
+                _creator: walletAddress,
+                _did: ddo2.id,
+                _agreementId: agreementId,
+              },
+              {
+                _creator: walletAddress,
+                _did: ddo3.id,
+                _agreementId: agreementId,
+              },
+            ],
+          },
         },
         accessCondition: {
           events: {

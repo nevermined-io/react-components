@@ -1,5 +1,5 @@
 import { Account, DDO, Nevermined, Logger, ClientError } from '..'
-import { BigNumber, ERCType } from '../types'
+import { AssetsModule, BigNumber, ERCType, NeverminedNFT721Type } from '../types'
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
 
@@ -165,4 +165,70 @@ export const handlePostRequest = async (url: string, formData: FormData, retries
     Logger.error(e)
     throw new ClientError((e as any).message, 'Catalog')
   }
+}
+
+export const getSubscriptionsAndServices = async (
+  dids: string[],
+  assets: AssetsModule,
+  sdk: Nevermined,
+) => {
+  return Promise.all(
+    dids.map(async (a) => {
+      try {
+        const subscriptionDDO = await assets.findOne(a)
+
+        if (!subscriptionDDO) {
+          return undefined
+        }
+
+        const metadata = subscriptionDDO?.findServiceByType('metadata')
+        const isNFTSales = subscriptionDDO?.findServiceByType('nft-sales')
+
+        if (
+          !metadata ||
+          !isNFTSales ||
+          metadata.attributes.main.nftType !== NeverminedNFT721Type.nft721Subscription
+        ) {
+          return undefined
+        }
+
+        const nftInfo = (await sdk.keeper.didRegistry.getNFTInfo(subscriptionDDO.id)) as string[]
+
+        const services = await Promise.all(
+          dids.map(async (p) => {
+            try {
+              const serviceDDO = await assets.findOne(p)
+
+              const metadata = serviceDDO?.findServiceByType('metadata')
+              const isNFTAccess = serviceDDO?.findServiceByType('nft-access')
+
+              const nftServiceInfo = (await sdk.keeper.didRegistry.getNFTInfo(
+                serviceDDO.id,
+              )) as string[]
+
+              if (
+                !metadata ||
+                !isNFTAccess ||
+                metadata.attributes.main.nftType !== NeverminedNFT721Type.nft721Subscription ||
+                nftServiceInfo[0] !== nftInfo[0]
+              ) {
+                return undefined
+              }
+
+              return serviceDDO
+            } catch (_error) {
+              return undefined
+            }
+          }),
+        )
+
+        return {
+          subscription: subscriptionDDO,
+          services: services.filter((service) => Boolean(service)),
+        }
+      } catch (_error) {
+        return undefined
+      }
+    }),
+  )
 }
