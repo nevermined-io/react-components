@@ -206,28 +206,22 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    getPublishedSubscriptions: async (address: string): Promise<SubscriptionsAndServicesDDOs[]> => {
+    getPublishedSubscriptions: async (): Promise<SubscriptionsAndServicesDDOs[]> => {
       try {
-        const publishedAssets = await account.getReleases(address)
-
-        const subscriptions = await getSubscriptionsAndServices(publishedAssets, assets, sdk)
-
-        return subscriptions.filter(ddo => Boolean(ddo)) as SubscriptionsAndServicesDDOs[]
-
+        const account = await getCurrentAccount(sdk)
+        const query = await sdk.search.subscriptionsCreated(account)
+        return getSubscriptionsAndServices(query.results, sdk)
       } catch (error) {
         verbose && Logger.error(error)
         return []
       }
     },
 
-    getPurchasedSubscriptions: async (address: string): Promise<SubscriptionsAndServicesDDOs[]> => {
+    getPurchasedSubscriptions: async (): Promise<SubscriptionsAndServicesDDOs[]> => {
       try {
-        const publishedAssets = await account.getCollection(address)
-
-        const subscriptions = await getSubscriptionsAndServices(publishedAssets, assets, sdk)
-
-        return subscriptions.filter(ddo => Boolean(ddo)) as SubscriptionsAndServicesDDOs[]
-
+        const account = await getCurrentAccount(sdk)
+        const query = await sdk.search.subscriptionsPurchased(account)
+        return getSubscriptionsAndServices(query.results, sdk)
       } catch (error) {
         verbose && Logger.error(error)
         return []

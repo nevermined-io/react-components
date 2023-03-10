@@ -346,7 +346,26 @@ export const ddo2 = {
           name: 'UK Weather information 2011',
           price: '1',
           type: 'dataset',
-          nftType: 'nft721-subscription',
+          nftType: 'nft721',
+          webService: {
+            type: 'RESTful',
+            endpoints: [
+              {
+                GET: 'http://127.0.0.1:3000',
+              },
+            ],
+            internalAttributes: {
+              authentication: {
+                type: 'oauth',
+                token: '',
+              },
+              headers: [
+                {
+                  Authorization: 'Bearer xxxxxx',
+                },
+              ],
+            },
+          },
         },
         additionalInformation: {
           description: 'Weather information of UK including temperature and humidity',
@@ -755,6 +774,11 @@ export const nevermined = {
       create: async () => ddo,
       createWithRoyalties: async () => ddo,
       transferForDelegate: async () => true,
+    },
+    search: {
+      subscriptionsCreated: () => ({ results: [ddo] }),
+      subscriptionsPurchased: () => ({ results: [ddo] }),
+      servicesBySubscription: () => ({ results: [ddo2, ddo3] }),
     },
     keeper: {
       conditions: {
