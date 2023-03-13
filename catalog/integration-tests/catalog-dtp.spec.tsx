@@ -82,6 +82,8 @@ describe('DTP', () => {
               cryptoConfig,
             }) as DDO
 
+            console.log(result)
+
             ddoResult = result
             setDDO(result)
           })()
@@ -126,6 +128,7 @@ describe('DTP', () => {
 
           (async () => {
             try {
+              console.log(ddoResult)
               const result = await nfts.access({
                 did: ddoResult.id,
                 nftHolder: publisher.getId(),
