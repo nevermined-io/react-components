@@ -17,6 +17,7 @@ import {
   Babysig,
   CreateProgressStep,
   RoyaltyKind,
+  OrderProgressStep,
 } from '@nevermined-io/sdk'
 import { CryptoConfig } from '@nevermined-io/sdk-dtp'
 
@@ -765,6 +766,7 @@ export interface NFTSModule {
    * @param access.ercType NFT asset type which can be `721` or `1155`
    * @param access.password Password to desencrypt metadata
    * @param access.accountIndex account index of the account list wallet, it is used for testing purpose
+   * @param asset.onEvent A callback to handle progress events
    * @returns It is successfully completed will return the `agreementId`
    */
   access: ({
@@ -774,13 +776,15 @@ export interface NFTSModule {
     ercType,
     password,
     accountIndex,
+    onEvent,
   }: {
     did: string
     nftHolder: string
     nftAmount: BigNumber
     ercType: ERCType
     password?: string
-    accountIndex?: number
+    accountIndex?: number,
+    onEvent?: (next: OrderProgressStep) => void
   }) => Promise<string>
 }
 

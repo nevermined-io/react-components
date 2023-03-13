@@ -26,10 +26,10 @@ fi
 
 printf '\e[32m✔ Found new contract artifacts.\e[0m\n'
 
-docker cp ${nevermined_keeper_docker_id}:/nevermined-contracts/artifacts/. core/artifacts/
+docker cp ${nevermined_keeper_docker_id}:/nevermined-contracts/artifacts/. catalog/artifacts/
 
-docker cp ${nevermined_keeper_docker_id}:/nevermined-contracts/circuits/keytransfer.wasm core/circuits/
-docker cp ${nevermined_keeper_docker_id}:/nevermined-contracts/circuits/keytransfer.zkey core/circuits/
+docker cp ${nevermined_keeper_docker_id}:/nevermined-contracts/circuits/keytransfer.wasm catalog/circuits/
+docker cp ${nevermined_keeper_docker_id}:/nevermined-contracts/circuits/keytransfer.zkey catalog/circuits/
 
 
 printf '\e[32m✔ Copied new contract artifacts and circuits.\e[0m\n'

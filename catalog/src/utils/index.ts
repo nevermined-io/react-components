@@ -1,5 +1,5 @@
 import { Account, DDO, Nevermined, Logger, ClientError } from '..'
-import { BigNumber, ERCType } from '../types'
+import { BigNumber, ERCType, SubscribablePromise } from '../types'
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
 
@@ -178,4 +178,19 @@ export const getSubscriptionsAndServices = async (subscriptionsDDOs: DDO[], sdk:
       }
     }),
   )
+}
+
+export const executeWithProgressEvent = <T>(
+  subscribableAction: () => SubscribablePromise<any, T>,
+  onEvent?: (next: any) => void,
+) => {
+  let subscription: { unsubscribe: () => boolean } | undefined
+
+  try {
+    const subscribablePromise = subscribableAction()
+    subscription = onEvent ? subscribablePromise.subscribe(onEvent) : undefined
+    return subscribablePromise
+  } finally {
+    subscription?.unsubscribe()
+  }
 }

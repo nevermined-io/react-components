@@ -172,7 +172,6 @@ describe('DTP', () => {
           (async () => {
             try {
               const result = await assets.downloadNFT({did: ddoResult.id, ercType: 1155, path: undefined, fileIndex: 1, password, accountIndex: 1}) as string
-              console.log(result)
               setIsDownloaded(result)
             } catch (error: any) {
               console.error(error.message)
