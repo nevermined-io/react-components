@@ -18,7 +18,7 @@ import {
   CryptoConfig,
   CreateProgressStep,
 } from '../types'
-import { getCurrentAccount } from '../utils'
+import { executeWithProgressEvent, getCurrentAccount } from '../utils'
 import {_getDTPInstance, _encryptFileMetadata} from '../utils/dtp'
 
 /**
@@ -191,8 +191,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     cryptoConfig?: CryptoConfig,
     onEvent?: (next: CreateProgressStep) => void,
   }) => {
-    let subscription: { unsubscribe: () => boolean; } | undefined
-
     try {
       setIsProcessing(true)
 
@@ -212,15 +210,12 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         assetAttributes.metadata = {...metadata}
       }
 
-      const subscribablePromise = sdk.assets.create(
+      const ddo = await executeWithProgressEvent(() => sdk.assets.create(
         assetAttributes,
         accountWallet,
         publishMetadata,
         txParameters,
-      )
-
-      subscription = onEvent ? subscribablePromise.subscribe(onEvent) : undefined
-      const ddo = await subscribablePromise
+      ), onEvent)
 
       setIsProcessing(false)
       setIsPublished(true)
@@ -233,8 +228,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       setAssetMessage('')
       setIsProcessing(false)
       throw new ClientError(error.message, 'Catalog')
-    } finally {
-      subscription?.unsubscribe()
     }
   }
 
@@ -270,8 +263,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     cryptoConfig?: CryptoConfig,
     onEvent?: (next: CreateProgressStep) => void
   }) => {
-    let subscription: { unsubscribe: () => boolean; } | undefined
-
     try {
       setIsProcessing(true)
 
@@ -290,15 +281,12 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         nftAttributes.metadata = {...metadata}
       }
 
-      const subscribablePromise = sdk.nfts721.create(
+      const ddo = await executeWithProgressEvent(() => sdk.nfts721.create(
         nftAttributes,
         accountWallet,
         publishMetadata,
         txParameters,
-      )
-
-      subscription = onEvent ? subscribablePromise.subscribe(onEvent) : undefined
-      const ddo = await subscribablePromise
+      ), onEvent)
 
       setIsProcessing(false)
       setIsPublished(true)
@@ -311,8 +299,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       setAssetMessage('')
       setIsProcessing(false)
       throw new ClientError(error.message, 'Catalog')
-    } finally {
-      subscription?.unsubscribe()
     }
   }
 
@@ -356,8 +342,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     cryptoConfig?: CryptoConfig,
     onEvent?: (next: CreateProgressStep) => void,
   }) => {
-    let subscription: { unsubscribe: () => boolean; } | undefined
-
     try {
       setIsProcessing(true)
 
@@ -381,15 +365,12 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         nftAttributes.metadata = {...metadata}
       }
 
-      const subscribablePromise = sdk.nfts1155.create(
+      const ddo = executeWithProgressEvent(() => sdk.nfts1155.create(
         nftAttributes,
         accountWallet,
         publishMetadata,
         txParameters
-      )
-
-      subscription = onEvent ? subscribablePromise.subscribe(onEvent) : undefined
-      const ddo = await subscribablePromise
+      ), onEvent)
 
       setIsProcessing(false)
       setIsPublished(true)
@@ -402,8 +383,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       setAssetMessage('')
       setIsProcessing(false)
       throw new ClientError(error.message, 'Catalog')
-    } finally {
-      subscription?.unsubscribe()
     }
   }
 

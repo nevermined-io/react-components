@@ -21,7 +21,8 @@ import {
   SubscribeModule,
   TransferNFTConditionMethod,
   BigNumber,
-  SubscriptionsAndServicesDDOs
+  SubscriptionsAndServicesDDOs,
+  OrderProgressStep
 } from './types'
 import {
   conductOrder,
@@ -31,6 +32,7 @@ import {
   getAgreementId,
   handlePostRequest,
   getSubscriptionsAndServices,
+  executeWithProgressEvent,
 } from './utils'
 import { _getCryptoConfig, _getDTPInstance, _grantAccess } from './utils/dtp'
 import { getAddressTokenSigner, isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token'
@@ -564,8 +566,23 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   }
 
   const nfts = {
-    access: async ({ did, nftHolder, nftAmount, ercType, password, accountIndex } :
-      {did: string, nftHolder: string, nftAmount: BigNumber, ercType?: ERCType, password?: string, accountIndex?: number}): Promise<string> => {
+    access: async ({
+      did,
+      nftHolder,
+      nftAmount,
+      ercType,
+      password,
+      accountIndex,
+      onEvent,
+    }: {
+      did: string
+      nftHolder: string
+      nftAmount: BigNumber
+      ercType?: ERCType
+      password?: string
+      accountIndex?: number
+      onEvent?: (next: OrderProgressStep) => void
+    }): Promise<string> => {
       let agreementId
       let transferResult
 
@@ -595,7 +612,13 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
           transferResult = await dtp.transferForDelegate(did, agreementId, consumer, nftAmount, nftHolder)
         } else {
-          agreementId = ercType === 721 ? await sdk.nfts721.order(did, buyer): await sdk.nfts1155.order(did, BigNumber.from(nftAmount), buyer)
+          agreementId = await executeWithProgressEvent(
+            () =>
+              ercType === 721
+                ? sdk.nfts721.order(did, buyer)
+                : sdk.nfts1155.order(did, BigNumber.from(nftAmount), buyer),
+            onEvent,
+          )
 
           transferResult = ercType === 721 
             ? await sdk.nfts721.transferForDelegate(
