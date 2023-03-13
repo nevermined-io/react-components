@@ -365,7 +365,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         nftAttributes.metadata = {...metadata}
       }
 
-      const ddo = executeWithProgressEvent(() => sdk.nfts1155.create(
+      const ddo = await executeWithProgressEvent(() => sdk.nfts1155.create(
         nftAttributes,
         accountWallet,
         publishMetadata,
