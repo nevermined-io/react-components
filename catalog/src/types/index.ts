@@ -402,10 +402,15 @@ export interface AccountModule {
    */
   getCollection: (address: string) => Promise<DID[]>
   /**
-   * Get all the published subscription from the wallet address passed
+   * Get all the published subscriptions and services associated from the wallet address passed
    * @param address the address which published the subscription returned
    */
-  getPublishedSubscriptions: (address: string) => Promise<PublishedSubscriptions[]>
+  getPublishedSubscriptions: (address: string) => Promise<SubscriptionsAndServicesDDOs[]>
+  /**
+   * Get all the purchased subscriptions and services associated from the wallet address passed
+   * @param address the address which published the subscription returned
+   */
+  getPurchasedSubscriptions: (address: string) => Promise<SubscriptionsAndServicesDDOs[]>
   /**
    * Generate a token for authentication in the Marketplace API
    * @returns The new generated token
@@ -911,7 +916,7 @@ export interface Credentials {
   babySig: Babysig
 }
 
-export interface PublishedSubscriptions {
+export interface SubscriptionsAndServicesDDOs {
   subscription: DDO
   services: DDO[]
 }

@@ -346,7 +346,26 @@ export const ddo2 = {
           name: 'UK Weather information 2011',
           price: '1',
           type: 'dataset',
-          nftType: 'nft721-subscription',
+          nftType: 'nft721',
+          webService: {
+            type: 'RESTful',
+            endpoints: [
+              {
+                GET: 'http://127.0.0.1:3000',
+              },
+            ],
+            internalAttributes: {
+              authentication: {
+                type: 'oauth',
+                token: '',
+              },
+              headers: [
+                {
+                  Authorization: 'Bearer xxxxxx',
+                },
+              ],
+            },
+          },
         },
         additionalInformation: {
           description: 'Weather information of UK including temperature and humidity',
@@ -756,10 +775,34 @@ export const nevermined = {
       createWithRoyalties: async () => ddo,
       transferForDelegate: async () => true,
     },
+    search: {
+      subscriptionsCreated: () => ({ results: [ddo] }),
+      subscriptionsPurchased: () => ({ results: [ddo] }),
+      servicesBySubscription: () => ({ results: [ddo2, ddo3] }),
+    },
     keeper: {
       conditions: {
         transferNftCondition: {
           address: '0x610D9314EDF2ced7681BA1633C33fdb8cF365a12',
+          events: {
+            getPastEvents: () => [
+              {
+                _creator: walletAddress,
+                _did: ddo.id,
+                _agreementId: agreementId,
+              },
+              {
+                _creator: walletAddress,
+                _did: ddo2.id,
+                _agreementId: agreementId,
+              },
+              {
+                _creator: walletAddress,
+                _did: ddo3.id,
+                _agreementId: agreementId,
+              },
+            ],
+          },
         },
         accessCondition: {
           events: {

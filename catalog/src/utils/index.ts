@@ -166,3 +166,16 @@ export const handlePostRequest = async (url: string, formData: FormData, retries
     throw new ClientError((e as any).message, 'Catalog')
   }
 }
+
+export const getSubscriptionsAndServices = async (subscriptionsDDOs: DDO[], sdk: Nevermined) => {
+  return Promise.all(
+    subscriptionsDDOs.map(async (ddo) => {
+      const query = await sdk.search.servicesBySubscription(ddo.id)
+
+      return {
+        subscription: ddo,
+        services: query.results,
+      }
+    }),
+  )
+}
