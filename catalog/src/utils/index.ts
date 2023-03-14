@@ -180,7 +180,7 @@ export const getSubscriptionsAndServices = async (subscriptionsDDOs: DDO[], sdk:
   )
 }
 
-export const executeWithProgressEvent = <T>(
+export const executeWithProgressEvent = async <T>(
   subscribableAction: () => SubscribablePromise<any, T>,
   onEvent?: (next: any) => void,
 ) => {
@@ -189,7 +189,7 @@ export const executeWithProgressEvent = <T>(
   try {
     const subscribablePromise = subscribableAction()
     subscription = onEvent ? subscribablePromise.subscribe(onEvent) : undefined
-    return subscribablePromise
+    return await subscribablePromise
   } finally {
     subscription?.unsubscribe()
   }
