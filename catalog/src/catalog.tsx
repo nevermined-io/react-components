@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useReducer, useState } from 'react'
 import {
   Account,
   NeverminedOptions,
@@ -36,6 +36,22 @@ import {
 } from './utils'
 import { _getCryptoConfig, _getDTPInstance, _grantAccess } from './utils/dtp'
 import { getAddressTokenSigner, isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token'
+
+const initialState = {
+  sdk: {} as Nevermined
+}
+
+const neverminedReducer = (
+  state: { sdk: Nevermined },
+  action: { type: 'SET_SDK'; payload: { sdk: Nevermined } }
+) => {
+  switch (action.type) {
+    case 'SET_SDK':
+      return { ...action.payload }
+    default:
+      return state
+  }
+}
 
 export const initializeNevermined = async (
   config: NeverminedOptions
@@ -103,7 +119,7 @@ export const initializeNevermined = async (
  * ```
  */
 export const NeverminedProvider = ({ children, config, verbose }: NeverminedProviderProps) => {
-  const [sdk, setSdk] = useState<Nevermined>({} as Nevermined)
+  const [{ sdk }, dispatch] = useReducer(neverminedReducer, initialState)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   // eslint-disable-next-line
   const [error, setError] = useState<any>(undefined)
@@ -117,7 +133,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       setIsLoading(true)
       const { data, success, error } = await initializeNevermined(config)
       if (success) {
-        setSdk(data)
+        dispatch({ type: 'SET_SDK', payload: { sdk: data } })
       }
       setError(error)
       setIsLoading(false)
@@ -128,7 +144,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   const updateSDK = async (newConfig: NeverminedOptions): Promise<boolean> => {
     const newSDK = await initializeNevermined({ ...config, ...newConfig })
     if (newSDK.success) {
-      setSdk(newSDK.data)
+      dispatch({ type: 'SET_SDK', payload: { sdk: newSDK.data } })
     }
     return newSDK.success
   }
@@ -143,7 +159,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         ...config,
         marketplaceAuthToken: tokenData.token
       })
-      setSdk(data)
+      dispatch({ type: 'SET_SDK', payload: { sdk: data } })
       return tokenData
     },
     getReleases: async (address: string): Promise<string[]> => {

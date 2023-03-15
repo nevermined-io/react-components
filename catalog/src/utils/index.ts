@@ -1,5 +1,11 @@
 import { Account, DDO, Nevermined, Logger, ClientError } from '..'
-import { BigNumber, ERCType, SubscribablePromise } from '../types'
+import {
+  BigNumber,
+  ERCType,
+  MarketplaceAPIToken,
+  NeverminedOptions,
+  SubscribablePromise,
+} from '../types'
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
 
@@ -193,4 +199,11 @@ export const executeWithProgressEvent = async <T>(
   } finally {
     subscription?.unsubscribe()
   }
+}
+
+export const getNewSdkInstance = async (
+  config: NeverminedOptions,
+  tokenData: MarketplaceAPIToken,
+): Promise<Nevermined> => {
+  return Nevermined.getInstance({ ...config, marketplaceAuthToken: tokenData.token })
 }

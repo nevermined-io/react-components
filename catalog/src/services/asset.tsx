@@ -249,6 +249,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    */
   const publishNFT721 = async ({
     nftAttributes,
+    nftAddress,
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
     password,
@@ -257,6 +258,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
   }:
   {
     nftAttributes: NFTAttributes;
+    nftAddress: string;
     publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
     password?: string,
@@ -280,6 +282,8 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
         const metadata = await _encryptFileMetadata(sdk, dtp, nftAttributes.metadata, password)
         nftAttributes.metadata = {...metadata}
       }
+
+      await sdk.contracts.loadNft721(nftAddress)
 
       const ddo = await executeWithProgressEvent(() => sdk.nfts721.create(
         nftAttributes,

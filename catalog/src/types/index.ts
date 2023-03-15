@@ -783,7 +783,7 @@ export interface NFTSModule {
     nftAmount: BigNumber
     ercType: ERCType
     password?: string
-    accountIndex?: number,
+    accountIndex?: number
     onEvent?: (next: OrderProgressStep) => void
   }) => Promise<string>
 }
@@ -866,6 +866,7 @@ export interface AssetPublishProviderState {
    */
   publishNFT721: ({
     nftAttributes,
+    nftAddress,
     publishMetadata,
     txParameters,
     password,
@@ -873,6 +874,7 @@ export interface AssetPublishProviderState {
     onEvent,
   }: {
     nftAttributes: NFTAttributes
+    nftAddress: string
     publishMetadata?: PublishMetadata
     txParameters?: TxParameters
     method?: EncryptionMethod
