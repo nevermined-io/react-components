@@ -240,6 +240,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * 
    * @param nft721
    * @param nft721.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
+   * @param nft721.nftAddress NFT721 contract address to load
    * @param nft721.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param nft721.txParams Optional transaction parameters
    * @param nft721.method Method used to encrypt the urls
