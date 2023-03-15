@@ -133,7 +133,7 @@ export const AssetPublishContext = createContext({} as AssetPublishProviderState
  * @see {@link https://github.com/nevermined-io/defi-marketplace/tree/main/client/src/%2Bassets/user-publish-steps}
  */
 export const AssetPublishProvider = ({ children }: { children: React.ReactElement }) => {
-  const { sdk, account, config } = useNevermined()
+  const { sdk, account, config, updateSDK } = useNevermined()
   const [errorAssetMessage, setErrorAssetMessage] = useState('')
   const [isPublished, setIsPublished] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
