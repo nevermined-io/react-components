@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { renderHook, waitFor } from '@testing-library/react'
 import { generateTestingUtils } from 'eth-testing'
 import { appConfig } from '../config'
-import { Catalog, AuthToken, SubscriptionsAndServicesDDOs } from '../../src'
+import { Catalog, AuthToken, SubscriptionsAndServicesDDOs, DDO } from '../../src'
 import jwt from 'jsonwebtoken'
 import { ddo, ddo2, ddo3, walletAddress, nevermined } from '../mockups'
 import { faker } from '@faker-js/faker'
@@ -532,20 +532,10 @@ describe('Nevermined account', () => {
   })
 
   it('should get all the subscriptions published by the address passed', async () =>{
-    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
-    jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
-      ...sdk,
-      assets: {
-        ...sdk.assets,
-        resolve: (id: string) => [ddo, ddo2, ddo3].find(item => item.id === id)
-      }
-      
-    })
-
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ subscriptions, setSubscriptions ] = useState<SubscriptionsAndServicesDDOs[]>([])
+        const [ subscriptions, setSubscriptions ] = useState<DDO[]>([])
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -573,6 +563,42 @@ describe('Nevermined account', () => {
     )
 
     await waitFor(() => {
+      expect(result.current).toStrictEqual([ddo])
+    })
+  })
+
+  it('should get all the subscriptions published and services by the address passed', async () =>{
+    const { result } = renderHook(
+      () => {
+        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [ subscriptions, setSubscriptions ] = useState<SubscriptionsAndServicesDDOs[]>([])
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
+          }
+
+          (async () => {
+            try {
+              const result = await account.getPublishedSubscriptionsAndServices(walletAddress)
+
+              setSubscriptions([...result])
+            } catch (error: any) {
+              console.error(error.message)
+            }
+          })()
+        }, [isLoadingSDK])
+
+        return subscriptions
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    )
+
+    await waitFor(() => {
       expect(result.current).toStrictEqual([{
         subscription: ddo,
         services: [ddo2, ddo3]
@@ -581,20 +607,10 @@ describe('Nevermined account', () => {
   })
 
   it('should get all the subscriptions purchased by the address passed', async () =>{
-    const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
-    jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
-      ...sdk,
-      assets: {
-        ...sdk.assets,
-        resolve: (id: string) => [ddo, ddo2, ddo3].find(item => item.id === id)
-      }
-      
-    })
-
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ subscriptions, setSubscriptions ] = useState<SubscriptionsAndServicesDDOs[]>([])
+        const [ subscriptions, setSubscriptions ] = useState<DDO[]>([])
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -622,10 +638,82 @@ describe('Nevermined account', () => {
     )
 
     await waitFor(() => {
+      expect(result.current).toStrictEqual([ddo])
+    })
+  })
+
+  it('should get all the subscriptions purchased and services by the address passed', async () =>{
+    const { result } = renderHook(
+      () => {
+        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [ subscriptions, setSubscriptions ] = useState<SubscriptionsAndServicesDDOs[]>([])
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
+          }
+
+          (async () => {
+            try {
+              const result = await account.getPurchasedSubscriptionsAndServices(walletAddress)
+
+              setSubscriptions([...result])
+            } catch (error: any) {
+              console.error(error.message)
+            }
+          })()
+        }, [isLoadingSDK])
+
+        return subscriptions
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    )
+
+    await waitFor(() => {
       expect(result.current).toStrictEqual([{
         subscription: ddo,
         services: [ddo2, ddo3]
       }])
+    })
+  })
+
+  it('should get all the services associated to the subscription id passed', async () =>{
+    const { result } = renderHook(
+      () => {
+        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [ services, setServices ] = useState<DDO[]>([])
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
+          }
+
+          (async () => {
+            try {
+              const result = await account.getAssociatedServices(ddo.id)
+
+              setServices([...result])
+            } catch (error: any) {
+              console.error(error.message)
+            }
+          })()
+        }, [isLoadingSDK])
+
+        return services
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    )
+
+    await waitFor(() => {
+      expect(result.current).toStrictEqual([ddo2, ddo3])
     })
   })
 })
