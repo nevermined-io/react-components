@@ -403,15 +403,36 @@ export interface AccountModule {
    */
   getCollection: (address: string) => Promise<DID[]>
   /**
-   * Get all the published subscriptions and services associated from the wallet address passed
+   * Get only published Subscriptions
    * @param address the address which published the subscription returned
+   * @returns published subscriptions
    */
-  getPublishedSubscriptions: (address: string) => Promise<SubscriptionsAndServicesDDOs[]>
+  getPublishedSubscriptions: (address: string) => Promise<DDO[]>
+  /**
+   * Get all the services associated
+   * @param address the address which published the subscription returned
+   * @returns associated services to subscriptions
+   */
+  getAssociatedServices: (did: string) => Promise<DDO[]>
+  /**
+   * Get all the published subscriptions and services associated from the wallet address passed
+   * Get only published Subscriptions
+   * @param did the did of the subscription
+   * @returns published subscriptions and service
+   */
+  getPublishedSubscriptionsAndServices: (address: string) => Promise<SubscriptionsAndServicesDDOs[]>
+  /**
+   * Get only purchased Subscriptions
+   * @param address the address which purchased the subscription returned
+   * @returns purchased subscriptions
+   */
+  getPurchasedSubscriptions: (address: string) => Promise<DDO[]>
   /**
    * Get all the purchased subscriptions and services associated from the wallet address passed
    * @param address the address which published the subscription returned
+   * @returns purchased subscriptions and services
    */
-  getPurchasedSubscriptions: (address: string) => Promise<SubscriptionsAndServicesDDOs[]>
+  getPurchasedSubscriptionsAndServices: (address: string) => Promise<SubscriptionsAndServicesDDOs[]>
   /**
    * Generate a token for authentication in the Marketplace API
    * @returns The new generated token
