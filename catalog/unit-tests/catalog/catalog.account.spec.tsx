@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { renderHook, waitFor } from '@testing-library/react'
 import { generateTestingUtils } from 'eth-testing'
 import { appConfig } from '../config'
-import { Catalog, AuthToken, SubscriptionsAndServicesDDOs, DDO } from '../../src'
+import { Catalog, AuthToken, SubscriptionsAndServicesDDOs, SubscriptionsAndDatasetsDDOs, DDO } from '../../src'
 import jwt from 'jsonwebtoken'
-import { ddo, ddo2, ddo3, walletAddress, nevermined } from '../mockups'
+import { ddo, ddo2, ddo3, ddo4, ddo5, walletAddress, nevermined } from '../mockups'
 import { faker } from '@faker-js/faker'
 
 jest.mock('@nevermined-io/sdk', () => ({
@@ -714,6 +714,120 @@ describe('Nevermined account', () => {
 
     await waitFor(() => {
       expect(result.current).toStrictEqual([ddo2, ddo3])
+    })
+  })
+
+  it('should get all the subscriptions published and datasets by the address passed', async () =>{
+    const { result } = renderHook(
+      () => {
+        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [ subscriptions, setSubscriptions ] = useState<SubscriptionsAndDatasetsDDOs[]>([])
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
+          }
+
+          (async () => {
+            try {
+              const result = await account.getPublishedSubscriptionsAndDatasets(walletAddress)
+
+              setSubscriptions([...result])
+            } catch (error: any) {
+              console.error(error.message)
+            }
+          })()
+        }, [isLoadingSDK])
+
+        return subscriptions
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    )
+
+    await waitFor(() => {
+      expect(result.current).toStrictEqual([{
+        subscription: ddo,
+        datasets: [ddo4, ddo5]
+      }])
+    })
+  })
+
+  it('should get all the subscriptions purchased and datasets by the address passed', async () =>{
+    const { result } = renderHook(
+      () => {
+        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [ subscriptions, setSubscriptions ] = useState<SubscriptionsAndDatasetsDDOs[]>([])
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
+          }
+
+          (async () => {
+            try {
+              const result = await account.getPublishedSubscriptionsAndDatasets(walletAddress)
+
+              setSubscriptions([...result])
+            } catch (error: any) {
+              console.error(error.message)
+            }
+          })()
+        }, [isLoadingSDK])
+
+        return subscriptions
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    )
+
+    await waitFor(() => {
+      expect(result.current).toStrictEqual([{
+        subscription: ddo,
+        datasets: [ddo4, ddo5]
+      }])
+    })
+  })
+
+  it('should get all the datasets associated to the subscription id passed', async () =>{
+    const { result } = renderHook(
+      () => {
+        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const [ datasets, setDatasets ] = useState<DDO[]>([])
+
+        useEffect(() => {
+          if (isLoadingSDK) {
+            appConfig.web3Provider = testingUtils.getProvider()
+            updateSDK(appConfig)
+            return
+          }
+
+          (async () => {
+            try {
+              const result = await account.getAssociatedDatasets(ddo.id)
+
+              setDatasets([...result])
+            } catch (error: any) {
+              console.error(error.message)
+            }
+          })()
+        }, [isLoadingSDK])
+
+        return datasets
+      },
+      {
+        wrapper: wrapperProvider
+      }
+    )
+
+    await waitFor(() => {
+      expect(result.current).toStrictEqual([ddo4, ddo5])
     })
   })
 })

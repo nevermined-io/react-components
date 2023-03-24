@@ -2168,12 +2168,12 @@
     "@motionone/dom" "^10.15.5"
     tslib "^2.3.1"
 
-"@nevermined-io/sdk-dtp@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/sdk-dtp/-/sdk-dtp-0.4.1.tgz#a04c622f3b5d4cb1a9480adec86f01631157abab"
-  integrity sha512-RjEWMx1OWwFYSq5jZXM/3n9WEoyaG1nwrXM/sK+/zpBMOwyScvfWZf3wpJKaVfshMH30FNOqcQrGYbcM8/5o7g==
+"@nevermined-io/sdk-dtp@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/sdk-dtp/-/sdk-dtp-0.4.2.tgz#d7dad5198c1294f0f2c600291ea917a71c3ef221"
+  integrity sha512-GTGG1dLXM5nbJF83R3n42cd/BeemIS2TDXnYSvFfnwe7QtDWFTFvAunaBxBIBhrngKC5aBQWWDLzOpZYg2Rrbg==
   dependencies:
-    "@nevermined-io/sdk" "1.2.0"
+    "@nevermined-io/sdk" "1.3.0"
     circomlibjs "^0.1.1"
     eciesjs "^0.3.15"
     ffjavascript "^0.2.55"
@@ -2181,10 +2181,10 @@
     snarkjs "^0.4.26"
     web3-utils "^1.7.4"
 
-"@nevermined-io/sdk@1.2.0", "@nevermined-io/sdk@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/sdk/-/sdk-1.2.0.tgz#5e11927eaf88c113c95abb19c61ca0682c2e584d"
-  integrity sha512-RqbBvZD0MEoYyl98x42qQfg85qcNrDQbFONF/cdVuPaPjmTsf64vImA/t5VwlLUMRGRH/OXKNnVuSw9r3C5VxA==
+"@nevermined-io/sdk@1.3.0", "@nevermined-io/sdk@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/sdk/-/sdk-1.3.0.tgz#6af1b1e797d2a066d3942d78e1eb6f87aed2c4c5"
+  integrity sha512-WyeH8VxqjHeMgatalG/cQBF5tHepGpZ/+lBTbEXTRQb5Tj2X5YPokut9+u78WfRZ5ZRwut7aoJNZoQeAvleSDg==
   dependencies:
     "@nevermined-io/subgraphs" "0.5.0"
     assert "^2.0.0"

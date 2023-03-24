@@ -409,18 +409,29 @@ export interface AccountModule {
    */
   getPublishedSubscriptions: (address: string) => Promise<DDO[]>
   /**
-   * Get all the services associated
-   * @param address the address which published the subscription returned
+   * Get all the services associated a subscription
+   * @param address the subscription address
    * @returns associated services to subscriptions
    */
   getAssociatedServices: (did: string) => Promise<DDO[]>
   /**
+   * Get all the datasets associated to a subscription
+   * @param address the subscription address
+   * @returns associated datasets to subscriptions
+   */
+  getAssociatedDatasets: (did: string) => Promise<DDO[]>
+  /**
    * Get all the published subscriptions and services associated from the wallet address passed
-   * Get only published Subscriptions
    * @param did the did of the subscription
    * @returns published subscriptions and service
    */
   getPublishedSubscriptionsAndServices: (address: string) => Promise<SubscriptionsAndServicesDDOs[]>
+  /**
+   * Get all the published subscriptions and datasets associated from the wallet address passed
+   * @param did the did of the subscription
+   * @returns published subscriptions and its datasets
+   */
+  getPublishedSubscriptionsAndDatasets: (address: string) => Promise<SubscriptionsAndDatasetsDDOs[]>
   /**
    * Get only purchased Subscriptions
    * @param address the address which purchased the subscription returned
@@ -433,6 +444,12 @@ export interface AccountModule {
    * @returns purchased subscriptions and services
    */
   getPurchasedSubscriptionsAndServices: (address: string) => Promise<SubscriptionsAndServicesDDOs[]>
+  /**
+   * Get all the purchased subscriptions and datasets associated from the wallet address passed
+   * @param did the did of the subscription
+   * @returns purchased subscriptions and its datasets
+   */
+  getPurchasedSubscriptionsAndDatasets: (address: string) => Promise<SubscriptionsAndDatasetsDDOs[]>
   /**
    * Generate a token for authentication in the Marketplace API
    * @returns The new generated token
@@ -947,4 +964,9 @@ export interface Credentials {
 export interface SubscriptionsAndServicesDDOs {
   subscription: DDO
   services: DDO[]
+}
+
+export interface SubscriptionsAndDatasetsDDOs {
+  subscription: DDO
+  datasets: DDO[]
 }

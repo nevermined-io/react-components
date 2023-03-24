@@ -22,7 +22,8 @@ import {
   TransferNFTConditionMethod,
   BigNumber,
   SubscriptionsAndServicesDDOs,
-  OrderProgressStep
+  OrderProgressStep,
+  SubscriptionsAndDatasetsDDOs
 } from './types'
 import {
   conductOrder,
@@ -32,6 +33,7 @@ import {
   getAgreementId,
   handlePostRequest,
   getSubscriptionsAndServices,
+  getSubscriptionsAndDatasets,
   executeWithProgressEvent,
 } from './utils'
 import { _getCryptoConfig, _getDTPInstance, _grantAccess } from './utils/dtp'
@@ -230,6 +232,17 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
+    getPublishedSubscriptionsAndDatasets: async (): Promise<SubscriptionsAndDatasetsDDOs[]> => {
+      try {
+        const account = await getCurrentAccount(sdk)
+        const query = await sdk.search.subscriptionsCreated(account)
+        return getSubscriptionsAndDatasets(query.results, sdk)
+      } catch (error) {
+        verbose && Logger.error(error)
+        return []
+      }
+    },
+
     getPurchasedSubscriptions: async (): Promise<DDO[]> => {
       try {
         const account = await getCurrentAccount(sdk)
@@ -252,9 +265,30 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
+    getPurchasedSubscriptionsAndDatasets: async (): Promise<SubscriptionsAndDatasetsDDOs[]> => {
+      try {
+        const account = await getCurrentAccount(sdk)
+        const query = await sdk.search.subscriptionsPurchased(account)
+        return getSubscriptionsAndDatasets(query.results, sdk)
+      } catch (error) {
+        verbose && Logger.error(error)
+        return []
+      }
+    },
+
     getAssociatedServices: async (did: string): Promise<DDO[]> => {
       try {
         const query = await sdk.search.servicesBySubscription(did)
+        return query.results
+      } catch (error) {
+        verbose && Logger.error(error)
+        return []
+      }
+    },
+
+    getAssociatedDatasets: async (did: string): Promise<DDO[]> => {
+      try {
+        const query = await sdk.search.datasetsBySubscription(did)
         return query.results
       } catch (error) {
         verbose && Logger.error(error)

@@ -186,6 +186,19 @@ export const getSubscriptionsAndServices = async (subscriptionsDDOs: DDO[], sdk:
   )
 }
 
+export const getSubscriptionsAndDatasets = async (subscriptionsDDOs: DDO[], sdk: Nevermined) => {
+  return Promise.all(
+    subscriptionsDDOs.map(async (ddo) => {
+      const query = await sdk.search.datasetsBySubscription(ddo.id)
+
+      return {
+        subscription: ddo,
+        datasets: query.results,
+      }
+    }),
+  )
+}
+
 export const executeWithProgressEvent = async <T>(
   subscribableAction: () => SubscribablePromise<any, T>,
   onEvent?: (next: any) => void,
