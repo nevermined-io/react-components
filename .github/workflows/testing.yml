@@ -34,7 +34,7 @@ jobs:
         with:
           node-version: "17.x"
           registry-url: https://registry.npmjs.org/
-      - uses: nevermined-io/nvm-tools-actions@v0.8.0
+      - uses: nevermined-io/nvm-tools-actions@v0.9.0
         with:
           token: ${{ secrets.API_TOKEN_GITHUB }}
           opengsn: 'true'
