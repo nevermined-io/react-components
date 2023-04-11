@@ -1,8 +1,6 @@
 import React, { useState, useEffect, createContext, useContext } from 'react'
 import {
-  configureChains,
   Chain,
-  createClient,
   Client,
   useAccount,
   useConnect,
@@ -13,70 +11,7 @@ import {
 } from 'wagmi'
 import { Provider } from '@wagmi/core'
 import { ConnectKitProvider } from 'connectkit'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
-import ChainsConfig from './chain-config'
 import { ConnectKitProviderProps } from './types'
-
-/**
- * function that build and return the wagmi client
- * @deprecated use `Wagmi.createClient` instead, [see here](https://docs.nevermined.io/docs/tutorials/login-wallet-provider)
- * @param appName App name required for Coinbase wallet. If appName is undefined Coinbase wallet won't be supported
- * @param autoConnect If it is true once that the dapp start to run it will try to connect to the wallet automatically. Default `true`
- * @param chainsConfig Config with all the available chains that can be used in the dapp. Default chains supported `Polygon Mainnet`, `Polygon Mumbai`, `spree (localhost)
- * @returns
- */
-export const getClient = (
-  appName = 'Nevermined',
-  autoConnect = true,
-  chainsConfig = ChainsConfig,
-) => {
-  const { provider, chains } = configureChains(chainsConfig, [
-    jsonRpcProvider({
-      rpc: (chain) => {
-        if (!chainsConfig.some((c) => c.id === chain.id)) return null
-
-        return {
-          http: chain.rpcUrls.default.http[0],
-        }
-      },
-    }),
-  ])
-
-  const connectors: (MetaMaskConnector | WalletConnectConnector | CoinbaseWalletConnector)[] = [
-    new MetaMaskConnector({
-      chains,
-      options: {
-        shimDisconnect: true,
-        shimChainChangedDisconnect: false,
-        UNSTABLE_shimOnConnectSelectAccount: true,
-      },
-    }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        qrcode: true,
-      },
-    }),
-    new CoinbaseWalletConnector({
-      chains,
-      options: {
-        appName,
-        headlessMode: true,
-      },
-    }),
-  ]
-
-  const clientbuilt = createClient({
-    autoConnect,
-    connectors,
-    provider,
-  })
-
-  return clientbuilt
-}
 
 /**
  * This component is a layer of [Wagmi](https://wagmi.sh/docs/getting-started) and [ConnectKit](https://docs.family.co/connectkit)
@@ -86,7 +21,7 @@ export interface WalletProviderState {
   /** All the wagmi client functionalities
    * @see [wagmi](https://wagmi.sh/docs/getting-started)
    */
-  client: Client
+  client: Client<Provider>
   /** Metamask provider for example web3 or ethers */
   getProvider: () => Provider
   /** Get all the connectors available */
