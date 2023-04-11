@@ -105,13 +105,13 @@
     ]
   },
   "dependencies": {
-    "@nevermined-io/sdk": "^1.3.2",
-    "@nevermined-io/sdk-dtp": "^0.4.3",
+    "@nevermined-io/sdk": "^1.3.3",
+    "@nevermined-io/sdk-dtp": "^0.4.4",
     "@types/jsonwebtoken": "^8.5.8",
     "@wagmi/core": "^0.8.15",
     "axios": "^0.27.2",
     "axios-retry": "^3.3.1",
-    "connectkit": "^1.1.1",
+    "connectkit": "^1.2.2",
     "ethers": "^5.7.2",
     "js-file-download": "^0.4.12",
     "jsonwebtoken": "^8.5.1",
@@ -119,7 +119,7 @@
     "react-dom": "18.2.0",
     "tslib": "^2.3.0",
     "typescript": "^4.9.5",
-    "wagmi": "^0.10.11"
+    "wagmi": "^0.12.10"
   },
   "nx": {
     "targets": {}
