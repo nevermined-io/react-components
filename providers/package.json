@@ -6,13 +6,13 @@
   "types": "./dist/index.d.ts",
   "dependencies": {
     "@wagmi/core": "^0.8.15",
-    "connectkit": "^1.1.1",
+    "connectkit": "^1.2.2",
     "ethers": "^5.7.2",
-    "wagmi": "^0.10.11"
+    "wagmi": "^0.12.10"
   },
   "resolutions": {
     "connectkit/react": "^18.2.0",
     "connectkit/react-dom": "^18.2.0",
-    "wagmi": "^0.10.11"
+    "wagmi": "^0.12.10"
   }
 }
