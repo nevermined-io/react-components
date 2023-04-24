@@ -4,6 +4,7 @@ import {
   ERCType,
   MarketplaceAPIToken,
   NeverminedOptions,
+  SearchOptions,
   SubscribablePromise,
 } from '../types'
 import axios from 'axios'
@@ -173,10 +174,20 @@ export const handlePostRequest = async (url: string, formData: FormData, retries
   }
 }
 
-export const getSubscriptionsAndServices = async (subscriptionsDDOs: DDO[], sdk: Nevermined) => {
+export const getSubscriptionsAndServices = async (
+  subscriptionsDDOs: DDO[],
+  sdk: Nevermined,
+  searchOptions?: SearchOptions,
+) => {
   return Promise.all(
     subscriptionsDDOs.map(async (ddo) => {
-      const query = await sdk.search.servicesBySubscription(ddo.id)
+      const query = await sdk.search.servicesBySubscription(
+        ddo.id,
+        searchOptions?.offset,
+        searchOptions?.page,
+        searchOptions?.sort,
+        searchOptions?.appId,
+      )
 
       return {
         subscription: ddo,
@@ -186,10 +197,20 @@ export const getSubscriptionsAndServices = async (subscriptionsDDOs: DDO[], sdk:
   )
 }
 
-export const getSubscriptionsAndDatasets = async (subscriptionsDDOs: DDO[], sdk: Nevermined) => {
+export const getSubscriptionsAndDatasets = async (
+  subscriptionsDDOs: DDO[],
+  sdk: Nevermined,
+  searchOptions?: SearchOptions,
+) => {
   return Promise.all(
     subscriptionsDDOs.map(async (ddo) => {
-      const query = await sdk.search.datasetsBySubscription(ddo.id)
+      const query = await sdk.search.datasetsBySubscription(
+        ddo.id,
+        searchOptions?.offset,
+        searchOptions?.page,
+        searchOptions?.sort,
+        searchOptions?.appId,
+      )
 
       return {
         subscription: ddo,
