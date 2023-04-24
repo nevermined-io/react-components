@@ -546,7 +546,7 @@ describe('Nevermined account', () => {
 
           (async () => {
             try {
-              const result = await account.getPublishedSubscriptions(walletAddress)
+              const result = await account.getPublishedSubscriptions()
 
               setSubscriptions([...result])
             } catch (error: any) {
@@ -582,7 +582,7 @@ describe('Nevermined account', () => {
 
           (async () => {
             try {
-              const result = await account.getPublishedSubscriptionsAndServices(walletAddress)
+              const result = await account.getPublishedSubscriptionsAndServices()
 
               setSubscriptions([...result])
             } catch (error: any) {
@@ -621,7 +621,7 @@ describe('Nevermined account', () => {
 
           (async () => {
             try {
-              const result = await account.getPurchasedSubscriptions(walletAddress)
+              const result = await account.getPurchasedSubscriptions()
 
               setSubscriptions([...result])
             } catch (error: any) {
@@ -657,7 +657,7 @@ describe('Nevermined account', () => {
 
           (async () => {
             try {
-              const result = await account.getPurchasedSubscriptionsAndServices(walletAddress)
+              const result = await account.getPurchasedSubscriptionsAndServices()
 
               setSubscriptions([...result])
             } catch (error: any) {
@@ -732,7 +732,7 @@ describe('Nevermined account', () => {
 
           (async () => {
             try {
-              const result = await account.getPublishedSubscriptionsAndDatasets(walletAddress)
+              const result = await account.getPublishedSubscriptionsAndDatasets()
 
               setSubscriptions([...result])
             } catch (error: any) {
@@ -771,7 +771,7 @@ describe('Nevermined account', () => {
 
           (async () => {
             try {
-              const result = await account.getPublishedSubscriptionsAndDatasets(walletAddress)
+              const result = await account.getPublishedSubscriptionsAndDatasets()
 
               setSubscriptions([...result])
             } catch (error: any) {

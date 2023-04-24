@@ -299,6 +299,20 @@ export interface GenericOutput<T, E> {
   success: boolean
 }
 
+/**
+ * Query search options
+ */
+export interface SearchOptions {
+  /** Number of results per page */
+  offset?: number
+  /** Number of page */
+  page?: number
+  /** result order */
+  sort?: 'asc' | 'desc'
+  /** If app to search have an id */
+  appId?: string
+}
+
 /** Id of the asset */
 export type DID = string
 
@@ -405,51 +419,62 @@ export interface AccountModule {
   /**
    * Get only published Subscriptions
    * @param address the address which published the subscription returned
+   * @param searchOptions options for customize result
    * @returns published subscriptions
    */
-  getPublishedSubscriptions: (address: string) => Promise<DDO[]>
+  getPublishedSubscriptions: (searchOptions?: SearchOptions) => Promise<DDO[]>
   /**
    * Get all the services associated a subscription
    * @param address the subscription address
+   * @param searchOptions options for customize result
    * @returns associated services to subscriptions
    */
-  getAssociatedServices: (did: string) => Promise<DDO[]>
+  getAssociatedServices: (did: string, searchOptions?: SearchOptions) => Promise<DDO[]>
   /**
    * Get all the datasets associated to a subscription
    * @param address the subscription address
+   * @param searchOptions options for customize result
    * @returns associated datasets to subscriptions
    */
-  getAssociatedDatasets: (did: string) => Promise<DDO[]>
+  getAssociatedDatasets: (did: string, searchOptions?: SearchOptions) => Promise<DDO[]>
   /**
    * Get all the published subscriptions and services associated from the wallet address passed
-   * @param did the did of the subscription
+   * @param searchOptions options for customize result
    * @returns published subscriptions and service
    */
-  getPublishedSubscriptionsAndServices: (address: string) => Promise<SubscriptionsAndServicesDDOs[]>
+  getPublishedSubscriptionsAndServices: (
+    searchOptions?: SearchOptions,
+  ) => Promise<SubscriptionsAndServicesDDOs[]>
   /**
    * Get all the published subscriptions and datasets associated from the wallet address passed
-   * @param did the did of the subscription
+   * @param searchOptions options for customize result
    * @returns published subscriptions and its datasets
    */
-  getPublishedSubscriptionsAndDatasets: (address: string) => Promise<SubscriptionsAndDatasetsDDOs[]>
+  getPublishedSubscriptionsAndDatasets: (
+    searchOptions?: SearchOptions,
+  ) => Promise<SubscriptionsAndDatasetsDDOs[]>
   /**
    * Get only purchased Subscriptions
-   * @param address the address which purchased the subscription returned
+   * @param searchOptions options for customize result
    * @returns purchased subscriptions
    */
-  getPurchasedSubscriptions: (address: string) => Promise<DDO[]>
+  getPurchasedSubscriptions: (searchOptions?: SearchOptions) => Promise<DDO[]>
   /**
    * Get all the purchased subscriptions and services associated from the wallet address passed
-   * @param address the address which published the subscription returned
+   * @param searchOptions options for customize result
    * @returns purchased subscriptions and services
    */
-  getPurchasedSubscriptionsAndServices: (address: string) => Promise<SubscriptionsAndServicesDDOs[]>
+  getPurchasedSubscriptionsAndServices: (
+    searchOptions?: SearchOptions,
+  ) => Promise<SubscriptionsAndServicesDDOs[]>
   /**
    * Get all the purchased subscriptions and datasets associated from the wallet address passed
-   * @param did the did of the subscription
+   * @param searchOptions options for customize result
    * @returns purchased subscriptions and its datasets
    */
-  getPurchasedSubscriptionsAndDatasets: (address: string) => Promise<SubscriptionsAndDatasetsDDOs[]>
+  getPurchasedSubscriptionsAndDatasets: (
+    searchOptions?: SearchOptions,
+  ) => Promise<SubscriptionsAndDatasetsDDOs[]>
   /**
    * Generate a token for authentication in the Marketplace API
    * @returns The new generated token
