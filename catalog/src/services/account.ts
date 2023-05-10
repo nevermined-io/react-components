@@ -317,7 +317,7 @@ export const useUserProfile = (
   /** Reload current user profile */
   reloadUserProfile: () => void
 } => {
-  const { sdk, account } = useNevermined()
+  const { sdk, account, isLoadingSDK } = useNevermined()
   const [inputError, setInputError] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
@@ -410,9 +410,14 @@ export const useUserProfile = (
   }, [isUpdated, isAddressAdded])
 
   useEffect(() => {
-    (async () => {
+    void (async () => {
       try {
-        if (!walletAddress || !sdk?.services?.profiles || userProfileLoadingStatus === 'loading') {
+        if (
+          !walletAddress ||
+          isLoadingSDK ||
+          !sdk?.services?.profiles ||
+          userProfileLoadingStatus === 'loading'
+        ) {
           return
         }
 
@@ -465,7 +470,7 @@ export const useUserProfile = (
         }
       }
     })()
-  }, [sdk.services?.profiles, walletAddress, reloadTrigger])
+  }, [isLoadingSDK, walletAddress, reloadTrigger])
 
   return {
     inputError,
@@ -501,7 +506,7 @@ export const useIsAssetHolder = (did: string, walletAddress: string): { ownAsset
       return
     }
 
-    (async () => {
+    void (async () => {
       const purchased = await loadFulfilledEvents(sdk, walletAddress, 'accessCondition')
 
       const purchasedDDO = await Promise.all(
@@ -536,7 +541,7 @@ export const useIsNFT1155Holder = (did: string, walletAddress: string): { ownNFT
       return
     }
 
-    (async () => {
+    void (async () => {
       const walletAccount = new Account(walletAddress)
       if (walletAccount) {
         const balance = await sdk.nfts1155.balance(did, walletAccount)
@@ -575,7 +580,7 @@ export const useIsNFT721Holder = (
       return
     }
 
-    (async () => {
+    void (async () => {
       const walletAccount = new Account(walletAddress)
       if (walletAccount) {
         const nft721 = await sdk.contracts.loadNft721(nftAddress)
