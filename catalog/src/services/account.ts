@@ -317,7 +317,7 @@ export const useUserProfile = (
   /** Reload current user profile */
   reloadUserProfile: () => void
 } => {
-  const { sdk, account, isLoadingSDK } = useNevermined()
+  const { sdk, account } = useNevermined()
   const [inputError, setInputError] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
@@ -412,12 +412,7 @@ export const useUserProfile = (
   useEffect(() => {
     void (async () => {
       try {
-        if (
-          !walletAddress ||
-          isLoadingSDK ||
-          !sdk?.services?.profiles ||
-          userProfileLoadingStatus === 'loading'
-        ) {
+        if (!walletAddress || !sdk?.services?.profiles || userProfileLoadingStatus === 'loading') {
           return
         }
 
@@ -470,7 +465,7 @@ export const useUserProfile = (
         }
       }
     })()
-  }, [isLoadingSDK, walletAddress, reloadTrigger])
+  }, [sdk?.services?.profiles, walletAddress, reloadTrigger])
 
   return {
     inputError,
