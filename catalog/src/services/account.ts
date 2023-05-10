@@ -313,7 +313,7 @@ export const useUserProfile = (
   /** Submit user profile */
   submitUserProfile: () => Promise<void>
   /** Indicates current user profile loading status */
-  userProfileLoadingStatus: null | 'loading' | 'loaded' | 'failed' | 'noSigned'
+  userProfileLoadingStatus: null | 'loading' | 'loaded' | 'failed' | 'notSigned'
   /** Reload current user profile */
   reloadUserProfile: () => void
 } => {
@@ -325,7 +325,7 @@ export const useUserProfile = (
   const [isAddressAdded, setIsAddressAdded] = useState(false)
   const [isTokenGenerated, setIsTokenGenerated] = useState(false)
   const [userProfileLoadingStatus, setUserProfileLoadingStatus] = useState<
-    null | 'loading' | 'loaded' | 'failed' | 'noSigned'
+    null | 'loading' | 'loaded' | 'failed' | 'notSigned'
   >(null)
 
   const [userId, setUserId] = useState('')
@@ -442,7 +442,7 @@ export const useUserProfile = (
           additionalInformation: userProfileData.additionalInformation,
         })
 
-        setUserProfileLoadingStatus(tokenAuth ? 'loaded' : 'noSigned')
+        setUserProfileLoadingStatus(tokenAuth ? 'loaded' : 'notSigned')
       } catch (error: any) {
         if (addresses?.length && !addresses.some((a) => a.toLowerCase() === walletAddress)) {
           setNewAddress(walletAddress)

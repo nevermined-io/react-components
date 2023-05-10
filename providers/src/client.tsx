@@ -11,7 +11,7 @@ import {
 } from 'wagmi'
 import { Provider } from '@wagmi/core'
 import { ConnectKitProvider } from 'connectkit'
-import { ConnectKitProviderProps } from './types'
+import { ConnectKitProviderProps, DataStatus, ProviderStatus } from './types'
 
 /**
  * This component is a layer of [Wagmi](https://wagmi.sh/docs/getting-started) and [ConnectKit](https://docs.family.co/connectkit)
@@ -38,6 +38,8 @@ export interface WalletProviderState {
   login: (connector: Connector<any, any, any>) => void // eslint-disable-line
   /** If chain is between the available networks supported */
   checkIsChainCorrect: () => boolean
+  /** get data status including message*/
+  dataStatus: DataStatus
 }
 
 export const WalletContext = createContext({} as WalletProviderState)
@@ -55,27 +57,52 @@ export const ClientComp = ({
 }) => {
   const [walletAddress, setWalletAddress] = useState<string>('')
   const { address, status } = useAccount()
+  const [dataStatus, setDataStatus] = useState<DataStatus>({} as DataStatus)
   const { connect, connectors } = useConnect({
     onError(error) {
+      setDataStatus({
+        message: error.message,
+        status: ProviderStatus.ErrorConnect
+      })
       console.error(`Error connect: ${error}`)
     },
     onSuccess(data) {
+      setDataStatus({
+        message: data,
+        status: ProviderStatus.SuccessConnect
+      })
       console.log(`Wallet is connected: ${data}`)
     },
   })
   const { disconnect } = useDisconnect({
     onError(error) {
+      setDataStatus({
+        message: error.message,
+        status: ProviderStatus.ErrorDisconnect
+      })
       console.error(`Error disconnect: ${error}`)
     },
-    onSuccess() {
+    onSuccess(data) {
+      setDataStatus({
+        message: data,
+        status: ProviderStatus.SuccessDisconnect
+      })
       console.log(`Wallet is disconnected`)
     },
   })
   const { switchNetwork } = useSwitchNetwork({
     onError(error) {
+      setDataStatus({
+        message: error.message,
+        status: ProviderStatus.ErrorSwitchNetwork
+      })
       console.error(`Error switch network: ${error}`)
     },
     onSuccess(data) {
+      setDataStatus({
+        message: data,
+        status: ProviderStatus.SuccessSwitchNetwork
+      })
       console.log(`New network is selected: ${data.name}`)
     },
   })
@@ -112,6 +139,7 @@ export const ClientComp = ({
         value={{
           client,
           walletAddress,
+          dataStatus,
           login,
           getConnectors,
           logout,
