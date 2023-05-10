@@ -313,7 +313,7 @@ export const useUserProfile = (
   /** Submit user profile */
   submitUserProfile: () => Promise<void>
   /** Indicates current user profile loading status */
-  userProfileLoadingStatus: null | 'loading' | 'loaded' | 'failed'
+  userProfileLoadingStatus: null | 'loading' | 'loaded' | 'failed' | 'noSigned'
   /** Reload current user profile */
   reloadUserProfile: () => void
 } => {
@@ -325,7 +325,7 @@ export const useUserProfile = (
   const [isAddressAdded, setIsAddressAdded] = useState(false)
   const [isTokenGenerated, setIsTokenGenerated] = useState(false)
   const [userProfileLoadingStatus, setUserProfileLoadingStatus] = useState<
-    null | 'loading' | 'loaded' | 'failed'
+    null | 'loading' | 'loaded' | 'failed' | 'noSigned'
   >(null)
 
   const [userId, setUserId] = useState('')
@@ -343,14 +343,17 @@ export const useUserProfile = (
   const [reloadTrigger, setReloadTrigger] = useState<Date>()
 
   const checkAuth = async () => {
+    let tokenObject = { token: '' }
     if (!account.isTokenValid()) {
       setIsTokenGenerated(false)
       setErrorMessage(
         'Your login is expired. Please first sign with your wallet before to continue',
       )
-      await account.generateToken()
-      setIsTokenGenerated(true)
+      tokenObject = await account.generateToken()
+      setIsTokenGenerated(Boolean(tokenObject.token))
     }
+
+    return tokenObject.token
   }
 
   const addAddress = async () => {
@@ -425,7 +428,7 @@ export const useUserProfile = (
           setNewAddress('')
         }
 
-        await checkAuth()
+        const tokenAuth = await checkAuth()
 
         setAddresses([...userProfileData.addresses])
 
@@ -439,7 +442,7 @@ export const useUserProfile = (
           additionalInformation: userProfileData.additionalInformation,
         })
 
-        setUserProfileLoadingStatus('loaded')
+        setUserProfileLoadingStatus(tokenAuth ? 'loaded' : 'noSigned')
       } catch (error: any) {
         if (addresses?.length && !addresses.some((a) => a.toLowerCase() === walletAddress)) {
           setNewAddress(walletAddress)
