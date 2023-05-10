@@ -158,6 +158,11 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     getAddressTokenSigner: (): string => String(getAddressTokenSigner()),
     generateToken: async (): Promise<MarketplaceAPIToken> => {
       const tokenData = await newMarketplaceApiToken(sdk)
+      if(!tokenData.token) {
+        return {
+          token: ''
+        }
+      }
       const { data } = await initializeNevermined({
         ...config,
         marketplaceAuthToken: tokenData.token

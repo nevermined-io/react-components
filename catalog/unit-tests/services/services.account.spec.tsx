@@ -127,6 +127,7 @@ describe('Account Service', () => {
               })
 
               setWallet(walletAddress2)
+              
               if(newAddress && addresses.length < 2) addAddress()
             } catch (error: any) {
               console.error(error.message)
