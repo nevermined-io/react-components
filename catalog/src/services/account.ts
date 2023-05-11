@@ -5,6 +5,7 @@ import { UserProfileParams } from '../types'
 import { saveMarketplaceApiTokenToLocalStorage } from '../utils/marketplace_token'
 import { Account, Logger, BigNumber } from '@nevermined-io/sdk'
 import { loadFulfilledEvents } from '..'
+import { fetchMarketplaceApiTokenFromLocalStorage } from '../utils/marketplace_token'
 
 /**
  * Get account releases(mints)
@@ -351,6 +352,8 @@ export const useUserProfile = (
       )
       tokenObject = await account.generateToken()
       setIsTokenGenerated(Boolean(tokenObject.token))
+    } else {
+      tokenObject = fetchMarketplaceApiTokenFromLocalStorage()
     }
 
     return tokenObject.token
