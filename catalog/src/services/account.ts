@@ -317,6 +317,8 @@ export const useUserProfile = (
   userProfileLoadingStatus: null | 'loading' | 'loaded' | 'failed' | 'notSigned'
   /** Reload current user profile */
   reloadUserProfile: () => void
+  /** Reset loading status */
+  resetUserProfileLoadingStatus: () => void
 } => {
   const { sdk, account } = useNevermined()
   const [inputError, setInputError] = useState('')
@@ -405,6 +407,10 @@ export const useUserProfile = (
     setReloadTrigger(new Date())
   }
 
+  const resetUserProfileLoadingStatus = () => {
+    setUserProfileLoadingStatus(null)
+  }
+
   useEffect(() => {
     if (isUpdated || isAddressAdded) {
       setTimeout(() => {
@@ -488,6 +494,7 @@ export const useUserProfile = (
     addAddress,
     submitUserProfile,
     reloadUserProfile,
+    resetUserProfileLoadingStatus,
   }
 }
 
