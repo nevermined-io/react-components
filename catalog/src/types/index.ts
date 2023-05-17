@@ -768,7 +768,7 @@ export interface AssetPublishParams {
   /** The category that belong the asset */
   category: string
   /** Price of the asset */
-  price: number
+  price: string
   /** Files to download after buy the asset */
   assetFiles: AssetFile[]
 }
