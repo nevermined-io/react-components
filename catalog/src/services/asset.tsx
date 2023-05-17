@@ -144,7 +144,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     description: '',
     type: 'dataset',
     category: 'None',
-    price: 0,
+    price: '',
     assetFiles: []
   })
 
