@@ -36,6 +36,7 @@ import {
   getSubscriptionsAndServices,
   getSubscriptionsAndDatasets,
   executeWithProgressEvent,
+  emptyQueryResult,
 } from './utils'
 import { _getCryptoConfig, _getDTPInstance, _grantAccess } from './utils/dtp'
 import { getAddressTokenSigner, isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token'
@@ -216,14 +217,14 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    getPublishedSubscriptions: async (searchOptions?: SearchOptions): Promise<DDO[]> => {
+    getPublishedSubscriptions: async (searchOptions?: SearchOptions): Promise<QueryResult> => {
       try {
         const account = await getCurrentAccount(sdk)
         const query = await sdk.search.subscriptionsCreated(account, searchOptions?.offset, searchOptions?.page, searchOptions?.sort, searchOptions?.appId)
-        return query.results
+        return query
       } catch {
         verbose && Logger.error(error)
-        return []
+        return emptyQueryResult
       }
     },
 
@@ -250,14 +251,14 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    getPurchasedSubscriptions: async (searchOptions?: SearchOptions): Promise<DDO[]> => {
+    getPurchasedSubscriptions: async (searchOptions?: SearchOptions): Promise<QueryResult> => {
       try {
         const account = await getCurrentAccount(sdk)
         const query = await sdk.search.subscriptionsPurchased(account, searchOptions?.offset, searchOptions?.page, searchOptions?.sort, searchOptions?.appId)
-        return query.results
+        return query
       } catch (error) {
         verbose && Logger.error(error)
-        return []
+        return emptyQueryResult
       }
     },
 
@@ -284,23 +285,23 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    getAssociatedServices: async (did: string, searchOptions?: SearchOptions): Promise<DDO[]> => {
+    getAssociatedServices: async (did: string, searchOptions?: SearchOptions): Promise<QueryResult> => {
       try {
         const query = await sdk.search.servicesBySubscription(did, searchOptions?.offset, searchOptions?.page, searchOptions?.sort, searchOptions?.appId)
-        return query.results
+        return query
       } catch (error) {
         verbose && Logger.error(error)
-        return []
+        return emptyQueryResult
       }
     },
 
-    getAssociatedDatasets: async (did: string, searchOptions?: SearchOptions): Promise<DDO[]> => {
+    getAssociatedDatasets: async (did: string, searchOptions?: SearchOptions): Promise<QueryResult> => {
       try {
         const query = await sdk.search.datasetsBySubscription(did, searchOptions?.offset, searchOptions?.page, searchOptions?.sort, searchOptions?.appId)
-        return query.results
+        return query
       } catch (error) {
         verbose && Logger.error(error)
-        return []
+        return emptyQueryResult
       }
     },
 
@@ -695,19 +696,16 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
           )
 
           transferResult = ercType === 721 
-            ? await sdk.nfts721.transferForDelegate(
+            ? await sdk.nfts721.claim(
                 agreementId,
                 nftHolder,
                 buyer.getId(),
-                nftAmount,
-                ercType
               )
-            : await sdk.nfts1155.transferForDelegate(
+            : await sdk.nfts1155.claim(
               agreementId,
               nftHolder,
               buyer.getId(),
               nftAmount,
-              ercType
             )
           }
       } catch (error) {

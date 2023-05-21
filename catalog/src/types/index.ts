@@ -18,6 +18,7 @@ import {
   CreateProgressStep,
   RoyaltyKind,
   OrderProgressStep,
+  MetaDataExternalResource,
 } from '@nevermined-io/sdk'
 import { CryptoConfig } from '@nevermined-io/sdk-dtp'
 
@@ -422,21 +423,21 @@ export interface AccountModule {
    * @param searchOptions options for customize result
    * @returns published subscriptions
    */
-  getPublishedSubscriptions: (searchOptions?: SearchOptions) => Promise<DDO[]>
+  getPublishedSubscriptions: (searchOptions?: SearchOptions) => Promise<QueryResult>
   /**
    * Get all the services associated a subscription
    * @param address the subscription address
    * @param searchOptions options for customize result
    * @returns associated services to subscriptions
    */
-  getAssociatedServices: (did: string, searchOptions?: SearchOptions) => Promise<DDO[]>
+  getAssociatedServices: (did: string, searchOptions?: SearchOptions) => Promise<QueryResult>
   /**
    * Get all the datasets associated to a subscription
    * @param address the subscription address
    * @param searchOptions options for customize result
    * @returns associated datasets to subscriptions
    */
-  getAssociatedDatasets: (did: string, searchOptions?: SearchOptions) => Promise<DDO[]>
+  getAssociatedDatasets: (did: string, searchOptions?: SearchOptions) => Promise<QueryResult>
   /**
    * Get all the published subscriptions and services associated from the wallet address passed
    * @param searchOptions options for customize result
@@ -458,7 +459,7 @@ export interface AccountModule {
    * @param searchOptions options for customize result
    * @returns purchased subscriptions
    */
-  getPurchasedSubscriptions: (searchOptions?: SearchOptions) => Promise<DDO[]>
+  getPurchasedSubscriptions: (searchOptions?: SearchOptions) => Promise<QueryResult>
   /**
    * Get all the purchased subscriptions and services associated from the wallet address passed
    * @param searchOptions options for customize result
@@ -770,7 +771,7 @@ export interface AssetPublishParams {
   /** Price of the asset */
   price: string
   /** Files to download after buy the asset */
-  assetFiles: AssetFile[]
+  assetFiles: MetaDataExternalResource[]
 }
 
 /** Metadata of the file */
@@ -988,10 +989,10 @@ export interface Credentials {
 
 export interface SubscriptionsAndServicesDDOs {
   subscription: DDO
-  services: DDO[]
+  services: QueryResult
 }
 
 export interface SubscriptionsAndDatasetsDDOs {
   subscription: DDO
-  datasets: DDO[]
+  datasets: QueryResult
 }
