@@ -126,7 +126,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   const [{ sdk }, dispatch] = useReducer(neverminedReducer, initialState)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   // eslint-disable-next-line
-  const [error, setError] = useState<any>(undefined)
+  const [sdkError, setSdkError] = useState<any>(undefined)
 
   useEffect(() => {
     const loadNevermined = async (): Promise<void> => {
@@ -139,7 +139,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       if (success) {
         dispatch({ type: 'SET_SDK', payload: { sdk: data } })
       }
-      setError(error)
+      setSdkError(error)
       setIsLoading(false)
     }
     loadNevermined()
@@ -222,7 +222,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         const account = await getCurrentAccount(sdk)
         const query = await sdk.search.subscriptionsCreated(account, searchOptions?.offset, searchOptions?.page, searchOptions?.sort, searchOptions?.appId)
         return query
-      } catch {
+      } catch (error) {
         verbose && Logger.error(error)
         return emptyQueryResult
       }
@@ -725,7 +725,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   const IState = {
     sdk,
     isLoadingSDK: isLoading,
-    sdkError: error,
+    sdkError,
     subscribe,
     assets,
     account,
