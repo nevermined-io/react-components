@@ -548,7 +548,7 @@ describe('Nevermined account', () => {
             try {
               const result = await account.getPublishedSubscriptions()
 
-              setSubscriptions([...result])
+              setSubscriptions([...result.results])
             } catch (error: any) {
               console.error(error.message)
             }
@@ -601,7 +601,7 @@ describe('Nevermined account', () => {
     await waitFor(() => {
       expect(result.current).toStrictEqual([{
         subscription: ddo,
-        services: [ddo2, ddo3]
+        services: { results: [ddo2, ddo3] }
       }])
     })
   })
@@ -623,7 +623,7 @@ describe('Nevermined account', () => {
             try {
               const result = await account.getPurchasedSubscriptions()
 
-              setSubscriptions([...result])
+              setSubscriptions([...result.results])
             } catch (error: any) {
               console.error(error.message)
             }
@@ -676,7 +676,7 @@ describe('Nevermined account', () => {
     await waitFor(() => {
       expect(result.current).toStrictEqual([{
         subscription: ddo,
-        services: [ddo2, ddo3]
+        services: {results: [ddo2, ddo3]}
       }])
     })
   })
@@ -698,7 +698,7 @@ describe('Nevermined account', () => {
             try {
               const result = await account.getAssociatedServices(ddo.id)
 
-              setServices([...result])
+              setServices([...result.results])
             } catch (error: any) {
               console.error(error.message)
             }
@@ -751,7 +751,9 @@ describe('Nevermined account', () => {
     await waitFor(() => {
       expect(result.current).toStrictEqual([{
         subscription: ddo,
-        datasets: [ddo4, ddo5]
+        datasets: {
+          results: [ddo4, ddo5]
+        }
       }])
     })
   })
@@ -790,7 +792,9 @@ describe('Nevermined account', () => {
     await waitFor(() => {
       expect(result.current).toStrictEqual([{
         subscription: ddo,
-        datasets: [ddo4, ddo5]
+        datasets: {
+          results: [ddo4, ddo5]
+        }
       }])
     })
   })
@@ -812,7 +816,7 @@ describe('Nevermined account', () => {
             try {
               const result = await account.getAssociatedDatasets(ddo.id)
 
-              setDatasets([...result])
+              setDatasets([...result.results])
             } catch (error: any) {
               console.error(error.message)
             }

@@ -4,6 +4,7 @@ import {
   ERCType,
   MarketplaceAPIToken,
   NeverminedOptions,
+  QueryResult,
   SearchOptions,
   SubscribablePromise,
 } from '../types'
@@ -191,7 +192,7 @@ export const getSubscriptionsAndServices = async (
 
       return {
         subscription: ddo,
-        services: query.results,
+        services: query,
       }
     }),
   )
@@ -214,7 +215,7 @@ export const getSubscriptionsAndDatasets = async (
 
       return {
         subscription: ddo,
-        datasets: query.results,
+        datasets: query,
       }
     }),
   )
@@ -240,4 +241,11 @@ export const getNewSdkInstance = async (
   tokenData: MarketplaceAPIToken,
 ): Promise<Nevermined> => {
   return Nevermined.getInstance({ ...config, marketplaceAuthToken: tokenData.token })
+}
+
+export const emptyQueryResult: QueryResult = {
+  results: [],
+  totalResults: {},
+  page: 0,
+  totalPages: 0,
 }

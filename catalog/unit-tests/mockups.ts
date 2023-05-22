@@ -1027,7 +1027,7 @@ export const nevermined = {
       }),
       create: async () => ddo,
       createWithRoyalties: async () => ddo,
-      transferForDelegate: async () => true,
+      claim: async () => true,
     },
     nfts721: {
       ownerOf: async () => walletAddress,
@@ -1066,7 +1066,7 @@ export const nevermined = {
       }),
       create: async () => ddo,
       createWithRoyalties: async () => ddo,
-      transferForDelegate: async () => true,
+      claim: async () => true,
     },
     search: {
       subscriptionsCreated: () => ({ results: [ddo] }),
