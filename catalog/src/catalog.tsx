@@ -392,9 +392,9 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
           newOwner,
           ercType,
         })
-        await new Promise((r) => setTimeout(r, 3000)) // await two seconds to allow the transaction to be processed
+        
         if (!agreementId) {
-          Logger.log('Could not approve spending from new owner wallet. abort.')
+          Logger.log('Could not order the asset.')
           return false
         }
         Logger.log(`Obtained agreement ID ${agreementId}`)
