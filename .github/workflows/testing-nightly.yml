@@ -30,9 +30,9 @@ jobs:
           export KEEPER_OWNER_ROLE_ADDRESS="0xe2DD09d719Da89e5a3D0F2549c7E24566e947260"
           rm -rf "${HOME}/.nevermined/nevermined-contracts/artifacts"
 
-          export KEEPER_VERSION=v3.0.0                                                        
+          export KEEPER_VERSION=v3.2.1                                                        
           export SUBGRAPH_VERSION=develop
-          export NODE_VERSION=v1.0.0
+          
           ./start_nevermined.sh --opengsn 2>&1 | tee nevermined_tools.txt &
           cd ../lib
           ./scripts/wait-nevermined.sh
