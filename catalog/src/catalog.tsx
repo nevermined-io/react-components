@@ -394,7 +394,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         })
         
         if (!agreementId) {
-          Logger.log('Could not order the asset.')
+          Logger.log('Could not approve spending from new owner wallet. abort.')
           return false
         }
         Logger.log(`Obtained agreement ID ${agreementId}`)
