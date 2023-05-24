@@ -59,7 +59,7 @@ export const conductOrder = async ({
   ercType?: ERCType
 }): Promise<string> => {
   try {
-    Logger.log('Checking if USDC spending is approved.')
+    Logger.log('Checking if token spending is approved.')
     const isApproved = await sdk.keeper.nftUpgradeable.isApprovedForAll(
       newOwner.getId(),
       neverminedNodeAddress,
@@ -71,8 +71,8 @@ export const conductOrder = async ({
           : await sdk.nfts1155.setApprovalForAll(neverminedNodeAddress, true, newOwner)
       Logger.log('Approval receipt:', receipt)
     }
-    Logger.log('USDC spending is approved.')
-    Logger.log(`Asking for approval and locking payment for USDC.`)
+    Logger.log('Token spending is approved.')
+    Logger.log(`Asking for approval and locking payment.`)
     const agreementId: string =
       ercType === 721
         ? await sdk.nfts721.order(ddo.id, newOwner)

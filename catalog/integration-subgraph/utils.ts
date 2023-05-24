@@ -53,12 +53,12 @@ export const runWorkflow = async () => {
 
     console.log(agreementId)
 
-    await sdk.nfts1155.transferForDelegate(
+    await sdk.nfts1155.claim(
       agreementId,
       publisher.getId(),
       consumer.getId(),
       BigNumber.from(1),
-      1155,
+      ddo.id
     )
 
     await sleep(2000)

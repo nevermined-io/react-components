@@ -392,7 +392,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
           newOwner,
           ercType,
         })
-        await new Promise((r) => setTimeout(r, 3000)) // await two seconds to allow the transaction to be processed
+        
         if (!agreementId) {
           Logger.log('Could not approve spending from new owner wallet. abort.')
           return false
@@ -684,7 +684,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
           }) as Account
 
           agreementId = await dtp.order(did, nftAmount, consumer, nftHolder)
-
+          
           transferResult = await dtp.transferForDelegate(did, agreementId, consumer, nftAmount, nftHolder)
         } else {
           agreementId = await executeWithProgressEvent(
@@ -700,12 +700,14 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
                 agreementId,
                 nftHolder,
                 buyer.getId(),
+                did
               )
             : await sdk.nfts1155.claim(
               agreementId,
               nftHolder,
               buyer.getId(),
               nftAmount,
+              did
             )
           }
       } catch (error) {
