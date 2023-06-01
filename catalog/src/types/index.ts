@@ -304,6 +304,8 @@ export interface GenericOutput<T, E> {
  * Query search options
  */
 export interface SearchOptions {
+  /** custom nested queries to add in the search */
+  customNestedQueries: SearchQuery['query'][]
   /** Number of results per page */
   offset?: number
   /** Number of page */
