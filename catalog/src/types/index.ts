@@ -305,7 +305,7 @@ export interface GenericOutput<T, E> {
  */
 export interface SearchOptions {
   /** custom nested queries to add in the search */
-  customNestedQueries: SearchQuery['query'][]
+  customNestedQueries?: SearchQuery['query'][]
   /** Number of results per page */
   offset?: number
   /** Number of page */
@@ -442,19 +442,23 @@ export interface AccountModule {
   getAssociatedDatasets: (did: string, searchOptions?: SearchOptions) => Promise<QueryResult>
   /**
    * Get all the published subscriptions and services associated from the wallet address passed
-   * @param searchOptions options for customize result
+   * @param searchOptionsSubscriptions options for customize result of Subscriptions
+   * @param searchOptionsServices options for customize result of Service
    * @returns published subscriptions and service
    */
   getPublishedSubscriptionsAndServices: (
-    searchOptions?: SearchOptions,
+    searchOptionsSubscriptions?: SearchOptions,
+    searchOptionsServices?: SearchOptions,
   ) => Promise<SubscriptionsAndServicesDDOs[]>
   /**
    * Get all the published subscriptions and datasets associated from the wallet address passed
-   * @param searchOptions options for customize result
+   * @param searchOptionsSubscriptions options for customize result of Subscriptions
+   * @param searchOptionsDatasets options for customize result of Datasets
    * @returns published subscriptions and its datasets
    */
   getPublishedSubscriptionsAndDatasets: (
-    searchOptions?: SearchOptions,
+    searchOptionsSubscriptions?: SearchOptions,
+    searchOptionsDatasets?: SearchOptions,
   ) => Promise<SubscriptionsAndDatasetsDDOs[]>
   /**
    * Get only purchased Subscriptions
@@ -464,19 +468,23 @@ export interface AccountModule {
   getPurchasedSubscriptions: (searchOptions?: SearchOptions) => Promise<QueryResult>
   /**
    * Get all the purchased subscriptions and services associated from the wallet address passed
-   * @param searchOptions options for customize result
+   * @param searchOptionsSubscriptions options for customize result of Subscriptions
+   * @param searchOptionsServices options for customize result of Service
    * @returns purchased subscriptions and services
    */
   getPurchasedSubscriptionsAndServices: (
-    searchOptions?: SearchOptions,
+    searchOptionsSubscriptions?: SearchOptions,
+    searchOptionsServices?: SearchOptions,
   ) => Promise<SubscriptionsAndServicesDDOs[]>
   /**
    * Get all the purchased subscriptions and datasets associated from the wallet address passed
-   * @param searchOptions options for customize result
+   * @param searchOptionsSubscriptions options for customize result of Subscriptions
+   * @param searchOptionsDatasets options for customize result of Datasets
    * @returns purchased subscriptions and its datasets
    */
   getPurchasedSubscriptionsAndDatasets: (
-    searchOptions?: SearchOptions,
+    searchOptionsSubscriptions?: SearchOptions,
+    searchOptionsDatasets?: SearchOptions,
   ) => Promise<SubscriptionsAndDatasetsDDOs[]>
   /**
    * Generate a token for authentication in the Marketplace API

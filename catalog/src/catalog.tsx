@@ -228,23 +228,28 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    getPublishedSubscriptionsAndServices: async (searchOptions?: SearchOptions
+    getPublishedSubscriptionsAndServices: async (
+      searchOptionsSubscriptions?: SearchOptions,
+      searchOptionsServices?: SearchOptions
       ): Promise<SubscriptionsAndServicesDDOs[]> => {
       try {
         const account = await getCurrentAccount(sdk)
-        const query = await sdk.search.subscriptionsCreated(account, searchOptions?.customNestedQueries, searchOptions?.offset, searchOptions?.page, searchOptions?.sort, searchOptions?.appId)
-        return getSubscriptionsAndServices(query.results, sdk, searchOptions)
+        const query = await sdk.search.subscriptionsCreated(account, searchOptionsSubscriptions?.customNestedQueries, searchOptionsSubscriptions?.offset, searchOptionsSubscriptions?.page, searchOptionsSubscriptions?.sort, searchOptionsSubscriptions?.appId)
+        return getSubscriptionsAndServices(query.results, sdk, searchOptionsServices)
       } catch (error) {
         verbose && Logger.error(error)
         return []
       }
     },
 
-    getPublishedSubscriptionsAndDatasets: async (searchOptions?: SearchOptions): Promise<SubscriptionsAndDatasetsDDOs[]> => {
+    getPublishedSubscriptionsAndDatasets: async (
+      searchOptionsSubscriptions?: SearchOptions,
+      searchOptionsDatasets?: SearchOptions
+    ): Promise<SubscriptionsAndDatasetsDDOs[]> => {
       try {
         const account = await getCurrentAccount(sdk)
-        const query = await sdk.search.subscriptionsCreated(account, searchOptions?.customNestedQueries, searchOptions?.offset, searchOptions?.page, searchOptions?.sort, searchOptions?.appId)
-        return getSubscriptionsAndDatasets(query.results, sdk, searchOptions)
+        const query = await sdk.search.subscriptionsCreated(account, searchOptionsSubscriptions?.customNestedQueries, searchOptionsSubscriptions?.offset, searchOptionsSubscriptions?.page, searchOptionsSubscriptions?.sort, searchOptionsSubscriptions?.appId)
+        return getSubscriptionsAndDatasets(query.results, sdk, searchOptionsDatasets)
       } catch (error) {
         verbose && Logger.error(error)
         return []
@@ -262,23 +267,28 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    getPurchasedSubscriptionsAndServices: async (searchOptions?: SearchOptions
-      ): Promise<SubscriptionsAndServicesDDOs[]> => {
+    getPurchasedSubscriptionsAndServices: async (
+      searchOptionsSubscriptions?: SearchOptions,
+      searchOptionsServices?: SearchOptions
+    ): Promise<SubscriptionsAndServicesDDOs[]> => {
       try {
         const account = await getCurrentAccount(sdk)
-        const query = await sdk.search.subscriptionsPurchased(account, searchOptions?.customNestedQueries, searchOptions?.offset, searchOptions?.page, searchOptions?.sort, searchOptions?.appId)
-        return getSubscriptionsAndServices(query.results, sdk, searchOptions)
+        const query = await sdk.search.subscriptionsPurchased(account, searchOptionsSubscriptions?.customNestedQueries, searchOptionsSubscriptions?.offset, searchOptionsSubscriptions?.page, searchOptionsSubscriptions?.sort, searchOptionsSubscriptions?.appId)
+        return getSubscriptionsAndServices(query.results, sdk, searchOptionsServices)
       } catch (error) {
         verbose && Logger.error(error)
         return []
       }
     },
 
-    getPurchasedSubscriptionsAndDatasets: async (searchOptions?: SearchOptions): Promise<SubscriptionsAndDatasetsDDOs[]> => {
+    getPurchasedSubscriptionsAndDatasets: async (
+      searchOptionsSubscriptions?: SearchOptions,
+      searchOptionsDatasets?: SearchOptions
+    ): Promise<SubscriptionsAndDatasetsDDOs[]> => {
       try {
         const account = await getCurrentAccount(sdk)
-        const query = await sdk.search.subscriptionsPurchased(account, searchOptions?.customNestedQueries, searchOptions?.offset, searchOptions?.page, searchOptions?.sort, searchOptions?.appId)
-        return getSubscriptionsAndDatasets(query.results, sdk, searchOptions)
+        const query = await sdk.search.subscriptionsPurchased(account, searchOptionsSubscriptions?.customNestedQueries, searchOptionsSubscriptions?.offset, searchOptionsSubscriptions?.page, searchOptionsSubscriptions?.sort, searchOptionsSubscriptions?.appId)
+        return getSubscriptionsAndDatasets(query.results, sdk, searchOptionsDatasets)
       } catch (error) {
         verbose && Logger.error(error)
         return []
