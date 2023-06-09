@@ -668,7 +668,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       accountIndex?: number
       onEvent?: (next: OrderProgressStep) => void
     }): Promise<string> => {
-      let agreementId
+      let agreementId = ''
       let transferResult
 
       try {
@@ -722,11 +722,10 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
           }
       } catch (error) {
         verbose && Logger.error(error)
-        throw error
       }
 
       if (!transferResult)
-        throw new Error("Error delegating the NFT of the subscription with agreement " + agreementId)
+        throw new Error(agreementId)
 
       return agreementId
     },
