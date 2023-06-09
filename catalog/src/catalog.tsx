@@ -699,13 +699,15 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
           
           transferResult = await dtp.transferForDelegate(did, agreementId, consumer, nftAmount, nftHolder)
         } else {
+
           agreementId = await executeWithProgressEvent(
             () =>
               ercType === 721
                 ? sdk.nfts721.order(did, buyer)
                 : sdk.nfts1155.order(did, BigNumber.from(nftAmount), buyer),
             onEvent,
-          )
+          )  
+
 
           transferResult = ercType === 721 
             ? await sdk.nfts721.claim(
@@ -720,13 +722,19 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
               buyer.getId(),
               nftAmount,
               did
-            )
+          )
+
+          if(!transferResult) {
+            throw new Error('Claim was not successful')
           }
-
+        }
       } catch(error) {
-        if(agreementId) new TransferError(agreementId)
+        if(!agreementId) {
+          throw new LockPaymentError((error as Error).message)
+        }
 
-        throw new LockPaymentError((error as Error).message)
+        throw new TransferError(agreementId, (error as Error).message)
+        
       }
 
       return agreementId
