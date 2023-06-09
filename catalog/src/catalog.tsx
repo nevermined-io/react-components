@@ -40,6 +40,8 @@ import {
 } from './utils'
 import { _getCryptoConfig, _getDTPInstance, _grantAccess } from './utils/dtp'
 import { getAddressTokenSigner, isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token'
+import { TransferError } from './exceptions/transfer-execption'
+import { LockPaymentError } from './exceptions/lockpayment-exceptions'
 
 const initialState = {
   sdk: {} as Nevermined
@@ -720,12 +722,12 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
               did
             )
           }
-      } catch (error) {
-        verbose && Logger.error(error)
-      }
 
-      if (!transferResult)
-        throw new Error(agreementId)
+      } catch(error) {
+        if(agreementId) new TransferError(agreementId)
+
+        throw new LockPaymentError((error as Error).message)
+      }
 
       return agreementId
     },
