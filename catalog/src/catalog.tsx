@@ -40,7 +40,7 @@ import {
 } from './utils'
 import { _getCryptoConfig, _getDTPInstance, _grantAccess } from './utils/dtp'
 import { getAddressTokenSigner, isTokenValid, newMarketplaceApiToken } from './utils/marketplace_token'
-import { TransferError } from './exceptions/transfer-execption'
+import { TransferError } from './exceptions/transfer-exception'
 import { LockPaymentError } from './exceptions/lockpayment-exceptions'
 
 const initialState = {
