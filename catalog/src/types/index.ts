@@ -19,6 +19,7 @@ import {
   RoyaltyKind,
   OrderProgressStep,
   MetaDataExternalResource,
+  Account,
 } from '@nevermined-io/sdk'
 import { CryptoConfig } from '@nevermined-io/sdk-dtp'
 
@@ -425,7 +426,10 @@ export interface AccountModule {
    * @param searchOptions options for customize result
    * @returns published subscriptions
    */
-  getPublishedSubscriptions: (searchOptions?: SearchOptions) => Promise<QueryResult>
+  getPublishedSubscriptions: (
+    account: Account,
+    searchOptions?: SearchOptions,
+  ) => Promise<QueryResult>
   /**
    * Get all the services associated a subscription
    * @param address the subscription address
@@ -442,55 +446,69 @@ export interface AccountModule {
   getAssociatedDatasets: (did: string, searchOptions?: SearchOptions) => Promise<QueryResult>
   /**
    * Get all the published subscriptions and services associated from the wallet address passed
+   * @param account Account of the user
    * @param searchOptionsSubscriptions options for customize result of Subscriptions
    * @param searchOptionsServices options for customize result of Service
    * @returns published subscriptions and service
    */
   getPublishedSubscriptionsAndServices: (
+    account: Account,
     searchOptionsSubscriptions?: SearchOptions,
     searchOptionsServices?: SearchOptions,
   ) => Promise<SubscriptionsAndServicesDDOs[]>
   /**
    * Get all the published subscriptions and datasets associated from the wallet address passed
+   * @param account Account of the user
    * @param searchOptionsSubscriptions options for customize result of Subscriptions
    * @param searchOptionsDatasets options for customize result of Datasets
    * @returns published subscriptions and its datasets
    */
   getPublishedSubscriptionsAndDatasets: (
+    account: Account,
     searchOptionsSubscriptions?: SearchOptions,
     searchOptionsDatasets?: SearchOptions,
   ) => Promise<SubscriptionsAndDatasetsDDOs[]>
   /**
    * Get only purchased Subscriptions
+   * @param account Account of the user
    * @param searchOptions options for customize result
+   *
    * @returns purchased subscriptions
    */
-  getPurchasedSubscriptions: (searchOptions?: SearchOptions) => Promise<QueryResult>
+  getPurchasedSubscriptions: (
+    account: Account,
+    searchOptions?: SearchOptions,
+  ) => Promise<QueryResult>
   /**
    * Get all the purchased subscriptions and services associated from the wallet address passed
+   * @param account Account of the user
    * @param searchOptionsSubscriptions options for customize result of Subscriptions
    * @param searchOptionsServices options for customize result of Service
    * @returns purchased subscriptions and services
    */
   getPurchasedSubscriptionsAndServices: (
+    account: Account,
     searchOptionsSubscriptions?: SearchOptions,
     searchOptionsServices?: SearchOptions,
   ) => Promise<SubscriptionsAndServicesDDOs[]>
   /**
    * Get all the purchased subscriptions and datasets associated from the wallet address passed
+   * @param account Account of the user
    * @param searchOptionsSubscriptions options for customize result of Subscriptions
    * @param searchOptionsDatasets options for customize result of Datasets
    * @returns purchased subscriptions and its datasets
    */
   getPurchasedSubscriptionsAndDatasets: (
+    account: Account,
     searchOptionsSubscriptions?: SearchOptions,
     searchOptionsDatasets?: SearchOptions,
   ) => Promise<SubscriptionsAndDatasetsDDOs[]>
   /**
    * Generate a token for authentication in the Marketplace API
+   * @param account Account of the user
    * @returns The new generated token
    */
-  generateToken: () => Promise<MarketplaceAPIToken>
+  generateToken: (account: Account) => Promise<MarketplaceAPIToken>
   /**
    * check if the token for Marketplace API is valid
    * @returns if token is valid it will return true
@@ -551,16 +569,20 @@ export interface AssetsModule {
    * Transfer the ownership of the asset to other account
    * @param assetInfo
    * @param assetInfo.did The id of the asset
+   * @param assetInfo.newOwner Account of the owner
+   * @param assetInfo.account Account of the user
    * @param assetInfo.amount The amount of asset to transfer
    * @param assetInfo.ercType NFT asset type which can be 721 or 1155
    * @returns Return true if asset was transferred successfully
    */
   transfer: ({
     did,
+    newOwner,
     amount,
     ercType,
   }: {
     did: string
+    newOwner: Account
     amount: number
     ercType: ERCType
   }) => Promise<boolean>
@@ -574,82 +596,89 @@ export interface AssetsModule {
   /**
    * This method order a asset to allow after transfer to the buyer (the method only order but not transfer)
    * @param did id of the asset
+   * @param account Account of the user
    * @returns In case the order is completed successfully it returns the agreementId
    * which is needed to transfer the asset to the buyer
    */
-  orderAsset: (did: string) => Promise<string>
+  orderAsset: (did: string, account: Account) => Promise<string>
   /**
    * This method order a NFT721 asset to allow after transfer to the buyer (the method only order but not transfer)
    * @param did id of the NFT721 asset
+   * @param account Account of the user
    * @param amount Amount of NFT721 assets to order
    * @returns In case the order is completed successfully it returns the agreementId
    * which is needed to transfer the NFT721 asset to the buyer
    */
-  orderNFT721: (did: string, nftTokenAddress: string) => Promise<string>
+  orderNFT721: (did: string, account: Account, nftTokenAddress: string) => Promise<string>
   /**
    * This method order a NFT1155 asset to allow after transfer to the buyer (the method only order but not transfer)
    * @param did id of the NFT1155 asset
+   * @param account Account of the user
    * @param amount Amount of NFT1155 assets to order
    * @returns In case the order is completed successfully it returns the agreementId
    * which is needed to transfer the NFT1155 asset to the buyer
    */
-  orderNFT1155: (did: string, amount: BigNumber) => Promise<string>
+  orderNFT1155: (did: string, account: Account, amount: BigNumber) => Promise<string>
   /**
    * Download a NFT asset already ordered and transfered to the buyer,
    * if the user is the owner of the asset
    * @param nft
    * @param nft.did id of the NFT (721 & 1155) asset
+   * @param nft.account Account of the user
    * @param nft.ercType NFT type. By default 1155
    * @param nft.path Destination of downloaded file
    * @param nft.fileIndex The file to download. If not given or is -1 it will download all of them
    * @param nft.password Password to download a encrypted NFT
-   * @param nft.accountIndex account index of the account list wallet, it is used for testing purpose
    * @returns if the NFT is downloaded successfully the method will return a true
    */
   downloadNFT: ({
     did,
+    account,
     ercType,
     path,
     fileIndex,
     password,
-    accountIndex,
   }: {
     did: string
+    account: Account
     ercType?: ERCType
     path?: string
     fileIndex?: number
     password?: string
-    accountIndex?: number
   }) => Promise<boolean | string>
   /**
    * Get all the details about a custom erc20 token
    * @param customErc20TokenAddress The custom token address
+   * @param account Account of the user
    * @returns Custom token details
    */
-  getCustomErc20Token: (customErc20TokenAddress: string) => Promise<CustomErc20Token>
+  getCustomErc20Token: (
+    customErc20TokenAddress: string,
+    account: Account,
+  ) => Promise<CustomErc20Token>
   /**
    * Download an asset already ordered and transfered to the buyer,
    * if the user is the owner of the asset
    * @param asset
    * @param asset.did id of the NFT (721 & 1155) asset
+   * @param asset.account Account of the user
    * @param asset.path Destination of downloaded file
    * @param asset.fileIndex The file to download. If not given or is -1 it will download all of them
    * @param asset.password Password to download a encrypted NFT
-   * @param asset.accountIndex account index of the account list wallet, it is used for testing purpose
    * @returns if the NFT is downloaded successfully the method will return a true
    */
   downloadAsset: ({
     did,
+    account,
     fileIndex,
     path,
     password,
-    accountIndex,
   }: {
     did: string
+    account: Account
     fileIndex?: number
     path?: string
     password?: string
-    accountIndex?: number
   }) => Promise<boolean>
   /**
    * Upload files to Filecoin
@@ -836,28 +865,28 @@ export interface NFTSModule {
    * @param access
    * @param access.did Id of the NFT to subscribe
    * @param access.nftHolder The owner of the NFT asset
+   * @param access.buyer Account of the buyer
    * @param access.nftAmount The amount of NFT asset to buy
    * @param access.ercType NFT asset type which can be `721` or `1155`
    * @param access.password Password to desencrypt metadata
-   * @param access.accountIndex account index of the account list wallet, it is used for testing purpose
    * @param asset.onEvent A callback to handle progress events
    * @returns It is successfully completed will return the `agreementId`
    */
   access: ({
     did,
     nftHolder,
+    buyer,
     nftAmount,
     ercType,
     password,
-    accountIndex,
     onEvent,
   }: {
     did: string
     nftHolder: string
+    buyer: Account
     nftAmount: BigNumber
     ercType: ERCType
     password?: string
-    accountIndex?: number
     onEvent?: (next: OrderProgressStep) => void
   }) => Promise<string>
 }
@@ -899,6 +928,7 @@ export interface AssetPublishProviderState {
    *
    * @param asset
    * @param asset.assetAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
+   * @param asset.account Account of the user
    * @param asset.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param asset.txParams Optional transaction parameters
    * @param asset.password Password to encrypt metadata
@@ -908,6 +938,7 @@ export interface AssetPublishProviderState {
    */
   publishAsset: ({
     assetAttributes,
+    account,
     publishMetadata,
     txParameters,
     password,
@@ -915,6 +946,7 @@ export interface AssetPublishProviderState {
     onEvent,
   }: {
     assetAttributes: AssetAttributes
+    account: Account
     publishMetadata?: PublishMetadata
     txParameters?: TxParameters
     method?: EncryptionMethod
@@ -931,6 +963,7 @@ export interface AssetPublishProviderState {
    *
    * @param nft721
    * @param nft721.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
+   * @param nft721.account Account of the user
    * @param nft721.nftAddress NFT721 contract address to load
    * @param nft721.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param nft721.txParams Optional transaction parameters
@@ -942,6 +975,7 @@ export interface AssetPublishProviderState {
   publishNFT721: ({
     nftAttributes,
     nftAddress,
+    account,
     publishMetadata,
     txParameters,
     password,
@@ -950,6 +984,7 @@ export interface AssetPublishProviderState {
   }: {
     nftAttributes: NFTAttributes
     nftAddress: string
+    account: Account
     publishMetadata?: PublishMetadata
     txParameters?: TxParameters
     method?: EncryptionMethod
@@ -966,6 +1001,7 @@ export interface AssetPublishProviderState {
    * This method will create a new digital asset associated to a ERC-1155 NFT contract.
    *
    * @param nft1155
+   * @param nft1155.account Account of the user
    * @param nft1155.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
    * @param nft1155.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param nft1155.txParams Optional transaction parameters
@@ -976,6 +1012,7 @@ export interface AssetPublishProviderState {
    */
   publishNFT1155: ({
     nftAttributes,
+    account,
     publishMetadata,
     txParameters,
     password,
@@ -983,6 +1020,7 @@ export interface AssetPublishProviderState {
     onEvent,
   }: {
     nftAttributes: NFTAttributes
+    account: Account
     publishMetadata?: PublishMetadata
     txParameters?: TxParameters
     method?: EncryptionMethod

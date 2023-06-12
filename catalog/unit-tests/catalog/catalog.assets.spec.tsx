@@ -124,7 +124,7 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [agrId, setAgrId] = useState<string>('')
 
         useEffect(() => {
@@ -136,7 +136,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.orderAsset(ddo.id)
+              const [userAccount] = await sdk.accounts.list()
+              const result = await assets.orderAsset(ddo.id, userAccount)
               setAgrId(result)
             } catch (error: any) {
               console.error(error.message)
@@ -172,7 +173,7 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [errorMessage, setErrorMessage] = useState<string>('')
 
         useEffect(() => {
@@ -184,7 +185,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              await assets.orderAsset(ddo.id)
+              const [userAccount] = await sdk.accounts.list()
+              await assets.orderAsset(ddo.id, userAccount)
             } catch (error: any) {
               setErrorMessage(error.message)
             }
@@ -221,7 +223,7 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [agrId, setAgrId] = useState<string>('')
 
         useEffect(() => {
@@ -233,7 +235,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.orderAsset(ddo.id)
+              const [userAccount] = await sdk.accounts.list()
+              const result = await assets.orderAsset(ddo.id, userAccount)
               setAgrId(result)
             } catch (error: any) {
               console.error(error.message)
@@ -256,7 +259,7 @@ describe('Nevermined assets', () => {
   it('should get the agreement id if the nft 721 was purchased by the user already', async () => {
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [agrId, setAgrId] = useState<string>('')
 
         useEffect(() => {
@@ -268,7 +271,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.orderNFT721(ddo.id, nftTokenAddress)
+              const [userAccount] = await sdk.accounts.list()
+              const result = await assets.orderNFT721(ddo.id, userAccount, nftTokenAddress)
               setAgrId(result)
             } catch (error: any) {
               console.error(error.message)
@@ -304,7 +308,7 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [agrId, setAgrId] = useState<string>('')
 
         useEffect(() => {
@@ -316,7 +320,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.orderNFT721(ddo.id, nftTokenAddress)
+              const [userAccount] = await sdk.accounts.list()
+              const result = await assets.orderNFT721(ddo.id, userAccount, nftTokenAddress)
               setAgrId(result)
             } catch (error: any) {
               console.error(error.message)
@@ -339,7 +344,7 @@ describe('Nevermined assets', () => {
   it('should get the agreement id if the nft 1155 was purchased by the user already', async () => {
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [agrId, setAgrId] = useState<string>('')
 
         useEffect(() => {
@@ -351,7 +356,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.orderNFT1155(ddo.id, BigNumber.from(1))
+              const [userAccount] = await sdk.accounts.list()
+              const result = await assets.orderNFT1155(ddo.id, userAccount, BigNumber.from(1))
               setAgrId(result)
             } catch (error: any) {
               console.error(error.message)
@@ -387,7 +393,7 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [agrId, setAgrId] = useState<string>('')
 
         useEffect(() => {
@@ -399,7 +405,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.orderNFT1155(ddo.id, BigNumber.from(1))
+              const [userAccount] = await sdk.accounts.list()
+              const result = await assets.orderNFT1155(ddo.id, userAccount, BigNumber.from(1))
               setAgrId(result)
             } catch (error: any) {
               console.error(error.message)
@@ -441,7 +448,7 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [isDownloaded, setIsDownloaded] = useState<boolean>(false)
 
         useEffect(() => {
@@ -453,7 +460,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.downloadAsset({did: ddo.id})
+              const [userAccount] = await sdk.accounts.list()
+              const result = await assets.downloadAsset({did: ddo.id, account: userAccount})
               setIsDownloaded(result)
             } catch (error: any) {
               console.error(error.message)
@@ -499,7 +507,7 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [isDownloaded, setIsDownloaded] = useState<boolean>(false)
 
         useEffect(() => {
@@ -511,7 +519,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.downloadAsset({ did: ddo.id})
+              const [userAccount] = await sdk.accounts.list()
+              const result = await assets.downloadAsset({ did: ddo.id, account: userAccount})
               setIsDownloaded(result)
             } catch (error: any) {
               console.error(error.message)
@@ -537,7 +546,7 @@ describe('Nevermined assets', () => {
   it('should download the nft', async () => {
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [isDownloaded, setIsDownloaded] = useState<boolean>(false)
 
         useEffect(() => {
@@ -549,7 +558,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const result = await assets.downloadNFT({did: ddo.id})
+              const [userAccount] = await sdk.accounts.list()
+              const result = await assets.downloadNFT({did: ddo.id, account: userAccount})
               setIsDownloaded(result as boolean)
             } catch (error: any) {
               console.error(error.message)
@@ -579,7 +589,7 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [customErc20Token, setCustomErc20Token] = useState({} as CustomErc20Token)
 
         useEffect(() => {
@@ -591,8 +601,10 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
+              const [userAccount] = await sdk.accounts.list()
               const result = await assets.getCustomErc20Token(
-                '0xdF1B443A155b07D2b2cAeA2d99715dC84E812EE2'
+                '0xdF1B443A155b07D2b2cAeA2d99715dC84E812EE2',
+                userAccount
               )
               setCustomErc20Token({ ...result })
             } catch (error: any) {
@@ -662,7 +674,7 @@ describe('Nevermined assets', () => {
   it('should transfer the ownership to other account', async () => {
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [transfered, setTransfered] = useState<boolean>(false)
 
         useEffect(() => {
@@ -674,10 +686,12 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
+              const [userAccount] = await sdk.accounts.list()
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
-                ercType: 1155
+                ercType: 1155,
+                newOwner: userAccount
               })
               setTransfered(result)
             } catch (error: any) {
@@ -720,7 +734,7 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [transfered, setTransfered] = useState<boolean>(false)
 
         useEffect(() => {
@@ -732,10 +746,12 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
+              const [userAccount] = await sdk.accounts.list()
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
-                ercType: 1155
+                ercType: 1155,
+                newOwner: userAccount
               })
               setTransfered(result)
             } catch (error: any) {
@@ -767,7 +783,7 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [transfered, setTransfered] = useState<boolean>(false)
 
         useEffect(() => {
@@ -779,10 +795,12 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
+              const [userAccount] = await sdk.accounts.list()
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
                 ercType: 1155,
+                newOwner: userAccount
               })
               setTransfered(result)
             } catch (error: any) {
@@ -823,7 +841,7 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [transfered, setTransfered] = useState<boolean>(false)
 
         useEffect(() => {
@@ -835,10 +853,12 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
+              const [userAccount] = await sdk.accounts.list()
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
-                ercType: 1155
+                ercType: 1155,
+                newOwner: userAccount
               })
               setTransfered(result)
             } catch (error: any) {
@@ -885,7 +905,7 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [transfered, setTransfered] = useState<boolean>(false)
 
         useEffect(() => {
@@ -897,10 +917,12 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
+              const [userAccount] = await sdk.accounts.list()
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
                 ercType: 1155,
+                newOwner: userAccount
               })
               setTransfered(result)
             } catch (error: any) {
@@ -964,7 +986,7 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK,sdk } = Catalog.useNevermined()
         const [transfered, setTransfered] = useState<boolean>(false)
 
         useEffect(() => {
@@ -976,10 +998,12 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
+              const [userAccount] = await sdk.accounts.list()
               const result = await assets.transfer({
                 did: ddo.id,
                 amount: 1,
-                ercType: 1155
+                ercType: 1155,
+                newOwner: userAccount
               })
               setTransfered(result)
             } catch (error: any) {

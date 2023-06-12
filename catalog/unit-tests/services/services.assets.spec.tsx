@@ -3,7 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { generateTestingUtils } from 'eth-testing'
 import { appConfig } from '../config'
 import { Catalog, AssetService, AssetAttributes, NFTAttributes, DDO, RoyaltyKind, getRoyaltyScheme, MarketplaceAPIToken, Nevermined, BigNumber } from '../../src'
-import { ddo as assetObject, metadata, walletAddress } from '../mockups'
+import { ddo as assetObject, metadata, nftContract, walletAddress } from '../mockups'
 import { faker } from '@faker-js/faker'
 import jwt from 'jsonwebtoken'
 
@@ -104,7 +104,7 @@ describe('Assets Service', () => {
   it('should publish an asset', async() => {
     const { result } = renderHook(
       () => {
-        const { isLoadingSDK, updateSDK, account } = Catalog.useNevermined()
+        const { isLoadingSDK, updateSDK, account, sdk } = Catalog.useNevermined()
         const { publishAsset, isPublished } = AssetService.useAssetPublish()
         const [ddo, setDDO ] = useState<DDO>({} as DDO)
 
@@ -118,8 +118,10 @@ describe('Assets Service', () => {
           }
 
           (async () => {
+            const [userAccount] = await sdk.accounts.list()
             const result = await publishAsset({
               assetAttributes,
+              account: userAccount
             }) as DDO
 
             setDDO(result)
@@ -160,8 +162,11 @@ describe('Assets Service', () => {
 
           (async () => {
             nftAttributes.royaltyAttributes = royaltyAttributes(sdk)
+            const [userAccount] = await sdk.accounts.list()
             const result = await publishNFT721({
-              nftAttributes
+              nftAttributes,
+              nftAddress: nftContract,
+              account: userAccount
             }) as DDO
 
             setDDO(result)
@@ -189,7 +194,7 @@ describe('Assets Service', () => {
   it('should publish an nft1155', async() => {
     const { result } = renderHook(
       () => {
-        const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const { publishNFT1155, isPublished } = AssetService.useAssetPublish()
         const [ddo, setDDO ] = useState<DDO>({} as DDO)
 
@@ -201,8 +206,10 @@ describe('Assets Service', () => {
           }
 
           (async () => {
+            const [userAccount] = await sdk.accounts.list()
             const result = await publishNFT1155({
-              nftAttributes
+              nftAttributes,
+              account: userAccount
             }) as DDO
 
             setDDO(result)
@@ -250,7 +257,7 @@ describe('Assets Service', () => {
                 description: '',
                 type: 'dataset',
                 category: 'None',
-                price: 0,
+                price: '0',
                 assetFiles: []
               })
   
@@ -293,7 +300,7 @@ describe('Assets Service', () => {
                 description: faker.lorem.sentence(),
                 type: 'dataset',
                 category: 'None',
-                price: 0,
+                price: '0',
                 assetFiles: []
               })
   
@@ -303,7 +310,7 @@ describe('Assets Service', () => {
                 description: '',
                 type: 'dataset',
                 category: 'None',
-                price: 0,
+                price: '0',
                 assetFiles: []
               })
 
@@ -326,7 +333,7 @@ describe('Assets Service', () => {
         description: '',
         type: 'dataset',
         category: 'None',
-        price: 0,
+        price: '0',
         assetFiles: []
       })
     })
@@ -337,7 +344,7 @@ describe('Assets Service', () => {
 
     renderHook(
       () => {
-        const { isLoadingSDK, updateSDK, account } = Catalog.useNevermined()
+        const { isLoadingSDK, updateSDK, account, sdk } = Catalog.useNevermined()
         const { publishAsset, errorAssetMessage } = AssetService.useAssetPublish()
 
         jest.spyOn(account, 'isTokenValid').mockReturnValue(false)
@@ -364,8 +371,10 @@ describe('Assets Service', () => {
           }
 
           (async () => {
+            const [userAccount] = await sdk.accounts.list()
             await publishAsset({
               assetAttributes,
+              account: userAccount
             }) as DDO
           })()
         }, [isLoadingSDK, errorAssetMessage])
