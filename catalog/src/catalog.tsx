@@ -725,10 +725,11 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
           )
 
           if(!transferResult) {
-            throw new Error('Claim was not successful')
+            throw new Error(`Error claiming the NFT of the subscription with agreement ${agreementId}`)
           }
         }
       } catch(error) {
+        verbose && Logger.error(error)
         if(!agreementId) {
           throw new LockPaymentError((error as Error).message)
         }
