@@ -569,22 +569,21 @@ export interface AssetsModule {
    * Transfer the ownership of the asset to other account
    * @param assetInfo
    * @param assetInfo.did The id of the asset
-   * @param assetInfo.newOwner Account of the owner
-   * @param assetInfo.account Account of the user
    * @param assetInfo.amount The amount of asset to transfer
    * @param assetInfo.ercType NFT asset type which can be 721 or 1155
+   * @param assetInfo.newOwner Account of the owner
    * @returns Return true if asset was transferred successfully
    */
   transfer: ({
     did,
-    newOwner,
     amount,
     ercType,
+    newOwner,
   }: {
     did: string
-    newOwner: Account
     amount: number
     ercType: ERCType
+    newOwner: Account
   }) => Promise<boolean>
   /**
    * Get the aggreement details of the NFT asset (owner, nfts supplay, royalties, etc...)
@@ -596,11 +595,11 @@ export interface AssetsModule {
   /**
    * This method order a asset to allow after transfer to the buyer (the method only order but not transfer)
    * @param did id of the asset
-   * @param account Account of the user
+   * @param consumer Account of the consumer
    * @returns In case the order is completed successfully it returns the agreementId
    * which is needed to transfer the asset to the buyer
    */
-  orderAsset: (did: string, account: Account) => Promise<string>
+  orderAsset: (did: string, consumer: Account) => Promise<string>
   /**
    * This method order a NFT721 asset to allow after transfer to the buyer (the method only order but not transfer)
    * @param did id of the NFT721 asset
@@ -609,76 +608,76 @@ export interface AssetsModule {
    * @returns In case the order is completed successfully it returns the agreementId
    * which is needed to transfer the NFT721 asset to the buyer
    */
-  orderNFT721: (did: string, account: Account, nftTokenAddress: string) => Promise<string>
+  orderNFT721: (did: string, consumer: Account, nftTokenAddress: string) => Promise<string>
   /**
    * This method order a NFT1155 asset to allow after transfer to the buyer (the method only order but not transfer)
    * @param did id of the NFT1155 asset
-   * @param account Account of the user
    * @param amount Amount of NFT1155 assets to order
+   * @param consumer Account of the consumer
    * @returns In case the order is completed successfully it returns the agreementId
    * which is needed to transfer the NFT1155 asset to the buyer
    */
-  orderNFT1155: (did: string, account: Account, amount: BigNumber) => Promise<string>
+  orderNFT1155: (did: string, amount: BigNumber, consumer: Account) => Promise<string>
   /**
    * Download a NFT asset already ordered and transfered to the buyer,
    * if the user is the owner of the asset
    * @param nft
    * @param nft.did id of the NFT (721 & 1155) asset
-   * @param nft.account Account of the user
    * @param nft.ercType NFT type. By default 1155
    * @param nft.path Destination of downloaded file
    * @param nft.fileIndex The file to download. If not given or is -1 it will download all of them
    * @param nft.password Password to download a encrypted NFT
+   * @param nft.consumer Account of the consumer
    * @returns if the NFT is downloaded successfully the method will return a true
    */
   downloadNFT: ({
     did,
-    account,
     ercType,
     path,
     fileIndex,
     password,
+    consumer,
   }: {
     did: string
-    account: Account
     ercType?: ERCType
     path?: string
     fileIndex?: number
     password?: string
+    consumer: Account
   }) => Promise<boolean | string>
   /**
    * Get all the details about a custom erc20 token
    * @param customErc20TokenAddress The custom token address
-   * @param account Account of the user
+   * @param address Wallet address of the user
    * @returns Custom token details
    */
   getCustomErc20Token: (
     customErc20TokenAddress: string,
-    account: Account,
+    address: string,
   ) => Promise<CustomErc20Token>
   /**
    * Download an asset already ordered and transfered to the buyer,
    * if the user is the owner of the asset
    * @param asset
    * @param asset.did id of the NFT (721 & 1155) asset
-   * @param asset.account Account of the user
    * @param asset.path Destination of downloaded file
    * @param asset.fileIndex The file to download. If not given or is -1 it will download all of them
    * @param asset.password Password to download a encrypted NFT
+   * @param asset.consumer Account of the consumer
    * @returns if the NFT is downloaded successfully the method will return a true
    */
   downloadAsset: ({
     did,
-    account,
     fileIndex,
     path,
     password,
+    consumer,
   }: {
     did: string
-    account: Account
     fileIndex?: number
     path?: string
     password?: string
+    consumer: Account
   }) => Promise<boolean>
   /**
    * Upload files to Filecoin
@@ -928,31 +927,31 @@ export interface AssetPublishProviderState {
    *
    * @param asset
    * @param asset.assetAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
-   * @param asset.userAccount Account of the user
    * @param asset.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param asset.txParams Optional transaction parameters
    * @param asset.password Password to encrypt metadata
    * @param asset.cryptoConfig Setting for encrypting asset
    * @param asset.onEvent A callback to handle progress events
+   * @param asset.publisher Account of the publisher
    * @returns The DDO object including the asset metadata and the DID
    */
   publishAsset: ({
     assetAttributes,
-    userAccount,
     publishMetadata,
     txParameters,
     password,
     cryptoConfig,
     onEvent,
+    publisher,
   }: {
     assetAttributes: AssetAttributes
-    userAccount: Account
     publishMetadata?: PublishMetadata
     txParameters?: TxParameters
     method?: EncryptionMethod
     password?: string
     cryptoConfig?: CryptoConfig
     onEvent?: (next: CreateProgressStep) => void
+    publisher: Account
   }) => Promise<DDO | undefined>
   /**
    * In Nevermined is possible to register a digital asset that allow users pay for having a
@@ -963,34 +962,34 @@ export interface AssetPublishProviderState {
    *
    * @param nft721
    * @param nft721.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
-   * @param nft721.userAccount Account of the user
    * @param nft721.nftAddress NFT721 contract address to load
    * @param nft721.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param nft721.txParams Optional transaction parameters
    * @param nft721.password Password to encrypt metadata
    * @param nft721.cryptoConfig Setting for encrypting asset
    * @param nft721.onEvent A callback to handle progress events
+   * @param nft721.publisher Account of the publisher
    * @returns The DDO object including the asset metadata and the DID
    */
   publishNFT721: ({
     nftAttributes,
     nftAddress,
-    userAccount,
     publishMetadata,
     txParameters,
     password,
     cryptoConfig,
     onEvent,
+    publisher,
   }: {
     nftAttributes: NFTAttributes
     nftAddress: string
-    userAccount: Account
     publishMetadata?: PublishMetadata
     txParameters?: TxParameters
     method?: EncryptionMethod
     password?: string
     cryptoConfig?: CryptoConfig
     onEvent?: (next: CreateProgressStep) => void
+    publisher: Account
   }) => Promise<DDO | undefined>
   /**
    * In Nevermined is possible to register a digital asset that allow users pay for having a
@@ -1001,31 +1000,31 @@ export interface AssetPublishProviderState {
    * This method will create a new digital asset associated to a ERC-1155 NFT contract.
    *
    * @param nft1155
-   * @param nft1155.userAccount Account of the user
    * @param nft1155.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
    * @param nft1155.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param nft1155.txParams Optional transaction parameters
    * @param nft1155.password Password to encrypt metadata
    * @param nft1155.cryptoConfig Setting for encrypting asset
    * @param nft1155.onEvent A callback to handle progress events
+   * @param nft1155.publisher Account of the publisher
    * @returns The DDO object including the asset metadata and the DID
    */
   publishNFT1155: ({
     nftAttributes,
-    userAccount,
     publishMetadata,
     txParameters,
     password,
     cryptoConfig,
     onEvent,
+    publisher,
   }: {
     nftAttributes: NFTAttributes
-    userAccount: Account
     publishMetadata?: PublishMetadata
     txParameters?: TxParameters
     method?: EncryptionMethod
     password?: string
     cryptoConfig?: CryptoConfig
+    publisher: Account
     onEvent?: (next: CreateProgressStep) => void
   }) => Promise<DDO | undefined>
 }

@@ -356,8 +356,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const [userAccount] = await sdk.accounts.list()
-              const result = await assets.orderNFT1155(ddo.id, userAccount, BigNumber.from(1))
+              const [consumer] = await sdk.accounts.list()
+              const result = await assets.orderNFT1155(ddo.id, BigNumber.from(1), consumer)
               setAgrId(result)
             } catch (error: any) {
               console.error(error.message)
@@ -405,8 +405,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const [userAccount] = await sdk.accounts.list()
-              const result = await assets.orderNFT1155(ddo.id, userAccount, BigNumber.from(1))
+              const [consumer] = await sdk.accounts.list()
+              const result = await assets.orderNFT1155(ddo.id, BigNumber.from(1), consumer)
               setAgrId(result)
             } catch (error: any) {
               console.error(error.message)
@@ -460,8 +460,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const [userAccount] = await sdk.accounts.list()
-              const result = await assets.downloadAsset({did: ddo.id, account: userAccount})
+              const [consumer] = await sdk.accounts.list()
+              const result = await assets.downloadAsset({did: ddo.id, consumer})
               setIsDownloaded(result)
             } catch (error: any) {
               console.error(error.message)
@@ -519,8 +519,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const [userAccount] = await sdk.accounts.list()
-              const result = await assets.downloadAsset({ did: ddo.id, account: userAccount})
+              const [consumer] = await sdk.accounts.list()
+              const result = await assets.downloadAsset({ did: ddo.id, consumer})
               setIsDownloaded(result)
             } catch (error: any) {
               console.error(error.message)
@@ -558,8 +558,8 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const [userAccount] = await sdk.accounts.list()
-              const result = await assets.downloadNFT({did: ddo.id, account: userAccount})
+              const [consumer] = await sdk.accounts.list()
+              const result = await assets.downloadNFT({did: ddo.id, consumer})
               setIsDownloaded(result as boolean)
             } catch (error: any) {
               console.error(error.message)
@@ -589,7 +589,7 @@ describe('Nevermined assets', () => {
 
     const { result } = renderHook(
       () => {
-        const { assets, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
+        const { assets, isLoadingSDK, updateSDK } = Catalog.useNevermined()
         const [customErc20Token, setCustomErc20Token] = useState({} as CustomErc20Token)
 
         useEffect(() => {
@@ -601,10 +601,9 @@ describe('Nevermined assets', () => {
 
           (async () => {
             try {
-              const [userAccount] = await sdk.accounts.list()
               const result = await assets.getCustomErc20Token(
                 '0xdF1B443A155b07D2b2cAeA2d99715dC84E812EE2',
-                userAccount
+                walletAddress
               )
               setCustomErc20Token({ ...result })
             } catch (error: any) {

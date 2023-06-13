@@ -77,7 +77,7 @@ describe('DTP', () => {
 
           (async () => {
             const result = await publishNFT1155({
-              userAccount: publisher,
+              publisher,
               nftAttributes,
               password,
               cryptoConfig,
@@ -172,7 +172,7 @@ describe('DTP', () => {
 
           (async () => {
             try {
-              const result = await assets.downloadNFT({did: ddoResult.id, account: consumer, ercType: 1155, path: undefined, fileIndex: 1, password}) as string
+              const result = await assets.downloadNFT({did: ddoResult.id, consumer, ercType: 1155, path: undefined, fileIndex: 1, password}) as string
               setIsDownloaded(result)
             } catch (error: any) {
               console.error(error.message)

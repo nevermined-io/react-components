@@ -168,42 +168,42 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * This will return the DDO created (including the unique identifier of the asset - aka DID).
    *
    * @param asset
-   * @param asset.userAccount The user account
    * @param asset.assetAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
    * @param asset.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param asset.txParams Optional transaction parameters
    * @param asset.method Method used to encrypt the urls
    * @param asset.password Password to encrypt metadata
    * @param asset.onEvent A callback to handle progress events
+   * @param asset.publisher The user account
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishAsset = async ({
     assetAttributes,
-    userAccount,
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
     password,
     cryptoConfig,
     onEvent,
+    publisher,
   }:
   {
     assetAttributes: AssetAttributes;
-    userAccount: Account;
     publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
     password?: string,
     cryptoConfig?: CryptoConfig,
     onEvent?: (next: CreateProgressStep) => void,
+    publisher: Account
   }) => {
     try {
       setIsProcessing(true)
 
-      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== userAccount.getId().toLowerCase()) {
+      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== publisher.getId().toLowerCase()) {
         Logger.error(
           'Your login is expired or not valid'
         )
 
-        await account.generateToken(userAccount)
+        await account.generateToken(publisher)
       }
 
       if (password) {
@@ -214,7 +214,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
 
       const ddo = await executeWithProgressEvent(() => sdk.assets.create(
         assetAttributes,
-        userAccount,
+        publisher,
         publishMetadata,
         txParameters,
       ), onEvent)
@@ -241,7 +241,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * (given the `nftAddress` parameter)
    * 
    * @param nft721
-   * @param nft721.userAccount The user account
    * @param nft721.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
    * @param nft721.nftAddress NFT721 contract address to load
    * @param nft721.publishMetadata Allows to specify if the metadata should be stored in different backends
@@ -249,36 +248,37 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param nft721.method Method used to encrypt the urls
    * @param nft721.password Password to encrypt metadata
    * @param nft721.onEvent A callback to handle progress events
+   * @param nft721.publisher The user account*
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishNFT721 = async ({
     nftAttributes,
     nftAddress,
-    userAccount,
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
     password,
     cryptoConfig,
     onEvent,
+    publisher
   }:
   {
     nftAttributes: NFTAttributes;
     nftAddress: string;
-    userAccount: Account;
     publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
     password?: string,
     cryptoConfig?: CryptoConfig,
-    onEvent?: (next: CreateProgressStep) => void
+    onEvent?: (next: CreateProgressStep) => void,
+    publisher: Account
   }) => {
     try {
       setIsProcessing(true)
 
-      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== userAccount.getId().toLowerCase()) {
+      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== publisher.getId().toLowerCase()) {
         setErrorAssetMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
         )
-        await account.generateToken(userAccount)
+        await account.generateToken(publisher)
       }
 
       if (password) {
@@ -291,7 +291,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
 
       const ddo = await executeWithProgressEvent(() => sdk.nfts721.create(
         nftAttributes,
-        userAccount,
+        publisher,
         publishMetadata,
         txParameters,
       ), onEvent)
@@ -319,7 +319,6 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * This method will create a new digital asset associated to a ERC-1155 NFT contract. 
    * 
    * @param nft1155
-   * @param nft1155.userAccount The user account
    * @param nft1155.neverminedNodeAddress Node address to approve to handle the NFT
    * @param nft1155.metadata The metadata object describing the asset
    * @param nft1155.cap The maximum number of editions that can be minted. If `0` means there is no limit (uncapped)
@@ -333,34 +332,35 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * @param nft1155.appId The id of the application creating the NFT
    * @param nft1155.txParameters Trasaction number of the asset creation
    * @param nft1155.onEvent A callback to handle progress events
+   * @param nft1155.publisher The user account
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishNFT1155 = async ({
     nftAttributes,
-    userAccount,
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
     password,
     cryptoConfig,
     onEvent,
+    publisher
   }:
   {
     nftAttributes: NFTAttributes;
-    userAccount: Account;
     publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
     password?: string,
     cryptoConfig?: CryptoConfig,
     onEvent?: (next: CreateProgressStep) => void,
+    publisher: Account;
   }) => {
     try {
       setIsProcessing(true)
 
-      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== userAccount.getId().toLowerCase()) {
+      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== publisher.getId().toLowerCase()) {
         setErrorAssetMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
         )
-        await account.generateToken(userAccount)
+        await account.generateToken(publisher)
       }
 
       if (!config.neverminedNodeAddress) {
@@ -376,7 +376,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
 
       const ddo = await executeWithProgressEvent(() => sdk.nfts1155.create(
         nftAttributes,
-        userAccount,
+        publisher,
         publishMetadata,
         txParameters
       ), onEvent)

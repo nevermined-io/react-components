@@ -380,7 +380,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    transfer: async ({ did, newOwner, amount, ercType }: { did: string; newOwner: Account; amount: number; ercType?: ERCType }): Promise<boolean> => {
+    transfer: async ({ did, amount, ercType, newOwner, }: { did: string; amount: number; ercType?: ERCType, newOwner: Account; }): Promise<boolean> => {
       try {
         if (!config.neverminedNodeAddress || !config.neverminedNodeUri) {
           Logger.log('neverminedNodeAddress or neverminedNodeUri is not set. Abort.')
@@ -429,17 +429,17 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       }
     },
 
-    orderAsset: async (did: string, account: Account): Promise<string> => {
+    orderAsset: async (did: string, consumerAccount: Account): Promise<string> => {
       const owner = await sdk.assets.owner(did)
 
-      if (owner === account.getId()) {
+      if (owner === consumerAccount.getId()) {
         throw new ClientError(
           "You are already the owner, you don't need to order the asset",
           'Catalog'
         )
       }
 
-      const purchased = await loadFulfilledEvents(sdk, account.getId(), 'accessCondition')
+      const purchased = await loadFulfilledEvents(sdk, consumerAccount.getId(), 'accessCondition')
 
       const purchasedDDO = await Promise.all(
         purchased.map((asset) => sdk.assets.resolve(asset.documentId))
@@ -451,27 +451,27 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         return getAgreementId(sdk, 'accessTemplate', did)
       }
 
-      return sdk.assets.order(did, account)
+      return sdk.assets.order(did, consumerAccount)
     },
 
-    orderNFT1155: async (did: string, account: Account, amount: BigNumber): Promise<string> => {
-      const balance = await sdk.nfts1155.balance(did, account)
+    orderNFT1155: async (did: string, amount: BigNumber, consumer: Account): Promise<string> => {
+      const balance = await sdk.nfts1155.balance(did, consumer)
 
       if (BigNumber.from(balance).toNumber() > 0) {
         return getAgreementId(sdk, 'nftAccessTemplate', did)
       }
 
-      return sdk.nfts1155.order(did, amount, account)
+      return sdk.nfts1155.order(did, amount, consumer)
     },
 
-    orderNFT721: async (did: string, account: Account): Promise<string> => {
+    orderNFT721: async (did: string, consumer: Account): Promise<string> => {
       const holder = await sdk.nfts721.ownerOf(did)
 
-      if (holder === account.getId()) {
+      if (holder === consumer.getId()) {
         return getAgreementId(sdk, 'nft721AccessTemplate', did)
       }
 
-      return sdk.nfts721.order(did, account)
+      return sdk.nfts721.order(did, consumer)
     },
 
     nftDetails: async (did: string, ercType: ERCType): Promise<NFTDetails> => {
@@ -486,40 +486,40 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
     downloadNFT: async ({
       did,
-      account,
       ercType,
       password,
       path,
       fileIndex,
+      consumer,
     }:
     { did: string,
-      account: Account,
       ercType?: ERCType,
       path?: string,
       fileIndex?: number,
       password?: string,
+      consumer: Account,
     }): Promise<boolean> => {
       try {
         if(password) {
           const cryptoConfig = await _getCryptoConfig(sdk, password)
           const dtp = await _getDTPInstance(sdk, config, cryptoConfig)
-          const consumer = await _grantAccess({
+          const consumerDtp = await _grantAccess({
             did,
-            account,
+            account: consumer,
             password,
             sdk,
             dtp,
           }) as Account
 
 
-          const response = await sdk.assets.download(did, consumer, path, fileIndex, 'nft-sales-proof')
+          const response = await sdk.assets.download(did, consumerDtp, path, fileIndex, 'nft-sales-proof')
 
           return Boolean(response)
         }
 
         return ercType === 721
-          ? sdk.nfts721.access(did, account, path, fileIndex) as Promise<boolean>
-          : sdk.nfts1155.access(did, account, path, fileIndex) as Promise<boolean>
+          ? sdk.nfts721.access(did, consumer, path, fileIndex) as Promise<boolean>
+          : sdk.nfts1155.access(did, consumer, path, fileIndex) as Promise<boolean>
       } catch (error) {
         verbose && Logger.error(error)
         return false
@@ -528,16 +528,16 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
     downloadAsset: async ({ 
       did,
-      account,
       fileIndex,
       path,
       password,
+      consumer,
     }: {
       did: string,
-      account: Account,
       fileIndex?: number,
       path?: string,
       password?: string,
+      consumer: Account,
     }): Promise<boolean> => {
       try {
         const agreementId = await getAgreementId(sdk, 'accessTemplate', did)
@@ -546,39 +546,39 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
           const cryptoConfig = await _getCryptoConfig(sdk, password)
           const dtp = await _getDTPInstance(sdk, config, cryptoConfig)
 
-          const consumer = await _grantAccess({
+          const consumerDtp = await _grantAccess({
             did,
-            account,
+            account: consumer,
             password,
             sdk,
             dtp,
           }) as Account
 
-          const response = await sdk.assets.download(did, consumer, path, fileIndex, 'nft-sales-proof')
+          const response = await sdk.assets.download(did, consumerDtp, path, fileIndex, 'nft-sales-proof')
 
           return Boolean(response)
         }
 
-        if ((await sdk.assets.owner(did)) === account.getId()) {
-          const response = await sdk.assets.download(did, account, path, fileIndex)
+        if ((await sdk.assets.owner(did)) === consumer.getId()) {
+          const response = await sdk.assets.download(did, consumer, path, fileIndex)
           return Boolean(response)
         }
 
-        return sdk.assets.access(agreementId, did, account, path, fileIndex) as Promise<boolean>
+        return sdk.assets.access(agreementId, did, consumer, path, fileIndex) as Promise<boolean>
       } catch (error) {
         verbose && Logger.error(error)
         return false
       }
     },
 
-    getCustomErc20Token: async (customErc20TokenAddress: string, account: Account) => {
+    getCustomErc20Token: async (customErc20TokenAddress: string, address: string) => {
       const customErc20Token = await sdk.contracts.loadErc20(customErc20TokenAddress)
 
       return {
         name: await customErc20Token.name(),
         symbol: await customErc20Token.symbol(),
         decimals: await customErc20Token.decimals(),
-        balance: await customErc20Token.balanceOf(account.getId())
+        balance: await customErc20Token.balanceOf(address)
       }
     },
 
@@ -641,19 +641,19 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   const nfts = {
     access: async ({
       did,
-      buyer,
       nftHolder,
       nftAmount,
       ercType,
       password,
       onEvent,
+      buyer,
     }: {
       did: string,
-      buyer: Account,
       nftHolder: string
       nftAmount: BigNumber
       ercType?: ERCType
       password?: string
+      buyer: Account,
       onEvent?: (next: OrderProgressStep) => void
     }): Promise<string> => {
       let agreementId = ''

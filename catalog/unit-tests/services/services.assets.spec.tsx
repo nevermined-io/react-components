@@ -118,10 +118,10 @@ describe('Assets Service', () => {
           }
 
           (async () => {
-            const [userAccount] = await sdk.accounts.list()
+            const [publisher] = await sdk.accounts.list()
             const result = await publishAsset({
               assetAttributes,
-              userAccount,
+              publisher,
             }) as DDO
 
             setDDO(result)
@@ -162,11 +162,11 @@ describe('Assets Service', () => {
 
           (async () => {
             nftAttributes.royaltyAttributes = royaltyAttributes(sdk)
-            const [userAccount] = await sdk.accounts.list()
+            const [publisher] = await sdk.accounts.list()
             const result = await publishNFT721({
               nftAttributes,
               nftAddress: nftContract,
-              userAccount,
+              publisher,
             }) as DDO
 
             setDDO(result)
@@ -206,10 +206,10 @@ describe('Assets Service', () => {
           }
 
           (async () => {
-            const [userAccount] = await sdk.accounts.list()
+            const [publisher] = await sdk.accounts.list()
             const result = await publishNFT1155({
               nftAttributes,
-              userAccount,
+              publisher,
             }) as DDO
 
             setDDO(result)
@@ -371,10 +371,10 @@ describe('Assets Service', () => {
           }
 
           (async () => {
-            const [userAccount] = await sdk.accounts.list()
+            const [publisher] = await sdk.accounts.list()
             await publishAsset({
               assetAttributes,
-              userAccount,
+              publisher,
             }) as DDO
           })()
         }, [isLoadingSDK, errorAssetMessage])
