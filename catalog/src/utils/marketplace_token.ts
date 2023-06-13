@@ -1,4 +1,4 @@
-import { Nevermined, Logger } from '@nevermined-io/sdk'
+import { Nevermined, Logger, Account } from '@nevermined-io/sdk'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { MarketplaceAPIToken } from '../types'
 
@@ -44,9 +44,8 @@ export const fetchMarketplaceApiTokenFromLocalStorage = (): MarketplaceAPIToken 
  * @param sdk Instance of SDK object
  * @return Auth token object which generated from Marketplace API
  */
-export const newMarketplaceApiToken = async (sdk: Nevermined): Promise<MarketplaceAPIToken> => {
+export const newMarketplaceApiToken = async (sdk: Nevermined, account: Account): Promise<MarketplaceAPIToken> => {
   try {
-    const [account] = await sdk.accounts.list()
     const credential = await sdk.utils.jwt.generateClientAssertion(account)
     const token = await sdk.services.marketplace.login(credential)
     saveMarketplaceApiTokenToLocalStorage({ token })

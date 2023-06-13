@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import { MetaData, Profile, State } from '../src'
 import jwt from 'jsonwebtoken'
 
-const nftContract = '0xdF1B443A155b07D2b2cAeA2d99715dC84E812FF5'
+export const nftContract = '0xdF1B443A155b07D2b2cAeA2d99715dC84E812FF5'
 
 export const ddo = {
   '@context': 'https://w3id.org/did/v1',
@@ -954,6 +954,9 @@ export const nevermined = {
           getId: () => walletAddress,
         },
       ],
+      getAccount: async () => ({
+        getId: () => walletAddress,
+      }),
     },
     services: {
       metadata: {

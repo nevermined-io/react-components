@@ -126,7 +126,7 @@ describe('Nevermined account', () => {
   it('should generate new token', async() => {
     const { result } = renderHook(
       () => {
-        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { account, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [ token, setToken ] = useState<string>('')
 
         useEffect(() => {
@@ -138,8 +138,8 @@ describe('Nevermined account', () => {
 
           (async () => {
             try {
-
-              const result = await account.generateToken()
+              const [userAccount] = await sdk.accounts.list()
+              const result = await account.generateToken(userAccount)
 
               setToken(result.token)
             } catch (error: any) {
@@ -534,7 +534,7 @@ describe('Nevermined account', () => {
   it('should get all the subscriptions published by the address passed', async () =>{
     const { result } = renderHook(
       () => {
-        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { account, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [ subscriptions, setSubscriptions ] = useState<DDO[]>([])
 
         useEffect(() => {
@@ -546,7 +546,8 @@ describe('Nevermined account', () => {
 
           (async () => {
             try {
-              const result = await account.getPublishedSubscriptions()
+              const [userAccount] = await sdk.accounts.list()
+              const result = await account.getPublishedSubscriptions(userAccount)
 
               setSubscriptions([...result.results])
             } catch (error: any) {
@@ -570,7 +571,7 @@ describe('Nevermined account', () => {
   it('should get all the subscriptions published and services by the address passed', async () =>{
     const { result } = renderHook(
       () => {
-        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { account, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [ subscriptions, setSubscriptions ] = useState<SubscriptionsAndServicesDDOs[]>([])
 
         useEffect(() => {
@@ -582,7 +583,8 @@ describe('Nevermined account', () => {
 
           (async () => {
             try {
-              const result = await account.getPublishedSubscriptionsAndServices()
+              const [userAccount] = await sdk.accounts.list()
+              const result = await account.getPublishedSubscriptionsAndServices(userAccount)
 
               setSubscriptions([...result])
             } catch (error: any) {
@@ -609,7 +611,7 @@ describe('Nevermined account', () => {
   it('should get all the subscriptions purchased by the address passed', async () =>{
     const { result } = renderHook(
       () => {
-        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { account, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [ subscriptions, setSubscriptions ] = useState<DDO[]>([])
 
         useEffect(() => {
@@ -621,7 +623,8 @@ describe('Nevermined account', () => {
 
           (async () => {
             try {
-              const result = await account.getPurchasedSubscriptions()
+              const [userAccount] = await sdk.accounts.list()
+              const result = await account.getPurchasedSubscriptions(userAccount)
 
               setSubscriptions([...result.results])
             } catch (error: any) {
@@ -645,7 +648,7 @@ describe('Nevermined account', () => {
   it('should get all the subscriptions purchased and services by the address passed', async () =>{
     const { result } = renderHook(
       () => {
-        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { account, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [ subscriptions, setSubscriptions ] = useState<SubscriptionsAndServicesDDOs[]>([])
 
         useEffect(() => {
@@ -657,7 +660,8 @@ describe('Nevermined account', () => {
 
           (async () => {
             try {
-              const result = await account.getPurchasedSubscriptionsAndServices()
+              const [userAccount] = await sdk.accounts.list()
+              const result = await account.getPurchasedSubscriptionsAndServices(userAccount)
 
               setSubscriptions([...result])
             } catch (error: any) {
@@ -720,7 +724,7 @@ describe('Nevermined account', () => {
   it('should get all the subscriptions published and datasets by the address passed', async () =>{
     const { result } = renderHook(
       () => {
-        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { account, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [ subscriptions, setSubscriptions ] = useState<SubscriptionsAndDatasetsDDOs[]>([])
 
         useEffect(() => {
@@ -732,7 +736,8 @@ describe('Nevermined account', () => {
 
           (async () => {
             try {
-              const result = await account.getPublishedSubscriptionsAndDatasets()
+              const [userAccount] = await sdk.accounts.list()
+              const result = await account.getPublishedSubscriptionsAndDatasets(userAccount)
 
               setSubscriptions([...result])
             } catch (error: any) {
@@ -761,7 +766,7 @@ describe('Nevermined account', () => {
   it('should get all the subscriptions purchased and datasets by the address passed', async () =>{
     const { result } = renderHook(
       () => {
-        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { account, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [ subscriptions, setSubscriptions ] = useState<SubscriptionsAndDatasetsDDOs[]>([])
 
         useEffect(() => {
@@ -773,7 +778,8 @@ describe('Nevermined account', () => {
 
           (async () => {
             try {
-              const result = await account.getPublishedSubscriptionsAndDatasets()
+              const [userAccount] = await sdk.accounts.list()
+              const result = await account.getPublishedSubscriptionsAndDatasets(userAccount)
 
               setSubscriptions([...result])
             } catch (error: any) {

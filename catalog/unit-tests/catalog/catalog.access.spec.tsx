@@ -39,7 +39,7 @@ describe('Nevermined subscription', () => {
 
     const { result } = renderHook(
       () => {
-        const { nfts, isLoadingSDK, updateSDK } = Catalog.useNevermined()
+        const { nfts, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const [ agreementIdResult, setAgreementId] = useState<string>('')
 
         useEffect(() => {
@@ -51,8 +51,10 @@ describe('Nevermined subscription', () => {
 
           (async () => {
             try {
+              const [account] = await sdk.accounts.list()
               const result = await nfts.access({
                 did: ddo.id,
+                buyer: account,
                 nftHolder: '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
                 nftAmount: BigNumber.from(1),
                 ercType: 721,
@@ -113,8 +115,10 @@ describe('Nevermined subscription', () => {
 
           (async () => {
             try {
+              const [account] = await sdk.accounts.list()
               const result = await nfts.access({
                 did: ddo.id,
+                buyer: account,
                 nftHolder: '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
                 nftAmount: BigNumber.from(1),
                 ercType: 1155,

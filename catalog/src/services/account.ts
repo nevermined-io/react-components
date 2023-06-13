@@ -345,14 +345,14 @@ export const useUserProfile = (
   const [addresses, setAddresses] = useState<string[]>([])
   const [reloadTrigger, setReloadTrigger] = useState<Date>()
 
-  const checkAuth = async () => {
+  const checkAuth = async (userAccount: Account) => {
     let tokenObject = { token: '' }
     if (!account.isTokenValid()) {
       setIsTokenGenerated(false)
       setErrorMessage(
         'Your login is expired. Please first sign with your wallet before to continue',
       )
-      tokenObject = await account.generateToken()
+      tokenObject = await account.generateToken(userAccount)
       setIsTokenGenerated(Boolean(tokenObject.token))
     } else {
       tokenObject = fetchMarketplaceApiTokenFromLocalStorage()
@@ -387,7 +387,8 @@ export const useUserProfile = (
 
   const submitUserProfile = async () => {
     try {
-      await checkAuth()
+      const userAccount = await sdk.accounts.getAccount(walletAddress)
+      await checkAuth(userAccount)
 
       if (!userProfile.nickname) {
         setInputError('Nickname is required')
@@ -428,6 +429,8 @@ export const useUserProfile = (
           return
         }
 
+        const userAccount = await sdk.accounts.getAccount(walletAddress)
+
         setUserProfileLoadingStatus('loading')
 
         const userProfileData = await sdk.services.profiles.findOneByAddress(walletAddress)
@@ -437,7 +440,7 @@ export const useUserProfile = (
           setNewAddress('')
         }
 
-        const tokenAuth = await checkAuth()
+        const tokenAuth = await checkAuth(userAccount)
 
         setAddresses([...userProfileData.addresses])
 
@@ -457,7 +460,8 @@ export const useUserProfile = (
           setNewAddress(walletAddress)
           setUserProfileLoadingStatus('failed')
         } else if (error.message.includes('"statusCode":404')) {
-          await account.generateToken()
+          const userAccount = await sdk.accounts.getAccount(walletAddress)
+          await account.generateToken(userAccount)
           setTimeout(async () => {
             try {
               const userProfileData = await sdk.services.profiles.findOneByAddress(walletAddress)
