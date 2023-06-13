@@ -954,6 +954,9 @@ export const nevermined = {
           getId: () => walletAddress,
         },
       ],
+      getAccount: async () => ({
+        getId: () => walletAddress,
+      }),
     },
     services: {
       metadata: {

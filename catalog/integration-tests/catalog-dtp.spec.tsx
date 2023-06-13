@@ -77,7 +77,7 @@ describe('DTP', () => {
 
           (async () => {
             const result = await publishNFT1155({
-              account: publisher,
+              userAccount: publisher,
               nftAttributes,
               password,
               cryptoConfig,

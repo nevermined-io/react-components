@@ -928,7 +928,7 @@ export interface AssetPublishProviderState {
    *
    * @param asset
    * @param asset.assetAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
-   * @param asset.account Account of the user
+   * @param asset.userAccount Account of the user
    * @param asset.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param asset.txParams Optional transaction parameters
    * @param asset.password Password to encrypt metadata
@@ -938,7 +938,7 @@ export interface AssetPublishProviderState {
    */
   publishAsset: ({
     assetAttributes,
-    account,
+    userAccount,
     publishMetadata,
     txParameters,
     password,
@@ -946,7 +946,7 @@ export interface AssetPublishProviderState {
     onEvent,
   }: {
     assetAttributes: AssetAttributes
-    account: Account
+    userAccount: Account
     publishMetadata?: PublishMetadata
     txParameters?: TxParameters
     method?: EncryptionMethod
@@ -963,7 +963,7 @@ export interface AssetPublishProviderState {
    *
    * @param nft721
    * @param nft721.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
-   * @param nft721.account Account of the user
+   * @param nft721.userAccount Account of the user
    * @param nft721.nftAddress NFT721 contract address to load
    * @param nft721.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param nft721.txParams Optional transaction parameters
@@ -975,7 +975,7 @@ export interface AssetPublishProviderState {
   publishNFT721: ({
     nftAttributes,
     nftAddress,
-    account,
+    userAccount,
     publishMetadata,
     txParameters,
     password,
@@ -984,7 +984,7 @@ export interface AssetPublishProviderState {
   }: {
     nftAttributes: NFTAttributes
     nftAddress: string
-    account: Account
+    userAccount: Account
     publishMetadata?: PublishMetadata
     txParameters?: TxParameters
     method?: EncryptionMethod
@@ -1001,7 +1001,7 @@ export interface AssetPublishProviderState {
    * This method will create a new digital asset associated to a ERC-1155 NFT contract.
    *
    * @param nft1155
-   * @param nft1155.account Account of the user
+   * @param nft1155.userAccount Account of the user
    * @param nft1155.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
    * @param nft1155.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param nft1155.txParams Optional transaction parameters
@@ -1012,7 +1012,7 @@ export interface AssetPublishProviderState {
    */
   publishNFT1155: ({
     nftAttributes,
-    account,
+    userAccount,
     publishMetadata,
     txParameters,
     password,
@@ -1020,7 +1020,7 @@ export interface AssetPublishProviderState {
     onEvent,
   }: {
     nftAttributes: NFTAttributes
-    account: Account
+    userAccount: Account
     publishMetadata?: PublishMetadata
     txParameters?: TxParameters
     method?: EncryptionMethod

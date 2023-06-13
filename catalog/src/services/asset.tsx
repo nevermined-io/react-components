@@ -17,8 +17,9 @@ import {
   ERCType,
   CryptoConfig,
   CreateProgressStep,
+  Account,
 } from '../types'
-import { executeWithProgressEvent, getCurrentAccount } from '../utils'
+import { executeWithProgressEvent } from '../utils'
 import {_getDTPInstance, _encryptFileMetadata} from '../utils/dtp'
 
 /**
@@ -167,6 +168,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * This will return the DDO created (including the unique identifier of the asset - aka DID).
    *
    * @param asset
+   * @param asset.userAccount The user account
    * @param asset.assetAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
    * @param asset.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param asset.txParams Optional transaction parameters
@@ -177,6 +179,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    */
   const publishAsset = async ({
     assetAttributes,
+    userAccount,
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
     password,
@@ -185,6 +188,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
   }:
   {
     assetAttributes: AssetAttributes;
+    userAccount: Account;
     publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
     password?: string,
@@ -194,14 +198,12 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     try {
       setIsProcessing(true)
 
-      const accountWallet = await getCurrentAccount(sdk)
-
-      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== accountWallet.getId().toLowerCase()) {
+      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== userAccount.getId().toLowerCase()) {
         Logger.error(
           'Your login is expired or not valid'
         )
 
-        await account.generateToken()
+        await account.generateToken(userAccount)
       }
 
       if (password) {
@@ -212,7 +214,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
 
       const ddo = await executeWithProgressEvent(() => sdk.assets.create(
         assetAttributes,
-        accountWallet,
+        userAccount,
         publishMetadata,
         txParameters,
       ), onEvent)
@@ -239,6 +241,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * (given the `nftAddress` parameter)
    * 
    * @param nft721
+   * @param nft721.userAccount The user account
    * @param nft721.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
    * @param nft721.nftAddress NFT721 contract address to load
    * @param nft721.publishMetadata Allows to specify if the metadata should be stored in different backends
@@ -251,6 +254,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
   const publishNFT721 = async ({
     nftAttributes,
     nftAddress,
+    userAccount,
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
     password,
@@ -260,6 +264,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
   {
     nftAttributes: NFTAttributes;
     nftAddress: string;
+    userAccount: Account;
     publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
     password?: string,
@@ -269,13 +274,11 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     try {
       setIsProcessing(true)
 
-      const accountWallet = await getCurrentAccount(sdk)
-
-      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== accountWallet.getId().toLowerCase()) {
+      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== userAccount.getId().toLowerCase()) {
         setErrorAssetMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
         )
-        await account.generateToken()
+        await account.generateToken(userAccount)
       }
 
       if (password) {
@@ -288,7 +291,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
 
       const ddo = await executeWithProgressEvent(() => sdk.nfts721.create(
         nftAttributes,
-        accountWallet,
+        userAccount,
         publishMetadata,
         txParameters,
       ), onEvent)
@@ -316,6 +319,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * This method will create a new digital asset associated to a ERC-1155 NFT contract. 
    * 
    * @param nft1155
+   * @param nft1155.userAccount The user account
    * @param nft1155.neverminedNodeAddress Node address to approve to handle the NFT
    * @param nft1155.metadata The metadata object describing the asset
    * @param nft1155.cap The maximum number of editions that can be minted. If `0` means there is no limit (uncapped)
@@ -333,6 +337,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    */
   const publishNFT1155 = async ({
     nftAttributes,
+    userAccount,
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
     password,
@@ -341,6 +346,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
   }:
   {
     nftAttributes: NFTAttributes;
+    userAccount: Account;
     publishMetadata?: PublishMetadata;
     txParameters?: TxParameters,
     password?: string,
@@ -350,13 +356,11 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     try {
       setIsProcessing(true)
 
-      const accountWallet = await getCurrentAccount(sdk)
-
-      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== accountWallet.getId().toLowerCase()) {
+      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== userAccount.getId().toLowerCase()) {
         setErrorAssetMessage(
           'Your login is expired. Please first sign with your wallet and after try again'
         )
-        await account.generateToken()
+        await account.generateToken(userAccount)
       }
 
       if (!config.neverminedNodeAddress) {
@@ -372,7 +376,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
 
       const ddo = await executeWithProgressEvent(() => sdk.nfts1155.create(
         nftAttributes,
-        accountWallet,
+        userAccount,
         publishMetadata,
         txParameters
       ), onEvent)
