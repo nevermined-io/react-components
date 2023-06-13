@@ -1,11 +1,13 @@
 import { Chain } from 'wagmi'
-import { polygon, polygonMumbai, gnosisChiado, gnosis } from 'wagmi/chains'
+import { polygon, polygonMumbai, gnosisChiado, gnosis, arbitrum, arbitrumGoerli } from 'wagmi/chains'
 
 const ChainsConfig: Chain[] = [
   polygonMumbai,
   polygon,
   gnosisChiado,
-  gnosis, 
+  gnosis,
+  arbitrum,
+  arbitrumGoerli,
   {
     id: 1337,
     name: "Localhost development",
