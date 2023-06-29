@@ -505,10 +505,13 @@ export interface AccountModule {
   ) => Promise<SubscriptionsAndDatasetsDDOs[]>
   /**
    * Generate a token for authentication in the Marketplace API
+   *
    * @param account Account of the user
+   * @param message Optional message to be included. Usually to be displayed in metamask
+   *
    * @returns The new generated token
    */
-  generateToken: (account: Account) => Promise<MarketplaceAPIToken>
+  generateToken: (account: Account, message?: string) => Promise<MarketplaceAPIToken>
   /**
    * check if the token for Marketplace API is valid
    * @returns if token is valid it will return true

@@ -345,14 +345,14 @@ export const useUserProfile = (
   const [addresses, setAddresses] = useState<string[]>([])
   const [reloadTrigger, setReloadTrigger] = useState<Date>()
 
-  const checkAuth = async (userAccount: Account) => {
+  const checkAuth = async (userAccount: Account, message?: string) => {
     let tokenObject = { token: '' }
     if (!account.isTokenValid()) {
       setIsTokenGenerated(false)
       setErrorMessage(
         'Your login is expired. Please first sign with your wallet before to continue',
       )
-      tokenObject = await account.generateToken(userAccount)
+      tokenObject = await account.generateToken(userAccount, message)
       setIsTokenGenerated(Boolean(tokenObject.token))
     } else {
       tokenObject = fetchMarketplaceApiTokenFromLocalStorage()
