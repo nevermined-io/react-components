@@ -20,6 +20,4 @@ jobs:
           yarn
           yarn nx run-many --target=docs
       - name: Doc linter
-        run: |
-          yarn install
-          yarn lint:docs
+        run: yarn lint:docs
