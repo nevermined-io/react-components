@@ -41,12 +41,20 @@ export const fetchMarketplaceApiTokenFromLocalStorage = (): MarketplaceAPIToken 
 
 /**
  * Generate new Marketplace API API token
+ *
  * @param sdk Instance of SDK object
+ * @param account The account requesting the token
+ * @param message Optional message to be included. Usually to be displayed in metamask
+ *
  * @return Auth token object which generated from Marketplace API
  */
-export const newMarketplaceApiToken = async (sdk: Nevermined, account: Account): Promise<MarketplaceAPIToken> => {
+export const newMarketplaceApiToken = async (
+  sdk: Nevermined,
+  account: Account,
+  message?: string,
+): Promise<MarketplaceAPIToken> => {
   try {
-    const credential = await sdk.utils.jwt.generateClientAssertion(account)
+    const credential = await sdk.utils.jwt.generateClientAssertion(account, message)
     const token = await sdk.services.marketplace.login(credential)
     saveMarketplaceApiTokenToLocalStorage({ token })
     return { token }

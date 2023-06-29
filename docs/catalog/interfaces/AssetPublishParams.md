@@ -22,13 +22,13 @@ Asset parameters needed to publish
 
 ### assetFiles
 
-• **assetFiles**: [`AssetFile`](AssetFile.md)[]
+• **assetFiles**: `MetaDataExternalResource`[]
 
 Files to download after buy the asset
 
 #### Defined in
 
-[types/index.ts:694](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L694)
+[types/index.ts:815](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/types/index.ts#L815)
 
 ___
 
@@ -40,7 +40,7 @@ Who create the asset
 
 #### Defined in
 
-[types/index.ts:684](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L684)
+[types/index.ts:805](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/types/index.ts#L805)
 
 ___
 
@@ -52,7 +52,7 @@ The category that belong the asset
 
 #### Defined in
 
-[types/index.ts:690](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L690)
+[types/index.ts:811](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/types/index.ts#L811)
 
 ___
 
@@ -64,7 +64,7 @@ Description about what is the utility of the asset
 
 #### Defined in
 
-[types/index.ts:686](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L686)
+[types/index.ts:807](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/types/index.ts#L807)
 
 ___
 
@@ -76,19 +76,19 @@ Name of the asset
 
 #### Defined in
 
-[types/index.ts:682](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L682)
+[types/index.ts:803](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/types/index.ts#L803)
 
 ___
 
 ### price
 
-• **price**: `number`
+• **price**: `string`
 
 Price of the asset
 
 #### Defined in
 
-[types/index.ts:692](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L692)
+[types/index.ts:813](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/types/index.ts#L813)
 
 ___
 
@@ -100,4 +100,4 @@ The type of the asset
 
 #### Defined in
 
-[types/index.ts:688](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L688)
+[types/index.ts:809](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/types/index.ts#L809)

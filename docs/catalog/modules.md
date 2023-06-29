@@ -34,9 +34,11 @@
 - [NFTSModule](interfaces/NFTSModule.md)
 - [NeverminedProviderContext](interfaces/NeverminedProviderContext.md)
 - [NeverminedProviderProps](interfaces/NeverminedProviderProps.md)
-- [PublishedSubscriptions](interfaces/PublishedSubscriptions.md)
 - [RegisterEvent](interfaces/RegisterEvent.md)
+- [SearchOptions](interfaces/SearchOptions.md)
 - [SubscribeModule](interfaces/SubscribeModule.md)
+- [SubscriptionsAndDatasetsDDOs](interfaces/SubscriptionsAndDatasetsDDOs.md)
+- [SubscriptionsAndServicesDDOs](interfaces/SubscriptionsAndServicesDDOs.md)
 - [Transfer](interfaces/Transfer.md)
 - [UserProfileParams](interfaces/UserProfileParams.md)
 
@@ -44,11 +46,19 @@
 
 - [DID](modules.md#did)
 
+### Variables
+
+- [emptyQueryResult](modules.md#emptyqueryresult)
+
 ### Functions
 
 - [conductOrder](modules.md#conductorder)
+- [executeWithProgressEvent](modules.md#executewithprogressevent)
 - [getAgreementId](modules.md#getagreementid)
 - [getCurrentAccount](modules.md#getcurrentaccount)
+- [getNewSdkInstance](modules.md#getnewsdkinstance)
+- [getSubscriptionsAndDatasets](modules.md#getsubscriptionsanddatasets)
+- [getSubscriptionsAndServices](modules.md#getsubscriptionsandservices)
 - [handlePostRequest](modules.md#handlepostrequest)
 - [isEmptyObject](modules.md#isemptyobject)
 - [loadFulfilledEvents](modules.md#loadfulfilledevents)
@@ -63,7 +73,17 @@ Id of the asset
 
 #### Defined in
 
-[types/index.ts:300](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L300)
+[types/index.ts:321](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/types/index.ts#L321)
+
+## Variables
+
+### emptyQueryResult
+
+• `Const` **emptyQueryResult**: `QueryResult`
+
+#### Defined in
+
+[utils/index.ts:248](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/utils/index.ts#L248)
 
 ## Functions
 
@@ -92,7 +112,34 @@ Agreement id generated after order an asset
 
 #### Defined in
 
-[utils/index.ts:40](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/utils/index.ts#L40)
+[utils/index.ts:48](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/utils/index.ts#L48)
+
+___
+
+### executeWithProgressEvent
+
+▸ **executeWithProgressEvent**<`T`\>(`subscribableAction`, `onEvent?`): `Promise`<`T`\>
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `T` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `subscribableAction` | () => `SubscribablePromise`<`any`, `T`\> |
+| `onEvent?` | (`next`: `any`) => `void` |
+
+#### Returns
+
+`Promise`<`T`\>
+
+#### Defined in
+
+[utils/index.ts:226](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/utils/index.ts#L226)
 
 ___
 
@@ -118,7 +165,7 @@ Agreement id generated after order an asset
 
 #### Defined in
 
-[utils/index.ts:116](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/utils/index.ts#L116)
+[utils/index.ts:124](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/utils/index.ts#L124)
 
 ___
 
@@ -141,7 +188,72 @@ Returns current account registered in SDK
 
 #### Defined in
 
-[utils/index.ts:17](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/utils/index.ts#L17)
+[utils/index.ts:25](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/utils/index.ts#L25)
+
+___
+
+### getNewSdkInstance
+
+▸ **getNewSdkInstance**(`config`, `tokenData`): `Promise`<`Nevermined`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `config` | `NeverminedOptions` |
+| `tokenData` | [`MarketplaceAPIToken`](interfaces/MarketplaceAPIToken.md) |
+
+#### Returns
+
+`Promise`<`Nevermined`\>
+
+#### Defined in
+
+[utils/index.ts:241](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/utils/index.ts#L241)
+
+___
+
+### getSubscriptionsAndDatasets
+
+▸ **getSubscriptionsAndDatasets**(`subscriptionsDDOs`, `sdk`, `searchOptions?`): `Promise`<{ `datasets`: `QueryResult` = query; `subscription`: `DDO` = ddo }[]\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `subscriptionsDDOs` | `DDO`[] |
+| `sdk` | `Nevermined` |
+| `searchOptions?` | [`SearchOptions`](interfaces/SearchOptions.md) |
+
+#### Returns
+
+`Promise`<{ `datasets`: `QueryResult` = query; `subscription`: `DDO` = ddo }[]\>
+
+#### Defined in
+
+[utils/index.ts:202](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/utils/index.ts#L202)
+
+___
+
+### getSubscriptionsAndServices
+
+▸ **getSubscriptionsAndServices**(`subscriptionsDDOs`, `sdk`, `searchOptions?`): `Promise`<{ `services`: `QueryResult` = query; `subscription`: `DDO` = ddo }[]\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `subscriptionsDDOs` | `DDO`[] |
+| `sdk` | `Nevermined` |
+| `searchOptions?` | [`SearchOptions`](interfaces/SearchOptions.md) |
+
+#### Returns
+
+`Promise`<{ `services`: `QueryResult` = query; `subscription`: `DDO` = ddo }[]\>
+
+#### Defined in
+
+[utils/index.ts:178](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/utils/index.ts#L178)
 
 ___
 
@@ -167,7 +279,7 @@ Return the result data of the request
 
 #### Defined in
 
-[utils/index.ts:145](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/utils/index.ts#L145)
+[utils/index.ts:153](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/utils/index.ts#L153)
 
 ___
 
@@ -191,7 +303,7 @@ Checks if object is empty
 
 #### Defined in
 
-[utils/index.ts:11](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/utils/index.ts#L11)
+[utils/index.ts:19](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/utils/index.ts#L19)
 
 ___
 
@@ -217,4 +329,4 @@ Array of object with the document id of each fullfilled events
 
 #### Defined in
 
-[utils/index.ts:87](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/utils/index.ts#L87)
+[utils/index.ts:95](https://github.com/nevermined-io/components-catalog/blob/87b4993/catalog/src/utils/index.ts#L95)
