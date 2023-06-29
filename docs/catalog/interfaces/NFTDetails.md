@@ -10,10 +10,14 @@ Details of the NFT asset agreement
 - [lastChecksum](NFTDetails.md#lastchecksum)
 - [lastUpdatedBy](NFTDetails.md#lastupdatedby)
 - [mintCap](NFTDetails.md#mintcap)
+- [nftContractAddress](NFTDetails.md#nftcontractaddress)
+- [nftInitialized](NFTDetails.md#nftinitialized)
 - [nftSupply](NFTDetails.md#nftsupply)
+- [nftURI](NFTDetails.md#nfturi)
 - [owner](NFTDetails.md#owner)
 - [providers](NFTDetails.md#providers)
 - [royalties](NFTDetails.md#royalties)
+- [royaltyScheme](NFTDetails.md#royaltyscheme)
 - [url](NFTDetails.md#url)
 
 ## Properties
@@ -26,7 +30,7 @@ The block number from blockchain where the asset was updated
 
 #### Defined in
 
-[types/index.ts:315](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L315)
+[types/index.ts:336](https://github.com/nevermined-io/components-catalog/blob/3086cb7/catalog/src/types/index.ts#L336)
 
 ___
 
@@ -38,7 +42,7 @@ The last checksum generated to verify the sources
 
 #### Defined in
 
-[types/index.ts:309](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L309)
+[types/index.ts:330](https://github.com/nevermined-io/components-catalog/blob/3086cb7/catalog/src/types/index.ts#L330)
 
 ___
 
@@ -50,7 +54,7 @@ The modification of the asset
 
 #### Defined in
 
-[types/index.ts:313](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L313)
+[types/index.ts:334](https://github.com/nevermined-io/components-catalog/blob/3086cb7/catalog/src/types/index.ts#L334)
 
 ___
 
@@ -62,7 +66,31 @@ The amount limit of nft which can be minted
 
 #### Defined in
 
-[types/index.ts:321](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L321)
+[types/index.ts:348](https://github.com/nevermined-io/components-catalog/blob/3086cb7/catalog/src/types/index.ts#L348)
+
+___
+
+### nftContractAddress
+
+• **nftContractAddress**: `string`
+
+Contract NFT address which was created the NFT asset
+
+#### Defined in
+
+[types/index.ts:342](https://github.com/nevermined-io/components-catalog/blob/3086cb7/catalog/src/types/index.ts#L342)
+
+___
+
+### nftInitialized
+
+• **nftInitialized**: `string`
+
+When the NFT asset was initialized
+
+#### Defined in
+
+[types/index.ts:344](https://github.com/nevermined-io/components-catalog/blob/3086cb7/catalog/src/types/index.ts#L344)
 
 ___
 
@@ -74,7 +102,19 @@ The amount of ntfs that are in circulation
 
 #### Defined in
 
-[types/index.ts:319](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L319)
+[types/index.ts:340](https://github.com/nevermined-io/components-catalog/blob/3086cb7/catalog/src/types/index.ts#L340)
+
+___
+
+### nftURI
+
+• `Optional` **nftURI**: `string`
+
+Uri of the NFT
+
+#### Defined in
+
+[types/index.ts:346](https://github.com/nevermined-io/components-catalog/blob/3086cb7/catalog/src/types/index.ts#L346)
 
 ___
 
@@ -86,19 +126,19 @@ The owner of the asset
 
 #### Defined in
 
-[types/index.ts:307](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L307)
+[types/index.ts:328](https://github.com/nevermined-io/components-catalog/blob/3086cb7/catalog/src/types/index.ts#L328)
 
 ___
 
 ### providers
 
-• **providers**: `any`
+• **providers**: [`string`]
 
 Which services provide the asset
 
 #### Defined in
 
-[types/index.ts:317](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L317)
+[types/index.ts:338](https://github.com/nevermined-io/components-catalog/blob/3086cb7/catalog/src/types/index.ts#L338)
 
 ___
 
@@ -110,7 +150,19 @@ The rewards that the owner can get for every sale
 
 #### Defined in
 
-[types/index.ts:323](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L323)
+[types/index.ts:350](https://github.com/nevermined-io/components-catalog/blob/3086cb7/catalog/src/types/index.ts#L350)
+
+___
+
+### royaltyScheme
+
+• **royaltyScheme**: `RoyaltyKind`
+
+Royalty scheme of the NFT asset
+
+#### Defined in
+
+[types/index.ts:352](https://github.com/nevermined-io/components-catalog/blob/3086cb7/catalog/src/types/index.ts#L352)
 
 ___
 
@@ -122,4 +174,4 @@ Url where is located the asset
 
 #### Defined in
 
-[types/index.ts:311](https://github.com/nevermined-io/components-catalog/blob/430abaf/catalog/src/types/index.ts#L311)
+[types/index.ts:332](https://github.com/nevermined-io/components-catalog/blob/3086cb7/catalog/src/types/index.ts#L332)
