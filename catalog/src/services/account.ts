@@ -288,6 +288,7 @@ export const useAccountCollection = (
  */
 export const useUserProfile = (
   walletAddress: string,
+  signMessage?: string,
 ): {
   /** Input error message */
   inputError: string
@@ -388,7 +389,7 @@ export const useUserProfile = (
   const submitUserProfile = async () => {
     try {
       const userAccount = await sdk.accounts.getAccount(walletAddress)
-      await checkAuth(userAccount)
+      await checkAuth(userAccount, signMessage)
 
       if (!userProfile.nickname) {
         setInputError('Nickname is required')
@@ -440,7 +441,7 @@ export const useUserProfile = (
           setNewAddress('')
         }
 
-        const tokenAuth = await checkAuth(userAccount)
+        const tokenAuth = await checkAuth(userAccount, signMessage)
 
         setAddresses([...userProfileData.addresses])
 
