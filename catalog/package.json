@@ -1,11 +1,11 @@
 {
   "name": "@nevermined-io/catalog",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "@nevermined-io/sdk": "^1.5.3",
-    "@nevermined-io/sdk-dtp": "^0.5.1",
+    "@nevermined-io/sdk": "^1.5.4",
+    "@nevermined-io/sdk-dtp": "^0.5.2",
     "@types/jsonwebtoken": "^8.5.8",
     "axios": "^0.27.2",
     "axios-retry": "^3.3.1",

@@ -19,16 +19,12 @@ import axiosRetry from 'axios-retry'
 export const isEmptyObject = (i: any) => !i || Object.keys(i).length < 1
 
 /**
- * Returns current account registered in SDK
+ * Returns account object by passing an account address
  * @param sdk Instance of SDK object
+ * @param accountAddress Account address
  */
-export const getCurrentAccount = async (sdk: Nevermined, index = 0) => {
-  let accounts: Account[] = []
-  if (sdk.accounts) {
-    accounts = await sdk.accounts.list()
-  }
-
-  return accounts[index]
+export const getAccountObject = async (sdk: Nevermined, accountAddress: string) => {
+  return sdk.accounts.getAccount(accountAddress)
 }
 
 type Template = 'accessTemplate' | 'nft721AccessTemplate' | 'nftAccessTemplate' | 'nftSalesTemplate'
