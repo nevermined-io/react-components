@@ -1,12 +1,12 @@
 {
   "name": "@nevermined-io/providers",
   "private": false,
-  "version": "1.8.0",
+  "version": "1.8.1",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "dependencies": {
     "@wagmi/core": "^0.8.15",
-    "connectkit": "^1.2.2",
+    "connectkit": "1.2.2",
     "ethers": "^5.7.2",
     "wagmi": "^0.12.10"
   },
