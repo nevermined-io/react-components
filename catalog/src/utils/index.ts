@@ -94,8 +94,7 @@ export const loadFulfilledEvents = async (
   condition: Condition,
 ): Promise<{ documentId: string }[]> => {
   const fulfilled = await sdk.keeper.conditions[condition].events.getPastEvents({
-    methodName: 'getFulfilleds',
-    eventName: 'Fulfilled',
+    eventName: 'Fulfilleds',
     filterSubgraph: {
       where: {
         _grantee: account,
@@ -123,8 +122,7 @@ export const getAgreementId = async (
   did: string,
 ): Promise<string> => {
   const agreements = await sdk.keeper.templates[template].events.getPastEvents({
-    methodName: 'getAgreementCreateds',
-    eventName: 'AgreementCreated',
+    eventName: 'AgreementCreateds',
     filterSubgraph: {
       where: {
         _did: did,

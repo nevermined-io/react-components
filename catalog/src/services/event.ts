@@ -58,7 +58,7 @@ export const getTransfers = async (
       _agreementId: true,
       _receiver: true,
     }
-    const methodName = 'getFulfilleds'
+
     const condition = {
       where: {
         _receiver: receiver,
@@ -69,8 +69,7 @@ export const getTransfers = async (
     ].events.getEventData({
       filterSubgraph: condition,
       filterJsonRpc: { _receiver: receiver },
-      eventName: 'Fulfilled',
-      methodName,
+      eventName: 'Fulfilleds',
       result: resultStruct,
     })
     return data
@@ -132,10 +131,9 @@ export const getUserFulfilledEvents = async (
       _documentId: true,
       id: true,
     }
-    const methodName = 'getFulfilleds'
+
     const result = await sdk.keeper.conditions.nftAccessCondition.events.getPastEvents({
-      methodName,
-      eventName: 'Fulfilled',
+      eventName: 'Fulfilleds',
       filterSubgraph: condition,
       filterJsonRpc: { _grantee: account },
       result: resultStruct,
@@ -192,7 +190,6 @@ export const getUserRegisterEvents = async (
   owner: string,
 ): Promise<RegisterEvent[]> => {
   try {
-    const methodName = 'getDIDAttributeRegistereds'
     const condition = {
       where: {
         _owner: owner,
@@ -204,9 +201,9 @@ export const getUserRegisterEvents = async (
       _lastUpdatedBy: true,
       _blockNumberUpdated: true,
     }
+
     const result: RegisterEvent[] = await sdk.keeper.didRegistry.events.getPastEvents({
-      methodName,
-      eventName: 'DIDAttributeRegistered',
+      eventName: 'DIDAttributeRegistereds',
       filterSubgraph: condition,
       filterJsonRpc: { _owner: owner },
       result: resultStruct,
@@ -268,16 +265,16 @@ export const getAssetRegisterEvent = async (
         _did: did,
       },
     }
-    const methodName = 'getDIDAttributeRegistereds'
+
     const resultStruct = {
       _did: true,
       _owner: true,
       _lastUpdatedBy: true,
       _blockNumberUpdated: true,
     }
+
     const registerEvents: RegisterEvent[] = await sdk.keeper.didRegistry.events.getPastEvents({
-      methodName,
-      eventName: 'DIDAttributeRegistered',
+      eventName: 'DIDAttributeRegistereds',
       filterSubgraph: condition,
       filterJsonRpc: { _did: did },
       result: resultStruct,
