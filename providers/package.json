@@ -1,7 +1,7 @@
 {
   "name": "@nevermined-io/providers",
   "private": false,
-  "version": "1.8.1",
+  "version": "1.9.0-rc0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "dependencies": {
