@@ -179,7 +179,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
     getReleases: async (address: string): Promise<string[]> => {
       try {
         const query: { _did: string }[] = await sdk.keeper.didRegistry.events.getPastEvents({
-          eventName: 'DidAttributeRegistereds',
+          eventName: 'DidAttributeRegistered',
           filterSubgraph: {
             where: { _owner: address },
             orderBy: '_blockNumberUpdated',
@@ -201,7 +201,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
         const query: {
           _did: string
         }[] = await sdk?.keeper?.conditions?.transferNftCondition?.events?.getPastEvents({
-          eventName: 'Fulfilleds',
+          eventName: 'Fulfilled',
           filterSubgraph: {
             where: { _receiver: address },
             orderBy: '_did',

@@ -69,7 +69,7 @@ export const getTransfers = async (
     ].events.getEventData({
       filterSubgraph: condition,
       filterJsonRpc: { _receiver: receiver },
-      eventName: 'Fulfilleds',
+      eventName: 'Fulfilled',
       result: resultStruct,
     })
     return data
@@ -133,7 +133,7 @@ export const getUserFulfilledEvents = async (
     }
 
     const result = await sdk.keeper.conditions.nftAccessCondition.events.getPastEvents({
-      eventName: 'Fulfilleds',
+      eventName: 'Fulfilled',
       filterSubgraph: condition,
       filterJsonRpc: { _grantee: account },
       result: resultStruct,
@@ -203,7 +203,7 @@ export const getUserRegisterEvents = async (
     }
 
     const result: RegisterEvent[] = await sdk.keeper.didRegistry.events.getPastEvents({
-      eventName: 'DIDAttributeRegistereds',
+      eventName: 'DIDAttributeRegistered',
       filterSubgraph: condition,
       filterJsonRpc: { _owner: owner },
       result: resultStruct,
@@ -274,7 +274,7 @@ export const getAssetRegisterEvent = async (
     }
 
     const registerEvents: RegisterEvent[] = await sdk.keeper.didRegistry.events.getPastEvents({
-      eventName: 'DIDAttributeRegistereds',
+      eventName: 'DIDAttributeRegistered',
       filterSubgraph: condition,
       filterJsonRpc: { _did: did },
       result: resultStruct,

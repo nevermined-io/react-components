@@ -42,7 +42,7 @@ export const useSubscribeToPaymentEvents = (): { paymentEvents: EventResult[] } 
         },
         {
           filterSubgraph: {},
-          eventName: 'Fulfilleds',
+          eventName: 'Fulfilled',
           result: {
             id: true,
             _did: true,
@@ -103,7 +103,7 @@ export const useSubscribeToTransferEvents = (
         },
         {
           filterSubgraph: {},
-          eventName: 'Fulfilleds',
+          eventName: 'Fulfilled',
           result: {
             id: true,
             _did: true,
