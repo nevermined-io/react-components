@@ -13,7 +13,6 @@ import {
   ContractEventSubscription,
   EventResult,
   GenericOutput,
-  MarketplaceAPIToken,
   NeverminedProviderContext,
   NeverminedProviderProps,
   NFTDetails,
@@ -39,7 +38,7 @@ import {
 } from './utils'
 import { _getCryptoConfig, _getDTPInstance, _grantAccess } from './utils/dtp'
 import {
-  getAddressTokenSigner,
+  fetchMarketplaceApiTokenFromLocalStorage,
   isTokenValid,
   newMarketplaceApiToken,
 } from './utils/marketplace_token'
@@ -160,21 +159,28 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
   }
 
   const account: AccountModule = {
-    isTokenValid: (): boolean => isTokenValid(),
-    getAddressTokenSigner: (): string => String(getAddressTokenSigner()),
-    generateToken: async (account: Account, message?: string): Promise<MarketplaceAPIToken> => {
-      const tokenData = await newMarketplaceApiToken(sdk, account, message)
-      if (!tokenData.token) {
-        return {
-          token: '',
-        }
+    isTokenValid: (address: string, chainId: number): boolean => isTokenValid({ address, chainId }),
+    generateToken: async ({
+      address,
+      chainId,
+      message,
+    }: {
+      address: string
+      chainId: number
+      message?: string
+    }): Promise<string> => {
+      const tokenExists = await newMarketplaceApiToken({ sdk, chainId, address, message })
+      if (!tokenExists) {
+        return ''
       }
+
+      const token = fetchMarketplaceApiTokenFromLocalStorage({ address, chainId }) as string
       const { data } = await initializeNevermined({
         ...config,
-        marketplaceAuthToken: tokenData.token,
+        marketplaceAuthToken: token,
       })
       dispatch({ type: 'SET_SDK', payload: { sdk: data } })
-      return tokenData
+      return token
     },
     getReleases: async (address: string): Promise<string[]> => {
       try {
@@ -729,6 +735,8 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       did,
       nftHolder,
       nftAmount,
+      chainId,
+      messageAuth,
       ercType,
       password,
       onEvent,
@@ -737,6 +745,8 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       did: string
       nftHolder: string
       nftAmount: BigNumber
+      chainId: number
+      messageAuth?: string
       ercType?: ERCType
       password?: string
       buyer: Account
@@ -746,12 +756,9 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       let transferResult
 
       try {
-        if (
-          !account.isTokenValid() ||
-          account.getAddressTokenSigner().toLowerCase() !== buyer.getId().toLowerCase()
-        ) {
+        if (!account.isTokenValid(buyer.getId(), chainId)) {
           Logger.error('Your login is expired or not valid')
-          await account.generateToken(buyer)
+          await account.generateToken({ address: buyer.getId(), chainId, message: messageAuth })
         }
 
         if (password) {

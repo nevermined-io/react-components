@@ -1,18 +1,31 @@
 import React, { useEffect, useState } from 'react'
-import { Catalog, makeAccounts, Nevermined, Account, DDO, MetaData, AssetService, NFTAttributes, BigNumber, CryptoConfig, AuthToken, Nft1155Contract } from '../src'
+import {
+  Catalog,
+  makeAccounts,
+  Nevermined,
+  Account,
+  DDO,
+  MetaData,
+  AssetService,
+  NFTAttributes,
+  BigNumber,
+  CryptoConfig,
+  AuthToken,
+  Nft1155Contract,
+} from '../src'
 import { faker } from '@faker-js/faker'
 import { _grantAccess, _encryptFileMetadata, _getCryptoConfig } from '../src/utils/dtp'
-import { appConfig } from "./config"
+import { appConfig } from './config'
 import { renderHook, waitFor } from '@testing-library/react'
 import { getMetadata } from './metadata.mock'
 
 const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
   <Catalog.NeverminedProvider config={appConfig}>
-    <AssetService.AssetPublishProvider>
-      {children}
-    </AssetService.AssetPublishProvider>
+    <AssetService.AssetPublishProvider>{children}</AssetService.AssetPublishProvider>
   </Catalog.NeverminedProvider>
 )
+
+const chainId = 1337
 
 describe('DTP', () => {
   let sdk: Nevermined
@@ -25,21 +38,23 @@ describe('DTP', () => {
 
   const password = 'passwd_32_letters_1234567890asdF'
 
-  beforeAll(async() => {
+  beforeAll(async () => {
     if (process.env.SEED_WORDS) {
       appConfig.accounts = makeAccounts(process.env.SEED_WORDS)
     }
 
-    sdk = await Nevermined.getInstance(appConfig);
-    [publisher, consumer] = await sdk.accounts.list()
+    sdk = await Nevermined.getInstance(appConfig)
+    ;[publisher, consumer] = await sdk.accounts.list()
 
     cryptoConfig = await _getCryptoConfig(sdk, password)
 
     const clientAssertion = await sdk.utils.jwt.generateClientAssertion(publisher)
 
     const tokenPublisher = await sdk.services.marketplace.login(clientAssertion)
-    
+
     AuthToken.saveMarketplaceApiTokenToLocalStorage({
+      address: publisher.getId(),
+      chainId,
       token: tokenPublisher,
     })
 
@@ -67,7 +82,7 @@ describe('DTP', () => {
       () => {
         const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
         const { publishNFT1155, isPublished } = AssetService.useAssetPublish()
-        const [ddo, setDDO ] = useState<DDO>({} as DDO)
+        const [ddo, setDDO] = useState<DDO>({} as DDO)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -75,13 +90,14 @@ describe('DTP', () => {
             return
           }
 
-          (async () => {
-            const result = await publishNFT1155({
+          void (async () => {
+            const result = (await publishNFT1155({
               publisher,
+              chainId,
               nftAttributes,
               password,
               cryptoConfig,
-            }) as DDO
+            })) as DDO
 
             ddoResult = result
             setDDO(result)
@@ -94,30 +110,35 @@ describe('DTP', () => {
         }
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
-    await waitFor(async () => {
-      expect(result.current.isPublished).toBeTruthy()
-    }, {
-      timeout: 100000
-    })
+    await waitFor(
+      async () => {
+        expect(result.current.isPublished).toBeTruthy()
+      },
+      {
+        timeout: 100000,
+      },
+    )
   })
 
-  it('should access to the dtp asset', async() => {
+  it('should access to the dtp asset', async () => {
     const clientAssertionConsumer = await sdk.utils.jwt.generateClientAssertion(consumer)
 
     const tokenConsumer = await sdk.services.marketplace.login(clientAssertionConsumer)
 
     AuthToken.saveMarketplaceApiTokenToLocalStorage({
+      address: consumer.getId(),
+      chainId,
       token: tokenConsumer,
     })
 
     const { result } = renderHook(
       () => {
         const { nfts, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ agreementId, setAgreementId] = useState<string>()
+        const [agreementId, setAgreementId] = useState<string>()
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -125,11 +146,12 @@ describe('DTP', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               const result = await nfts.access({
                 did: ddoResult.id,
                 buyer: consumer,
+                chainId,
                 nftHolder: publisher.getId(),
                 nftAmount: BigNumber.from(1),
                 ercType: 1155,
@@ -146,18 +168,21 @@ describe('DTP', () => {
         return agreementId
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
-    await waitFor(async () => {
-      expect(result.current).toBeTruthy()
-    }, {
-      timeout: 100000
-    })
+    await waitFor(
+      async () => {
+        expect(result.current).toBeTruthy()
+      },
+      {
+        timeout: 100000,
+      },
+    )
   })
 
-  it('should download the dtp asset', async() => {
+  it('should download the dtp asset', async () => {
     global.URL.createObjectURL = jest.fn(() => 'nft')
     const { result } = renderHook(
       () => {
@@ -170,9 +195,16 @@ describe('DTP', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
-              const result = await assets.downloadNFT({did: ddoResult.id, consumer, ercType: 1155, path: undefined, fileIndex: 1, password}) as string
+              const result = (await assets.downloadNFT({
+                did: ddoResult.id,
+                consumer,
+                ercType: 1155,
+                path: undefined,
+                fileIndex: 1,
+                password,
+              })) as string
               setIsDownloaded(result)
             } catch (error: any) {
               console.error(error.message)
@@ -183,14 +215,17 @@ describe('DTP', () => {
         return isDownloaded
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
-    await waitFor(async () => {
-      expect(result.current).toBeTruthy()
-    }, {
-      timeout: 100000
-    })
+    await waitFor(
+      async () => {
+        expect(result.current).toBeTruthy()
+      },
+      {
+        timeout: 100000,
+      },
+    )
   })
 })

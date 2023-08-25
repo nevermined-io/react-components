@@ -2,14 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { renderHook, waitFor } from '@testing-library/react'
 import { generateTestingUtils } from 'eth-testing'
 import { appConfig } from '../config'
-import { Catalog, AuthToken, SubscriptionsAndServicesDDOs, SubscriptionsAndDatasetsDDOs, DDO } from '../../src'
+import {
+  Catalog,
+  AuthToken,
+  SubscriptionsAndServicesDDOs,
+  SubscriptionsAndDatasetsDDOs,
+  DDO,
+} from '../../src'
 import jwt from 'jsonwebtoken'
-import { ddo, ddo2, ddo3, ddo4, ddo5, walletAddress, nevermined } from '../mockups'
+import { ddo, ddo2, ddo3, ddo4, ddo5, walletAddress, nevermined, chainId } from '../mockups'
 import { faker } from '@faker-js/faker'
 
 jest.mock('@nevermined-io/sdk', () => ({
   ...jest.requireActual('@nevermined-io/sdk'),
-  Nevermined: jest.requireActual('../mockups').nevermined
+  Nevermined: jest.requireActual('../mockups').nevermined,
 }))
 
 const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
@@ -28,7 +34,7 @@ describe('Nevermined account', () => {
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ isTokenValid, setIsTokenValid] = useState<boolean>(false)
+        const [isTokenValid, setIsTokenValid] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -37,21 +43,25 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
-              const token = jwt.sign({
-                iss: walletAddress,
-                sub: `u-${faker.datatype.uuid()}`,
-                role: [],
-                exp: faker.date.future().getTime()
-              },
-              'secret')
+              const token = jwt.sign(
+                {
+                  iss: walletAddress,
+                  sub: `u-${faker.datatype.uuid()}`,
+                  role: [],
+                  exp: faker.date.future().getTime(),
+                },
+                'secret',
+              )
 
               AuthToken.saveMarketplaceApiTokenToLocalStorage({
+                address: walletAddress,
+                chainId,
                 token,
               })
 
-              const result = await account.isTokenValid()
+              const result = await account.isTokenValid(walletAddress, chainId)
 
               setIsTokenValid(result)
             } catch (error: any) {
@@ -63,22 +73,25 @@ describe('Nevermined account', () => {
         return isTokenValid
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
-    await waitFor(() => {
-      expect(result.current).toBe(true)
-    }, {
-      timeout: 5000
-    })
+    await waitFor(
+      () => {
+        expect(result.current).toBe(true)
+      },
+      {
+        timeout: 5000,
+      },
+    )
   })
 
   it('should be false if exp is missing from the auth token', async () => {
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ isTokenValid, setIsTokenValid] = useState<boolean>(false)
+        const [isTokenValid, setIsTokenValid] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -87,20 +100,24 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
-              const token = jwt.sign({
-                iss: walletAddress,
-                sub: `u-${faker.datatype.uuid()}`,
-                role: [],
-              },
-              'secret')
+              const token = jwt.sign(
+                {
+                  iss: walletAddress,
+                  sub: `u-${faker.datatype.uuid()}`,
+                  role: [],
+                },
+                'secret',
+              )
 
               AuthToken.saveMarketplaceApiTokenToLocalStorage({
+                address: walletAddress,
+                chainId,
                 token,
               })
 
-              const result = await account.isTokenValid()
+              const result = await account.isTokenValid(walletAddress, chainId)
 
               setIsTokenValid(result)
             } catch (error: any) {
@@ -112,22 +129,25 @@ describe('Nevermined account', () => {
         return isTokenValid
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
-    await waitFor(() => {
-      expect(result.current).toBe(false)
-    }, {
-      timeout: 5000
-    })
+    await waitFor(
+      () => {
+        expect(result.current).toBe(false)
+      },
+      {
+        timeout: 5000,
+      },
+    )
   })
 
-  it('should generate new token', async() => {
+  it('should generate new token', async () => {
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
-        const [ token, setToken ] = useState<string>('')
+        const [token, setToken] = useState<string>('')
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -136,12 +156,12 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               const [userAccount] = await sdk.accounts.list()
-              const result = await account.generateToken(userAccount)
+              const result = await account.generateToken({ address: userAccount.getId(), chainId })
 
-              setToken(result.token)
+              setToken(result)
             } catch (error: any) {
               console.error(error.message)
             }
@@ -151,8 +171,8 @@ describe('Nevermined account', () => {
         return token
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -160,60 +180,11 @@ describe('Nevermined account', () => {
     })
   })
 
-  it('should get the signer address which issued the token', async () => {
-    const { result } = renderHook(
-      () => {
-        const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ signer, setSigner] = useState('')
-
-        useEffect(() => {
-          if (isLoadingSDK) {
-            appConfig.web3Provider = testingUtils.getProvider()
-            updateSDK(appConfig)
-            return
-          }
-
-          (async () => {
-            try {
-              const token = jwt.sign({
-                iss: walletAddress,
-                sub: `u-${faker.datatype.uuid()}`,
-                role: [],
-              },
-              'secret')
-
-              AuthToken.saveMarketplaceApiTokenToLocalStorage({
-                token,
-              })
-
-              const result = account.getAddressTokenSigner()
-
-              setSigner(result)
-            } catch (error: any) {
-              console.error(error.message)
-            }
-          })()
-        }, [isLoadingSDK])
-
-        return signer
-      },
-      {
-        wrapper: wrapperProvider
-      }
-    )
-
-    await waitFor(() => {
-      expect(result.current).toBe(walletAddress)
-    }, {
-      timeout: 5000
-    }) 
-  })
-
   it('should be an asset holder', async () => {
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ isAssetHolder, setIsAssetHolder] = useState<boolean>(false)
+        const [isAssetHolder, setIsAssetHolder] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -222,16 +193,20 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
-              const token = jwt.sign({
-                iss: walletAddress,
-                sub: `u-${faker.datatype.uuid()}`,
-                role: [],
-              },
-              'secret')
+              const token = jwt.sign(
+                {
+                  iss: walletAddress,
+                  sub: `u-${faker.datatype.uuid()}`,
+                  role: [],
+                },
+                'secret',
+              )
 
               AuthToken.saveMarketplaceApiTokenToLocalStorage({
+                address: walletAddress,
+                chainId,
                 token,
               })
 
@@ -247,8 +222,8 @@ describe('Nevermined account', () => {
         return isAssetHolder
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -266,17 +241,17 @@ describe('Nevermined account', () => {
           ...sdk.keeper.templates,
           accessTemplate: {
             events: {
-              getPastEvents: () => []
-            }
-          }
-        }
-      }
+              getPastEvents: () => [],
+            },
+          },
+        },
+      },
     })
 
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ isAssetHolder, setIsAssetHolder] = useState<boolean>(false)
+        const [isAssetHolder, setIsAssetHolder] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -285,16 +260,20 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
-              const token = jwt.sign({
-                iss: walletAddress,
-                sub: `u-${faker.datatype.uuid()}`,
-                role: [],
-              },
-              'secret')
+              const token = jwt.sign(
+                {
+                  iss: walletAddress,
+                  sub: `u-${faker.datatype.uuid()}`,
+                  role: [],
+                },
+                'secret',
+              )
 
               AuthToken.saveMarketplaceApiTokenToLocalStorage({
+                address: walletAddress,
+                chainId,
                 token,
               })
 
@@ -310,8 +289,8 @@ describe('Nevermined account', () => {
         return isAssetHolder
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -323,7 +302,7 @@ describe('Nevermined account', () => {
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ isAssetHolder, setIsAssetHolder] = useState<boolean>(false)
+        const [isAssetHolder, setIsAssetHolder] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -332,16 +311,20 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
-              const token = jwt.sign({
-                iss: walletAddress,
-                sub: `u-${faker.datatype.uuid()}`,
-                role: [],
-              },
-              'secret')
+              const token = jwt.sign(
+                {
+                  iss: walletAddress,
+                  sub: `u-${faker.datatype.uuid()}`,
+                  role: [],
+                },
+                'secret',
+              )
 
               AuthToken.saveMarketplaceApiTokenToLocalStorage({
+                address: walletAddress,
+                chainId,
                 token,
               })
 
@@ -357,8 +340,8 @@ describe('Nevermined account', () => {
         return isAssetHolder
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -374,16 +357,16 @@ describe('Nevermined account', () => {
         ...sdk.contracts,
         loadNft721: () => ({
           balanceOf: () => ({
-            gt: () => false
-          })
-        })
-      }
+            gt: () => false,
+          }),
+        }),
+      },
     })
 
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ isAssetHolder, setIsAssetHolder] = useState<boolean>(false)
+        const [isAssetHolder, setIsAssetHolder] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -392,16 +375,20 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
-              const token = jwt.sign({
-                iss: walletAddress,
-                sub: `u-${faker.datatype.uuid()}`,
-                role: [],
-              },
-              'secret')
+              const token = jwt.sign(
+                {
+                  iss: walletAddress,
+                  sub: `u-${faker.datatype.uuid()}`,
+                  role: [],
+                },
+                'secret',
+              )
 
               AuthToken.saveMarketplaceApiTokenToLocalStorage({
+                address: walletAddress,
+                chainId,
                 token,
               })
 
@@ -417,8 +404,8 @@ describe('Nevermined account', () => {
         return isAssetHolder
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -430,7 +417,7 @@ describe('Nevermined account', () => {
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ isAssetHolder, setIsAssetHolder] = useState<boolean>(false)
+        const [isAssetHolder, setIsAssetHolder] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -439,16 +426,20 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
-              const token = jwt.sign({
-                iss: walletAddress,
-                sub: `u-${faker.datatype.uuid()}`,
-                role: [],
-              },
-              'secret')
+              const token = jwt.sign(
+                {
+                  iss: walletAddress,
+                  sub: `u-${faker.datatype.uuid()}`,
+                  role: [],
+                },
+                'secret',
+              )
 
               AuthToken.saveMarketplaceApiTokenToLocalStorage({
+                address: walletAddress,
+                chainId,
                 token,
               })
 
@@ -464,8 +455,8 @@ describe('Nevermined account', () => {
         return isAssetHolder
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -480,15 +471,14 @@ describe('Nevermined account', () => {
       ...sdk,
       nfts: {
         ...sdk.nfts,
-        balance: () => 0
-      }
-      
+        balance: () => 0,
+      },
     })
 
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ isAssetHolder, setIsAssetHolder] = useState<boolean>(false)
+        const [isAssetHolder, setIsAssetHolder] = useState<boolean>(false)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -497,16 +487,20 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
-              const token = jwt.sign({
-                iss: walletAddress,
-                sub: `u-${faker.datatype.uuid()}`,
-                role: [],
-              },
-              'secret')
+              const token = jwt.sign(
+                {
+                  iss: walletAddress,
+                  sub: `u-${faker.datatype.uuid()}`,
+                  role: [],
+                },
+                'secret',
+              )
 
               AuthToken.saveMarketplaceApiTokenToLocalStorage({
+                address: walletAddress,
+                chainId,
                 token,
               })
 
@@ -522,8 +516,8 @@ describe('Nevermined account', () => {
         return isAssetHolder
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -531,11 +525,11 @@ describe('Nevermined account', () => {
     })
   })
 
-  it('should get all the subscriptions published by the address passed', async () =>{
+  it('should get all the subscriptions published by the address passed', async () => {
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
-        const [ subscriptions, setSubscriptions ] = useState<DDO[]>([])
+        const [subscriptions, setSubscriptions] = useState<DDO[]>([])
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -544,7 +538,7 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               const [userAccount] = await sdk.accounts.list()
               const result = await account.getPublishedSubscriptions(userAccount)
@@ -559,8 +553,8 @@ describe('Nevermined account', () => {
         return subscriptions
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -568,11 +562,11 @@ describe('Nevermined account', () => {
     })
   })
 
-  it('should get all the subscriptions published and services by the address passed', async () =>{
+  it('should get all the subscriptions published and services by the address passed', async () => {
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
-        const [ subscriptions, setSubscriptions ] = useState<SubscriptionsAndServicesDDOs[]>([])
+        const [subscriptions, setSubscriptions] = useState<SubscriptionsAndServicesDDOs[]>([])
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -581,7 +575,7 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               const [userAccount] = await sdk.accounts.list()
               const result = await account.getPublishedSubscriptionsAndServices(userAccount)
@@ -596,23 +590,25 @@ describe('Nevermined account', () => {
         return subscriptions
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
-      expect(result.current).toStrictEqual([{
-        subscription: ddo,
-        services: { results: [ddo2, ddo3] }
-      }])
+      expect(result.current).toStrictEqual([
+        {
+          subscription: ddo,
+          services: { results: [ddo2, ddo3] },
+        },
+      ])
     })
   })
 
-  it('should get all the subscriptions purchased by the address passed', async () =>{
+  it('should get all the subscriptions purchased by the address passed', async () => {
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
-        const [ subscriptions, setSubscriptions ] = useState<DDO[]>([])
+        const [subscriptions, setSubscriptions] = useState<DDO[]>([])
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -621,7 +617,7 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               const [userAccount] = await sdk.accounts.list()
               const result = await account.getPurchasedSubscriptions(userAccount)
@@ -636,8 +632,8 @@ describe('Nevermined account', () => {
         return subscriptions
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -645,11 +641,11 @@ describe('Nevermined account', () => {
     })
   })
 
-  it('should get all the subscriptions purchased and services by the address passed', async () =>{
+  it('should get all the subscriptions purchased and services by the address passed', async () => {
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
-        const [ subscriptions, setSubscriptions ] = useState<SubscriptionsAndServicesDDOs[]>([])
+        const [subscriptions, setSubscriptions] = useState<SubscriptionsAndServicesDDOs[]>([])
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -658,7 +654,7 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               const [userAccount] = await sdk.accounts.list()
               const result = await account.getPurchasedSubscriptionsAndServices(userAccount)
@@ -673,23 +669,25 @@ describe('Nevermined account', () => {
         return subscriptions
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
-      expect(result.current).toStrictEqual([{
-        subscription: ddo,
-        services: {results: [ddo2, ddo3]}
-      }])
+      expect(result.current).toStrictEqual([
+        {
+          subscription: ddo,
+          services: { results: [ddo2, ddo3] },
+        },
+      ])
     })
   })
 
-  it('should get all the services associated to the subscription id passed', async () =>{
+  it('should get all the services associated to the subscription id passed', async () => {
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ services, setServices ] = useState<DDO[]>([])
+        const [services, setServices] = useState<DDO[]>([])
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -698,7 +696,7 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               const result = await account.getAssociatedServices(ddo.id)
 
@@ -712,8 +710,8 @@ describe('Nevermined account', () => {
         return services
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -721,11 +719,11 @@ describe('Nevermined account', () => {
     })
   })
 
-  it('should get all the subscriptions published and datasets by the address passed', async () =>{
+  it('should get all the subscriptions published and datasets by the address passed', async () => {
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
-        const [ subscriptions, setSubscriptions ] = useState<SubscriptionsAndDatasetsDDOs[]>([])
+        const [subscriptions, setSubscriptions] = useState<SubscriptionsAndDatasetsDDOs[]>([])
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -734,7 +732,7 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               const [userAccount] = await sdk.accounts.list()
               const result = await account.getPublishedSubscriptionsAndDatasets(userAccount)
@@ -749,25 +747,27 @@ describe('Nevermined account', () => {
         return subscriptions
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
-      expect(result.current).toStrictEqual([{
-        subscription: ddo,
-        datasets: {
-          results: [ddo4, ddo5]
-        }
-      }])
+      expect(result.current).toStrictEqual([
+        {
+          subscription: ddo,
+          datasets: {
+            results: [ddo4, ddo5],
+          },
+        },
+      ])
     })
   })
 
-  it('should get all the subscriptions purchased and datasets by the address passed', async () =>{
+  it('should get all the subscriptions purchased and datasets by the address passed', async () => {
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
-        const [ subscriptions, setSubscriptions ] = useState<SubscriptionsAndDatasetsDDOs[]>([])
+        const [subscriptions, setSubscriptions] = useState<SubscriptionsAndDatasetsDDOs[]>([])
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -776,7 +776,7 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               const [userAccount] = await sdk.accounts.list()
               const result = await account.getPublishedSubscriptionsAndDatasets(userAccount)
@@ -791,25 +791,27 @@ describe('Nevermined account', () => {
         return subscriptions
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
-      expect(result.current).toStrictEqual([{
-        subscription: ddo,
-        datasets: {
-          results: [ddo4, ddo5]
-        }
-      }])
+      expect(result.current).toStrictEqual([
+        {
+          subscription: ddo,
+          datasets: {
+            results: [ddo4, ddo5],
+          },
+        },
+      ])
     })
   })
 
-  it('should get all the datasets associated to the subscription id passed', async () =>{
+  it('should get all the datasets associated to the subscription id passed', async () => {
     const { result } = renderHook(
       () => {
         const { account, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ datasets, setDatasets ] = useState<DDO[]>([])
+        const [datasets, setDatasets] = useState<DDO[]>([])
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -818,7 +820,7 @@ describe('Nevermined account', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               const result = await account.getAssociatedDatasets(ddo.id)
 
@@ -832,8 +834,8 @@ describe('Nevermined account', () => {
         return datasets
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {

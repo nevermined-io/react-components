@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { renderHook, waitFor } from '@testing-library/react'
 import { generateTestingUtils } from 'eth-testing'
 import { appConfig } from '../config'
-import { agreementId, ddo, nevermined } from '../mockups'
+import { agreementId, ddo, nevermined, chainId } from '../mockups'
 import { Catalog, BigNumber } from '../../src'
-
 
 jest.mock('@nevermined-io/sdk', () => ({
   ...jest.requireActual('@nevermined-io/sdk'),
-  Nevermined: jest.requireActual('../mockups').nevermined
+  Nevermined: jest.requireActual('../mockups').nevermined,
 }))
 
 const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
@@ -40,7 +39,7 @@ describe('Nevermined subscription', () => {
     const { result } = renderHook(
       () => {
         const { nfts, isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
-        const [ agreementIdResult, setAgreementId] = useState<string>('')
+        const [agreementIdResult, setAgreementId] = useState<string>('')
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -49,11 +48,12 @@ describe('Nevermined subscription', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               const [account] = await sdk.accounts.list()
               const result = await nfts.access({
                 did: ddo.id,
+                chainId,
                 buyer: account,
                 nftHolder: '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
                 nftAmount: BigNumber.from(1),
@@ -70,8 +70,8 @@ describe('Nevermined subscription', () => {
         return agreementIdResult
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(async () => {
@@ -104,7 +104,7 @@ describe('Nevermined subscription', () => {
     const { result } = renderHook(
       () => {
         const { nfts, isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const [ agreementIdResult, setAgreementId] = useState<string>('')
+        const [agreementIdResult, setAgreementId] = useState<string>('')
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -113,11 +113,12 @@ describe('Nevermined subscription', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               const [account] = await sdk.accounts.list()
               const result = await nfts.access({
                 did: ddo.id,
+                chainId,
                 buyer: account,
                 nftHolder: '0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e',
                 nftAmount: BigNumber.from(1),
@@ -134,8 +135,8 @@ describe('Nevermined subscription', () => {
         return agreementIdResult
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(async () => {

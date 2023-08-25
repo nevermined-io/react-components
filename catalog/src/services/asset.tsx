@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, createContext } from 'react'
 import { NeverminedContext, useNevermined } from '../catalog'
-import { 
+import {
   AssetState,
   AssetPublishParams,
   AssetPublishProviderState,
@@ -20,7 +20,7 @@ import {
   Account,
 } from '../types'
 import { executeWithProgressEvent } from '../utils'
-import {_getDTPInstance, _encryptFileMetadata} from '../utils/dtp'
+import { _getDTPInstance, _encryptFileMetadata } from '../utils/dtp'
 
 /**
  * Get all assets
@@ -45,12 +45,12 @@ import {_getDTPInstance, _encryptFileMetadata} from '../utils/dtp'
  * ```
  */
 export const useAssets = (
-  q: SearchQuery
+  q: SearchQuery,
 ): {
   /** Result based in the query search requested */
-  result: QueryResult;
+  result: QueryResult
   /** If the query is still processing */
-  isLoading: boolean;
+  isLoading: boolean
 } => {
   const { assets, sdk } = useContext(NeverminedContext)
   const [isLoading, setIsLoading] = useState(false)
@@ -76,7 +76,7 @@ export const useAssets = (
 
   return {
     result,
-    isLoading
+    isLoading,
   }
 }
 
@@ -113,7 +113,7 @@ export const useAsset = (did: string, ercType: ERCType): AssetState => {
           metadata: metaData,
           nftDetails,
           error: '',
-          isLoading: false
+          isLoading: false,
         } as AssetState)
       } catch (e) {
         Logger.error(e as Error)
@@ -129,7 +129,7 @@ export const AssetPublishContext = createContext({} as AssetPublishProviderState
 
 /**
  * Provider with all the functionalities to publish assets (no-nft, nft721, nft1155)
- * 
+ *
  * Here is an example how to implement it
  * @see {@link https://github.com/nevermined-io/defi-marketplace/tree/main/client/src/%2Bassets/user-publish-steps}
  */
@@ -146,7 +146,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     type: 'dataset',
     category: 'None',
     price: '',
-    assetFiles: []
+    assetFiles: [],
   })
 
   const reset = (resetAssetPublish: AssetPublishParams) => {
@@ -168,6 +168,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    * This will return the DDO created (including the unique identifier of the asset - aka DID).
    *
    * @param asset
+   * @param asset.chainId Network Id
    * @param asset.assetAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
    * @param asset.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param asset.txParams Optional transaction parameters
@@ -179,45 +180,43 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    */
   const publishAsset = async ({
     assetAttributes,
+    chainId,
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
     password,
     cryptoConfig,
     onEvent,
     publisher,
-  }:
-  {
-    assetAttributes: AssetAttributes;
-    publishMetadata?: PublishMetadata;
-    txParameters?: TxParameters,
-    password?: string,
-    cryptoConfig?: CryptoConfig,
-    onEvent?: (next: CreateProgressStep) => void,
+  }: {
+    assetAttributes: AssetAttributes
+    chainId: number
+    publishMetadata?: PublishMetadata
+    txParameters?: TxParameters
+    password?: string
+    cryptoConfig?: CryptoConfig
+    onEvent?: (next: CreateProgressStep) => void
     publisher: Account
   }) => {
     try {
       setIsProcessing(true)
 
-      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== publisher.getId().toLowerCase()) {
-        Logger.error(
-          'Your login is expired or not valid'
+      if (!account.isTokenValid(publisher.getId(), chainId)) {
+        setErrorAssetMessage(
+          'Your login is expired. Please first sign with your wallet and after try again',
         )
-
-        await account.generateToken(publisher)
+        await account.generateToken({ address: publisher.getId(), chainId })
       }
 
       if (password) {
-        const dtp = await _getDTPInstance(sdk, config, cryptoConfig || null as any)
+        const dtp = await _getDTPInstance(sdk, config, cryptoConfig || (null as any))
         const metadata = await _encryptFileMetadata(sdk, dtp, assetAttributes.metadata, password)
-        assetAttributes.metadata = {...metadata}
+        assetAttributes.metadata = { ...metadata }
       }
 
-      const ddo = await executeWithProgressEvent(() => sdk.assets.create(
-        assetAttributes,
-        publisher,
-        publishMetadata,
-        txParameters,
-      ), onEvent)
+      const ddo = await executeWithProgressEvent(
+        () => sdk.assets.create(assetAttributes, publisher, publishMetadata, txParameters),
+        onEvent,
+      )
 
       setIsProcessing(false)
       setIsPublished(true)
@@ -234,14 +233,15 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
   }
 
   /**
-   * In Nevermined is possible to register a digital asset that allow users pay for having a 
-   * NFT (ERC-721). This typically allows content creators to provide access to exclusive 
+   * In Nevermined is possible to register a digital asset that allow users pay for having a
+   * NFT (ERC-721). This typically allows content creators to provide access to exclusive
    * contents for NFT holders.
-   * It will create a new digital asset associated to a ERC-721 NFT contract 
+   * It will create a new digital asset associated to a ERC-721 NFT contract
    * (given the `nftAddress` parameter)
-   * 
+   *
    * @param nft721
    * @param nft721.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
+   * @param nft721.chainId Network Id
    * @param nft721.nftAddress NFT721 contract address to load
    * @param nft721.publishMetadata Allows to specify if the metadata should be stored in different backends
    * @param nft721.txParams Optional transaction parameters
@@ -253,48 +253,47 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
    */
   const publishNFT721 = async ({
     nftAttributes,
+    chainId,
     nftAddress,
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
     password,
     cryptoConfig,
     onEvent,
-    publisher
-  }:
-  {
-    nftAttributes: NFTAttributes;
-    nftAddress: string;
-    publishMetadata?: PublishMetadata;
-    txParameters?: TxParameters,
-    password?: string,
-    cryptoConfig?: CryptoConfig,
-    onEvent?: (next: CreateProgressStep) => void,
+    publisher,
+  }: {
+    nftAttributes: NFTAttributes
+    chainId: number
+    nftAddress: string
+    publishMetadata?: PublishMetadata
+    txParameters?: TxParameters
+    password?: string
+    cryptoConfig?: CryptoConfig
+    onEvent?: (next: CreateProgressStep) => void
     publisher: Account
   }) => {
     try {
       setIsProcessing(true)
 
-      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== publisher.getId().toLowerCase()) {
+      if (!account.isTokenValid(publisher.getId(), chainId)) {
         setErrorAssetMessage(
-          'Your login is expired. Please first sign with your wallet and after try again'
+          'Your login is expired. Please first sign with your wallet and after try again',
         )
-        await account.generateToken(publisher)
+        await account.generateToken({ address: publisher.getId(), chainId })
       }
 
       if (password) {
-        const dtp = await _getDTPInstance(sdk, config, cryptoConfig || null as any)
+        const dtp = await _getDTPInstance(sdk, config, cryptoConfig || (null as any))
         const metadata = await _encryptFileMetadata(sdk, dtp, nftAttributes.metadata, password)
-        nftAttributes.metadata = {...metadata}
+        nftAttributes.metadata = { ...metadata }
       }
 
       await sdk.contracts.loadNft721(nftAddress)
 
-      const ddo = await executeWithProgressEvent(() => sdk.nfts721.create(
-        nftAttributes,
-        publisher,
-        publishMetadata,
-        txParameters,
-      ), onEvent)
+      const ddo = await executeWithProgressEvent(
+        () => sdk.nfts721.create(nftAttributes, publisher, publishMetadata, txParameters),
+        onEvent,
+      )
 
       setIsProcessing(false)
       setIsPublished(true)
@@ -311,56 +310,52 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
   }
 
   /**
-   * In Nevermined is possible to register a digital asset that allow users pay for having a 
-   * NFT (ERC-1155). This typically allows content creators to provide access to exclusive 
+   * In Nevermined is possible to register a digital asset that allow users pay for having a
+   * NFT (ERC-1155). This typically allows content creators to provide access to exclusive
    * contents for NFT holders.
    * ERC-1155 NFTs are semi-fungible, meaning that a NFT can have multiple editions.
-   * 
-   * This method will create a new digital asset associated to a ERC-1155 NFT contract. 
-   * 
+   *
+   * This method will create a new digital asset associated to a ERC-1155 NFT contract.
+   *
    * @param nft1155
-   * @param nft1155.neverminedNodeAddress Node address to approve to handle the NFT
-   * @param nft1155.metadata The metadata object describing the asset
-   * @param nft1155.cap The maximum number of editions that can be minted. If `0` means there is no limit (uncapped)
-   * @param nft1155.assetRewards The price of the asset that the owner will receive
-   * @param nft1155.royaltyAttributes The amount of royalties paid back to the original creator in the secondary market
-   * @param nft1155.nftAmount NFT amount to publish
-   * @param nft1155.erc20TokenAddress The erc20 token address which the buyer will pay the price
-   * @param nft1155.preMint If assets are minted in the creation process
-   * @param nft1155.nftMetadata Url to set at publishing time that resolves to the metadata of the nft as expected by opensea
-   * @param nft1155.neverminedNFTType the type of the NFT1155
-   * @param nft1155.appId The id of the application creating the NFT
-   * @param nft1155.txParameters Trasaction number of the asset creation
+   * @param nft1155.nftAttributes The attribute object discribing the asset (metadata, price, encryption method, etc...)
+   * @param nft1155.chainId Network Id
+   * @param nft1155.publishMetadata Allows to specify if the metadata should be stored in different backends
+   * @param nft1155.txParams Optional transaction parameters
+   * @param nft1155.method Method used to encrypt the urls
+   * @param nft1155.password Password to encrypt metadata
+   * @param nft1155.cryptoConfig Config for DTP
    * @param nft1155.onEvent A callback to handle progress events
-   * @param nft1155.publisher The user account
+   * @param nft1155.publisher The user account*
    * @returns The DDO object including the asset metadata and the DID
    */
   const publishNFT1155 = async ({
     nftAttributes,
+    chainId,
     publishMetadata = PublishMetadata.OnlyMetadataAPI,
     txParameters,
     password,
     cryptoConfig,
     onEvent,
-    publisher
-  }:
-  {
-    nftAttributes: NFTAttributes;
-    publishMetadata?: PublishMetadata;
-    txParameters?: TxParameters,
-    password?: string,
-    cryptoConfig?: CryptoConfig,
-    onEvent?: (next: CreateProgressStep) => void,
-    publisher: Account;
+    publisher,
+  }: {
+    nftAttributes: NFTAttributes
+    chainId: number
+    publishMetadata?: PublishMetadata
+    txParameters?: TxParameters
+    password?: string
+    cryptoConfig?: CryptoConfig
+    onEvent?: (next: CreateProgressStep) => void
+    publisher: Account
   }) => {
     try {
       setIsProcessing(true)
 
-      if (!account.isTokenValid() || account.getAddressTokenSigner().toLowerCase() !== publisher.getId().toLowerCase()) {
+      if (!account.isTokenValid(publisher.getId(), chainId)) {
         setErrorAssetMessage(
-          'Your login is expired. Please first sign with your wallet and after try again'
+          'Your login is expired. Please first sign with your wallet and after try again',
         )
-        await account.generateToken(publisher)
+        await account.generateToken({ address: publisher.getId(), chainId })
       }
 
       if (!config.neverminedNodeAddress) {
@@ -371,15 +366,13 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
       if (password) {
         const dtp = await _getDTPInstance(sdk, config, cryptoConfig)
         const metadata = await _encryptFileMetadata(sdk, dtp, nftAttributes.metadata, password)
-        nftAttributes.metadata = {...metadata}
+        nftAttributes.metadata = { ...metadata }
       }
 
-      const ddo = await executeWithProgressEvent(() => sdk.nfts1155.create(
-        nftAttributes,
-        publisher,
-        publishMetadata,
-        txParameters
-      ), onEvent)
+      const ddo = await executeWithProgressEvent(
+        () => sdk.nfts1155.create(nftAttributes, publisher, publishMetadata, txParameters),
+        onEvent,
+      )
 
       setIsProcessing(false)
       setIsPublished(true)
@@ -408,7 +401,7 @@ export const AssetPublishProvider = ({ children }: { children: React.ReactElemen
     publishAsset,
     publishNFT721,
     publishNFT1155,
-    reset
+    reset,
   }
 
   return <AssetPublishContext.Provider value={IState}>{children}</AssetPublishContext.Provider>
