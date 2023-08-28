@@ -1,5 +1,4 @@
 import { NeverminedOptions, Logger } from '@nevermined-io/sdk'
-import { AuthToken } from '../src'
 import path from 'path'
 import { ethers } from 'ethers'
 
@@ -20,7 +19,6 @@ export const appConfig: NeverminedOptions = {
   neverminedNodeUri,
   verbose: true,
   neverminedNodeAddress,
-  marketplaceAuthToken: AuthToken.fetchMarketplaceApiTokenFromLocalStorage().token,
   marketplaceUri,
   artifactsFolder: path.join(__dirname, '../artifacts'),
 }

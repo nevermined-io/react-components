@@ -2,21 +2,29 @@ import React, { useEffect, useState } from 'react'
 import { renderHook, waitFor } from '@testing-library/react'
 import { generateTestingUtils } from 'eth-testing'
 import { appConfig } from '../config'
-import { Catalog, AssetService, AssetAttributes, NFTAttributes, DDO, RoyaltyKind, getRoyaltyScheme, MarketplaceAPIToken, Nevermined, BigNumber } from '../../src'
-import { ddo as assetObject, metadata, nftContract, walletAddress } from '../mockups'
+import {
+  Catalog,
+  AssetService,
+  AssetAttributes,
+  NFTAttributes,
+  DDO,
+  RoyaltyKind,
+  getRoyaltyScheme,
+  Nevermined,
+  BigNumber,
+} from '../../src'
+import { ddo as assetObject, metadata, nftContract, walletAddress, chainId } from '../mockups'
 import { faker } from '@faker-js/faker'
 import jwt from 'jsonwebtoken'
 
 jest.mock('@nevermined-io/sdk', () => ({
   ...jest.requireActual('@nevermined-io/sdk'),
-  Nevermined: jest.requireActual('../mockups').nevermined
+  Nevermined: jest.requireActual('../mockups').nevermined,
 }))
 
 const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
   <Catalog.NeverminedProvider config={appConfig}>
-    <AssetService.AssetPublishProvider>
-      {children}
-    </AssetService.AssetPublishProvider>
+    <AssetService.AssetPublishProvider>{children}</AssetService.AssetPublishProvider>
   </Catalog.NeverminedProvider>
 )
 
@@ -45,8 +53,8 @@ describe('Assets Service', () => {
         const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
         const { result } = AssetService.useAssets({
           query: {
-            id: assetObject.id
-          }
+            id: assetObject.id,
+          },
         })
 
         useEffect(() => {
@@ -60,8 +68,8 @@ describe('Assets Service', () => {
         return result
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(async () => {
@@ -89,8 +97,8 @@ describe('Assets Service', () => {
         }
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(async () => {
@@ -101,12 +109,12 @@ describe('Assets Service', () => {
     })
   })
 
-  it('should publish an asset', async() => {
+  it('should publish an asset', async () => {
     const { result } = renderHook(
       () => {
         const { isLoadingSDK, updateSDK, account, sdk } = Catalog.useNevermined()
         const { publishAsset, isPublished } = AssetService.useAssetPublish()
-        const [ddo, setDDO ] = useState<DDO>({} as DDO)
+        const [ddo, setDDO] = useState<DDO>({} as DDO)
 
         jest.spyOn(account, 'isTokenValid').mockReturnValue(true)
 
@@ -117,12 +125,13 @@ describe('Assets Service', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             const [publisher] = await sdk.accounts.list()
-            const result = await publishAsset({
+            const result = (await publishAsset({
               assetAttributes,
+              chainId,
               publisher,
-            }) as DDO
+            })) as DDO
 
             setDDO(result)
           })()
@@ -134,8 +143,8 @@ describe('Assets Service', () => {
         }
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(async () => {
@@ -146,12 +155,12 @@ describe('Assets Service', () => {
     })
   })
 
-  it('should publish an nft721', async() => {
+  it('should publish an nft721', async () => {
     const { result } = renderHook(
       () => {
         const { isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const { publishNFT721, isPublished } = AssetService.useAssetPublish()
-        const [ddo, setDDO ] = useState<DDO>({} as DDO)
+        const [ddo, setDDO] = useState<DDO>({} as DDO)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -160,14 +169,15 @@ describe('Assets Service', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             nftAttributes.royaltyAttributes = royaltyAttributes(sdk)
             const [publisher] = await sdk.accounts.list()
-            const result = await publishNFT721({
+            const result = (await publishNFT721({
               nftAttributes,
+              chainId,
               nftAddress: nftContract,
               publisher,
-            }) as DDO
+            })) as DDO
 
             setDDO(result)
           })()
@@ -179,8 +189,8 @@ describe('Assets Service', () => {
         }
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(async () => {
@@ -191,12 +201,12 @@ describe('Assets Service', () => {
     })
   })
 
-  it('should publish an nft1155', async() => {
+  it('should publish an nft1155', async () => {
     const { result } = renderHook(
       () => {
         const { isLoadingSDK, updateSDK, sdk } = Catalog.useNevermined()
         const { publishNFT1155, isPublished } = AssetService.useAssetPublish()
-        const [ddo, setDDO ] = useState<DDO>({} as DDO)
+        const [ddo, setDDO] = useState<DDO>({} as DDO)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -205,12 +215,13 @@ describe('Assets Service', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             const [publisher] = await sdk.accounts.list()
-            const result = await publishNFT1155({
+            const result = (await publishNFT1155({
               nftAttributes,
+              chainId,
               publisher,
-            }) as DDO
+            })) as DDO
 
             setDDO(result)
           })()
@@ -222,8 +233,8 @@ describe('Assets Service', () => {
         }
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(async () => {
@@ -234,7 +245,7 @@ describe('Assets Service', () => {
     })
   })
 
-  it('should update asset to publish after call handleChange function', async() => {
+  it('should update asset to publish after call handleChange function', async () => {
     const author = faker.name.firstName()
 
     const { result } = renderHook(
@@ -249,8 +260,8 @@ describe('Assets Service', () => {
             return
           }
 
-          (async () => {
-            if(!assetPublish.author) {
+          void (async () => {
+            if (!assetPublish.author) {
               setAssetPublish({
                 name: '',
                 author: '',
@@ -258,9 +269,9 @@ describe('Assets Service', () => {
                 type: 'dataset',
                 category: 'None',
                 price: '0',
-                assetFiles: []
+                assetFiles: [],
               })
-  
+
               handleChange(author, 'author')
             }
           })()
@@ -269,8 +280,8 @@ describe('Assets Service', () => {
         return assetPublish
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(async () => {
@@ -278,7 +289,7 @@ describe('Assets Service', () => {
     })
   })
 
-  it('should reset asset to publish', async() => {
+  it('should reset asset to publish', async () => {
     const { result } = renderHook(
       () => {
         const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
@@ -292,8 +303,8 @@ describe('Assets Service', () => {
             return
           }
 
-          (async () => {
-            if(!count) {
+          void (async () => {
+            if (!count) {
               setAssetPublish({
                 name: faker.name.jobTitle(),
                 author: faker.name.firstName(),
@@ -301,9 +312,9 @@ describe('Assets Service', () => {
                 type: 'dataset',
                 category: 'None',
                 price: '0',
-                assetFiles: []
+                assetFiles: [],
               })
-  
+
               reset({
                 name: '',
                 author: '',
@@ -311,7 +322,7 @@ describe('Assets Service', () => {
                 type: 'dataset',
                 category: 'None',
                 price: '0',
-                assetFiles: []
+                assetFiles: [],
               })
 
               setCount(count + 1)
@@ -322,8 +333,8 @@ describe('Assets Service', () => {
         return assetPublish
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(async () => {
@@ -334,13 +345,13 @@ describe('Assets Service', () => {
         type: 'dataset',
         category: 'None',
         price: '0',
-        assetFiles: []
+        assetFiles: [],
       })
     })
   })
 
   it('should throw an error if token is not valid', async () => {
-    let generateTokenSpy: jest.SpyInstance<Promise<MarketplaceAPIToken>, any>
+    let generateTokenSpy: jest.SpyInstance<Promise<string>, any>
 
     renderHook(
       () => {
@@ -351,16 +362,18 @@ describe('Assets Service', () => {
 
         generateTokenSpy = jest.spyOn(account, 'generateToken')
 
-        generateTokenSpy.mockImplementation(async() => {
-          const token = jwt.sign({iss: walletAddress,
-            sub: `u-${faker.datatype.uuid()}`,
-            role: [],
-            exp: faker.date.future().getTime()
-          }, 'secret')
-          
-          return {
-            token,
-          }
+        generateTokenSpy.mockImplementation(async () => {
+          const token = jwt.sign(
+            {
+              iss: walletAddress,
+              sub: `u-${faker.datatype.uuid()}`,
+              role: [],
+              exp: faker.date.future().getTime(),
+            },
+            'secret',
+          )
+
+          return token
         })
 
         useEffect(() => {
@@ -370,20 +383,21 @@ describe('Assets Service', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             const [publisher] = await sdk.accounts.list()
-            await publishAsset({
+            ;(await publishAsset({
               assetAttributes,
+              chainId,
               publisher,
-            }) as DDO
+            })) as DDO
           })()
         }, [isLoadingSDK, errorAssetMessage])
 
         return errorAssetMessage
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(async () => {

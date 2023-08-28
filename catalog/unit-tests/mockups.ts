@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken'
 
 export const nftContract = '0xdF1B443A155b07D2b2cAeA2d99715dC84E812FF5'
 
+export const chainId = 421613
+
 export const ddo = {
   '@context': 'https://w3id.org/did/v1',
   findServiceByType: (type: string) => ddo.service.find((s) => s.type === type),

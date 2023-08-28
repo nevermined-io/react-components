@@ -2,7 +2,6 @@ import { Account, DDO, Nevermined, Logger, ClientError } from '..'
 import {
   BigNumber,
   ERCType,
-  MarketplaceAPIToken,
   NeverminedOptions,
   QueryResult,
   SearchOptions,
@@ -234,9 +233,9 @@ export const executeWithProgressEvent = async <T>(
 
 export const getNewSdkInstance = async (
   config: NeverminedOptions,
-  tokenData: MarketplaceAPIToken,
+  token: string,
 ): Promise<Nevermined> => {
-  return Nevermined.getInstance({ ...config, marketplaceAuthToken: tokenData.token })
+  return Nevermined.getInstance({ ...config, marketplaceAuthToken: token })
 }
 
 export const emptyQueryResult: QueryResult = {
