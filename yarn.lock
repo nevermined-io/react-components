@@ -2219,10 +2219,10 @@
     snarkjs "^0.4.26"
     web3-utils "^1.7.4"
 
-"@nevermined-io/sdk@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/sdk/-/sdk-1.6.0.tgz#711f5813a62c39dcd1eec7ac1f778b12ca765e9a"
-  integrity sha512-Bu0m92qz4dLXXxvz38Hhi1D53Fne3+G4rF/FhuUq54rlyevbtyUwo6qhO3Ccppp2jX2EVifDUw+hyTwBiQ0Jiw==
+"@nevermined-io/sdk@^1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/sdk/-/sdk-1.6.1.tgz#790dfd9dcb9421aac9fb84fc2726f972eb931487"
+  integrity sha512-8DgMy/pvXNvZLCXDYD3qIT3oOCG2+f3nxUhQbO9ZbkLogOf+HJdxqivZ0GBTjP4aD7LvA2OSHgLg9UraO/T1HQ==
   dependencies:
     "@apollo/client" "^3.7.16"
     assert "^2.0.0"

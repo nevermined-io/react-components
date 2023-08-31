@@ -105,7 +105,7 @@
     ]
   },
   "dependencies": {
-    "@nevermined-io/sdk": "^1.6.0",
+    "@nevermined-io/sdk": "^1.6.1",
     "@nevermined-io/sdk-dtp": "^0.6.0",
     "@types/jsonwebtoken": "^8.5.8",
     "@wagmi/core": "^0.8.15",
