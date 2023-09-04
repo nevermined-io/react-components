@@ -2207,10 +2207,10 @@
     "@motionone/dom" "^10.15.5"
     tslib "^2.3.1"
 
-"@nevermined-io/sdk-dtp@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/sdk-dtp/-/sdk-dtp-0.6.0.tgz#73a02849943f1b15b5e20dff828a6809d65afcad"
-  integrity sha512-LPqscWEtHCkBXgQDBmIbyhOhTa4N2XvvE9gt5JTRKfxEwaCh2r1i3nb6nka0ZLOfQ2021fqDsUfXj8zDYVLsZA==
+"@nevermined-io/sdk-dtp@^0.6.2-rc0":
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/sdk-dtp/-/sdk-dtp-0.6.2.tgz#d5704524ea2609bd78518bd22efe9bb8c9e6d21c"
+  integrity sha512-dU7Exoicufyk2RBELF6ZjGq4SAXDwIAiZuKMIGI88QdOMnYDG04lkCqYlJMbpFUoM1ReRC4WiMJZCAYlEC8ptg==
   dependencies:
     circomlibjs "^0.1.1"
     eciesjs "^0.3.15"
