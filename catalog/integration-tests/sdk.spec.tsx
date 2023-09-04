@@ -1,7 +1,7 @@
 import React from 'react'
 import { initializeNevermined } from '../src/catalog'
 import { Catalog } from '../src'
-import { appConfig } from "./config"
+import { appConfig } from './config'
 import { render, screen } from '@testing-library/react'
 
 const setup = (children: React.ReactElement) =>
