@@ -2207,10 +2207,10 @@
     "@motionone/dom" "^10.15.5"
     tslib "^2.3.1"
 
-"@nevermined-io/sdk-dtp@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/sdk-dtp/-/sdk-dtp-0.6.0.tgz#73a02849943f1b15b5e20dff828a6809d65afcad"
-  integrity sha512-LPqscWEtHCkBXgQDBmIbyhOhTa4N2XvvE9gt5JTRKfxEwaCh2r1i3nb6nka0ZLOfQ2021fqDsUfXj8zDYVLsZA==
+"@nevermined-io/sdk-dtp@^0.6.2-rc0":
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/sdk-dtp/-/sdk-dtp-0.6.2.tgz#d5704524ea2609bd78518bd22efe9bb8c9e6d21c"
+  integrity sha512-dU7Exoicufyk2RBELF6ZjGq4SAXDwIAiZuKMIGI88QdOMnYDG04lkCqYlJMbpFUoM1ReRC4WiMJZCAYlEC8ptg==
   dependencies:
     circomlibjs "^0.1.1"
     eciesjs "^0.3.15"
@@ -2219,10 +2219,10 @@
     snarkjs "^0.4.26"
     web3-utils "^1.7.4"
 
-"@nevermined-io/sdk@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@nevermined-io/sdk/-/sdk-1.6.0.tgz#711f5813a62c39dcd1eec7ac1f778b12ca765e9a"
-  integrity sha512-Bu0m92qz4dLXXxvz38Hhi1D53Fne3+G4rF/FhuUq54rlyevbtyUwo6qhO3Ccppp2jX2EVifDUw+hyTwBiQ0Jiw==
+"@nevermined-io/sdk@^1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@nevermined-io/sdk/-/sdk-1.6.1.tgz#790dfd9dcb9421aac9fb84fc2726f972eb931487"
+  integrity sha512-8DgMy/pvXNvZLCXDYD3qIT3oOCG2+f3nxUhQbO9ZbkLogOf+HJdxqivZ0GBTjP4aD7LvA2OSHgLg9UraO/T1HQ==
   dependencies:
     "@apollo/client" "^3.7.16"
     assert "^2.0.0"
