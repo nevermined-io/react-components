@@ -3,7 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { generateTestingUtils } from 'eth-testing'
 import { appConfig } from '../config'
 import { Catalog, AccountService } from '../../src'
-import { ddo, walletAddress, walletAddress2, profileResult, nevermined, newProfile, updatedProfile } from '../mockups'
+import { ddo, walletAddress, walletAddress2, newProfileResult, nevermined, newProfile, updatedProfile } from '../mockups'
 
 jest.mock('@nevermined-io/sdk', () => ({
   ...jest.requireActual('@nevermined-io/sdk'),
@@ -186,7 +186,7 @@ describe('Account Service', () => {
     )
 
     await waitFor(() => {
-      expect(result.current).toStrictEqual(profileResult)
+      expect(result.current).toStrictEqual(newProfileResult)
     })
   })
 

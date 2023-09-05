@@ -54,7 +54,7 @@ export const newMarketplaceApiToken = async (
   message?: string,
 ): Promise<MarketplaceAPIToken> => {
   try {
-    const credential = await sdk.utils.jwt.generateClientAssertion(account, message)
+    const credential = await sdk.utils.jwt.generateClientAssertion(account)
     const token = await sdk.services.marketplace.login(credential)
     saveMarketplaceApiTokenToLocalStorage({ token })
     return { token }

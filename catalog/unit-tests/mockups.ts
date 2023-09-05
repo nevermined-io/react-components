@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken'
 
 export const nftContract = '0xdF1B443A155b07D2b2cAeA2d99715dC84E812FF5'
 
+export const chainId = 421613
+
 export const ddo = {
   '@context': 'https://w3id.org/did/v1',
   findServiceByType: (type: string) => ddo.service.find((s) => s.type === type),
@@ -913,28 +915,35 @@ export const newProfile: Partial<Profile> = {
   nickname: faker.internet.userName(),
   email: faker.internet.email(),
   state: 'confirmed' as State,
+  creationDate: new Date(),
   updateDate: new Date(),
   addresses: [walletAddress],
   additionalInformation: {
     linkedinProfile: '',
+    biography: '',
+    interests: [],
   },
 }
 
 export const updatedProfile: Partial<Profile> = {
   ...newProfile,
   nickname: faker.internet.userName(),
+  additionalInformation: {
+    ...(newProfile.additionalInformation as object),
+    biography: 'Bio',
+    interests: ['ai'],
+  },
 }
 
-export const profileResult = {
+export const newProfileResult = {
   userId: newProfile.userId,
   name: newProfile.name,
   nickname: newProfile.nickname,
   email: newProfile.email,
+  creationDate: newProfile.creationDate,
   updateDate: new Date(newProfile.updateDate || ''),
   state: newProfile.state,
-  additionalInformation: {
-    linkedinProfile: '',
-  },
+  additionalInformation: newProfile.additionalInformation,
 }
 
 export const nevermined = {

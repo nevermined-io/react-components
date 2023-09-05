@@ -381,7 +381,7 @@ export interface UserProfileParams {
   /** The email of the user */
   email: string
   /** When the user was created */
-  creationDate: string
+  creationDate: Date
   /** When was the last user profile updated*/
   updateDate: Date
   /** Additional information of the user like picture, profesional profire, etc... */
