@@ -454,6 +454,7 @@ export const useUserProfile = (
           nickname: userProfileData.nickname,
           name: userProfileData.name,
           email: userProfileData.email,
+          creationDate: userProfileData.creationDate,
           updateDate: new Date(userProfileData.updateDate),
           state: userProfileData.state,
           additionalInformation: userProfileData.additionalInformation,

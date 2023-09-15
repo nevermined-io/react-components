@@ -233,7 +233,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       try {
         const query = await sdk.search.subscriptionsCreated(
           account,
-          searchOptions?.customNestedQueries,
           searchOptions?.offset,
           searchOptions?.page,
           searchOptions?.sort,
@@ -254,7 +253,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       try {
         const query = await sdk.search.subscriptionsCreated(
           account,
-          searchOptionsSubscriptions?.customNestedQueries,
           searchOptionsSubscriptions?.offset,
           searchOptionsSubscriptions?.page,
           searchOptionsSubscriptions?.sort,
@@ -275,7 +273,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       try {
         const query = await sdk.search.subscriptionsCreated(
           account,
-          searchOptionsSubscriptions?.customNestedQueries,
           searchOptionsSubscriptions?.offset,
           searchOptionsSubscriptions?.page,
           searchOptionsSubscriptions?.sort,
@@ -295,7 +292,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       try {
         const query = await sdk.search.subscriptionsPurchased(
           account,
-          searchOptions?.customNestedQueries,
           searchOptions?.offset,
           searchOptions?.page,
           searchOptions?.sort,
@@ -316,7 +312,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       try {
         const query = await sdk.search.subscriptionsPurchased(
           account,
-          searchOptionsSubscriptions?.customNestedQueries,
           searchOptionsSubscriptions?.offset,
           searchOptionsSubscriptions?.page,
           searchOptionsSubscriptions?.sort,
@@ -337,7 +332,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       try {
         const query = await sdk.search.subscriptionsPurchased(
           account,
-          searchOptionsSubscriptions?.customNestedQueries,
           searchOptionsSubscriptions?.offset,
           searchOptionsSubscriptions?.page,
           searchOptionsSubscriptions?.sort,
@@ -357,7 +351,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       try {
         const query = await sdk.search.servicesBySubscription(
           did,
-          searchOptions?.customNestedQueries,
           searchOptions?.offset,
           searchOptions?.page,
           searchOptions?.sort,
@@ -377,7 +370,6 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
       try {
         const query = await sdk.search.datasetsBySubscription(
           did,
-          searchOptions?.customNestedQueries,
           searchOptions?.offset,
           searchOptions?.page,
           searchOptions?.sort,
@@ -793,8 +785,8 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
           transferResult =
             ercType === 721
-              ? await sdk.nfts721.claim(agreementId, nftHolder, buyer.getId(), did)
-              : await sdk.nfts1155.claim(agreementId, nftHolder, buyer.getId(), nftAmount, did)
+              ? await sdk.nfts721.claim(agreementId, nftHolder, buyer.getId())
+              : await sdk.nfts1155.claim(agreementId, nftHolder, buyer.getId(), nftAmount,)
 
           if (!transferResult) {
             throw new Error(

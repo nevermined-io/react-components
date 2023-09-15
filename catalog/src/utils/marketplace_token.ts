@@ -52,8 +52,7 @@ export const newMarketplaceApiToken = async ({
 
   try {
     const account = sdk.accounts.getAccount(address)
-
-    const credential = await sdk.utils.jwt.generateClientAssertion(account, message)
+    const credential = await sdk.utils.jwt.generateClientAssertion(account)
     const token = await sdk.services.marketplace.login(credential)
 
     const tokenKey = `${address}_${chainId}_${MARKETPLACE_API_TOKEN}`

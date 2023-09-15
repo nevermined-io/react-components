@@ -7,7 +7,7 @@ import {
   ddo,
   walletAddress,
   walletAddress2,
-  profileResult,
+  newProfileResult,
   nevermined,
   newProfile,
   updatedProfile,
@@ -197,7 +197,7 @@ describe('Account Service', () => {
     )
 
     await waitFor(() => {
-      expect(result.current).toStrictEqual(profileResult)
+      expect(result.current).toStrictEqual(newProfileResult)
     })
   })
 

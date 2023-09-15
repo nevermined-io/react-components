@@ -177,7 +177,6 @@ export const getSubscriptionsAndServices = async (
     subscriptionsDDOs.map(async (ddo) => {
       const query = await sdk.search.servicesBySubscription(
         ddo.id,
-        searchOptions?.customNestedQueries,
         searchOptions?.offset,
         searchOptions?.page,
         searchOptions?.sort,
@@ -201,7 +200,6 @@ export const getSubscriptionsAndDatasets = async (
     subscriptionsDDOs.map(async (ddo) => {
       const query = await sdk.search.datasetsBySubscription(
         ddo.id,
-        searchOptions?.customNestedQueries,
         searchOptions?.offset,
         searchOptions?.page,
         searchOptions?.sort,
