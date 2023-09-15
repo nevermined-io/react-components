@@ -2,10 +2,12 @@ import { useContext, useEffect, useState } from 'react'
 import { NeverminedContext } from '../catalog'
 import { useNevermined } from '../catalog'
 import { UserProfileParams } from '../types'
-import { saveMarketplaceApiTokenToLocalStorage } from '../utils/marketplace_token'
 import { Account, Logger, BigNumber } from '@nevermined-io/sdk'
 import { loadFulfilledEvents } from '..'
-import { fetchMarketplaceApiTokenFromLocalStorage } from '../utils/marketplace_token'
+import {
+  fetchMarketplaceApiTokenFromLocalStorage,
+  saveMarketplaceApiTokenToLocalStorage,
+} from '../utils/marketplace_token'
 
 /**
  * Get account releases(mints)
@@ -288,6 +290,7 @@ export const useAccountCollection = (
  */
 export const useUserProfile = (
   walletAddress: string,
+  chainId: number,
   signMessage?: string,
 ): {
   /** Input error message */
@@ -347,19 +350,20 @@ export const useUserProfile = (
   const [reloadTrigger, setReloadTrigger] = useState<Date>()
 
   const checkAuth = async (userAccount: Account, message?: string) => {
-    let tokenObject = { token: '' }
-    if (!account.isTokenValid()) {
+    let token = ''
+    if (!account.isTokenValid(userAccount.getId(), chainId)) {
       setIsTokenGenerated(false)
       setErrorMessage(
         'Your login is expired. Please first sign with your wallet before to continue',
       )
-      tokenObject = await account.generateToken(userAccount, message)
-      setIsTokenGenerated(Boolean(tokenObject.token))
+      token = await account.generateToken({ address: userAccount.getId(), chainId, message })
+      setIsTokenGenerated(Boolean(token))
     } else {
-      tokenObject = fetchMarketplaceApiTokenFromLocalStorage()
+      token =
+        fetchMarketplaceApiTokenFromLocalStorage({ address: userAccount.getId(), chainId }) || ''
     }
 
-    return tokenObject.token
+    return token
   }
 
   const addAddress = async () => {
@@ -375,7 +379,7 @@ export const useUserProfile = (
       const credential = await sdk.utils.jwt.generateClientAssertion(accountToAdd as Account)
       const token = await sdk.services.marketplace.addNewAddress(credential)
 
-      saveMarketplaceApiTokenToLocalStorage({ token })
+      saveMarketplaceApiTokenToLocalStorage({ token, address: newAddress, chainId })
       setAddresses([...addresses, newAddress])
       setNewAddress('')
       setIsAddressAdded(true)
@@ -462,8 +466,7 @@ export const useUserProfile = (
           setNewAddress(walletAddress)
           setUserProfileLoadingStatus('failed')
         } else if (error.message.includes('"statusCode":404')) {
-          const userAccount = await sdk.accounts.getAccount(walletAddress)
-          await account.generateToken(userAccount)
+          await account.generateToken({ address: walletAddress, chainId })
           setTimeout(async () => {
             try {
               const userProfileData = await sdk.services.profiles.findOneByAddress(walletAddress)

@@ -3,11 +3,20 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { generateTestingUtils } from 'eth-testing'
 import { appConfig } from '../config'
 import { Catalog, AccountService } from '../../src'
-import { ddo, walletAddress, walletAddress2, newProfileResult, nevermined, newProfile, updatedProfile } from '../mockups'
+import {
+  ddo,
+  walletAddress,
+  walletAddress2,
+  newProfileResult,
+  nevermined,
+  newProfile,
+  updatedProfile,
+  chainId,
+} from '../mockups'
 
 jest.mock('@nevermined-io/sdk', () => ({
   ...jest.requireActual('@nevermined-io/sdk'),
-  Nevermined: jest.requireActual('../mockups').nevermined
+  Nevermined: jest.requireActual('../mockups').nevermined,
 }))
 
 const wrapperProvider = ({ children }: { children: React.ReactElement }) => (
@@ -27,7 +36,7 @@ describe('Account Service', () => {
       () => {
         const { isLoadingSDK, updateSDK, account } = Catalog.useNevermined()
         const { accountReleases } = AccountService.useAccountReleases(walletAddress)
-        const [ releases, setReleases ] = useState<string[]>([])
+        const [releases, setReleases] = useState<string[]>([])
 
         jest.spyOn(account, 'getReleases').mockResolvedValue([ddo.id])
 
@@ -38,7 +47,7 @@ describe('Account Service', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               setReleases(accountReleases)
             } catch (error: any) {
@@ -50,8 +59,8 @@ describe('Account Service', () => {
         return releases
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -64,7 +73,7 @@ describe('Account Service', () => {
       () => {
         const { isLoadingSDK, updateSDK, account } = Catalog.useNevermined()
         const { accountCollection } = AccountService.useAccountCollection(walletAddress)
-        const [ collection, setCollection ] = useState<string[]>([])
+        const [collection, setCollection] = useState<string[]>([])
 
         jest.spyOn(account, 'getCollection').mockResolvedValue([ddo.id])
 
@@ -75,7 +84,7 @@ describe('Account Service', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               setCollection(accountCollection)
             } catch (error: any) {
@@ -87,8 +96,8 @@ describe('Account Service', () => {
         return collection
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -102,7 +111,7 @@ describe('Account Service', () => {
       () => {
         const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
         const [wallet, setWallet] = useState<string>(walletAddress)
-        const { addresses, addAddress, newAddress } = AccountService.useUserProfile(wallet)
+        const { addresses, addAddress, newAddress } = AccountService.useUserProfile(wallet, chainId)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -111,7 +120,7 @@ describe('Account Service', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
                 ...sdk,
@@ -121,14 +130,14 @@ describe('Account Service', () => {
                     ...sdk.services.profiles,
                     findOneByAddress: async () => {
                       throw new Error('Profile cannot be found')
-                    }
-                  }
-                }
+                    },
+                  },
+                },
               })
 
               setWallet(walletAddress2)
-              
-              if(newAddress && addresses.length < 2) addAddress()
+
+              if (newAddress && addresses.length < 2) addAddress()
             } catch (error: any) {
               console.error(error.message)
             }
@@ -138,34 +147,37 @@ describe('Account Service', () => {
         return addresses
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
-    await waitFor(() => {
-      expect(result.current).toStrictEqual([walletAddress, walletAddress2])
-    }, {
-      timeout: 5000
-    })
+    await waitFor(
+      () => {
+        expect(result.current).toStrictEqual([walletAddress, walletAddress2])
+      },
+      {
+        timeout: 5000,
+      },
+    )
   })
 
-  it("should get a user Profile", async () => {
+  it('should get a user Profile', async () => {
     const sdk = await jest.requireActual('../mockups').nevermined.getInstance()
     jest.spyOn(nevermined, 'getInstance').mockResolvedValue({
       ...sdk,
       services: {
         ...sdk.services,
         profiles: {
-        ...sdk.services.profiles,
-        findOneByAddress: async () => newProfile
-        }
-      }
+          ...sdk.services.profiles,
+          findOneByAddress: async () => newProfile,
+        },
+      },
     })
 
     const { result } = renderHook(
       () => {
         const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const { userProfile } = AccountService.useUserProfile(walletAddress)
+        const { userProfile } = AccountService.useUserProfile(walletAddress, chainId)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -173,7 +185,6 @@ describe('Account Service', () => {
             updateSDK(appConfig)
             return
           }
-
         }, [isLoadingSDK, userProfile])
 
         console.log(userProfile)
@@ -181,8 +192,8 @@ describe('Account Service', () => {
         return userProfile
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -202,13 +213,13 @@ describe('Account Service', () => {
           ...sdk.services.profiles,
           findOneByAddress: async () => {
             throw new Error('"statusCode":404')
-          }
+          },
         },
       },
       accounts: {
         ...sdk.accounts,
         list: () => [walletAddress],
-      }
+      },
     })
 
     const sdkInstance: any = await sdkSpy.getMockImplementation()?.()
@@ -219,7 +230,7 @@ describe('Account Service', () => {
       () => {
         const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
         const [wallet] = useState<string>(walletAddress)
-        const { errorMessage } = AccountService.useUserProfile(wallet)
+        const { errorMessage } = AccountService.useUserProfile(wallet, chainId)
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -230,15 +241,18 @@ describe('Account Service', () => {
         }, [isLoadingSDK, errorMessage])
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
-    await waitFor(() => {
-      expect(generateTokenSpy).toBeCalledTimes(1)
-    }, {
-      timeout: 5000
-    })
+    await waitFor(
+      () => {
+        expect(generateTokenSpy).toBeCalledTimes(1)
+      },
+      {
+        timeout: 5000,
+      },
+    )
   })
 
   it('should throw error if user is not logged', async () => {
@@ -248,8 +262,8 @@ describe('Account Service', () => {
       services: {
         ...sdk.services,
         profiles: {
-        ...sdk.services.profiles,
-        findOneByAddress: async () => newProfile
+          ...sdk.services.profiles,
+          findOneByAddress: async () => newProfile,
         },
       },
     })
@@ -257,7 +271,7 @@ describe('Account Service', () => {
     const { result } = renderHook(
       () => {
         const { isLoadingSDK, updateSDK, account } = Catalog.useNevermined()
-        const { errorMessage } = AccountService.useUserProfile(walletAddress)
+        const { errorMessage } = AccountService.useUserProfile(walletAddress, chainId)
 
         jest.spyOn(account, 'isTokenValid').mockReturnValue(false)
 
@@ -267,27 +281,30 @@ describe('Account Service', () => {
             updateSDK(appConfig)
             return
           }
-
         }, [isLoadingSDK, errorMessage])
 
         return errorMessage
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
-      expect(result.current).toStrictEqual('Your login is expired. Please first sign with your wallet before to continue')
+      expect(result.current).toStrictEqual(
+        'Your login is expired. Please first sign with your wallet before to continue',
+      )
     })
   })
-
 
   it('Should submit a profile', async () => {
     const { result } = renderHook(
       () => {
         const { isLoadingSDK, updateSDK } = Catalog.useNevermined()
-        const { submitUserProfile, setUserProfile, userProfile } = AccountService.useUserProfile(walletAddress)
+        const { submitUserProfile, setUserProfile, userProfile } = AccountService.useUserProfile(
+          walletAddress,
+          chainId,
+        )
 
         useEffect(() => {
           if (isLoadingSDK) {
@@ -296,7 +313,7 @@ describe('Account Service', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               setUserProfile(updatedProfile as any)
               await submitUserProfile()
@@ -309,8 +326,8 @@ describe('Account Service', () => {
         return userProfile
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -318,14 +335,17 @@ describe('Account Service', () => {
     })
   })
 
-  it('Should throw an error if profile is submitted without nickname', async() => {
-    const updatedProfileCopy = {...updatedProfile}
+  it('Should throw an error if profile is submitted without nickname', async () => {
+    const updatedProfileCopy = { ...updatedProfile }
     updatedProfileCopy.nickname = ''
 
     const { result } = renderHook(
       () => {
         const { isLoadingSDK, updateSDK, account } = Catalog.useNevermined()
-        const { submitUserProfile, setUserProfile, inputError } = AccountService.useUserProfile(walletAddress)
+        const { submitUserProfile, setUserProfile, inputError } = AccountService.useUserProfile(
+          walletAddress,
+          chainId,
+        )
         jest.spyOn(account, 'isTokenValid').mockReturnValue(true)
 
         useEffect(() => {
@@ -335,7 +355,7 @@ describe('Account Service', () => {
             return
           }
 
-          (async () => {
+          void (async () => {
             try {
               setUserProfile(updatedProfileCopy as any)
               await submitUserProfile()
@@ -348,8 +368,8 @@ describe('Account Service', () => {
         return inputError
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -369,14 +389,13 @@ describe('Account Service', () => {
             updateSDK(appConfig)
             return
           }
-
         }, [isLoadingSDK, ownAsset])
 
         return ownAsset
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -395,10 +414,10 @@ describe('Account Service', () => {
           accessTemplate: {
             events: {
               getPastEvents: async () => [],
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
     })
 
     const { result } = renderHook(
@@ -412,14 +431,13 @@ describe('Account Service', () => {
             updateSDK(appConfig)
             return
           }
-
         }, [isLoadingSDK, ownAsset])
 
         return ownAsset
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -439,14 +457,13 @@ describe('Account Service', () => {
             updateSDK(appConfig)
             return
           }
-
         }, [isLoadingSDK, ownNFT721])
 
         return ownNFT721
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -463,9 +480,9 @@ describe('Account Service', () => {
         loadNft721: async () => ({
           balanceOf: async () => ({
             gt: () => false,
-          })
-        })
-      }
+          }),
+        }),
+      },
     })
 
     const { result } = renderHook(
@@ -479,14 +496,13 @@ describe('Account Service', () => {
             updateSDK(appConfig)
             return
           }
-
         }, [isLoadingSDK, ownNFT721])
 
         return ownNFT721
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -506,14 +522,13 @@ describe('Account Service', () => {
             updateSDK(appConfig)
             return
           }
-
         }, [isLoadingSDK, ownNFT1155])
 
         return ownNFT1155
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
@@ -527,8 +542,8 @@ describe('Account Service', () => {
       ...sdk,
       nfts1155: {
         ...sdk.ntfs1155,
-        balance: () => 0
-      }
+        balance: () => 0,
+      },
     })
 
     const { result } = renderHook(
@@ -542,14 +557,13 @@ describe('Account Service', () => {
             updateSDK(appConfig)
             return
           }
-
         }, [isLoadingSDK, ownNFT1155])
 
         return ownNFT1155
       },
       {
-        wrapper: wrapperProvider
-      }
+        wrapper: wrapperProvider,
+      },
     )
 
     await waitFor(() => {
