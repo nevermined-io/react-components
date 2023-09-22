@@ -785,7 +785,7 @@ export const NeverminedProvider = ({ children, config, verbose }: NeverminedProv
 
           transferResult =
             ercType === 721
-              ? await sdk.nfts721.claim(agreementId, nftHolder, buyer.getId())
+              ? await sdk.nfts721.claim(agreementId, nftHolder, buyer.getId(), did)
               : await sdk.nfts1155.claim(agreementId, nftHolder, buyer.getId(), nftAmount,)
 
           if (!transferResult) {
