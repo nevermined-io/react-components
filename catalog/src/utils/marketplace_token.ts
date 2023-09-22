@@ -37,7 +37,7 @@ export const fetchMarketplaceApiTokenFromLocalStorage = ({
 export const newMarketplaceApiToken = async ({
   address,
   chainId,
-  message,
+  message: _message,
   sdk,
 }: {
   address: string
